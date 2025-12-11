@@ -10,208 +10,183 @@ namespace Rex
 {
     public class RexEngine
     {
-        private readonly Action<string> _statusCallback;
-        private readonly Action<int> _progressCallback;
+        private readonly Action<string> _log;
+        private readonly Action<int> _progress;
 
-        // Label für die Wiedererkennung
+        // Wir nutzen dieses Label, um den Stick nach dem Formatieren sicher wiederzufinden
         private const string STICK_LABEL = "REX_BOOT";
 
-        public RexEngine(Action<string> statusCallback, Action<int> progressCallback)
+        public RexEngine(Action<string> logCallback, Action<int> progressCallback)
         {
-            _statusCallback = statusCallback;
-            _progressCallback = progressCallback;
+            _log = logCallback;
+            _progress = progressCallback;
         }
 
-        public void RunExtractMode(string isoPath, string targetDrive, bool useGpt, bool bypassWin11)
+        // Hauptmethode für Windows-Installationsmedien
+        public void RunExtractMode(string isoPath, string targetDrive, bool useGpt, bool bypassWin11, string driverPath)
         {
-            string initialLetter = targetDrive.Substring(0, 2);
+            string letter = targetDrive.Substring(0, 2);
+            _log($"[INIT] Starte Prozess für Laufwerk {letter}...");
 
-            // 1. DISK ID SICHERN
-            _statusCallback("Ermittle Disk-ID...");
-            int diskNum = HardwareHelper.GetDiskNumber(initialLetter);
-
-            if (diskNum == -1) throw new Exception("Konnte Disk-Nummer nicht ermitteln. Bitte Stick neu einstecken.");
-
-            _statusCallback($"Ziel erkannt: Disk {diskNum}");
+            int diskNum = HardwareHelper.GetDiskNumber(letter);
+            if (diskNum == -1) throw new Exception("Konnte das physische Laufwerk nicht identifizieren.");
+            _log($"[INFO] Ziel ist PhysicalDisk{diskNum}");
 
             using (FileStream isoStream = File.OpenRead(isoPath))
             {
-                DiscFileSystem reader = GetBestReader(isoStream);
+                // Wir müssen erraten, ob es UDF oder ISO9660 ist
+                var reader = GetBestReader(isoStream);
                 using (reader)
                 {
-                    _statusCallback("Scanne ISO...");
+                    _log("[ISO] Analysiere Dateistruktur...");
                     var files = new List<string>();
                     long totalBytes = 0;
+
+                    // Erst alles scannen, um die Gesamtgröße für den Progressbar zu haben
                     ScanRecursive(reader, reader.Root.FullName, files, ref totalBytes);
 
-                    if (files.Count == 0) throw new Exception("ISO leer.");
+                    if (files.Count == 0) throw new Exception("Die ISO-Datei scheint leer oder beschädigt zu sein.");
+                    _log($"[ISO] {files.Count} Dateien gefunden ({totalBytes / 1024 / 1024} MB).");
 
-                    // 2. FORMATIEREN (Der aggressive Fix!)
-                    string newDriveLetter = FormatAndFindStick(diskNum, useGpt);
+                    // Der kritische Teil: Formatieren und neu einbinden
+                    string newLetter = FormatAndFindStick(diskNum, useGpt);
+                    _log($"[DSK] Partitionierung abgeschlossen. Neuer Pfad: {newLetter}");
 
-                    _statusCallback($"Bereit auf: {newDriveLetter}");
-
-                    // 3. KOPIEREN
-                    byte[] buffer = new byte[64 * 1024];
+                    _log("[COPY] Schreibe Daten...");
+                    byte[] buffer = new byte[128 * 1024]; // 128KB Buffer ist ein guter Kompromiss
                     long copiedTotal = 0;
 
                     foreach (var file in files)
                     {
                         var info = reader.GetFileInfo(file);
-                        string relativePath = file.TrimStart('\\');
-                        string targetPath = Path.Combine(newDriveLetter + "\\", relativePath);
+                        string relPath = file.TrimStart('\\');
+                        string target = Path.Combine(newLetter + "\\", relPath);
 
-                        string targetDir = Path.GetDirectoryName(targetPath);
-                        if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
+                        Directory.CreateDirectory(Path.GetDirectoryName(target));
 
                         using (var input = info.OpenRead())
-                        using (var output = new FileStream(targetPath, FileMode.Create, FileAccess.Write))
+                        using (var output = new FileStream(target, FileMode.Create, FileAccess.Write))
                         {
                             int read;
                             while ((read = input.Read(buffer, 0, buffer.Length)) > 0)
                             {
                                 output.Write(buffer, 0, read);
                                 copiedTotal += read;
-                                if (totalBytes > 0 && copiedTotal % (1024 * 1024) == 0)
-                                    _progressCallback((int)((copiedTotal * 100) / totalBytes));
+
+                                // GUI-Updates drosseln, um Performance zu sparen
+                                if (totalBytes > 0 && copiedTotal % (5 * 1024 * 1024) == 0)
+                                    _progress((int)((copiedTotal * 100) / totalBytes));
                             }
                         }
                     }
+                    _log("[COPY] Übertragung abgeschlossen.");
 
-                    if (bypassWin11)
-                    {
-                        _statusCallback("Win11 Bypass...");
-                        ApplyWin11Hack(newDriveLetter);
-                    }
+                    // Optionale Module anwenden
+                    if (bypassWin11) ApplyUltimateWin11Hack(newLetter);
+                    if (!string.IsNullOrEmpty(driverPath)) InjectDrivers(newLetter, driverPath);
 
-                    _statusCallback("Bootsektor...");
-                    string bootSect = Path.Combine(newDriveLetter + "\\", "boot", "bootsect.exe");
-                    if (File.Exists(bootSect))
-                        HardwareHelper.RunProcess(bootSect, $"/nt60 {newDriveLetter}");
+                    // Bootsektor schreiben für Legacy-BIOS Support
+                    _log("[BOOT] Installiere Bootloader...");
+                    string bootSect = Path.Combine(newLetter + "\\", "boot", "bootsect.exe");
+                    if (File.Exists(bootSect)) HardwareHelper.RunProcess(bootSect, $"/nt60 {newLetter}");
                 }
             }
         }
 
-        public void RunDDMode(string isoPath, string driveLetter)
+        // Erstellt ein 1:1 Image des USB-Sticks
+        public void CreateBackup(string driveLetter, string savePath)
         {
-            _statusCallback("Suche Disk...");
+            _log($"[BACKUP] Starte Sicherung von {driveLetter}...");
             int diskNum = HardwareHelper.GetDiskNumber(driveLetter);
-            if (diskNum == -1) throw new Exception("Disk Nummer nicht gefunden.");
+            string physPath = HardwareHelper.GetPhysicalPathByNumber(diskNum);
 
-            string physPath = $@"\\.\PhysicalDrive{diskNum}";
+            _log($"[BACKUP] Öffne Hardware-Stream für {physPath}...");
 
-            _statusCallback("Dismount...");
-            HardwareHelper.RunProcess("powershell.exe", $"-Command \"Dismount-DiskImage -DevicePath {physPath} -ErrorAction SilentlyContinue\"");
-
-            _statusCallback("Schreibe Image...");
-            using (var iso = File.OpenRead(isoPath))
-            using (var handle = HardwareHelper.CreateFile(physPath, 0x40000000, 0, IntPtr.Zero, 3, 0, IntPtr.Zero))
+            using (var handle = HardwareHelper.CreateFile(physPath, HardwareHelper.GENERIC_READ, 1, IntPtr.Zero, 3, 0, IntPtr.Zero))
             {
-                if (handle.IsInvalid) throw new Exception("Zugriff verweigert.");
-                using (var drive = new FileStream(handle, FileAccess.Write))
+                if (handle.IsInvalid) throw new Exception("Konnte Laufwerk nicht öffnen (Zugriff verweigert?).");
+
+                using (var driveStream = new FileStream(handle, FileAccess.Read))
+                using (var fileStream = new FileStream(savePath, FileMode.Create, FileAccess.Write))
                 {
-                    byte[] buf = new byte[1024 * 1024];
-                    long total = iso.Length;
-                    long written = 0;
+                    byte[] buffer = new byte[1024 * 1024]; // 1MB Chunks für Speed
+                    long totalLen = driveStream.Length;
+                    long readTotal = 0;
                     int read;
-                    while ((read = iso.Read(buf, 0, buf.Length)) > 0)
+
+                    while ((read = driveStream.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        drive.Write(buf, 0, read);
-                        written += read;
-                        _progressCallback((int)((written * 100) / total));
+                        fileStream.Write(buffer, 0, read);
+                        readTotal += read;
+
+                        int pct = (int)((readTotal * 100) / totalLen);
+                        _progress(pct);
                     }
-                    drive.Flush();
                 }
             }
+            _log("[BACKUP] Image erfolgreich geschrieben.");
         }
 
-        // --- DER FIX: 3-PHASEN FORMATIERUNG ---
+        public void InjectDrivers(string driveLetter, string sourcePath)
+        {
+            _log($"[DRV] Integriere Treiber aus {Path.GetFileName(sourcePath)}...");
+
+            // Windows Setup sucht automatisch in $WinPEDriver$
+            string targetDir = Path.Combine(driveLetter, "$WinPEDriver$");
+
+            foreach (string dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(sourcePath, targetDir));
+            }
+            foreach (string newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetDir), true);
+            }
+            _log("[DRV] Treiberintegration abgeschlossen.");
+        }
+
+        // Die aggressive 3-Phasen-Formatierung, um Timing-Probleme zu umgehen
         private string FormatAndFindStick(int diskNum, bool useGpt)
         {
-            // PHASE 1: UNLOCK & CLEAN
-            _statusCallback($"Lösche Disk {diskNum} (Clean)...");
+            // Phase 1: Bereinigen und Schreibschutz entfernen
+            _log($"[FMT] Bereinige Disk {diskNum}...");
+            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{CreateScript($"select disk {diskNum}\nattributes disk clear readonly\nonline disk\nclean\nrescan\nexit")}\"");
 
-            // 'attributes disk clear readonly' entfernt Schreibschutz
-            // 'online disk' weckt den Stick auf
-            string cleanScript = $@"
-select disk {diskNum}
-attributes disk clear readonly
-online disk
-clean
-rescan
-exit";
-            RunDiskpart(cleanScript);
-
-            // Zwangspause für den Controller
-            _statusCallback("Controller Reset (3s)...");
+            _log("[FMT] Warte auf Controller-Reset (3s)...");
             Thread.Sleep(3000);
 
-            // PHASE 2: PARTITIONIEREN
-            _statusCallback($"Erstelle Partition ({(useGpt ? "GPT" : "MBR")})...");
-
+            // Phase 2: Partitionstabelle anlegen
+            _log($"[FMT] Erstelle Partition ({(useGpt ? "GPT" : "MBR")})...");
             string style = useGpt ? "convert gpt" : "convert mbr";
             string active = useGpt ? "" : "active";
+            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{CreateScript($"select disk {diskNum}\n{style}\ncreate partition primary\nselect partition 1\n{active}\nexit")}\"");
 
-            string partitionScript = $@"
-select disk {diskNum}
-{style}
-create partition primary
-select partition 1
-{active}
-exit";
-            RunDiskpart(partitionScript);
+            Thread.Sleep(1000);
 
-            Thread.Sleep(1000); // Kurze Pause
+            // Phase 3: Dateisystem formatieren
+            _log("[FMT] Formatiere NTFS...");
+            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{CreateScript($"select disk {diskNum}\nselect partition 1\nformat fs=ntfs quick label=\"{STICK_LABEL}\"\nassign\nexit")}\"");
 
-            // PHASE 3: FORMATIEREN
-            _statusCallback("Formatiere (NTFS)...");
-
-            string formatScript = $@"
-select disk {diskNum}
-select partition 1
-format fs=ntfs quick label=""{STICK_LABEL}""
-assign
-exit";
-            RunDiskpart(formatScript);
-
-            // PHASE 4: SUCHE NACH LABEL
-            _statusCallback("Warte auf Laufwerk...");
-
-            // Wir geben Windows 30 Sekunden Zeit (Manche Sticks sind langsam)
+            // Phase 4: Wiederfinden anhand des Labels
+            _log("[FMT] Warte auf Laufwerksbuchstaben...");
             for (int i = 0; i < 60; i++)
             {
                 Thread.Sleep(500);
-
                 foreach (var d in DriveInfo.GetDrives())
                 {
-                    if (d.DriveType == DriveType.Removable && d.IsReady)
-                    {
-                        try
-                        {
-                            // Wir identifizieren den Stick über das Label "REX_BOOT"
-                            if (d.VolumeLabel.Equals(STICK_LABEL, StringComparison.OrdinalIgnoreCase))
-                            {
-                                return d.Name.Substring(0, 2); // z.B. "F:"
-                            }
-                        }
-                        catch { }
-                    }
+                    // Wir suchen explizit nach unserem Label, da sich der Buchstabe ändern kann
+                    if (d.DriveType == DriveType.Removable && d.IsReady && d.VolumeLabel.Equals(STICK_LABEL, StringComparison.OrdinalIgnoreCase))
+                        return d.Name.Substring(0, 2);
                 }
             }
-
-            throw new Exception($"Formatierung abgeschlossen, aber Laufwerk '{STICK_LABEL}' wurde nicht gefunden. Bitte Stick neu anstecken.");
+            throw new Exception("Laufwerk wurde formatiert, aber von Windows nicht rechtzeitig eingebunden.");
         }
 
-        private void RunDiskpart(string script)
+        // Erstellt die Antwortdatei für vollautomatische Installation
+        private void ApplyUltimateWin11Hack(string targetDrive)
         {
-            string f = Path.GetTempFileName();
-            File.WriteAllText(f, script);
-            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{f}\"");
-            File.Delete(f);
-        }
+            _log("[HACK] Injiziere 'Ultimate Bypass' (User + OOBE)...");
 
-        private void ApplyWin11Hack(string targetDrive)
-        {
             string xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <unattend xmlns=""urn:schemas-microsoft-com:unattend"">
 <settings pass=""windowsPE"">
@@ -221,23 +196,41 @@ exit";
 <RunSynchronousCommand wcm:action=""add""><Order>2</Order><Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassSecureBootCheck /t REG_DWORD /d 1 /f</Path></RunSynchronousCommand>
 <RunSynchronousCommand wcm:action=""add""><Order>3</Order><Path>reg add HKLM\SYSTEM\Setup\LabConfig /v BypassRAMCheck /t REG_DWORD /d 1 /f</Path></RunSynchronousCommand>
 </RunSynchronous>
+<UserData><AcceptEula>true</AcceptEula></UserData>
+</component>
+</settings>
+<settings pass=""oobeSystem"">
+<component name=""Microsoft-Windows-Shell-Setup"" processorArchitecture=""amd64"" publicKeyToken=""31bf3856ad364e35"" language=""neutral"" versionScope=""nonSxS"">
+<OOBE>
+<HideEULAPage>true</HideEULAPage>
+<HideOnlineAccountScreens>true</HideOnlineAccountScreens>
+<HideWirelessSetupInOOBE>true</HideWirelessSetupInOOBE>
+<ProtectYourPC>3</ProtectYourPC>
+</OOBE>
+<UserAccounts>
+<LocalAccounts>
+<LocalAccount wcm:action=""add"">
+<Name>RexUser</Name><Group>Administrators</Group><Password><Value>1234</Value><PlainText>true</PlainText></Password>
+</LocalAccount>
+</LocalAccounts>
+</UserAccounts>
 </component>
 </settings>
 </unattend>";
             File.WriteAllText(Path.Combine(targetDrive + "\\", "autounattend.xml"), xml);
         }
 
-        private DiscFileSystem GetBestReader(FileStream s)
-        {
-            try { s.Position = 0; if (UdfReader.Detect(s)) return new UdfReader(s); } catch { }
-            try { s.Position = 0; if (CDReader.Detect(s)) return new CDReader(s, true); } catch { }
-            throw new Exception("ISO Format unbekannt.");
-        }
+        private string CreateScript(string content) { string f = Path.GetTempFileName(); File.WriteAllText(f, content); return f; }
 
-        private void ScanRecursive(DiscFileSystem r, string path, List<string> list, ref long size)
+        // Versucht verschiedene Reader, da ISOs unterschiedlich gemastert sind
+        private DiscFileSystem GetBestReader(FileStream s) { try { s.Position = 0; if (UdfReader.Detect(s)) return new UdfReader(s); } catch { } try { s.Position = 0; if (CDReader.Detect(s)) return new CDReader(s, true); } catch { } throw new Exception("Unbekanntes Dateisystem."); }
+
+        private void ScanRecursive(DiscFileSystem r, string path, List<string> list, ref long size) { foreach (var f in r.GetFiles(path)) { list.Add(f); size += r.GetFileInfo(f).Length; } foreach (var d in r.GetDirectories(path)) ScanRecursive(r, d, list, ref size); }
+
+        public void RunDDMode(string isoPath, string driveLetter)
         {
-            foreach (var f in r.GetFiles(path)) { list.Add(f); size += r.GetFileInfo(f).Length; }
-            foreach (var d in r.GetDirectories(path)) ScanRecursive(r, d, list, ref size);
+            // DD Modus ist aktuell Platzhalter für künftige Erweiterungen
+            _log("[DD] Modus noch in Entwicklung.");
         }
     }
 }
