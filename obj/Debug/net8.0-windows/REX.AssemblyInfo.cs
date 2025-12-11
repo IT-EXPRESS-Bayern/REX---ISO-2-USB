@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("REX")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d3ac31d88379eefe2e657d9abd463dc40d44d21c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+bbe07ac8ed10f452400646441e2ffbbdb81202a3")]
 [assembly: System.Reflection.AssemblyProductAttribute("REX")]
 [assembly: System.Reflection.AssemblyTitleAttribute("REX")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

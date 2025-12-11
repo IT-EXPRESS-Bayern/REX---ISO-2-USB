@@ -5,6 +5,9 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+// WICHTIG: Timer Fix
+using Timer = System.Windows.Forms.Timer;
+
 namespace Rex
 {
     public class MainForm : Form
@@ -12,137 +15,186 @@ namespace Rex
         // UI Komponenten
         private ListBox _logBox;
         private ProgressBar _progress;
-        private TextBox _txtIso, _txtDriver;
+
+        // --- HIER WAR DER FEHLER: JETZT ModernTextBox STATT TextBox ---
+        private ModernTextBox _txtIso, _txtDriver;
+        // -------------------------------------------------------------
+
         private ComboBox _cmbDrives;
         private RadioButton _rbWin, _rbBackup;
         private CheckBox _chkWin11, _chkGpt, _chkDriver;
         private Button _btnStart;
         private Label _lblTimer;
 
-        // Visualizer Panel
         private VisualizerPanel _visualizer;
-
-        // Timer
         private Timer _timerProcess;
         private DateTime _startTime;
 
-        // Farben
-        private Color _bgDark = Color.FromArgb(18, 18, 18);
-        private Color _bgPanel = Color.FromArgb(30, 30, 30);
-        private Color _accent = Color.FromArgb(0, 120, 215);
-        private Color _text = Color.Gainsboro;
-        private Color _green = Color.LimeGreen;
+        // Theme Farben
+        public static Color ColBackground = Color.FromArgb(18, 18, 18);
+        public static Color ColPanel = Color.FromArgb(30, 30, 30);
+        public static Color ColAccent = Color.FromArgb(0, 122, 204);
+        public static Color ColText = Color.FromArgb(220, 220, 220);
+        public static Color ColSuccess = Color.FromArgb(40, 167, 69);
+        public static Color ColWarning = Color.FromArgb(255, 193, 7);
 
         public MainForm()
         {
-            SetupResponsiveUI();
+            SetupProfessionalUI();
             RefreshDrives();
-            Log("REX System v2.0 initialisiert.");
+            Log("REX System v3.0 [Professional UI] bereit.");
         }
 
-        private void SetupResponsiveUI()
+        private void SetupProfessionalUI()
         {
             Text = "REX // ULTIMATE ISO TOOL";
-            Size = new Size(1100, 650);
-            MinimumSize = new Size(900, 500);
-            BackColor = _bgDark;
-            ForeColor = _text;
-            DoubleBuffered = true; // Verhindert Flackern
+            Size = new Size(1200, 700);
+            MinimumSize = new Size(1000, 600);
+            BackColor = ColBackground;
+            ForeColor = ColText;
+            Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
+            DoubleBuffered = true;
 
-            // --- HAUPT LAYOUT (Tabelle) ---
-            // 3 Spalten: Log (30%) | Settings (40%) | Visualizer (30%)
-            var layout = new TableLayoutPanel
+            var mainLayout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 ColumnCount = 3,
                 RowCount = 1,
-                BackColor = _bgDark,
-                Padding = new Padding(5)
+                Padding = new Padding(10),
+                BackColor = ColBackground
             };
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 40F));
-            layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
-            Controls.Add(layout);
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            mainLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
+            Controls.Add(mainLayout);
 
             // --- SPALTE 1: LOG ---
-            var pnlLog = new Panel { Dock = DockStyle.Fill, Padding = new Padding(5) };
-            var lblLogHeader = new Label { Text = "SYSTEM LOG", Dock = DockStyle.Top, Font = new Font("Consolas", 10, FontStyle.Bold), ForeColor = Color.Gray, Height = 25 };
-            _logBox = new ListBox { Dock = DockStyle.Fill, BackColor = Color.Black, ForeColor = _green, Font = new Font("Consolas", 8), BorderStyle = BorderStyle.None, IntegralHeight = false };
-            pnlLog.Controls.Add(_logBox);
-            pnlLog.Controls.Add(lblLogHeader);
-            layout.Controls.Add(pnlLog, 0, 0);
+            var groupLog = new ModernGroupBox { Text = " LIVE TERMINAL ", Dock = DockStyle.Fill };
+            _logBox = new ListBox
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(10, 10, 10),
+                ForeColor = ColSuccess,
+                Font = new Font("Consolas", 9f),
+                BorderStyle = BorderStyle.None,
+                IntegralHeight = false
+            };
+            groupLog.ContentPanel.Controls.Add(_logBox);
+            mainLayout.Controls.Add(groupLog, 0, 0);
 
-            // --- SPALTE 2: SETTINGS (Scrollbar) ---
-            var pnlSettings = new Panel { Dock = DockStyle.Fill, AutoScroll = true, Padding = new Padding(10) };
+            // --- SPALTE 2: MITTE ---
+            var centerPanel = new Panel { Dock = DockStyle.Fill, AutoScroll = true };
+            var centerLayout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                ColumnCount = 1,
+                RowCount = 5,
+                Padding = new Padding(0, 0, 10, 0)
+            };
+            centerLayout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100F));
 
-            // Elemente für Settings
-            pnlSettings.Controls.Add(CreateHeader("1. QUELLE", 0));
-            var pnlIso = CreatePanel(25);
-            _txtIso = CreateBox(); _txtIso.Width = 250; _txtIso.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            var btnIso = CreateBtn("...", 260, 0, 40, (s, e) => SelectIso());
-            btnIso.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pnlIso.Controls.AddRange(new Control[] { _txtIso, btnIso });
-            pnlSettings.Controls.Add(pnlIso);
+            // Sektion 1: Quelle
+            var groupIso = new ModernGroupBox { Text = " 1. QUELLE ", Height = 80, Dock = DockStyle.Top };
+            var pnlIsoInner = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1 };
+            pnlIsoInner.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
+            pnlIsoInner.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
 
-            pnlSettings.Controls.Add(CreateHeader("2. ZIEL", 80));
-            var pnlDrv = CreatePanel(105);
-            _cmbDrives = new ComboBox { Location = new Point(0, 0), Height = 25, Width = 250, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = _bgPanel, ForeColor = _text, FlatStyle = FlatStyle.Flat };
-            _cmbDrives.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            var btnRef = CreateBtn("🔄", 260, 0, 40, (s, e) => RefreshDrives());
-            btnRef.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            pnlDrv.Controls.AddRange(new Control[] { _cmbDrives, btnRef });
-            pnlSettings.Controls.Add(pnlDrv);
+            _txtIso = new ModernTextBox { ReadOnly = true, PlaceholderText = "Keine ISO ausgewählt..." };
+            var btnIso = new ModernButton { Text = "...", BackColor = ColPanel };
+            btnIso.Click += (s, e) => SelectIso();
 
-            pnlSettings.Controls.Add(CreateHeader("3. MODUS & FEATURES", 160));
-            var pnlOpt = CreatePanel(185, 200); // Höheres Panel
-            _rbWin = CreateRadio("Windows / UEFI Setup", 0, 0, true);
-            _rbBackup = CreateRadio("Backup (.img)", 0, 25, false);
+            pnlIsoInner.Controls.Add(_txtIso, 0, 0);
+            pnlIsoInner.Controls.Add(btnIso, 1, 0);
+            groupIso.ContentPanel.Controls.Add(pnlIsoInner);
+            centerLayout.Controls.Add(groupIso);
 
-            var div = new Label { Text = "_________________________", Location = new Point(0, 45), AutoSize = true, ForeColor = Color.Gray };
+            // Sektion 2: Ziel
+            var groupDest = new ModernGroupBox { Text = " 2. ZIEL-LAUFWERK ", Height = 80, Dock = DockStyle.Top };
+            var pnlDestInner = new TableLayoutPanel { Dock = DockStyle.Fill, ColumnCount = 2, RowCount = 1 };
+            pnlDestInner.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 85F));
+            pnlDestInner.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 15F));
 
-            _chkGpt = CreateCheck("GPT Schema (Empfohlen)", 0, 70, true);
-            _chkWin11 = CreateCheck("Ultimate Win11 Bypass", 0, 95, true);
-            _chkDriver = CreateCheck("Treiber Injektion", 0, 120, false);
+            _cmbDrives = new ComboBox
+            {
+                Dock = DockStyle.Fill,
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                BackColor = ColPanel,
+                ForeColor = ColText,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10f)
+            };
+            var btnRef = new ModernButton { Text = "↺", BackColor = ColPanel };
+            btnRef.Click += (s, e) => RefreshDrives();
 
-            _txtDriver = CreateBox(); _txtDriver.Location = new Point(20, 145); _txtDriver.Width = 200; _txtDriver.Visible = false;
+            pnlDestInner.Controls.Add(_cmbDrives, 0, 0);
+            pnlDestInner.Controls.Add(btnRef, 1, 0);
+            groupDest.ContentPanel.Controls.Add(pnlDestInner);
+            centerLayout.Controls.Add(groupDest);
+
+            // Sektion 3: Optionen
+            var groupOpt = new ModernGroupBox { Text = " 3. KONFIGURATION ", AutoSize = true, Dock = DockStyle.Top };
+            var flowOpt = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, AutoSize = true, WrapContents = false };
+
+            _rbWin = new RadioButton { Text = "Windows Installation / UEFI Setup", AutoSize = true, Checked = true, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = ColAccent };
+            _rbBackup = new RadioButton { Text = "Backup Modus (USB -> .img)", AutoSize = true, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = ColWarning };
+
+            flowOpt.Controls.Add(_rbWin);
+            flowOpt.Controls.Add(CreateSpacer());
+
+            _chkGpt = new CheckBox { Text = "Partitionsschema: GPT (Empfohlen für UEFI)", AutoSize = true, Checked = true };
+            _chkWin11 = new CheckBox { Text = "Ultimate Bypass (Win11 TPM/SecureBoot/User)", AutoSize = true, Checked = true, ForeColor = ColSuccess };
+            _chkDriver = new CheckBox { Text = "Treiber-Injektion ($WinPEDriver$)", AutoSize = true };
+
+            _txtDriver = new ModernTextBox { Visible = false, PlaceholderText = "Pfad zum Treiber-Ordner..." };
             _chkDriver.CheckedChanged += (s, e) => SelectDriver();
 
-            pnlOpt.Controls.AddRange(new Control[] { _rbWin, _rbBackup, div, _chkGpt, _chkWin11, _chkDriver, _txtDriver });
-            pnlSettings.Controls.Add(pnlOpt);
+            flowOpt.Controls.AddRange(new Control[] { _chkGpt, _chkWin11, _chkDriver, _txtDriver, _rbBackup });
+            groupOpt.ContentPanel.Controls.Add(flowOpt);
+            centerLayout.Controls.Add(groupOpt);
 
-            // Start Button & Progress
-            _progress = new ProgressBar { Dock = DockStyle.Bottom, Height = 10, Style = ProgressBarStyle.Continuous };
-            _btnStart = new Button { Text = "STARTEN", Dock = DockStyle.Bottom, Height = 50, BackColor = _accent, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 12, FontStyle.Bold), Cursor = Cursors.Hand };
-            _btnStart.FlatAppearance.BorderSize = 0;
+            // Sektion 4: Action
+            var pnlAction = new Panel { Height = 100, Dock = DockStyle.Top, Padding = new Padding(0, 20, 0, 0) };
+            _btnStart = new ModernButton
+            {
+                Text = "STARTEN",
+                Dock = DockStyle.Top,
+                Height = 50,
+                BackColor = ColAccent,
+                Font = new Font("Segoe UI", 12, FontStyle.Bold)
+            };
             _btnStart.Click += StartProcess;
 
-            // Reihenfolge umdrehen wegen Dock Bottom
-            pnlSettings.Controls.Add(_btnStart);
-            pnlSettings.Controls.Add(new Panel { Dock = DockStyle.Bottom, Height = 10 }); // Spacer
-            pnlSettings.Controls.Add(_progress);
+            _progress = new ProgressBar { Dock = DockStyle.Bottom, Height = 10, Style = ProgressBarStyle.Continuous };
 
-            layout.Controls.Add(pnlSettings, 1, 0);
+            pnlAction.Controls.Add(_btnStart);
+            pnlAction.Controls.Add(_progress);
+            centerLayout.Controls.Add(pnlAction);
+
+            centerPanel.Controls.Add(centerLayout);
+            mainLayout.Controls.Add(centerPanel, 1, 0);
 
             // --- SPALTE 3: VISUALIZER ---
-            var pnlVis = new Panel { Dock = DockStyle.Fill, Padding = new Padding(10) };
+            var groupVis = new ModernGroupBox { Text = " STATUS ", Dock = DockStyle.Fill };
+            var pnlVisContent = new Panel { Dock = DockStyle.Fill };
 
-            // Timer Oben Rechts
-            _lblTimer = new Label { Text = "00:00:00", Dock = DockStyle.Top, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Consolas", 14, FontStyle.Bold), ForeColor = _green, Height = 30 };
-
-            // Custom Control
+            _lblTimer = new Label { Text = "00:00:00", Dock = DockStyle.Top, TextAlign = ContentAlignment.MiddleRight, Font = new Font("Consolas", 16, FontStyle.Bold), ForeColor = ColText, Height = 40 };
             _visualizer = new VisualizerPanel { Dock = DockStyle.Fill };
 
-            pnlVis.Controls.Add(_visualizer);
-            pnlVis.Controls.Add(_lblTimer);
-            layout.Controls.Add(pnlVis, 2, 0);
+            pnlVisContent.Controls.Add(_visualizer);
+            pnlVisContent.Controls.Add(_lblTimer);
+            groupVis.ContentPanel.Controls.Add(pnlVisContent);
 
-            // --- TIMER LOGIC ---
+            mainLayout.Controls.Add(groupVis, 2, 0);
+
             _timerProcess = new Timer { Interval = 1000 };
             _timerProcess.Tick += (s, e) => {
                 var span = DateTime.Now - _startTime;
                 _lblTimer.Text = span.ToString(@"hh\:mm\:ss");
             };
         }
+
+        private Control CreateSpacer() => new Panel { Height = 10, Width = 10 };
 
         private void SelectIso()
         {
@@ -169,6 +221,15 @@ namespace Rex
             }
         }
 
+        private void RefreshDrives()
+        {
+            _cmbDrives.Items.Clear();
+            foreach (var d in DriveInfo.GetDrives())
+                if (d.DriveType == DriveType.Removable && d.IsReady)
+                    _cmbDrives.Items.Add($"{d.Name} ({d.TotalSize / 1024 / 1024 / 1024} GB) - {d.VolumeLabel}");
+            if (_cmbDrives.Items.Count > 0) _cmbDrives.SelectedIndex = 0;
+        }
+
         private async void StartProcess(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_txtIso.Text) || _cmbDrives.SelectedItem == null) { Log("[ERR] Daten fehlen."); return; }
@@ -176,9 +237,8 @@ namespace Rex
             string drive = driveStr.Substring(0, 2);
             string iso = _txtIso.Text;
 
-            // Visualizer Reset
             _visualizer.ResetStatus();
-            _visualizer.SetUsbInfo(drive, driveStr.Split('(')[1].Split(')')[0]); // Hacky size parse
+            try { _visualizer.SetUsbInfo(drive, driveStr.Split('(')[1].Split(')')[0]); } catch { }
 
             if (_rbBackup.Checked)
             {
@@ -217,8 +277,8 @@ namespace Rex
             finally
             {
                 _timerProcess.Stop();
-                _btnStart.Enabled = true; _btnStart.BackColor = _accent; RefreshDrives();
-                _visualizer.IsAnimating = false; // Stop animation but keep checkmark if success
+                _btnStart.Enabled = true; _btnStart.BackColor = ColAccent; RefreshDrives();
+                _visualizer.IsAnimating = false;
             }
         }
 
@@ -231,26 +291,62 @@ namespace Rex
                 _logBox.TopIndex = _logBox.Items.Count - 1;
             }));
         }
-
-        private void RefreshDrives()
-        {
-            _cmbDrives.Items.Clear();
-            foreach (var d in DriveInfo.GetDrives())
-                if (d.DriveType == DriveType.Removable && d.IsReady)
-                    _cmbDrives.Items.Add($"{d.Name} ({d.TotalSize / 1024 / 1024 / 1024} GB) - {d.VolumeLabel}");
-            if (_cmbDrives.Items.Count > 0) _cmbDrives.SelectedIndex = 0;
-        }
-
-        // --- UI HELPERS ---
-        private Label CreateHeader(string t, int y) => new Label { Text = t, Location = new Point(0, y), AutoSize = true, ForeColor = _accent, Font = new Font("Segoe UI", 9, FontStyle.Bold) };
-        private Panel CreatePanel(int y, int h = 40) => new Panel { Location = new Point(0, y + 20), Size = new Size(300, h), Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right };
-        private TextBox CreateBox() => new TextBox { Location = new Point(0, 0), Height = 25, BackColor = _bgPanel, ForeColor = _text, BorderStyle = BorderStyle.FixedSingle };
-        private Button CreateBtn(string t, int x, int y, int w, EventHandler c) { var b = new Button { Text = t, Location = new Point(x, y), Size = new Size(w, 25), BackColor = _bgPanel, ForeColor = _text, FlatStyle = FlatStyle.Flat }; b.FlatAppearance.BorderSize = 0; b.Click += c; return b; }
-        private RadioButton CreateRadio(string t, int x, int y, bool c) => new RadioButton { Text = t, Location = new Point(x, y), AutoSize = true, ForeColor = _text, Checked = c };
-        private CheckBox CreateCheck(string t, int x, int y, bool c) => new CheckBox { Text = t, Location = new Point(x, y), AutoSize = true, ForeColor = _text, Checked = c };
     }
 
-    // --- CUSTOM CONTROL: VISUALIZER (Rechtes Fenster) ---
+    // --- CUSTOM CONTROLS ---
+
+    public class ModernGroupBox : Panel
+    {
+        private Label _header;
+        public Panel ContentPanel;
+
+        public ModernGroupBox()
+        {
+            Padding = new Padding(1);
+            BackColor = Color.FromArgb(60, 60, 60);
+
+            var inner = new Panel { Dock = DockStyle.Fill, BackColor = MainForm.ColBackground, Padding = new Padding(10) };
+
+            _header = new Label { Dock = DockStyle.Top, Height = 25, ForeColor = MainForm.ColAccent, Font = new Font("Segoe UI", 9, FontStyle.Bold), BackColor = MainForm.ColBackground };
+            ContentPanel = new Panel { Dock = DockStyle.Fill, BackColor = MainForm.ColBackground };
+
+            inner.Controls.Add(ContentPanel);
+            inner.Controls.Add(_header);
+            Controls.Add(inner);
+        }
+
+        public override string Text { get => _header.Text; set => _header.Text = value; }
+    }
+
+    public class ModernButton : Button
+    {
+        public ModernButton()
+        {
+            FlatStyle = FlatStyle.Flat;
+            FlatAppearance.BorderSize = 0;
+            ForeColor = Color.White;
+            Cursor = Cursors.Hand;
+            Font = new Font("Segoe UI", 10);
+            Height = 35;
+        }
+    }
+
+    public class ModernTextBox : Panel
+    {
+        public TextBox InnerBox;
+        public ModernTextBox()
+        {
+            Height = 30;
+            BackColor = MainForm.ColPanel;
+            Padding = new Padding(5);
+            InnerBox = new TextBox { Dock = DockStyle.Fill, BorderStyle = BorderStyle.None, BackColor = MainForm.ColPanel, ForeColor = MainForm.ColText, Font = new Font("Segoe UI", 10) };
+            Controls.Add(InnerBox);
+        }
+        public override string Text { get => InnerBox.Text; set => InnerBox.Text = value; }
+        public bool ReadOnly { get => InnerBox.ReadOnly; set => InnerBox.ReadOnly = value; }
+        public string PlaceholderText { get => InnerBox.PlaceholderText; set => InnerBox.PlaceholderText = value; }
+    }
+
     public class VisualizerPanel : Control
     {
         private Timer _animTimer;
@@ -271,10 +367,7 @@ namespace Rex
         {
             DoubleBuffered = true;
             _animTimer = new Timer { Interval = 50 };
-            _animTimer.Tick += (s, e) => {
-                _arrowOffset = (_arrowOffset + 2) % 20; // Animation Speed
-                Invalidate();
-            };
+            _animTimer.Tick += (s, e) => { _arrowOffset = (_arrowOffset + 2) % 20; Invalidate(); };
         }
 
         public void SetIsoInfo(string name, string size) { _isoName = name; _isoSize = size; Invalidate(); }
@@ -289,60 +382,52 @@ namespace Rex
             g.SmoothingMode = SmoothingMode.AntiAlias;
 
             int cx = Width / 2;
-            int cy = Height / 2;
+            int topY = 40;
+            int bottomY = Height - 100;
+            int centerY = (topY + bottomY) / 2;
 
-            // Farben
             using var brushIso = new SolidBrush(Color.FromArgb(50, 50, 50));
-            using var penAccent = new Pen(Color.DodgerBlue, 2);
-            using var penArrow = new Pen(Color.LimeGreen, 4) { EndCap = LineCap.ArrowAnchor };
-            using var textBrush = new SolidBrush(Color.Gainsboro);
+            using var penAccent = new Pen(MainForm.ColAccent, 3);
+            using var penArrow = new Pen(MainForm.ColSuccess, 5) { EndCap = LineCap.ArrowAnchor };
+            using var textBrush = new SolidBrush(MainForm.ColText);
             using var fontBig = new Font("Segoe UI", 12, FontStyle.Bold);
             using var fontSmall = new Font("Consolas", 9);
 
-            // 1. ISO CIRCLE (Oben)
-            int isoY = 50;
-            g.FillEllipse(brushIso, cx - 40, isoY, 80, 80);
-            g.DrawEllipse(penAccent, cx - 40, isoY, 80, 80);
-            g.DrawString("ISO", fontBig, textBrush, cx - 15, isoY + 30);
+            // ISO
+            g.FillEllipse(brushIso, cx - 40, topY, 80, 80);
+            g.DrawEllipse(penAccent, cx - 40, topY, 80, 80);
+            g.DrawString("ISO", fontBig, textBrush, cx - 16, topY + 30);
 
-            // Text Oben
             var sf = new StringFormat { Alignment = StringAlignment.Center };
-            g.DrawString(_isoName, fontSmall, textBrush, cx, isoY - 20, sf);
-            g.DrawString(_isoSize, fontSmall, textBrush, cx, isoY + 85, sf);
+            g.DrawString(_isoName, fontSmall, textBrush, cx, topY - 20, sf);
+            g.DrawString(_isoSize, fontSmall, textBrush, cx, topY + 85, sf);
 
-            // 2. USB RECT (Unten)
-            int usbY = Height - 130;
-            g.FillRectangle(brushIso, cx - 30, usbY, 60, 100);
-            g.DrawRectangle(penAccent, cx - 30, usbY, 60, 100);
-            g.DrawString("USB", fontBig, textBrush, cx - 18, usbY + 40);
+            // USB
+            g.FillRectangle(brushIso, cx - 35, bottomY, 70, 90);
+            g.DrawRectangle(penAccent, cx - 35, bottomY, 70, 90);
+            g.DrawString("USB", fontBig, textBrush, cx - 18, bottomY + 35);
 
-            // Text Unten
-            g.DrawString(_usbName, fontSmall, textBrush, cx, usbY + 105, sf);
-            g.DrawString(_usbSize, fontSmall, textBrush, cx, usbY + 120, sf);
+            g.DrawString(_usbName, fontSmall, textBrush, cx, bottomY + 95, sf);
+            g.DrawString(_usbSize, fontSmall, textBrush, cx, bottomY + 110, sf);
 
-            // 3. PFEIL / STATUS (Mitte)
-            int arrowStart = isoY + 95;
-            int arrowEnd = usbY - 15;
-
+            // Pfeil
             if (_isSuccess)
             {
-                // Grüner Haken
-                using var penCheck = new Pen(Color.LimeGreen, 6);
-                g.DrawLine(penCheck, cx - 20, cy, cx - 5, cy + 15);
-                g.DrawLine(penCheck, cx - 5, cy + 15, cx + 25, cy - 15);
+                using var penCheck = new Pen(MainForm.ColSuccess, 8);
+                g.DrawLine(penCheck, cx - 25, centerY, cx - 10, centerY + 20);
+                g.DrawLine(penCheck, cx - 10, centerY + 20, cx + 35, centerY - 25);
             }
             else
             {
-                // Pfeil Linie
                 using var penGray = new Pen(Color.Gray, 2);
-                g.DrawLine(penGray, cx, arrowStart, cx, arrowEnd);
+                g.DrawLine(penGray, cx, topY + 90, cx, bottomY - 10);
 
                 if (IsAnimating)
                 {
-                    // Animierter Drop
-                    int y = arrowStart + (int)((arrowEnd - arrowStart) * (_arrowOffset / 20.0f));
-                    // Zeichne mehrere Pfeilspitzen für Flow-Effekt
-                    g.DrawLine(penArrow, cx, y - 10, cx, y);
+                    int startAnim = topY + 90;
+                    int endAnim = bottomY - 10;
+                    int y = startAnim + (int)((endAnim - startAnim) * (_arrowOffset / 20.0f));
+                    g.DrawLine(penArrow, cx, y - 15, cx, y);
                 }
             }
         }
