@@ -8,10 +8,41 @@
     ".NETCoreApp,Version=v10.0": {
       "REX/1.0.0": {
         "dependencies": {
+          "DiscUtils.Iso9660": "0.16.13",
           "System.Management": "9.0.0"
         },
         "runtime": {
           "REX.dll": {}
+        }
+      },
+      "DiscUtils.Core/0.16.13": {
+        "dependencies": {
+          "DiscUtils.Streams": "0.16.13"
+        },
+        "runtime": {
+          "lib/net5.0/DiscUtils.Core.dll": {
+            "assemblyVersion": "0.16.0.0",
+            "fileVersion": "0.16.13.55129"
+          }
+        }
+      },
+      "DiscUtils.Iso9660/0.16.13": {
+        "dependencies": {
+          "DiscUtils.Core": "0.16.13"
+        },
+        "runtime": {
+          "lib/net5.0/DiscUtils.Iso9660.dll": {
+            "assemblyVersion": "0.16.0.0",
+            "fileVersion": "0.16.13.55129"
+          }
+        }
+      },
+      "DiscUtils.Streams/0.16.13": {
+        "runtime": {
+          "lib/net5.0/DiscUtils.Streams.dll": {
+            "assemblyVersion": "0.16.0.0",
+            "fileVersion": "0.16.13.55129"
+          }
         }
       },
       "System.Management/9.0.0": {
@@ -37,6 +68,27 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "DiscUtils.Core/0.16.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-TU/Ns5RMa3060K7AsSDqG94/H7eaWaz1XoYuCUur40Mg+t0/ubtKqxCffkoiB1e/cFMGvHL0evFoY6uDL9Ocmw==",
+      "path": "discutils.core/0.16.13",
+      "hashPath": "discutils.core.0.16.13.nupkg.sha512"
+    },
+    "DiscUtils.Iso9660/0.16.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hT0DbN+sIqg5Bu3/sCQUuKLwIrceF9BZvn7AeRe+f2iY0p4mgN9xEmXpFWQshnBBxN9r75364agBHDeb5owiUA==",
+      "path": "discutils.iso9660/0.16.13",
+      "hashPath": "discutils.iso9660.0.16.13.nupkg.sha512"
+    },
+    "DiscUtils.Streams/0.16.13": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-BSrywAX2mmvt6j00u6VQYQLtxc6jDniK2aP4p0q20bbTGXImtW4N26eUZYKfkW9aj6XLaqISFgtWfssKURixeA==",
+      "path": "discutils.streams/0.16.13",
+      "hashPath": "discutils.streams.0.16.13.nupkg.sha512"
     },
     "System.Management/9.0.0": {
       "type": "package",

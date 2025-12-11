@@ -17,3 +17,6 @@ C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0-windows\REX.pdb
 C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0-windows\REX.genruntimeconfig.cache
 C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0-windows\ref\REX.dll
 C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0-windows\REX.sourcelink.json
+C:\Users\Blacky\source\repos\REX\bin\Debug\net10.0-windows\DiscUtils.Core.dll
+C:\Users\Blacky\source\repos\REX\bin\Debug\net10.0-windows\DiscUtils.Iso9660.dll
+C:\Users\Blacky\source\repos\REX\bin\Debug\net10.0-windows\DiscUtils.Streams.dll
