@@ -10,13 +10,13 @@
 
 ##  Features
 
-* ** Windows 11 Bypass:** Installiere Windows 11 auf nicht unterstützter Hardware. Entfernt automatisch TPM 2.0, SecureBoot und RAM-Checks.
-* ** Ultimate Automation:** Überspringt den OOBE-Prozess (Out-of-Box Experience), erstellt automatisch einen lokalen Admin-Nutzer und deaktiviert den Microsoft-Konto-Zwang.
-* ** Backup-Funktion:** Erstelle 1:1 Images (`.img`) von deinen USB-Sticks, um Konfigurationen zu sichern.
-* ** Treiber-Injektion:** Integriere WLAN- oder VMD/RST-Treiber direkt in das Installationsmedium – ideal für moderne Laptops.
-* ** Modernes UI:** Dunkles "Cyberpunk"-Design mit Live-Debug-Log für volle Transparenz.
-* ** GPT & MBR:** Volle Unterstützung für moderne UEFI-Systeme (GPT) und Legacy-BIOS (MBR).
-* ** Smart Format:** Intelligente 3-Phasen-Formatierung, die auch beschädigte oder schreibgeschützte Sticks rettet.
+* **Windows 11 Bypass:** Installiere Windows 11 auf nicht unterstützter Hardware. Entfernt automatisch TPM 2.0, SecureBoot und RAM-Checks.
+* **Ultimate Automation:** Überspringt den OOBE-Prozess (Out-of-Box Experience), erstellt automatisch einen lokalen Admin-Nutzer und deaktiviert den Microsoft-Konto-Zwang.
+* **Backup-Funktion:** Erstelle 1:1 Images (`.img`) von deinen USB-Sticks, um Konfigurationen zu sichern.
+* **Treiber-Injektion:** Integriere WLAN- oder VMD/RST-Treiber direkt in das Installationsmedium – ideal für moderne Laptops.
+* **Modernes UI:** Dunkles "Cyberpunk"-Design mit Live-Debug-Log für volle Transparenz.
+* **GPT & MBR:** Volle Unterstützung für moderne UEFI-Systeme (GPT) und Legacy-BIOS (MBR).
+* **Smart Format:** Intelligente 3-Phasen-Formatierung, die auch beschädigte oder schreibgeschützte Sticks rettet.
 
 ## 🛠️ Technologie
 
