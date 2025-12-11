@@ -28,6 +28,8 @@ namespace Rex
         {
             SetupModernUI();
             RefreshDrives();
+
+            // Hier crashte es vorher. Jetzt ist die Log-Methode sicher.
             Log("REX System bereit. Warte auf Benutzereingabe...");
         }
 
@@ -141,12 +143,10 @@ namespace Rex
             }
         }
 
-        // Kapselt den Async-Task und UI-Updates
         private async void RunTask(Action<RexEngine> action)
         {
             _btnStart.Enabled = false; _btnStart.BackColor = Color.Gray;
 
-            // Engine Instanz mit UI-Callbacks
             var engine = new RexEngine(Log, p => Invoke(new Action(() => _progress.Value = p)));
 
             try
@@ -166,12 +166,21 @@ namespace Rex
             }
         }
 
+        // --- DER FIX IST HIER ---
         private void Log(string msg)
         {
-            Invoke(new Action(() => {
+            // Prüfen: Wenn Handle noch nicht da (Konstruktor) ODER wir schon im GUI-Thread sind -> Direkt ausführen
+            if (!IsHandleCreated || !InvokeRequired)
+            {
                 _logBox.Items.Add($"[{DateTime.Now:HH:mm:ss}] {msg}");
-                _logBox.TopIndex = _logBox.Items.Count - 1; // Auto-Scroll
-            }));
+                // Scrollen geht nur, wenn das Fenster schon lebt
+                if (IsHandleCreated) _logBox.TopIndex = _logBox.Items.Count - 1;
+            }
+            else
+            {
+                // Wir kommen aus einem Hintergrund-Thread -> Invoke nutzen
+                Invoke(new Action(() => Log(msg)));
+            }
         }
 
         private void RefreshDrives()
@@ -183,7 +192,6 @@ namespace Rex
             if (_cmbDrives.Items.Count > 0) _cmbDrives.SelectedIndex = 0;
         }
 
-        // Helper-Methoden für sauberen UI-Code
         private Label CreateHeader(string t, int y) => new Label { Text = t, Location = new Point(20, y), AutoSize = true, ForeColor = _accent, Font = new Font("Segoe UI", 9, FontStyle.Bold) };
         private Panel CreatePanel(int y, int h = 40) => new Panel { Location = new Point(20, y + 20), Size = new Size(400, h) };
         private TextBox CreateBox() => new TextBox { Location = new Point(0, 0), Size = new Size(340, 25), BackColor = _bgPanel, ForeColor = _text, BorderStyle = BorderStyle.FixedSingle };
