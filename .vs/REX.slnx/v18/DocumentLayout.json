@@ -3,20 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\Blacky\\source\\repos\\REX\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\rexengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:rexengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\hardwarehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:hardwarehelper.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|solutionrelative:mainform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{0959A9B9-B6BE-1E07-BED4-EC1D5775E29B}|REX.csproj|c:\\users\\blacky\\source\\repos\\rex\\rex.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -30,7 +30,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -38,39 +38,39 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "MainForm.cs",
               "DocumentMoniker": "C:\\Users\\Blacky\\source\\repos\\REX\\MainForm.cs",
               "RelativeDocumentMoniker": "MainForm.cs",
               "ToolTip": "C:\\Users\\Blacky\\source\\repos\\REX\\MainForm.cs",
               "RelativeToolTip": "MainForm.cs",
-              "ViewState": "AgIAAJ4AAAAAAAAAAAAYwLYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAIYAAAAAAAAAAAAYwJwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-11T02:04:16.806Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "RexEngine.cs",
               "DocumentMoniker": "C:\\Users\\Blacky\\source\\repos\\REX\\RexEngine.cs",
               "RelativeDocumentMoniker": "RexEngine.cs",
               "ToolTip": "C:\\Users\\Blacky\\source\\repos\\REX\\RexEngine.cs",
               "RelativeToolTip": "RexEngine.cs",
-              "ViewState": "AgIAAJcAAAAAAAAAAAAYwKsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAN4AAAAAAAAAAAAYwPIAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-11T02:03:55.608Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "HardwareHelper.cs",
               "DocumentMoniker": "C:\\Users\\Blacky\\source\\repos\\REX\\HardwareHelper.cs",
               "RelativeDocumentMoniker": "HardwareHelper.cs",
               "ToolTip": "C:\\Users\\Blacky\\source\\repos\\REX\\HardwareHelper.cs",
               "RelativeToolTip": "HardwareHelper.cs",
-              "ViewState": "AgIAACIAAAAAAAAAAAAYwDYAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAJQAAAAAAAAAAAAYwKgAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-11T02:03:44.107Z",
               "EditorCaption": ""
@@ -90,13 +90,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\Blacky\\source\\repos\\REX\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Users\\Blacky\\source\\repos\\REX\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAYwCAAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAYwCEAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-12-11T00:47:45.064Z",
               "EditorCaption": ""

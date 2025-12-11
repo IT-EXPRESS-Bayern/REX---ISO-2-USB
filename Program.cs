@@ -16,6 +16,7 @@ namespace Rex
 
             if (!IsAdministrator())
             {
+                // Startet sich selbst als Admin neu
                 var exe = Process.GetCurrentProcess().MainModule?.FileName ?? Application.ExecutablePath;
                 try { Process.Start(new ProcessStartInfo(exe) { UseShellExecute = true, Verb = "runas" }); } catch { }
                 return;

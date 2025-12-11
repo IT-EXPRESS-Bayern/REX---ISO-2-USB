@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using DiscUtils;
 using DiscUtils.Iso9660;
 using DiscUtils.Udf;
@@ -9,9 +10,11 @@ namespace Rex
 {
     public class RexEngine
     {
-        // Callbacks, um der GUI Bericht zu erstatten
         private readonly Action<string> _statusCallback;
         private readonly Action<int> _progressCallback;
+
+        // Label für die Wiedererkennung
+        private const string STICK_LABEL = "REX_BOOT";
 
         public RexEngine(Action<string> statusCallback, Action<int> progressCallback)
         {
@@ -21,37 +24,45 @@ namespace Rex
 
         public void RunExtractMode(string isoPath, string targetDrive, bool useGpt, bool bypassWin11)
         {
-            _statusCallback("Analysiere ISO...");
+            string initialLetter = targetDrive.Substring(0, 2);
+
+            // 1. DISK ID SICHERN
+            _statusCallback("Ermittle Disk-ID...");
+            int diskNum = HardwareHelper.GetDiskNumber(initialLetter);
+
+            if (diskNum == -1) throw new Exception("Konnte Disk-Nummer nicht ermitteln. Bitte Stick neu einstecken.");
+
+            _statusCallback($"Ziel erkannt: Disk {diskNum}");
 
             using (FileStream isoStream = File.OpenRead(isoPath))
             {
                 DiscFileSystem reader = GetBestReader(isoStream);
                 using (reader)
                 {
-                    // 1. Scan
-                    _statusCallback("Scanne Dateien...");
+                    _statusCallback("Scanne ISO...");
                     var files = new List<string>();
                     long totalBytes = 0;
                     ScanRecursive(reader, reader.Root.FullName, files, ref totalBytes);
 
-                    if (files.Count == 0) throw new Exception("ISO leer oder unbekanntes Format.");
+                    if (files.Count == 0) throw new Exception("ISO leer.");
 
-                    // 2. Formatieren (MBR oder GPT)
-                    _statusCallback($"Formatiere ({(useGpt ? "GPT" : "MBR")})...");
-                    FormatStick(targetDrive, useGpt);
+                    // 2. FORMATIEREN (Der aggressive Fix!)
+                    string newDriveLetter = FormatAndFindStick(diskNum, useGpt);
 
-                    // 3. Kopieren
-                    _statusCallback("Kopiere Dateien...");
+                    _statusCallback($"Bereit auf: {newDriveLetter}");
+
+                    // 3. KOPIEREN
                     byte[] buffer = new byte[64 * 1024];
                     long copiedTotal = 0;
 
                     foreach (var file in files)
                     {
                         var info = reader.GetFileInfo(file);
-                        string targetPath = Path.Combine(targetDrive, file.TrimStart('\\'));
+                        string relativePath = file.TrimStart('\\');
+                        string targetPath = Path.Combine(newDriveLetter + "\\", relativePath);
 
-                        Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
-                        _statusCallback($"Kopiere: {Path.GetFileName(file)}");
+                        string targetDir = Path.GetDirectoryName(targetPath);
+                        if (!Directory.Exists(targetDir)) Directory.CreateDirectory(targetDir);
 
                         using (var input = info.OpenRead())
                         using (var output = new FileStream(targetPath, FileMode.Create, FileAccess.Write))
@@ -61,38 +72,38 @@ namespace Rex
                             {
                                 output.Write(buffer, 0, read);
                                 copiedTotal += read;
-                                if (copiedTotal % (1024 * 1024) == 0)
+                                if (totalBytes > 0 && copiedTotal % (1024 * 1024) == 0)
                                     _progressCallback((int)((copiedTotal * 100) / totalBytes));
                             }
                         }
                     }
 
-                    // 4. Feature: Windows 11 Bypass
                     if (bypassWin11)
                     {
-                        _statusCallback("Wende Windows 11 Bypass an...");
-                        ApplyWin11Hack(targetDrive);
+                        _statusCallback("Win11 Bypass...");
+                        ApplyWin11Hack(newDriveLetter);
                     }
 
-                    // 5. Bootsektor (Nur bei MBR/Legacy nötig, schadet bei GPT aber meist nicht)
-                    _statusCallback("Schreibe Bootsektor...");
-                    string bootSect = Path.Combine(targetDrive, "boot", "bootsect.exe");
+                    _statusCallback("Bootsektor...");
+                    string bootSect = Path.Combine(newDriveLetter + "\\", "boot", "bootsect.exe");
                     if (File.Exists(bootSect))
-                        HardwareHelper.RunProcess(bootSect, $"/nt60 {targetDrive.Substring(0, 2)}");
+                        HardwareHelper.RunProcess(bootSect, $"/nt60 {newDriveLetter}");
                 }
             }
         }
 
         public void RunDDMode(string isoPath, string driveLetter)
         {
-            _statusCallback("Suche Hardware...");
-            string physPath = HardwareHelper.GetPhysicalPath(driveLetter);
-            if (physPath == null) throw new Exception("Physischer Pfad nicht gefunden.");
+            _statusCallback("Suche Disk...");
+            int diskNum = HardwareHelper.GetDiskNumber(driveLetter);
+            if (diskNum == -1) throw new Exception("Disk Nummer nicht gefunden.");
+
+            string physPath = $@"\\.\PhysicalDrive{diskNum}";
 
             _statusCallback("Dismount...");
             HardwareHelper.RunProcess("powershell.exe", $"-Command \"Dismount-DiskImage -DevicePath {physPath} -ErrorAction SilentlyContinue\"");
 
-            _statusCallback("Raw Write...");
+            _statusCallback("Schreibe Image...");
             using (var iso = File.OpenRead(isoPath))
             using (var handle = HardwareHelper.CreateFile(physPath, 0x40000000, 0, IntPtr.Zero, 3, 0, IntPtr.Zero))
             {
@@ -114,33 +125,93 @@ namespace Rex
             }
         }
 
-        private void FormatStick(string driveLetter, bool useGpt)
+        // --- DER FIX: 3-PHASEN FORMATIERUNG ---
+        private string FormatAndFindStick(int diskNum, bool useGpt)
         {
-            string d = driveLetter.Substring(0, 1);
-            // Unterschiedliche Befehle für GPT vs MBR
-            string styleCmd = useGpt ? "convert gpt" : "convert mbr";
-            // GPT Partitionen werden nicht als "active" markiert (das macht das UEFI Bios selbst)
-            string activeCmd = useGpt ? "" : "active";
+            // PHASE 1: UNLOCK & CLEAN
+            _statusCallback($"Lösche Disk {diskNum} (Clean)...");
 
-            string script = $@"
-select volume {d}
+            // 'attributes disk clear readonly' entfernt Schreibschutz
+            // 'online disk' weckt den Stick auf
+            string cleanScript = $@"
+select disk {diskNum}
+attributes disk clear readonly
+online disk
 clean
-{styleCmd}
-create partition primary
-format fs=ntfs quick label=""REX_BOOT""
-{activeCmd}
-assign letter={d}
+rescan
 exit";
+            RunDiskpart(cleanScript);
 
-            string file = Path.GetTempFileName();
-            File.WriteAllText(file, script);
-            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{file}\"");
-            File.Delete(file);
+            // Zwangspause für den Controller
+            _statusCallback("Controller Reset (3s)...");
+            Thread.Sleep(3000);
+
+            // PHASE 2: PARTITIONIEREN
+            _statusCallback($"Erstelle Partition ({(useGpt ? "GPT" : "MBR")})...");
+
+            string style = useGpt ? "convert gpt" : "convert mbr";
+            string active = useGpt ? "" : "active";
+
+            string partitionScript = $@"
+select disk {diskNum}
+{style}
+create partition primary
+select partition 1
+{active}
+exit";
+            RunDiskpart(partitionScript);
+
+            Thread.Sleep(1000); // Kurze Pause
+
+            // PHASE 3: FORMATIEREN
+            _statusCallback("Formatiere (NTFS)...");
+
+            string formatScript = $@"
+select disk {diskNum}
+select partition 1
+format fs=ntfs quick label=""{STICK_LABEL}""
+assign
+exit";
+            RunDiskpart(formatScript);
+
+            // PHASE 4: SUCHE NACH LABEL
+            _statusCallback("Warte auf Laufwerk...");
+
+            // Wir geben Windows 30 Sekunden Zeit (Manche Sticks sind langsam)
+            for (int i = 0; i < 60; i++)
+            {
+                Thread.Sleep(500);
+
+                foreach (var d in DriveInfo.GetDrives())
+                {
+                    if (d.DriveType == DriveType.Removable && d.IsReady)
+                    {
+                        try
+                        {
+                            // Wir identifizieren den Stick über das Label "REX_BOOT"
+                            if (d.VolumeLabel.Equals(STICK_LABEL, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return d.Name.Substring(0, 2); // z.B. "F:"
+                            }
+                        }
+                        catch { }
+                    }
+                }
+            }
+
+            throw new Exception($"Formatierung abgeschlossen, aber Laufwerk '{STICK_LABEL}' wurde nicht gefunden. Bitte Stick neu anstecken.");
+        }
+
+        private void RunDiskpart(string script)
+        {
+            string f = Path.GetTempFileName();
+            File.WriteAllText(f, script);
+            HardwareHelper.RunProcess("diskpart.exe", $"/s \"{f}\"");
+            File.Delete(f);
         }
 
         private void ApplyWin11Hack(string targetDrive)
         {
-            // Erstellt die autounattend.xml um TPM/CPU Checks zu umgehen
             string xml = @"<?xml version=""1.0"" encoding=""utf-8""?>
 <unattend xmlns=""urn:schemas-microsoft-com:unattend"">
 <settings pass=""windowsPE"">
@@ -153,7 +224,7 @@ exit";
 </component>
 </settings>
 </unattend>";
-            File.WriteAllText(Path.Combine(targetDrive, "autounattend.xml"), xml);
+            File.WriteAllText(Path.Combine(targetDrive + "\\", "autounattend.xml"), xml);
         }
 
         private DiscFileSystem GetBestReader(FileStream s)

@@ -8,21 +8,20 @@ namespace Rex
 {
     public class MainForm : Form
     {
-        // Controls
         private TextBox _txtIso;
         private ComboBox _cmbDrives;
         private RadioButton _rbStandard, _rbDD;
-        private RadioButton _rbMBR, _rbGPT; // NEU: Partitionstabelle
-        private CheckBox _chkWin11;         // NEU: Win11 Hack
+        private RadioButton _rbMBR, _rbGPT;
+        private CheckBox _chkWin11;
         private ProgressBar _progress;
         private Label _lblStatus;
         private Button _btnStart;
 
-        // Farben für Dark Mode
+        // Dark Mode Farben
         private Color _darkBg = Color.FromArgb(32, 32, 32);
         private Color _lightText = Color.WhiteSmoke;
-        private Color _accent = Color.DodgerBlue;
         private Color _controlBg = Color.FromArgb(50, 50, 50);
+        private Color _accent = Color.DodgerBlue;
 
         public MainForm()
         {
@@ -32,16 +31,15 @@ namespace Rex
 
         private void SetupUI()
         {
-            // Fenster Setup
             Text = "Rex - Professional ISO Tool";
-            Size = new Size(600, 550);
+            Size = new Size(600, 580);
             BackColor = _darkBg;
             ForeColor = _lightText;
             FormBorderStyle = FormBorderStyle.FixedSingle;
             MaximizeBox = false;
             StartPosition = FormStartPosition.CenterScreen;
 
-            // 1. ISO Bereich
+            // 1. ISO
             var grpIso = CreateGroup("1. Image Auswahl", 10);
             _txtIso = CreateTextBox(10, 25, 450);
             var btnBrowse = CreateButton("...", 470, 23, 80);
@@ -53,7 +51,7 @@ namespace Rex
             grpIso.Controls.Add(btnBrowse);
             Controls.Add(grpIso);
 
-            // 2. Laufwerk
+            // 2. Drive
             var grpDrive = CreateGroup("2. Ziel-Laufwerk", 80);
             _cmbDrives = new ComboBox { Location = new Point(10, 25), Size = new Size(450, 25), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = _controlBg, ForeColor = _lightText, FlatStyle = FlatStyle.Flat };
             var btnRef = CreateButton("🔄", 470, 23, 80);
@@ -62,24 +60,21 @@ namespace Rex
             grpDrive.Controls.Add(btnRef);
             Controls.Add(grpDrive);
 
-            // 3. Modus & Optionen (Hier sind die neuen Features!)
+            // 3. Optionen
             var grpOpt = CreateGroup("3. Optionen & Partitionsschema", 150);
             grpOpt.Height = 130;
 
             _rbStandard = CreateRadio("Standard Installation (Windows / UEFI)", 20, 25, true);
             _rbDD = CreateRadio("DD Raw Image (Linux / Raspberry Pi)", 20, 50, false);
 
-            // Trennlinie simulieren
             var line = new Panel { Location = new Point(10, 80), Size = new Size(540, 1), BackColor = Color.Gray };
 
-            // Sub-Optionen für Standard Modus
             var lblPart = new Label { Text = "Schema:", Location = new Point(20, 90), AutoSize = true, ForeColor = Color.Gray };
             _rbGPT = CreateRadio("GPT (UEFI - Modern)", 80, 88, true);
             _rbMBR = CreateRadio("MBR (BIOS - Alt)", 250, 88, false);
 
             _chkWin11 = new CheckBox { Text = "Windows 11 Limits entfernen (TPM/CPU Bypass)", Location = new Point(20, 110), AutoSize = true, ForeColor = Color.Gold };
 
-            // Logik: Optionen nur aktiv wenn nicht DD Mode
             EventHandler modeChanged = (s, e) => {
                 bool std = _rbStandard.Checked;
                 _rbGPT.Enabled = _rbMBR.Enabled = _chkWin11.Enabled = std;
@@ -91,7 +86,7 @@ namespace Rex
 
             // 4. Status
             _lblStatus = new Label { Text = "Bereit.", Location = new Point(15, 300), Size = new Size(550, 20), ForeColor = Color.Gray };
-            _progress = new ProgressBar { Location = new Point(15, 325), Size = new Size(550, 30) }; // Farbe geht nur via Custom Paint schwer, lassen wir Standard
+            _progress = new ProgressBar { Location = new Point(15, 325), Size = new Size(550, 30) };
 
             _btnStart = new Button { Text = "STARTEN", Location = new Point(15, 370), Size = new Size(550, 50), BackColor = _accent, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Font = new Font("Segoe UI", 12, FontStyle.Bold) };
             _btnStart.FlatAppearance.BorderSize = 0;
@@ -109,10 +104,8 @@ namespace Rex
 
             if (MessageBox.Show($"Laufwerk {drive} wird komplett gelöscht!\nFortfahren?", "WARNUNG", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
 
-            // UI Sperren
             _btnStart.Enabled = false;
 
-            // Engine initialisieren und Callbacks verbinden
             var engine = new RexEngine(
                 status => Invoke(new Action(() => _lblStatus.Text = status)),
                 pct => Invoke(new Action(() => _progress.Value = pct))
@@ -122,16 +115,11 @@ namespace Rex
             {
                 await Task.Run(() => {
                     if (_rbDD.Checked)
-                    {
                         engine.RunDDMode(iso, drive);
-                    }
                     else
-                    {
-                        // Hier übergeben wir die neuen Optionen (GPT?, Win11?)
                         engine.RunExtractMode(iso, drive, _rbGPT.Checked, _chkWin11.Checked);
-                    }
                 });
-                MessageBox.Show("Erfolgreich!", "Rex", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Erfolgreich abgeschlossen!", "Rex", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
@@ -160,24 +148,10 @@ namespace Rex
             if (_cmbDrives.Items.Count > 0) _cmbDrives.SelectedIndex = 0;
         }
 
-        // --- UI Helper für Dark Mode ---
-        private GroupBox CreateGroup(string text, int y)
-        {
-            return new GroupBox { Text = text, Location = new Point(10, y), Size = new Size(560, 60), ForeColor = _lightText };
-        }
-        private TextBox CreateTextBox(int x, int y, int w)
-        {
-            return new TextBox { Location = new Point(x, y), Size = new Size(w, 23), BackColor = _controlBg, ForeColor = _lightText, BorderStyle = BorderStyle.FixedSingle, ReadOnly = true };
-        }
-        private Button CreateButton(string text, int x, int y, int w)
-        {
-            var b = new Button { Text = text, Location = new Point(x, y), Size = new Size(w, 25), BackColor = _controlBg, ForeColor = _lightText, FlatStyle = FlatStyle.Flat };
-            b.FlatAppearance.BorderColor = Color.Gray;
-            return b;
-        }
-        private RadioButton CreateRadio(string text, int x, int y, bool check)
-        {
-            return new RadioButton { Text = text, Location = new Point(x, y), AutoSize = true, Checked = check, ForeColor = _lightText };
-        }
+        // Helper für Dark Mode
+        private GroupBox CreateGroup(string t, int y) => new GroupBox { Text = t, Location = new Point(10, y), Size = new Size(560, 60), ForeColor = _lightText };
+        private TextBox CreateTextBox(int x, int y, int w) => new TextBox { Location = new Point(x, y), Size = new Size(w, 23), BackColor = _controlBg, ForeColor = _lightText, BorderStyle = BorderStyle.FixedSingle, ReadOnly = true };
+        private Button CreateButton(string t, int x, int y, int w) { var b = new Button { Text = t, Location = new Point(x, y), Size = new Size(w, 25), BackColor = _controlBg, ForeColor = _lightText, FlatStyle = FlatStyle.Flat }; b.FlatAppearance.BorderColor = Color.Gray; return b; }
+        private RadioButton CreateRadio(string t, int x, int y, bool c) => new RadioButton { Text = t, Location = new Point(x, y), AutoSize = true, Checked = c, ForeColor = _lightText };
     }
 }
