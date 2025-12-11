@@ -18,6 +18,8 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyProductAttribute("REX")]
 [assembly: System.Reflection.AssemblyTitleAttribute("REX")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+[assembly: System.Runtime.Versioning.TargetPlatformAttribute("Windows7.0")]
+[assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Windows7.0")]
 
 // Von der MSBuild WriteCodeFragment-Klasse generiert.
 

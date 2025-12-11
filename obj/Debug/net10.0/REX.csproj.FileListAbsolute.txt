@@ -1,0 +1,4 @@
+C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0\REX.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0\REX.AssemblyInfoInputs.cache
+C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0\REX.AssemblyInfo.cs
+C:\Users\Blacky\source\repos\REX\obj\Debug\net10.0\REX.csproj.CoreCompileInputs.cache
