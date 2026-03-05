@@ -8,13 +8,14 @@ namespace Rex
 {
     public static class HardwareHelper
     {
-        // Konstanten für den nativen Windows-Kernel-Zugriff
         public const uint GENERIC_READ = 0x80000000;
         public const uint GENERIC_WRITE = 0x40000000;
         public const uint OPEN_EXISTING = 3;
 
-        // Führt Kommandozeilen-Tools (Diskpart, etc.) unsichtbar im Hintergrund aus
-        public static void RunProcess(string filename, string args)
+        /// <summary>
+        /// Führt ein CLI Tool im Hintergrund aus.
+        /// </summary>
+        public static string RunProcess(string filename, string args, bool throwOnError = true)
         {
             using (var p = new Process())
             {
@@ -22,37 +23,46 @@ namespace Rex
                 p.StartInfo.Arguments = args;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
                 p.Start();
+
+                string output = p.StandardOutput.ReadToEnd();
+                string error = p.StandardError.ReadToEnd();
                 p.WaitForExit();
+
+                if (throwOnError && p.ExitCode != 0)
+                {
+                    throw new Exception($"Prozess '{filename}' schlug mit Code {p.ExitCode} fehl.\n{error}");
+                }
+                
+                return output;
             }
         }
 
-        // Versucht, die physische Disk-Nummer (z.B. 2 für Disk 2) anhand des Laufwerksbuchstabens zu finden.
-        // Nutzt PowerShell, da WMI bei USB-Sticks manchmal unzuverlässig ist.
+        /// <summary>
+        /// Versucht, die physische Disk-Nummer anhand des Laufwerksbuchstabens zu finden.
+        /// Nutzt PowerShell für zuverlässigste Erkennung bei USB Medien.
+        /// </summary>
         public static int GetDiskNumber(string driveLetter)
         {
             string letterOnly = driveLetter.Substring(0, 1);
             try
             {
-                using (var p = new Process())
+                // PowerShell Command: Liest saubere Integer-Werte der Disk-ID (-NoProfile -NonInteractive beschleunigt den Aufruf signifikant)
+                string args = $"-NoProfile -NonInteractive -Command \"(Get-Partition -DriveLetter {letterOnly} | Get-Disk).Number\"";
+                string output = RunProcess("powershell.exe", args, false).Trim();
+
+                if (int.TryParse(output, out int num)) 
                 {
-                    p.StartInfo.FileName = "powershell.exe";
-                    // Wir pipen Partition -> Disk -> Number, um die ID sauber zu bekommen
-                    p.StartInfo.Arguments = $"-NoProfile -Command \"(Get-Partition -DriveLetter {letterOnly} | Get-Disk).Number\"";
-                    p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.RedirectStandardOutput = true;
-                    p.StartInfo.CreateNoWindow = true;
-                    p.Start();
-
-                    string outStr = p.StandardOutput.ReadToEnd().Trim();
-                    p.WaitForExit();
-
-                    if (int.TryParse(outStr, out int num)) return num;
+                    return num;
                 }
             }
-            catch { }
-
-            return -1; // Fehlerfall
+            catch (Exception)
+            {
+                // Ignoriere Exceptions hier, falle auf -1 zurück
+            }
+            return -1;
         }
 
         public static string GetPhysicalPath(string driveLetter)
@@ -67,8 +77,14 @@ namespace Rex
             return $@"\\.\PhysicalDrive{diskNum}";
         }
 
-        // Import für CreateFile (Kernel32), um direkten Sektorenzugriff zu erhalten (nötig für Backup/DD)
         [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern SafeFileHandle CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode, IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+        public static extern SafeFileHandle CreateFile(
+            string lpFileName, 
+            uint dwDesiredAccess, 
+            uint dwShareMode, 
+            IntPtr lpSecurityAttributes, 
+            uint dwCreationDisposition, 
+            uint dwFlagsAndAttributes, 
+            IntPtr hTemplateFile);
     }
 }

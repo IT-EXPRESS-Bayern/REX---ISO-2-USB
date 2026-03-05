@@ -21,7 +21,7 @@ namespace Rex
         // -------------------------------------------------------------
 
         private ComboBox _cmbDrives;
-        private RadioButton _rbWin, _rbBackup;
+        private RadioButton _rbWin, _rbBackup, _rbLinux;
         private CheckBox _chkWin11, _chkGpt, _chkDriver;
         private Button _btnStart;
         private Label _lblTimer;
@@ -137,9 +137,11 @@ namespace Rex
             var flowOpt = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, AutoSize = true, WrapContents = false };
 
             _rbWin = new RadioButton { Text = "Windows Installation / UEFI Setup", AutoSize = true, Checked = true, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = ColAccent };
+            _rbLinux = new RadioButton { Text = "Linux / Raw Image Flash (Hybrid ISO)", AutoSize = true, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = ColText };
             _rbBackup = new RadioButton { Text = "Backup Modus (USB -> .img)", AutoSize = true, Font = new Font("Segoe UI", 10, FontStyle.Bold), ForeColor = ColWarning };
 
             flowOpt.Controls.Add(_rbWin);
+            flowOpt.Controls.Add(_rbLinux);
             flowOpt.Controls.Add(CreateSpacer());
 
             _chkGpt = new CheckBox { Text = "Partitionsschema: GPT (Empfohlen für UEFI)", AutoSize = true, Checked = true };
@@ -148,6 +150,12 @@ namespace Rex
 
             _txtDriver = new ModernTextBox { Visible = false, PlaceholderText = "Pfad zum Treiber-Ordner..." };
             _chkDriver.CheckedChanged += (s, e) => SelectDriver();
+
+            _rbLinux.CheckedChanged += (s, e) => {
+                _chkGpt.Enabled = !_rbLinux.Checked;
+                _chkWin11.Enabled = !_rbLinux.Checked;
+                _chkDriver.Enabled = !_rbLinux.Checked;
+            };
 
             flowOpt.Controls.AddRange(new Control[] { _chkGpt, _chkWin11, _chkDriver, _txtDriver, _rbBackup });
             groupOpt.ContentPanel.Controls.Add(flowOpt);
@@ -244,27 +252,37 @@ namespace Rex
             {
                 using var sfd = new SaveFileDialog { Filter = "Disk Image|*.img", FileName = "rex_backup.img" };
                 if (sfd.ShowDialog() != DialogResult.OK) return;
-                RunTask(eng => eng.CreateBackup(drive, sfd.FileName));
+                RunTask((eng, log, prog) => eng.CreateBackupAsync(drive, sfd.FileName, log, prog));
+            }
+            else if (_rbLinux.Checked)
+            {
+                if (MessageBox.Show($"WARNUNG: {drive} wird für RAW-Schreiben blockbasiert überschrieben!\nAlle Daten gehen verloren. Fortfahren?", "ACHTUNG", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+                 RunTask((eng, log, prog) => eng.WriteRawImageAsync(iso, drive, log, prog));
             }
             else
             {
-                if (MessageBox.Show($"WARNUNG: {drive} wird gelöscht!", "ACHTUNG", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
-                RunTask(eng => eng.RunExtractMode(iso, drive, _chkGpt.Checked, _chkWin11.Checked, _chkDriver.Checked ? _txtDriver.Text : null));
+                if (MessageBox.Show($"WARNUNG: {drive} wird komplett gelöscht!\nFortfahren?", "ACHTUNG", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+                RunTask((eng, log, prog) => eng.RunExtractModeAsync(iso, drive, _chkGpt.Checked, _chkWin11.Checked, _chkDriver.Checked ? _txtDriver.Text : null, log, prog));
             }
         }
 
-        private async void RunTask(Action<RexEngine> action)
+        private async void RunTask(Func<RexEngine, IProgress<string>, IProgress<int>, Task> action)
         {
             _btnStart.Enabled = false; _btnStart.BackColor = Color.Gray;
             _visualizer.IsAnimating = true;
             _startTime = DateTime.Now; _timerProcess.Start();
 
-            var engine = new RexEngine(Log, p => Invoke(new Action(() => _progress.Value = p)));
+            var engine = new RexEngine();
+            var logProgress = new Progress<string>(msg => Log(msg));
+            var valProgress = new Progress<int>(p => {
+                if (p >= 0 && p <= 100) _progress.Value = p;
+            });
 
             try
             {
-                await Task.Run(() => action(engine));
-                Log("[SUCCESS] Fertig!");
+                await action(engine, logProgress, valProgress);
+                
+                Log("[SUCCESS] Vorgang komplett abgeschlossen!");
                 _visualizer.SetSuccess();
                 MessageBox.Show("Vorgang erfolgreich!", "REX", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
@@ -279,6 +297,7 @@ namespace Rex
                 _timerProcess.Stop();
                 _btnStart.Enabled = true; _btnStart.BackColor = ColAccent; RefreshDrives();
                 _visualizer.IsAnimating = false;
+                _progress.Value = 0;
             }
         }
 
