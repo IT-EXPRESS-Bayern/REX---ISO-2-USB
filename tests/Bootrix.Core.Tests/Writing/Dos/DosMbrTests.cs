@@ -77,11 +77,33 @@ public class DosMbrTests
     }
 
     [Fact]
-    public void Install_RefusesATableWithoutActivePartition()
+    public void Install_SetsTheActiveFlag_WhenWindowsLeftItOffASinglePartition()
     {
-        var ex = Assert.Throws<BootrixException>(() => DosMbr.Install(Sector(status: 0)));
+        var after = DosMbr.Install(Sector(status: 0));
 
-        Assert.Equal(ErrorCode.DosMbrNotBootable, ex.Code);
+        Assert.Equal(0x80, after[446]);
+        Assert.Equal(Sector(status: 0)[447..], after[447..]);
+    }
+
+    [Fact]
+    public void Install_RefusesATableWithTwoPartitionsAndNoneActive()
+    {
+        var sector = Sector(status: 0);
+        sector[466] = MbrPartitionType.Fat16;
+        BinaryPrimitives.WriteUInt32LittleEndian(sector.AsSpan(470), 200_000);
+        BinaryPrimitives.WriteUInt32LittleEndian(sector.AsSpan(474), 1000);
+
+        Assert.Equal(ErrorCode.DosMbrNotBootable, Assert.Throws<BootrixException>(() => DosMbr.Install(sector)).Code);
+    }
+
+    [Fact]
+    public void Install_RefusesAnEmptyTable()
+    {
+        var sector = new byte[512];
+        sector[510] = 0x55;
+        sector[511] = 0xAA;
+
+        Assert.Equal(ErrorCode.DosMbrNotBootable, Assert.Throws<BootrixException>(() => DosMbr.Install(sector)).Code);
     }
 
     [Fact]

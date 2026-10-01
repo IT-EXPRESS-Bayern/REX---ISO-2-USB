@@ -61,6 +61,7 @@ public class UiStringsTests
             "Tiny.Prepare", "Tiny.CopyMedia", "Tiny.ExportEdition", "Tiny.Mount", "Tiny.RemoveApps", "Tiny.RemoveComponents",
             "Tiny.RemoveFiles", "Tiny.Registry", "Tiny.CleanupStore", "Tiny.Unmount", "Tiny.Compress", "Tiny.PatchBootImage",
             "Tiny.Unattend", "Tiny.CreateIso",
+            "Dos.PrepareSystem", "Dos.CopyFiles", "Dos.WriteMbr", "Dos.Superfloppy",
         ];
 
         Assert.All(steps, step => Assert.True(Localizer.Default.Has("Step." + step), step));

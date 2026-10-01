@@ -10,6 +10,8 @@ namespace Bootrix.Core.Boot.Dos;
 /// </summary>
 public static class DosMbr
 {
+    private const int TableOffset = 446;
+
     /// <summary>
     /// The 440 bytes of boot code. With <paramref name="forceBootDrive"/> the variant that always passes drive
     /// 0x80 to the volume boot sector is returned, for old BIOSes that report another number for a USB stick.
@@ -17,8 +19,9 @@ public static class DosMbr
     public static byte[] Bootstrap(bool forceBootDrive = false) => DosAssets.Mbr(forceBootDrive ? "mbr_f.bin" : "mbr.bin");
 
     /// <summary>
-    /// Replaces the boot code in sector 0 and keeps the disk signature and the partition table. Fails when the
-    /// table would leave the BIOS nothing to start: not exactly one active partition, or one that is no FAT volume.
+    /// Replaces the boot code in sector 0 and keeps the disk signature and the partition table. The BIOS needs exactly one
+    /// active partition that is a FAT volume: when Windows dropped the flag of a table with a single partition, it is set
+    /// again; every other table that would leave the BIOS nothing to start is refused.
     /// </summary>
     public static byte[] Install(ReadOnlySpan<byte> sector, bool forceBootDrive = false)
     {
@@ -27,21 +30,28 @@ public static class DosMbr
             throw NotBootable("sector 0 has no 0x55AA signature");
         }
 
-        var active = mbr.Entries.Where(entry => entry.IsActive).ToList();
+        var result = sector[..Mbr.SectorSize].ToArray();
+        var used = Enumerable.Range(0, Mbr.EntryCount).Where(i => !mbr.Entries[i].IsEmpty).ToList();
+        var active = used.Where(i => mbr.Entries[i].IsActive).ToList();
+        if (active.Count == 0 && used.Count == 1)
+        {
+            active = used;
+            result[TableOffset + used[0] * MbrEntry.Size] = MbrEntry.ActiveStatus;
+        }
+
         if (active.Count != 1)
         {
-            throw NotBootable($"{active.Count} partitions are marked active");
+            throw NotBootable($"{active.Count} of {used.Count} partitions are marked active");
         }
 
-        if (!IsFat(active[0].Type))
+        var type = mbr.Entries[active[0]].Type;
+        if (!IsFat(type))
         {
-            throw NotBootable($"the active partition has type 0x{active[0].Type:X2}");
+            throw NotBootable($"the active partition has type 0x{type:X2}");
         }
 
-        var bootstrap = Bootstrap(forceBootDrive);
-        var result = sector[..Mbr.SectorSize].ToArray();
         result.AsSpan(0, Mbr.BootstrapLength).Clear();
-        bootstrap.CopyTo(result, 0);
+        Bootstrap(forceBootDrive).CopyTo(result, 0);
         return result;
     }
 

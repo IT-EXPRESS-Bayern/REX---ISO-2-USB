@@ -47,6 +47,18 @@ public class MsDosRealFilesTests
     public void Stick_StartsMsDos_ThroughTheTransplantedBootSector()
     {
         var plan = DosImageBuilder.PlanStick(64 * Mib, FileSystemKind.Fat16);
+        RunStick(plan);
+    }
+
+    [RequiresDiskcopyFact]
+    public void LabeledStick_StartsMsDos_ThoughTheLabelEntryComesFirstInTheRootDirectory()
+    {
+        var plan = DosImageBuilder.PlanStick(64 * Mib, FileSystemKind.Fat16, label: "BOOTRIX");
+        RunStick(plan);
+    }
+
+    private static void RunStick(Bootrix.Core.Planning.MediaPlan plan)
+    {
         using var image = DosImageBuilder.BuildStick(plan, Load());
 
         var screen = QemuScreen.Boot(

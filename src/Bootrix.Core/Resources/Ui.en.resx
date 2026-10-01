@@ -204,4 +204,8 @@
   <data name="Cat.Manual" xml:space="preserve"><value>manual download</value></data>
   <data name="Cat.SupportEnded" xml:space="preserve"><value>support ended</value></data>
   <data name="Cat.SupportEnds" xml:space="preserve"><value>support until {0}</value></data>
+  <data name="Step.Dos.PrepareSystem" xml:space="preserve"><value>Preparing DOS system files</value></data>
+  <data name="Step.Dos.CopyFiles" xml:space="preserve"><value>Copying system files</value></data>
+  <data name="Step.Dos.WriteMbr" xml:space="preserve"><value>Writing boot code to the MBR</value></data>
+  <data name="Step.Dos.Superfloppy" xml:space="preserve"><value>Writing a volume without partition table</value></data>
 </root>

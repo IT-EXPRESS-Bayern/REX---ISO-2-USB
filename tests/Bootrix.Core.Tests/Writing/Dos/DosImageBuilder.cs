@@ -21,10 +21,10 @@ internal static class DosImageBuilder
 {
     public const long Mib = PlannerFixtures.Mib;
 
-    public static MediaPlan PlanStick(long bytes, FileSystemKind fileSystem = FileSystemKind.Auto, bool legacy = false) =>
+    public static MediaPlan PlanStick(long bytes, FileSystemKind fileSystem = FileSystemKind.Auto, bool legacy = false, string? label = null) =>
         LayoutPlanner.Plan(
             PlannerFixtures.Dos(),
-            new TargetOptions { FileSystem = fileSystem, LegacyBiosFixes = legacy },
+            new TargetOptions { FileSystem = fileSystem, LegacyBiosFixes = legacy, Label = label },
             PlannerFixtures.Stick(bytes));
 
     public static MediaPlan PlanFloppy(long bytes = 1_474_560) =>
