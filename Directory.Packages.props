@@ -23,6 +23,7 @@
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="10.0.12" />
     <PackageVersion Include="System.CommandLine" Version="2.0.12" />
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.12" />
+    <PackageVersion Include="System.Management" Version="10.0.12" />
     <PackageVersion Include="WPF-UI" Version="4.3.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
     <PackageVersion Include="LzfseSharp" Version="2.0.0" />

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Dism" />
+    <PackageReference Include="System.Management" />
   </ItemGroup>
 
   <ItemGroup>

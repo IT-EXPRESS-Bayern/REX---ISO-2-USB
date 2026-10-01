@@ -189,4 +189,82 @@
   <data name="Plan.Warning.SuperfloppyBoot" xml:space="preserve"><value>Without a partition table not every computer will boot; many BIOS versions and UEFI devices offer only diskette emulation for it.</value></data>
   <data name="Plan.Warning.NonStandardFloppySize" xml:space="preserve"><value>The size {0} matches no standard diskette format; a FAT12 file system of that size is created.</value></data>
   <data name="Plan.Warning.UefiNtfsCa2011" xml:space="preserve"><value>UEFI:NTFS is signed with the Microsoft UEFI CA 2011. Devices that only trust the 2023 authority may refuse to start it; FAT32 with a split WIM file avoids this.</value></data>
+  <data name="Workshop.Req.Architecture.Pass" xml:space="preserve"><value>The processor is 64-bit capable ({0}).</value></data>
+  <data name="Workshop.Req.Architecture.Fail" xml:space="preserve"><value>The processor is not 64-bit capable ({0}). Windows 11 only exists for 64-bit processors (x64 and Arm64).</value></data>
+  <data name="Workshop.Req.Architecture.Unknown" xml:space="preserve"><value>The processor architecture could not be determined.</value></data>
+  <data name="Workshop.Req.Cores.Pass" xml:space="preserve"><value>{0} processor cores (at least 2 required).</value></data>
+  <data name="Workshop.Req.Cores.Fail" xml:space="preserve"><value>Only {0} processor core; Windows 11 requires at least 2 cores.</value></data>
+  <data name="Workshop.Req.Cores.Unknown" xml:space="preserve"><value>The number of processor cores is not known for certain ({0} logical processors).</value></data>
+  <data name="Workshop.Req.Clock.Pass" xml:space="preserve"><value>Clock speed {0:0.0} GHz (at least 1 GHz required).</value></data>
+  <data name="Workshop.Req.Clock.Fail" xml:space="preserve"><value>The clock speed of {0:0.0} GHz is below the required 1 GHz.</value></data>
+  <data name="Workshop.Req.Clock.NotChecked" xml:space="preserve"><value>The processor clock speed was not determined.</value></data>
+  <data name="Workshop.Req.CpuModel.Fail" xml:space="preserve"><value>Judging by its name, the processor "{0}" is probably not among the models Microsoft has approved for Windows 11 (an estimate based on the name).</value></data>
+  <data name="Workshop.Req.CpuModel.NotChecked" xml:space="preserve"><value>The processor was not compared with Microsoft's list of supported processors. Windows 11 usually requires 8th generation Intel Core or newer, and AMD Ryzen 2000 series or newer.</value></data>
+  <data name="Workshop.Req.Ram.Pass" xml:space="preserve"><value>{0:0.#} GB of memory (at least 4 GB required).</value></data>
+  <data name="Workshop.Req.Ram.Fail" xml:space="preserve"><value>Only {0:0.#} GB of memory; Windows 11 requires at least 4 GB.</value></data>
+  <data name="Workshop.Req.Ram.Borderline" xml:space="preserve"><value>Windows can use {0:0.#} GB of memory. Whether 4 GB are installed cannot be told for certain because the firmware reserves a part.</value></data>
+  <data name="Workshop.Req.Ram.Unknown" xml:space="preserve"><value>The amount of memory is unknown.</value></data>
+  <data name="Workshop.Req.Storage.Pass" xml:space="preserve"><value>The largest internal disk has {0:0} GB (at least 64 GB required).</value></data>
+  <data name="Workshop.Req.Storage.Fail" xml:space="preserve"><value>The largest internal disk has only {0:0.#} GB; Windows 11 requires at least 64 GB.</value></data>
+  <data name="Workshop.Req.Storage.Borderline" xml:space="preserve"><value>The largest internal disk has {0:0.#} GB, right at the 64 GB limit; Setup might reject it.</value></data>
+  <data name="Workshop.Req.Storage.Unknown" xml:space="preserve"><value>No internal disk was detected.</value></data>
+  <data name="Workshop.Req.Firmware.Pass" xml:space="preserve"><value>The system boots in UEFI mode.</value></data>
+  <data name="Workshop.Req.Firmware.Fail" xml:space="preserve"><value>The system boots in BIOS mode (legacy/CSM); Windows 11 requires UEFI.</value></data>
+  <data name="Workshop.Req.Firmware.Unknown" xml:space="preserve"><value>The firmware type (BIOS or UEFI) is unknown.</value></data>
+  <data name="Workshop.Req.SecureBoot.PassOn" xml:space="preserve"><value>Secure Boot is supported and turned on.</value></data>
+  <data name="Workshop.Req.SecureBoot.PassOff" xml:space="preserve"><value>Secure Boot is supported but turned off. Support is all Windows 11 requires.</value></data>
+  <data name="Workshop.Req.SecureBoot.Fail" xml:space="preserve"><value>Secure Boot is not available in BIOS mode; Windows 11 requires Secure Boot capable UEFI.</value></data>
+  <data name="Workshop.Req.SecureBoot.Unknown" xml:space="preserve"><value>Whether Secure Boot is supported is unknown (not readable without administrator rights).</value></data>
+  <data name="Workshop.Req.Tpm.Pass" xml:space="preserve"><value>TPM {0} is present.</value></data>
+  <data name="Workshop.Req.Tpm.FailMissing" xml:space="preserve"><value>Windows does not find a TPM. Check in the BIOS/UEFI whether a firmware TPM (Intel PTT, AMD fTPM) is turned off.</value></data>
+  <data name="Workshop.Req.Tpm.FailVersion" xml:space="preserve"><value>The TPM is only version {0}; Windows 11 requires TPM 2.0.</value></data>
+  <data name="Workshop.Req.Tpm.FailDisabled" xml:space="preserve"><value>The TPM is disabled in the BIOS/UEFI. Enabling it meets the requirement.</value></data>
+  <data name="Workshop.Req.Tpm.Unknown" xml:space="preserve"><value>The TPM state is unknown (not fully readable without administrator rights).</value></data>
+  <data name="Workshop.Req.Graphics.NotChecked" xml:space="preserve"><value>DirectX 12 support and a WDDM 2.0 driver were not checked.</value></data>
+  <data name="Workshop.Data.Nothing" xml:space="preserve"><value>There is no usable hardware data.</value></data>
+  <data name="Workshop.Data.Incomplete" xml:space="preserve"><value>Some sources could not be read ({0}); the affected results are marked as unknown.</value></data>
+  <data name="Workshop.Data.NotElevated" xml:space="preserve"><value>Bootrix runs without administrator rights. TPM state, BitLocker and Secure Boot can only partly be determined that way. Run the analysis as administrator for a complete result.</value></data>
+  <data name="Workshop.Cpu.NoModernInstructions" xml:space="preserve"><value>The processor lacks {0}. According to community reports Windows 11 from version 24H2 does not start on such processors (not confirmed by Microsoft); bypassing the Setup checks does not change that. Windows 10 22H2 with extended security updates, or Linux, is therefore recommended.</value></data>
+  <data name="Workshop.Cpu.Arm64" xml:space="preserve"><value>Arm64 device: the image must be for Arm64. Drivers for Wi-Fi, storage and touch usually come only from the device maker, and x64 tools only run through emulation.</value></data>
+  <data name="Workshop.Cpu.Arm32" xml:space="preserve"><value>This device has a 32-bit Arm processor; there is no Windows installation media for it.</value></data>
+  <data name="Workshop.Cpu.Only32Bit" xml:space="preserve"><value>The processor can only run 32-bit code. Windows 11 is not possible; Windows 10 22H2 (x86) is the last Windows version for it.</value></data>
+  <data name="Workshop.Cpu.Running32Bit" xml:space="preserve"><value>A 32-bit Windows is running on this 64-bit capable processor. An x64 image is recommended for the reinstallation.</value></data>
+  <data name="Workshop.Cpu.NewPlatform" xml:space="preserve"><value>The processor "{0}" probably belongs to the new Arm platform that Microsoft scoped Windows 11 26H1 to. Older versions may not include the platform support (a hint, not confirmed); if in doubt, use the image from the device maker.</value></data>
+  <data name="Workshop.Boot.SecureBootSignedOnly" xml:space="preserve"><value>Secure Boot is on: only media whose boot manager the firmware accepts will start. FAT32 with Microsoft's original boot manager is recommended instead of NTFS with an additional boot loader.</value></data>
+  <data name="Workshop.Boot.Certificate2023" xml:space="preserve"><value>The firmware has revoked the Windows Production PCA 2011: only boot managers signed with the Windows UEFI CA 2023 start. The medium must contain such a boot manager.</value></data>
+  <data name="Workshop.Boot.Certificate2011" xml:space="preserve"><value>The firmware does not know the Windows UEFI CA 2023 yet: only a boot manager with the previous signature (Windows Production PCA 2011) starts.</value></data>
+  <data name="Workshop.Boot.BiosMode" xml:space="preserve"><value>The system boots in BIOS mode: the medium gets an MBR partition table.</value></data>
+  <data name="Workshop.Boot.BiosLargeDisk" xml:space="preserve"><value>In BIOS mode with MBR only 2 TB of a disk can be used; "{0}" is larger. Large disks need UEFI with GPT.</value></data>
+  <data name="Workshop.Licensing.EditionFromFirmware" xml:space="preserve"><value>The license key in the firmware belongs to the edition "{0}". Windows Setup selects that edition by itself with the key.</value></data>
+  <data name="Workshop.Licensing.EditionFromRunning" xml:space="preserve"><value>The edition of the running Windows ("{0}") is suggested; no firmware key confirms it.</value></data>
+  <data name="Workshop.Licensing.EditionUnknown" xml:space="preserve"><value>The device has a license key in the firmware, but its edition could not be determined unambiguously.</value></data>
+  <data name="Workshop.Licensing.NoFirmwareKey" xml:space="preserve"><value>No license key found in the firmware. The running Windows can still have a digital license.</value></data>
+  <data name="Workshop.BitLocker.Active" xml:space="preserve"><value>BitLocker is active or suspended on {0}. Back up the recovery key before reinstalling; it is requested after changes to firmware or boot order.</value></data>
+  <data name="Workshop.BitLocker.Locked" xml:space="preserve"><value>Drive {0} is locked by BitLocker. Without the recovery key the data cannot be read.</value></data>
+  <data name="Workshop.BitLocker.Unknown" xml:space="preserve"><value>The BitLocker status is unknown (administrator rights needed).</value></data>
+  <data name="Workshop.Machine.Virtual" xml:space="preserve"><value>This is a virtual machine ({0}). TPM, Secure Boot and firmware mode depend on how the VM is configured.</value></data>
+  <data name="Workshop.Machine.HyperVGeneration1" xml:space="preserve"><value>Hyper-V generation 1 VM (BIOS): Windows 11 is meant for a generation 2 VM with UEFI and a virtual TPM.</value></data>
+  <data name="Workshop.Machine.ServerHardware" xml:space="preserve"><value>The device is server hardware. RAID and network drivers come from the server maker; have its driver pack ready. Vendors usually do not certify server hardware for Windows 11.</value></data>
+  <data name="Workshop.Machine.RunningServer" xml:space="preserve"><value>A Windows Server is currently running on the device.</value></data>
+  <data name="Workshop.Storage.NoDisk" xml:space="preserve"><value>No internal disk was detected. In Windows PE a storage driver may be missing.</value></data>
+  <data name="Workshop.Lifecycle.RunningVersionEnding" xml:space="preserve"><value>{0} end of servicing: {1:d} (Home and Pro).</value></data>
+  <data name="Workshop.Windows10.EndOfSupport" xml:space="preserve"><value>Windows 10 22H2 has had no regular support since 14 October 2025. According to Microsoft, extended security updates (ESU) for consumers run until 12 October 2027 and require enrollment; terms may vary by region.</value></data>
+  <data name="Workshop.Alternative.Windows10" xml:space="preserve"><value>Alternative with Microsoft support: Windows 10 22H2 with extended security updates (ESU).</value></data>
+  <data name="Workshop.Alternative.Linux" xml:space="preserve"><value>Alternative: a current Linux distribution; it also runs on older hardware and is updated continuously.</value></data>
+  <data name="Workshop.Bypass.Unsupported" xml:space="preserve"><value>A Windows 11 with bypassed Setup checks is not supported by Microsoft; updates are not guaranteed.</value></data>
+  <data name="Workshop.Driver.IntelVmd" xml:space="preserve"><value>Intel Volume Management Device "{0}" ({1}): without the Intel RST/VMD driver (iaStorVD), Windows Setup may find no drives. Add the driver to the Setup medium.</value></data>
+  <data name="Workshop.Driver.IntelRstRaid" xml:space="preserve"><value>The storage controller "{0}" ({1}) runs in RAID mode (Intel RST). Without the Intel RST driver Windows Setup may find no drives. Add the driver, or switch the BIOS to AHCI before a reinstallation (an existing installation will no longer start afterwards).</value></data>
+  <data name="Workshop.Driver.AmdRaid" xml:space="preserve"><value>The storage controller "{0}" ({1}) runs in AMD RAID mode. Without the AMD RAID driver Windows Setup may find no drives.</value></data>
+  <data name="Workshop.Driver.HardwareRaid" xml:space="preserve"><value>RAID controller "{0}" ({1}): have the manufacturer's driver ready; Windows does not include one for every controller.</value></data>
+  <data name="Workshop.Driver.VirtualStorage" xml:space="preserve"><value>Virtual storage controller "{0}" ({1}): Windows includes no driver for it. Load it in Setup (virtio-win or the VMware driver) or choose another controller type.</value></data>
+  <data name="Workshop.Driver.NetworkNoDriver" xml:space="preserve"><value>No working driver is installed for the network adapter "{0}" ({1}) at the moment (error code {2}). Provide the driver for the reinstallation.</value></data>
+  <data name="Workshop.Driver.NetworkVendor" xml:space="preserve"><value>The network adapter "{0}" ({1}) uses a driver from {2} that is not part of Windows. It may be missing in Setup or the first-run experience; back up the drivers of this PC.</value></data>
+  <data name="Workshop.Driver.NetworkVirtual" xml:space="preserve"><value>Virtual network adapter "{0}" ({1}): Windows includes no driver for it (virtio-win or VMware Tools).</value></data>
+  <data name="Workshop.Driver.WirelessNoDriver" xml:space="preserve"><value>No working driver is installed for the Wi-Fi adapter "{0}" ({1}) at the moment (error code {2}). Provide the driver for the reinstallation.</value></data>
+  <data name="Workshop.Driver.WirelessVendor" xml:space="preserve"><value>The Wi-Fi adapter "{0}" ({1}) uses a driver from {2} that is not part of Windows. It may be missing in Setup or the first-run experience; back up the drivers of this PC.</value></data>
+  <data name="Workshop.Capture.SecretsIncluded" xml:space="preserve"><value>The capture contains secrets in clear text (keys and passwords). Store it encrypted only, and do not print or log it.</value></data>
+  <data name="Workshop.Capture.WlanExportFiles" xml:space="preserve"><value>The exported Wi-Fi profiles in "{0}" contain the keys in clear text. Delete the files as soon as they have been taken over.</value></data>
+  <data name="Workshop.Capture.WlanKeysProtected" xml:space="preserve"><value>For {0} Wi-Fi profiles the key could not be read in clear text (administrator rights needed).</value></data>
+  <data name="Workshop.Capture.ProductKeyMayBeGeneric" xml:space="preserve"><value>The Windows key read from the registry can be a generic installation key when the license is digital; it is then not usable on other hardware.</value></data>
+  <data name="Workshop.Capture.RecoveryKeyUnavailable" xml:space="preserve"><value>No recovery password could be read for {0} (drive locked, no password protector or missing rights).</value></data>
 </root>
