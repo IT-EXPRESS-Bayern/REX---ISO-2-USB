@@ -104,6 +104,15 @@ public sealed class RawImageWriterSparseTests : IDisposable
         Assert.Equal(image.Length, report.SkippedBytes);
     }
 
+    /// <summary>Windows refuses a plain read of a file the device still holds open for writing; sharing the file is enough.</summary>
+    private static byte[] ReadWhileOpen(string path)
+    {
+        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        var data = new byte[stream.Length];
+        stream.ReadExactly(data);
+        return data;
+    }
+
     [Fact]
     public async Task SparseWrite_ToSeveralTargets_WritesTheSameRanges()
     {
@@ -115,7 +124,7 @@ public sealed class RawImageWriterSparseTests : IDisposable
         var report = await new RawImageWriter().WriteAsync(new MemoryStream(image), image.Length, [a, b], Options(map));
 
         Assert.All(report.Targets, t => Assert.True(t.Succeeded && t.Verified));
-        Assert.Equal(File.ReadAllBytes(Path.Combine(_dir, "d1.img")), File.ReadAllBytes(Path.Combine(_dir, "d2.img")));
+        Assert.Equal(ReadWhileOpen(Path.Combine(_dir, "d1.img")), ReadWhileOpen(Path.Combine(_dir, "d2.img")));
     }
 
     [Fact]

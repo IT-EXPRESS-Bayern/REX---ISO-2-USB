@@ -6,6 +6,7 @@ using Bootrix.Core.Partitioning;
 using Bootrix.Core.Planning;
 using Bootrix.Core.Storage;
 using Bootrix.Core.Tests.Images.Support;
+using Bootrix.Core.Tests.Tooling;
 using Bootrix.Core.Tests.Writing.Raw;
 using Bootrix.Core.Writing.Restore;
 
@@ -75,7 +76,7 @@ public sealed class RestoreTests : IDisposable
         Assert.DoesNotContain("GPT: present", after.StandardOutput, StringComparison.Ordinal);
     }
 
-    [Fact]
+    [RequiresToolFact("sgdisk")]
     public void Wipe_FindsTheBackupEvenWhenTheHeaderChecksumIsBroken()
     {
         var image = GptImage(24 * Mib);
@@ -89,7 +90,7 @@ public sealed class RestoreTests : IDisposable
         Assert.True(IsZero(device, 24 * Mib - 512, 512));
     }
 
-    [Fact]
+    [RequiresToolFact("sgdisk")]
     public void Wipe_OfASmallImage_NeedsNothingBeyondTheStartAndTheEnd()
     {
         var image = GptImage(6 * Mib);
