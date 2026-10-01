@@ -324,4 +324,5 @@
   <data name="Boot2023.Reason.NoSourceFiles" xml:space="preserve"><value>boot.wim does not contain \Windows\Boot\EFI_EX\bootmgfw_EX.efi.</value></data>
   <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>The medium has no \EFI\BOOT\{0}.</value></data>
   <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} is not a valid EFI file.</value></data>
+  <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>The boot files could not be read from boot.wim: {0}</value></data>
 </root>

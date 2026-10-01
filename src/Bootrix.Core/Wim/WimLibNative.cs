@@ -24,6 +24,10 @@ internal static unsafe partial class WimLibNative
     public const int OpenCheckIntegrity = 0x1;
     public const int OpenWriteAccess = 0x4;
 
+    public const int ExtractNoAcls = 0x40;
+    public const int ExtractGlobPaths = 0x40000;
+    public const int ExtractNoPreserveDirStructure = 0x200000;
+
     public const int ProgressContinue = 0;
     public const int ProgressAbort = 1;
 
@@ -127,6 +131,9 @@ internal static unsafe partial class WimLibNative
 
     [LibraryImport(Library, EntryPoint = "wimlib_set_output_compression_type")]
     public static partial int SetOutputCompressionType(nint wim, int compressionType);
+
+    [LibraryImport(Library, EntryPoint = "wimlib_extract_paths")]
+    public static partial int ExtractPaths(nint wim, int image, nint target, nint* paths, nuint pathCount, int flags);
 
     [LibraryImport(Library, EntryPoint = "wimlib_register_progress_function")]
     public static partial void RegisterProgressFunction(nint wim, delegate* unmanaged<int, nint, nint, int> function, nint context);
