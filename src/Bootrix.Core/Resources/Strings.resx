@@ -7,6 +7,85 @@
 
   <data name="App.Name" xml:space="preserve"><value>Bootrix</value></data>
 
+  <data name="Workshop.Req.Architecture.Pass" xml:space="preserve"><value>Der Prozessor ist 64-Bit-fähig ({0}).</value></data>
+  <data name="Workshop.Req.Architecture.Fail" xml:space="preserve"><value>Der Prozessor ist nicht 64-Bit-fähig ({0}). Windows 11 gibt es nur für 64-Bit-Prozessoren (x64 und Arm64).</value></data>
+  <data name="Workshop.Req.Architecture.Unknown" xml:space="preserve"><value>Die Prozessorarchitektur konnte nicht ermittelt werden.</value></data>
+  <data name="Workshop.Req.Cores.Pass" xml:space="preserve"><value>{0} Prozessorkerne vorhanden (mindestens 2 erforderlich).</value></data>
+  <data name="Workshop.Req.Cores.Fail" xml:space="preserve"><value>Nur {0} Prozessorkern; Windows 11 verlangt mindestens 2 Kerne.</value></data>
+  <data name="Workshop.Req.Cores.Unknown" xml:space="preserve"><value>Die Zahl der Prozessorkerne ist nicht sicher bekannt ({0} logische Prozessoren).</value></data>
+  <data name="Workshop.Req.Clock.Pass" xml:space="preserve"><value>Taktfrequenz {0:0.0} GHz (mindestens 1 GHz erforderlich).</value></data>
+  <data name="Workshop.Req.Clock.Fail" xml:space="preserve"><value>Die Taktfrequenz von {0:0.0} GHz liegt unter dem geforderten 1 GHz.</value></data>
+  <data name="Workshop.Req.Clock.NotChecked" xml:space="preserve"><value>Die Taktfrequenz des Prozessors wurde nicht ermittelt.</value></data>
+  <data name="Workshop.Req.CpuModel.Fail" xml:space="preserve"><value>Der Prozessor „{0}“ gehört nach seinem Namen vermutlich nicht zu den Modellen, die Microsoft für Windows 11 freigegeben hat (Schätzung anhand des Namens).</value></data>
+  <data name="Workshop.Req.CpuModel.NotChecked" xml:space="preserve"><value>Der Prozessor wurde nicht mit Microsofts Liste der unterstützten Prozessoren verglichen. Windows 11 verlangt bei Intel Core in der Regel die 8. Generation oder neuer, bei AMD Ryzen mindestens die 2000er-Serie.</value></data>
+  <data name="Workshop.Req.Ram.Pass" xml:space="preserve"><value>{0:0.#} GB Arbeitsspeicher (mindestens 4 GB erforderlich).</value></data>
+  <data name="Workshop.Req.Ram.Fail" xml:space="preserve"><value>Nur {0:0.#} GB Arbeitsspeicher; Windows 11 verlangt mindestens 4 GB.</value></data>
+  <data name="Workshop.Req.Ram.Borderline" xml:space="preserve"><value>Windows kann {0:0.#} GB Arbeitsspeicher nutzen. Ob 4 GB eingebaut sind, lässt sich so nicht sicher sagen, weil die Firmware einen Teil reserviert.</value></data>
+  <data name="Workshop.Req.Ram.Unknown" xml:space="preserve"><value>Die Größe des Arbeitsspeichers ist unbekannt.</value></data>
+  <data name="Workshop.Req.Storage.Pass" xml:space="preserve"><value>Der größte interne Datenträger hat {0:0} GB (mindestens 64 GB erforderlich).</value></data>
+  <data name="Workshop.Req.Storage.Fail" xml:space="preserve"><value>Der größte interne Datenträger hat nur {0:0.#} GB; Windows 11 verlangt mindestens 64 GB.</value></data>
+  <data name="Workshop.Req.Storage.Borderline" xml:space="preserve"><value>Der größte interne Datenträger hat {0:0.#} GB und liegt damit an der 64-GB-Grenze; das Setup könnte ihn ablehnen.</value></data>
+  <data name="Workshop.Req.Storage.Unknown" xml:space="preserve"><value>Es wurde kein interner Datenträger erkannt.</value></data>
+  <data name="Workshop.Req.Firmware.Pass" xml:space="preserve"><value>Das System startet im UEFI-Modus.</value></data>
+  <data name="Workshop.Req.Firmware.Fail" xml:space="preserve"><value>Das System startet im BIOS-Modus (Legacy/CSM); Windows 11 verlangt UEFI.</value></data>
+  <data name="Workshop.Req.Firmware.Unknown" xml:space="preserve"><value>Der Firmware-Typ (BIOS oder UEFI) ist unbekannt.</value></data>
+  <data name="Workshop.Req.SecureBoot.PassOn" xml:space="preserve"><value>Secure Boot wird unterstützt und ist eingeschaltet.</value></data>
+  <data name="Workshop.Req.SecureBoot.PassOff" xml:space="preserve"><value>Secure Boot wird unterstützt, ist aber ausgeschaltet. Für Windows 11 genügt die Unterstützung.</value></data>
+  <data name="Workshop.Req.SecureBoot.Fail" xml:space="preserve"><value>Secure Boot ist im BIOS-Modus nicht verfügbar; Windows 11 verlangt ein Secure-Boot-fähiges UEFI.</value></data>
+  <data name="Workshop.Req.SecureBoot.Unknown" xml:space="preserve"><value>Ob Secure Boot unterstützt wird, ist unbekannt (ohne Administratorrechte nicht lesbar).</value></data>
+  <data name="Workshop.Req.Tpm.Pass" xml:space="preserve"><value>TPM {0} ist vorhanden.</value></data>
+  <data name="Workshop.Req.Tpm.FailMissing" xml:space="preserve"><value>Windows findet kein TPM. Prüfen Sie im BIOS/UEFI, ob ein Firmware-TPM (Intel PTT, AMD fTPM) ausgeschaltet ist.</value></data>
+  <data name="Workshop.Req.Tpm.FailVersion" xml:space="preserve"><value>Das TPM hat nur die Version {0}; Windows 11 verlangt TPM 2.0.</value></data>
+  <data name="Workshop.Req.Tpm.FailDisabled" xml:space="preserve"><value>Das TPM ist im BIOS/UEFI deaktiviert. Mit dem Aktivieren ist die Anforderung erfüllt.</value></data>
+  <data name="Workshop.Req.Tpm.Unknown" xml:space="preserve"><value>Der TPM-Status ist unbekannt (ohne Administratorrechte nicht vollständig lesbar).</value></data>
+  <data name="Workshop.Req.Graphics.NotChecked" xml:space="preserve"><value>DirectX-12-Unterstützung und WDDM-2.0-Treiber wurden nicht geprüft.</value></data>
+  <data name="Workshop.Data.Nothing" xml:space="preserve"><value>Es liegen keine verwertbaren Hardwaredaten vor.</value></data>
+  <data name="Workshop.Data.Incomplete" xml:space="preserve"><value>Einige Quellen konnten nicht gelesen werden ({0}); die betroffenen Ergebnisse sind als unbekannt gekennzeichnet.</value></data>
+  <data name="Workshop.Data.NotElevated" xml:space="preserve"><value>Bootrix läuft ohne Administratorrechte. TPM-Status, BitLocker und Secure Boot lassen sich so nur teilweise ermitteln. Starten Sie die Analyse für ein vollständiges Ergebnis als Administrator.</value></data>
+  <data name="Workshop.Cpu.NoModernInstructions" xml:space="preserve"><value>Dem Prozessor fehlen {0}. Nach Berichten aus der Community startet Windows 11 ab Version 24H2 auf solchen Prozessoren nicht (von Microsoft nicht bestätigt); ein Bypass der Setup-Prüfungen ändert daran nichts. Empfohlen wird deshalb Windows 10 22H2 mit erweiterten Sicherheitsupdates oder Linux.</value></data>
+  <data name="Workshop.Cpu.Arm64" xml:space="preserve"><value>Arm64-Gerät: Das Image muss für Arm64 sein. Treiber für WLAN, Speicher und Touch kommen in der Regel nur vom Gerätehersteller, und x64-Werkzeuge laufen nur per Emulation.</value></data>
+  <data name="Workshop.Cpu.Arm32" xml:space="preserve"><value>Dieses Gerät hat einen 32-Bit-Arm-Prozessor; dafür gibt es keine Windows-Installationsmedien.</value></data>
+  <data name="Workshop.Cpu.Only32Bit" xml:space="preserve"><value>Der Prozessor kann nur 32-Bit-Code ausführen. Windows 11 ist nicht möglich; Windows 10 22H2 (x86) ist die letzte Windows-Version dafür.</value></data>
+  <data name="Workshop.Cpu.Running32Bit" xml:space="preserve"><value>Auf diesem 64-Bit-fähigen Prozessor läuft ein 32-Bit-Windows. Für die Neuinstallation wird ein x64-Image empfohlen.</value></data>
+  <data name="Workshop.Cpu.NewPlatform" xml:space="preserve"><value>Der Prozessor „{0}“ gehört vermutlich zur neuen Arm-Plattform, für die Microsoft Windows 11 26H1 vorgesehen hat. Ältere Versionen enthalten die Plattformunterstützung womöglich nicht (Hinweis, nicht gesichert); im Zweifel das Image des Geräteherstellers verwenden.</value></data>
+  <data name="Workshop.Boot.SecureBootSignedOnly" xml:space="preserve"><value>Secure Boot ist eingeschaltet: Es starten nur Medien, deren Boot-Manager die Firmware akzeptiert. Empfohlen wird FAT32 mit dem Original-Boot-Manager von Microsoft statt NTFS mit zusätzlichem Bootloader.</value></data>
+  <data name="Workshop.Boot.Certificate2023" xml:space="preserve"><value>Die Firmware hat die Windows Production PCA 2011 gesperrt: Es starten nur Boot-Manager, die mit der Windows UEFI CA 2023 signiert sind. Das Medium muss einen solchen Boot-Manager enthalten.</value></data>
+  <data name="Workshop.Boot.Certificate2011" xml:space="preserve"><value>Die Firmware kennt die Windows UEFI CA 2023 noch nicht: Es startet nur ein Boot-Manager mit der bisherigen Signatur (Windows Production PCA 2011).</value></data>
+  <data name="Workshop.Boot.BiosMode" xml:space="preserve"><value>Das System startet im BIOS-Modus: Das Medium bekommt eine MBR-Partitionstabelle.</value></data>
+  <data name="Workshop.Boot.BiosLargeDisk" xml:space="preserve"><value>Im BIOS-Modus mit MBR lassen sich nur 2 TB eines Datenträgers nutzen; „{0}“ ist größer. Für große Datenträger ist UEFI mit GPT nötig.</value></data>
+  <data name="Workshop.Licensing.EditionFromFirmware" xml:space="preserve"><value>Der Lizenzschlüssel in der Firmware gehört zur Edition „{0}“. Das Windows-Setup wählt diese Edition mit dem Schlüssel selbst aus.</value></data>
+  <data name="Workshop.Licensing.EditionFromRunning" xml:space="preserve"><value>Es wird die Edition des laufenden Windows vorgeschlagen („{0}“); ein Firmware-Schlüssel bestätigt sie nicht.</value></data>
+  <data name="Workshop.Licensing.EditionUnknown" xml:space="preserve"><value>Das Gerät hat einen Lizenzschlüssel in der Firmware, die zugehörige Edition konnte aber nicht eindeutig bestimmt werden.</value></data>
+  <data name="Workshop.Licensing.NoFirmwareKey" xml:space="preserve"><value>Kein Lizenzschlüssel in der Firmware gefunden. Das laufende Windows kann trotzdem digital lizenziert sein.</value></data>
+  <data name="Workshop.BitLocker.Active" xml:space="preserve"><value>BitLocker ist auf {0} aktiv oder ausgesetzt. Sichern Sie vor der Neuinstallation den Wiederherstellungsschlüssel; nach Änderungen an Firmware oder Startreihenfolge wird er abgefragt.</value></data>
+  <data name="Workshop.BitLocker.Locked" xml:space="preserve"><value>Das Laufwerk {0} ist durch BitLocker gesperrt. Ohne Wiederherstellungsschlüssel sind die Daten nicht lesbar.</value></data>
+  <data name="Workshop.BitLocker.Unknown" xml:space="preserve"><value>Der BitLocker-Status ist unbekannt (Administratorrechte nötig).</value></data>
+  <data name="Workshop.Machine.Virtual" xml:space="preserve"><value>Dies ist eine virtuelle Maschine ({0}). TPM, Secure Boot und Firmware-Modus hängen von der Konfiguration der VM ab.</value></data>
+  <data name="Workshop.Machine.HyperVGeneration1" xml:space="preserve"><value>Hyper-V-VM der Generation 1 (BIOS): Für Windows 11 ist eine Generation-2-VM mit UEFI und virtuellem TPM vorgesehen.</value></data>
+  <data name="Workshop.Machine.ServerHardware" xml:space="preserve"><value>Das Gerät ist Server-Hardware. RAID- und Netzwerktreiber stammen vom Serverhersteller; halten Sie dessen Treiberpaket bereit. Hersteller geben Server-Hardware in der Regel nicht für Windows 11 frei.</value></data>
+  <data name="Workshop.Machine.RunningServer" xml:space="preserve"><value>Auf dem Gerät läuft derzeit ein Windows Server.</value></data>
+  <data name="Workshop.Storage.NoDisk" xml:space="preserve"><value>Es wurde kein interner Datenträger erkannt. In Windows PE fehlt dafür möglicherweise ein Speichertreiber.</value></data>
+  <data name="Workshop.Lifecycle.RunningVersionEnding" xml:space="preserve"><value>Support-Ende von {0}: {1:d} (Home und Pro).</value></data>
+  <data name="Workshop.Windows10.EndOfSupport" xml:space="preserve"><value>Windows 10 22H2 hat seit dem 14.10.2025 keinen regulären Support mehr. Erweiterte Sicherheitsupdates (ESU) für Privatkunden laufen laut Microsoft bis zum 12.10.2027 und erfordern eine Anmeldung; die Bedingungen können je nach Region abweichen.</value></data>
+  <data name="Workshop.Alternative.Windows10" xml:space="preserve"><value>Alternative mit Microsoft-Support: Windows 10 22H2 mit erweiterten Sicherheitsupdates (ESU).</value></data>
+  <data name="Workshop.Alternative.Linux" xml:space="preserve"><value>Alternative: eine aktuelle Linux-Distribution; sie läuft auch auf älterer Hardware und wird laufend aktualisiert.</value></data>
+  <data name="Workshop.Bypass.Unsupported" xml:space="preserve"><value>Ein Windows 11 mit umgangenen Setup-Prüfungen ist von Microsoft nicht unterstützt; Updates sind nicht garantiert.</value></data>
+  <data name="Workshop.Driver.IntelVmd" xml:space="preserve"><value>Intel Volume Management Device „{0}“ ({1}): Das Windows-Setup findet ohne den Intel-RST/VMD-Treiber (iaStorVD) möglicherweise keine Laufwerke. Binden Sie den Treiber in das Setup-Medium ein.</value></data>
+  <data name="Workshop.Driver.IntelRstRaid" xml:space="preserve"><value>Der Speichercontroller „{0}“ ({1}) arbeitet im RAID-Modus (Intel RST). Das Windows-Setup findet ohne den Intel-RST-Treiber möglicherweise keine Laufwerke. Binden Sie den Treiber ein oder stellen Sie das BIOS vor einer Neuinstallation auf AHCI um (eine vorhandene Installation startet danach nicht mehr).</value></data>
+  <data name="Workshop.Driver.AmdRaid" xml:space="preserve"><value>Der Speichercontroller „{0}“ ({1}) arbeitet im AMD-RAID-Modus. Das Windows-Setup findet ohne den AMD-RAID-Treiber möglicherweise keine Laufwerke.</value></data>
+  <data name="Workshop.Driver.HardwareRaid" xml:space="preserve"><value>RAID-Controller „{0}“ ({1}): Halten Sie den Treiber des Herstellers bereit; Windows bringt nicht für jeden Controller einen mit.</value></data>
+  <data name="Workshop.Driver.VirtualStorage" xml:space="preserve"><value>Virtueller Speichercontroller „{0}“ ({1}): Windows enthält dafür keinen Treiber. Laden Sie ihn im Setup (virtio-win bzw. VMware-Treiber) oder wählen Sie einen anderen Controllertyp.</value></data>
+  <data name="Workshop.Driver.NetworkNoDriver" xml:space="preserve"><value>Für den Netzwerkadapter „{0}“ ({1}) ist derzeit kein funktionierender Treiber installiert (Fehlercode {2}). Stellen Sie den Treiber für die Neuinstallation bereit.</value></data>
+  <data name="Workshop.Driver.NetworkVendor" xml:space="preserve"><value>Der Netzwerkadapter „{0}“ ({1}) nutzt einen Treiber von {2}, der nicht zu Windows gehört. Im Setup oder in der Ersteinrichtung fehlt er möglicherweise; sichern Sie die Treiber dieses PCs.</value></data>
+  <data name="Workshop.Driver.NetworkVirtual" xml:space="preserve"><value>Virtueller Netzwerkadapter „{0}“ ({1}): Windows enthält dafür keinen Treiber (virtio-win bzw. VMware Tools).</value></data>
+  <data name="Workshop.Driver.WirelessNoDriver" xml:space="preserve"><value>Für den WLAN-Adapter „{0}“ ({1}) ist derzeit kein funktionierender Treiber installiert (Fehlercode {2}). Stellen Sie den Treiber für die Neuinstallation bereit.</value></data>
+  <data name="Workshop.Driver.WirelessVendor" xml:space="preserve"><value>Der WLAN-Adapter „{0}“ ({1}) nutzt einen Treiber von {2}, der nicht zu Windows gehört. Im Setup oder in der Ersteinrichtung fehlt er möglicherweise; sichern Sie die Treiber dieses PCs.</value></data>
+  <data name="Workshop.Capture.SecretsIncluded" xml:space="preserve"><value>Die Erfassung enthält Geheimnisse im Klartext (Schlüssel und Kennwörter). Speichern Sie sie nur verschlüsselt und drucken oder protokollieren Sie sie nicht.</value></data>
+  <data name="Workshop.Capture.WlanExportFiles" xml:space="preserve"><value>Die exportierten WLAN-Profile in „{0}“ enthalten die Schlüssel im Klartext. Löschen Sie die Dateien, sobald sie übernommen sind.</value></data>
+  <data name="Workshop.Capture.WlanKeysProtected" xml:space="preserve"><value>Bei {0} WLAN-Profilen konnte der Schlüssel nicht im Klartext gelesen werden (Administratorrechte nötig).</value></data>
+  <data name="Workshop.Capture.ProductKeyMayBeGeneric" xml:space="preserve"><value>Der aus der Registry gelesene Windows-Schlüssel kann bei digitaler Lizenzierung ein generischer Installationsschlüssel sein; er ist dann auf anderer Hardware nicht nutzbar.</value></data>
+  <data name="Workshop.Capture.RecoveryKeyUnavailable" xml:space="preserve"><value>Für {0} konnte kein Wiederherstellungskennwort gelesen werden (Laufwerk gesperrt, kein Kennwortschutz oder fehlende Rechte).</value></data>
+
   <data name="Error.Canceled.Cause" xml:space="preserve"><value>Der Vorgang wurde abgebrochen.</value></data>
   <data name="Error.Canceled.Action" xml:space="preserve"><value>Starten Sie den Vorgang erneut, wenn Sie ihn fortsetzen möchten.</value></data>
   <data name="Error.InvalidSpec.Cause" xml:space="preserve"><value>Die Auftragsbeschreibung ist ungültig: {0}</value></data>
