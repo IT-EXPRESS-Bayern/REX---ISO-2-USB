@@ -101,16 +101,20 @@ internal sealed class SegmentWorker(
             var link = source.Link;
             try
             {
-                await FetchAsync(segment, link, buffer, cancellationToken).ConfigureAwait(false);
-                return true;
-            }
-            catch (LinkExpiredException ex)
-            {
-                log.LogDebug("Source {Index} answered {Status}; renewing the link", source.Index, ex.Message);
-                using var renewed = await renewer.RenewAsync(source, link.Generation, cancellationToken).ConfigureAwait(false);
-                if (renewed is { RangeSupported: false })
+                try
                 {
-                    throw new ContentChangedException("the server stopped honouring range requests");
+                    await FetchAsync(segment, link, buffer, cancellationToken).ConfigureAwait(false);
+                    return true;
+                }
+                catch (LinkExpiredException ex)
+                {
+                    // A failure while renewing is handled like any other transient failure below.
+                    log.LogDebug("Source {Index} answered {Status}; renewing the link", source.Index, ex.Message);
+                    using var renewed = await renewer.RenewAsync(source, link.Generation, cancellationToken).ConfigureAwait(false);
+                    if (renewed is { RangeSupported: false })
+                    {
+                        throw new ContentChangedException("the server stopped honouring range requests");
+                    }
                 }
             }
             catch (TransientDownloadException ex)

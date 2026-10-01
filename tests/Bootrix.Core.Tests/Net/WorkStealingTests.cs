@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-using System.Diagnostics;
 using Bootrix.Core.Net;
 using Bootrix.Core.Tests.Net.Support;
 using static Bootrix.Core.Tests.Net.Support.DownloadTestSupport;
@@ -19,21 +18,25 @@ public class WorkStealingTests
 
         // Without stealing the first quarter would need 2 MiB at 300 kB/s, about seven seconds.
         server.Script = info => IsFirstSegment(info) ? Fault.Throttle(300_000) : Fault.None;
-        var clock = Stopwatch.StartNew();
 
         await DownloadTestSupport.Downloader().DownloadAsync(
             new DownloadRequest(server.FileUri) { Options = FastOptions(maxSegments: 4) },
             dir.File("a.bin"));
 
         Assert.Equal(content, await File.ReadAllBytesAsync(dir.File("a.bin")));
-        Assert.True(clock.Elapsed < TimeSpan.FromSeconds(4), $"took {clock.Elapsed}, stealing did not help");
 
+        // What the slow connection sent is the proof, not the wall clock: it was cut short because the idle
+        // connections took its second half (and then more of the rest), so it never delivered its whole range.
         var firstQuarter = content.Length / 4;
         var steals = server.Requests.Where(r => r.RangeStart > 0 && r.RangeStart < firstQuarter).ToList();
         Assert.NotEmpty(steals);
 
-        var slow = server.Requests.Single(r => r is { RangeStart: 0, RangeEnd: > 0 });
-        Assert.True(slow.BytesSent < firstQuarter, "the slow connection should have been dropped once its tail was taken");
+        // The server notices the dropped connection a moment after the download has finished.
+        RequestRecord? slow = null;
+        Assert.True(
+            await EventuallyAsync(() => (slow = server.Requests.Where(r => r is { RangeStart: 0, RangeEnd: > 0 }).OrderBy(r => r.Index).FirstOrDefault()) is not null),
+            "the slow request was never completed on the server");
+        Assert.True(slow!.BytesSent <= firstQuarter / 2 + 64 * 1024, $"the slow connection delivered {slow.BytesSent} bytes");
     }
 
     [Fact]

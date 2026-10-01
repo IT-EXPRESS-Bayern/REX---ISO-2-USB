@@ -37,7 +37,8 @@ internal sealed class DownloadPlan : IDisposable
         var length = ranged ? rangeCapable[0].Probe!.Length : probed[0].Probe!.Length;
         var chosen = ranged ? rangeCapable.Where(p => p.Probe!.Length == length).ToList() : [probed[0]];
 
-        if (request.ExpectedSize is { } expected && length is { } announced && expected != announced)
+        var expectedLength = request.ExpectedSize ?? (request.Pieces.Count > 0 ? request.Pieces[^1].End : null);
+        if (expectedLength is { } expected && length is { } announced && expected != announced)
         {
             foreach (var source in probed)
             {

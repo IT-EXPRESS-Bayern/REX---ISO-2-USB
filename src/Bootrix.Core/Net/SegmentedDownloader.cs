@@ -75,7 +75,7 @@ public sealed class SegmentedDownloader
                 DownloadStateFile.Delete(DownloadStateFile.PathFor(destination));
                 throw;
             }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or TransientDownloadException or LinkExpiredException or HttpRequestException)
             {
                 throw new BootrixException(ErrorCode.DownloadFailed, ex.Message, ex) { Arguments = [ex.Message] };
             }

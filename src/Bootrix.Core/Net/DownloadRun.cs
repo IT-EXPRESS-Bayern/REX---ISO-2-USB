@@ -38,6 +38,11 @@ internal sealed class DownloadRun(
         try
         {
             hashes = await HashAsync(transfer, cancellationToken).ConfigureAwait(false);
+            if (!plan.Ranged)
+            {
+                await CheckPiecesAsync(transfer, cancellationToken).ConfigureAwait(false);
+            }
+
             RandomAccess.FlushToDisk(transfer.File);
         }
         finally
@@ -125,8 +130,9 @@ internal sealed class DownloadRun(
                 {
                     await SaveStateAsync(CancellationToken.None).ConfigureAwait(false);
                 }
-                catch (IOException ex)
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
                 {
+                    // Must not hide the reason the transfer ended.
                     log.LogWarning(ex, "Could not write the resume file");
                 }
             }
@@ -301,6 +307,23 @@ internal sealed class DownloadRun(
         }
 
         return await FileHasher.ComputeAsync(transfer.File, transfer.Length, kinds, OnProgress, cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <summary>A segmented download checks pieces as it goes; a single stream is checked once it is complete.</summary>
+    private async Task CheckPiecesAsync(Transfer transfer, CancellationToken cancellationToken)
+    {
+        if (request.Pieces.Count == 0)
+        {
+            return;
+        }
+
+        var failed = await new PieceVerifier(request.Pieces, transfer.File).VerifyAllCoveredAsync(_ => true, cancellationToken).ConfigureAwait(false);
+        if (failed.Count > 0)
+        {
+            transfer.File.Dispose();
+            Discard();
+            throw new BootrixException(ErrorCode.DownloadHashMismatch, $"{failed.Count} piece(s) do not match their digests, the first at offset {request.Pieces[failed[0]].Offset}");
+        }
     }
 
     private void CheckAgainstExpectations(Transfer transfer, IReadOnlyList<FileHash> hashes)

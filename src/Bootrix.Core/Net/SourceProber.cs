@@ -17,7 +17,23 @@ internal sealed class SourceProber(HttpClient http, DownloadRequest request, Tim
     /// </summary>
     public async Task<IReadOnlyList<ProbedSource>> ProbeAllAsync(CancellationToken cancellationToken)
     {
-        var attempts = await Task.WhenAll(request.Sources.Select((_, index) => ProbeSourceAsync(index, cancellationToken))).ConfigureAwait(false);
+        var tasks = request.Sources.Select((_, index) => ProbeSourceAsync(index, cancellationToken)).ToList();
+
+        ProbedSource[] attempts;
+        try
+        {
+            attempts = await Task.WhenAll(tasks).ConfigureAwait(false);
+        }
+        catch
+        {
+            // A probe that finished before another one was cancelled may hold an open response.
+            foreach (var task in tasks.Where(t => t.IsCompletedSuccessfully))
+            {
+                task.Result.Probe?.Dispose();
+            }
+
+            throw;
+        }
 
         var answered = attempts.Where(a => a.Probe is not null).ToList();
         foreach (var failed in attempts.Where(a => a.Probe is null))

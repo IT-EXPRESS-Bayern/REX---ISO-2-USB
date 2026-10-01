@@ -88,7 +88,7 @@ internal sealed class TransferReporter(
         {
             await saveState!(cancellationToken).ConfigureAwait(false);
         }
-        catch (IOException ex)
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
             // A missed save only means a little more is repeated after an interruption.
             log.LogWarning(ex, "Could not write the resume file");

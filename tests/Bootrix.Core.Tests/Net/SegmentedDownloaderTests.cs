@@ -63,7 +63,7 @@ public class SegmentedDownloaderTests
 
         Assert.Equal(content, await File.ReadAllBytesAsync(dir.File("a.bin")));
         Assert.Equal(Sha256Hex(content), result.Sha256);
-        Assert.Equal(1, server.PeakConcurrency);
+        Assert.Equal(1, server.RequestCount);
     }
 
     [Fact]

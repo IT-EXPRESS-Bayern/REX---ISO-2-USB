@@ -14,19 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Using Include="Xunit" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="Net\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="..\..\src\Bootrix.Core\Bootrix.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Bootrix.Core\Bootrix.Core.csproj" />
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="Net\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

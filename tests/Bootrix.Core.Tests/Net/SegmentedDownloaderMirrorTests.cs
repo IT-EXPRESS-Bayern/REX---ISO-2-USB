@@ -204,6 +204,39 @@ public class SegmentedDownloaderMirrorTests
     }
 
     [Fact]
+    public async Task SingleStreamDownloadChecksPiecesAfterwards()
+    {
+        var content = RandomBytes(4 * MiB);
+        using var dir = new TempDirectory();
+        await using var server = await FileServer.StartAsync(content);
+        server.SupportsRanges = false;
+        var request = new DownloadRequest(server.FileUri) { Options = FastOptions(), Pieces = PiecesOf(content, MiB) };
+
+        await Downloader().DownloadAsync(request, dir.File("good.bin"));
+        Assert.Equal(content, await File.ReadAllBytesAsync(dir.File("good.bin")));
+
+        server.Content = RandomBytes(4 * MiB, seed: 5);
+        var ex = await Assert.ThrowsAsync<BootrixException>(() => Downloader().DownloadAsync(request, dir.File("bad.bin")));
+
+        Assert.Equal(ErrorCode.DownloadHashMismatch, ex.Code);
+        Assert.Equal(["good.bin"], Directory.GetFiles(dir.Path).Select(Path.GetFileName));
+    }
+
+    [Fact]
+    public async Task PieceListThatDisagreesWithTheServerLengthIsRejected()
+    {
+        var content = RandomBytes(4 * MiB);
+        using var dir = new TempDirectory();
+        await using var server = await FileServer.StartAsync(RandomBytes(3 * MiB));
+        var request = new DownloadRequest(server.FileUri) { Options = FastOptions(), Pieces = PiecesOf(content, MiB) };
+
+        var ex = await Assert.ThrowsAsync<BootrixException>(() => Downloader().DownloadAsync(request, dir.File("a.bin")));
+
+        Assert.Equal(ErrorCode.DownloadFailed, ex.Code);
+        Assert.Equal(1, server.RequestCount);
+    }
+
+    [Fact]
     public async Task PiecesThatDoNotCoverTheAnnouncedSizeAreRejectedUpFront()
     {
         var content = RandomBytes(4 * MiB);

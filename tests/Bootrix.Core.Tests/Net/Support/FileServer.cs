@@ -131,15 +131,22 @@ internal sealed class FileServer : IAsyncDisposable
 
     private async Task ServeAsync(HttpContext context, string path)
     {
-        var current = Interlocked.Increment(ref _concurrent);
-        int peak;
-        while (current > (peak = Volatile.Read(ref _peak)) && Interlocked.CompareExchange(ref _peak, current, peak) != peak)
+        var (rangeStart, rangeEnd) = ParseRange(context.Request.Headers.Range.ToString());
+
+        // The one-byte probe is over before any segment starts; counting it would make the server's own
+        // handler teardown look like a second connection.
+        var counted = !(rangeStart == 0 && rangeEnd == 0);
+        if (counted)
         {
+            var current = Interlocked.Increment(ref _concurrent);
+            int peak;
+            while (current > (peak = Volatile.Read(ref _peak)) && Interlocked.CompareExchange(ref _peak, current, peak) != peak)
+            {
+            }
         }
 
         try
         {
-            var (rangeStart, rangeEnd) = ParseRange(context.Request.Headers.Range.ToString());
             var ifRange = context.Request.Headers.IfRange.ToString();
             var info = new RequestInfo(Interlocked.Increment(ref _counter), path, rangeStart, rangeEnd, ifRange.Length > 0);
             var fault = Script?.Invoke(info) ?? Fault.None;
@@ -208,7 +215,10 @@ internal sealed class FileServer : IAsyncDisposable
         }
         finally
         {
-            Interlocked.Decrement(ref _concurrent);
+            if (counted)
+            {
+                Interlocked.Decrement(ref _concurrent);
+            }
         }
     }
 

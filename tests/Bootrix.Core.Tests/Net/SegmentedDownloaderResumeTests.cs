@@ -329,7 +329,12 @@ public class SegmentedDownloaderResumeTests
         var result = await Downloader.DownloadAsync(request, path);
 
         Assert.Equal(content, await File.ReadAllBytesAsync(path));
-        Assert.Contains(server.Requests, r => r.Index > marker && r.RangeStart == intact.Offset);
+        // The segment around the bad piece may start earlier (a neighbouring gap is merged with it), but it has to reach the flipped byte.
+        var flipped = intact.Offset + 1000;
+        var secondRun = server.Requests.Where(r => r.Index > marker).OrderBy(r => r.Index).ToList();
+        Assert.True(
+            secondRun.Any(r => r.RangeStart <= flipped && flipped <= r.RangeEnd),
+            $"flipped byte {flipped}, saved {string.Join(" ", saved)}, second run asked for {string.Join(" ", secondRun.Select(r => r.RangeStart + "-" + r.RangeEnd))}");
         Assert.True(result.ResumedBytes > 0);
     }
 

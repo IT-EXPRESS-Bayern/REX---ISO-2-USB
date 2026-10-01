@@ -127,6 +127,12 @@ public sealed class GpgHome : IDisposable
 
     private static bool ProbeGpg()
     {
+        // Gpg4win and the copy in Git for Windows differ in agent handling and paths; the Linux runs are the reference.
+        if (OperatingSystem.IsWindows())
+        {
+            return false;
+        }
+
         try
         {
             using var process = Process.Start(new ProcessStartInfo("gpg", "--version") { RedirectStandardOutput = true, RedirectStandardError = true });

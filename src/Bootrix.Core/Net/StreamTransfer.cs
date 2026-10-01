@@ -38,22 +38,27 @@ internal sealed class StreamTransfer(
                 var link = source.Link;
                 try
                 {
-                    response ??= await OpenAsync(link, cancellationToken).ConfigureAwait(false);
-                    counter.Enter();
                     try
                     {
-                        return await CopyAsync(response, buffer, cancellationToken).ConfigureAwait(false);
+                        response ??= await OpenAsync(link, cancellationToken).ConfigureAwait(false);
+                        counter.Enter();
+                        try
+                        {
+                            return await CopyAsync(response, buffer, cancellationToken).ConfigureAwait(false);
+                        }
+                        finally
+                        {
+                            counter.Leave();
+                        }
                     }
-                    finally
+                    catch (LinkExpiredException)
                     {
-                        counter.Leave();
+                        // A failure while renewing is handled like any other transient failure below.
+                        response?.Dispose();
+                        response = null;
+                        var renewed = await renewer.RenewAsync(source, link.Generation, cancellationToken).ConfigureAwait(false);
+                        response = renewed?.Body;
                     }
-                }
-                catch (LinkExpiredException)
-                {
-                    response?.Dispose();
-                    var renewed = await renewer.RenewAsync(source, link.Generation, cancellationToken).ConfigureAwait(false);
-                    response = renewed?.Body;
                 }
                 catch (TransientDownloadException ex)
                 {

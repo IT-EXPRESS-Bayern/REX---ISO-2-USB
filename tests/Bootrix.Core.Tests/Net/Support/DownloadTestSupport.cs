@@ -40,6 +40,23 @@ internal static class DownloadTestSupport
         return data;
     }
 
+    /// <summary>Polls until the condition holds; for effects that happen on the server a moment after the client is done.</summary>
+    public static async Task<bool> EventuallyAsync(Func<bool> condition, int timeoutMilliseconds = 5000)
+    {
+        var deadline = Environment.TickCount64 + timeoutMilliseconds;
+        while (!condition())
+        {
+            if (Environment.TickCount64 > deadline)
+            {
+                return false;
+            }
+
+            await Task.Delay(10);
+        }
+
+        return true;
+    }
+
     public static string Sha256Hex(byte[] data) => Digest(HashAlgorithmName.SHA256, data);
 
     public static string Digest(HashAlgorithmName algorithm, ReadOnlySpan<byte> data)

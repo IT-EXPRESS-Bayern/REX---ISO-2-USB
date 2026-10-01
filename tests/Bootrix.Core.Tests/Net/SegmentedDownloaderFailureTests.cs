@@ -146,6 +146,43 @@ public class SegmentedDownloaderFailureTests
     }
 
     [Fact]
+    public async Task TransientFailureWhileRenewingTheLinkIsRetried()
+    {
+        var content = RandomBytes(6 * MiB);
+        using var dir = new TempDirectory();
+        await using var server = await FileServer.StartAsync(content);
+        server.ValidTokens.Add("t1");
+        var expired = 0;
+        var probeFailed = 0;
+        server.Script = info =>
+        {
+            if (info.Index == 3 && Interlocked.Exchange(ref expired, 1) == 0)
+            {
+                server.ValidTokens.Clear();
+                server.ValidTokens.Add("t2");
+            }
+
+            // The renewal probe (the next one-byte range request after the initial one) fails once with a server error.
+            if (info is { RangeStart: 0, RangeEnd: 0, Index: > 1 } && Interlocked.Exchange(ref probeFailed, 1) == 0)
+            {
+                return Fault.Status(503);
+            }
+
+            return info.Index <= 5 ? Fault.AbortAfter(512 * 1024) : Fault.None;
+        };
+        var request = new DownloadRequest(new Uri(server.BaseAddress, "/signed?token=t1"))
+        {
+            Options = FastOptions(),
+            LinkResolver = _ => Task.FromResult(new Uri(server.BaseAddress, "/signed?token=t2")),
+        };
+
+        await Downloader().DownloadAsync(request, dir.File("a.bin"));
+
+        Assert.Equal(content, await File.ReadAllBytesAsync(dir.File("a.bin")));
+        Assert.Equal(1, probeFailed);
+    }
+
+    [Fact]
     public async Task ExpiredLinkAtTheStartIsRenewedBeforeDownloading()
     {
         var content = RandomBytes(3 * MiB);
