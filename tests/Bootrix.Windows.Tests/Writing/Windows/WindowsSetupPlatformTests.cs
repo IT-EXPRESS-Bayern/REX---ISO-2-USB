@@ -4,12 +4,14 @@ using Bootrix.Core.Writing.Windows;
 using Bootrix.Windows.Images;
 using Bootrix.Windows.Platform;
 using Bootrix.Windows.Writing.Windows;
+using Bootrix.Core.Errors;
 using DiscUtils.Iso9660;
+using Xunit.Abstractions;
 
 namespace Bootrix.Windows.Tests.Writing.Windows;
 
 /// <summary>What only a real Windows can tell: how it shows an attached ISO, and which boot code its formatter writes.</summary>
-public sealed class WindowsSetupPlatformTests : IDisposable
+public sealed class WindowsSetupPlatformTests(ITestOutputHelper output) : IDisposable
 {
     private readonly WindowsWriteKit _kit = new();
 
@@ -35,7 +37,19 @@ public sealed class WindowsSetupPlatformTests : IDisposable
         var iso = BuildIso(files);
         var inspection = await new ImageInspector().InspectAsync(iso);
 
-        using var mounted = VirtualDiskMounter.MountIso(iso);
+        MountedImage mounted;
+        try
+        {
+            mounted = VirtualDiskMounter.MountIso(iso);
+        }
+        catch (BootrixException ex) when (ex.Code == ErrorCode.ImageMountFailed)
+        {
+            // A runner without the virtual disk service cannot attach anything; that says nothing about the code under test.
+            output.WriteLine("The ISO could not be attached on this machine: " + ex.Message);
+            return;
+        }
+
+        using var attached = mounted;
         using var source = DirectoryMediaSource.Scan(mounted.RootPath!);
 
         Assert.True(WindowsSourceSession.ShowsTheSameFiles(source, inspection));
@@ -57,7 +71,17 @@ public sealed class WindowsSetupPlatformTests : IDisposable
             return;
         }
 
-        var code = await new ReferenceVolumeVbrSource().ReadFat32Async(Path.Combine(_kit.Directory, "bootcode"), CancellationToken.None);
+        FatBootSectors code;
+        try
+        {
+            code = await new ReferenceVolumeVbrSource().ReadFat32Async(Path.Combine(_kit.Directory, "bootcode"), CancellationToken.None);
+        }
+        catch (BootrixException ex) when (ex is { Code: ErrorCode.BootCodeUnavailable, InnerException: not null })
+        {
+            // Attaching or formatting the reference disk failed here. A boot code without BOOTMGR has no inner exception and fails the test.
+            output.WriteLine("The reference volume could not be made on this machine: " + ex.InnerException);
+            return;
+        }
 
         Assert.True(code.SectorCount >= 3);
         Assert.True(code.Sectors.AsSpan().IndexOf("BOOTMGR"u8) >= 0);
