@@ -76,6 +76,7 @@ public class FatFormatterToolTests
 
         FatVerifier.MtoolsRoundTrip(image.Path);
         FatVerifier.Fsck(image.Path);
+        FatVerifier.DiscUtilsAgrees(image.Path, result.Layout);
     }
 
     [RequiresToolFact("fsck.vfat", "mcopy", "mdir")]
@@ -332,6 +333,39 @@ public class FatFormatterToolTests
             });
         }
 
+        FatVerifier.Fsck(image.Path);
+    }
+
+    [RequiresToolTheory("fsck.vfat")]
+    [InlineData(16, 512, 512)]
+    [InlineData(32, 512, 512)]
+    [InlineData(32, 512, 1536)]
+    [InlineData(32, 4096, 4096)]
+    public void Format_WithForeignBootCode_StaysAValidVolume(int type, int bytesPerSector, int bootCodeBytes)
+    {
+        const long bytes = 300 * Mib;
+        var code = new byte[bootCodeBytes];
+        new Random(5).NextBytes(code);
+        code[0] = 0xEB;
+        code[1] = type == 32 ? (byte)0x58 : (byte)0x3C;
+        code[2] = 0x90;
+
+        using var image = new TempImage(bytes);
+        using (var stream = image.Open())
+        {
+            FatFormatter.Format(stream, new FatFormatOptions
+            {
+                TotalBytes = bytes,
+                BytesPerSector = bytesPerSector,
+                Type = (FatType)type,
+                BootCode = code,
+                Label = "BOOTCODE",
+                AssumeZeroed = true,
+            });
+        }
+
+        FatVerifier.Fsck(image.Path);
+        FatVerifier.MtoolsRoundTrip(image.Path);
         FatVerifier.Fsck(image.Path);
     }
 

@@ -334,9 +334,9 @@ public static class FatGeometry
         }
 
         var minReserved = options.Type == FatType.Fat32 ? Fat32MinReserved : 1;
-        if (options.ReservedSectors is { } reserved && reserved < minReserved)
+        if (options.ReservedSectors is { } reserved && (reserved < minReserved || reserved > ushort.MaxValue))
         {
-            throw Invalid($"{reserved} reserved sectors are fewer than the {minReserved} this type needs");
+            throw Invalid($"{reserved} reserved sectors are outside {minReserved} to {ushort.MaxValue}");
         }
 
         if (options.Type == FatType.Fat32 && options.RootEntries is > 0)

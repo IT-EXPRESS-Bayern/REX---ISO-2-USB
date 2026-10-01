@@ -281,6 +281,7 @@ public class FatGeometryTests
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, SectorsPerCluster = 3 }));
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, SectorsPerCluster = 256 }));
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, Type = FatType.Fat32, ReservedSectors = 4 }));
+        Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, Type = FatType.Fat32, ReservedSectors = 70_000 }));
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, MediaDescriptor = 0x10 }));
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 1 * Gib, OemName = "TOO LONG NAME" }));
         Assert.Throws<BootrixException>(() => FatGeometry.Compute(new FatFormatOptions { TotalBytes = 4 * Tib }));

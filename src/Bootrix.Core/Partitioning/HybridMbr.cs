@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 namespace Bootrix.Core.Partitioning;
 
-/// <summary>A GPT partition as the MBR half of a hybrid disk sees it.</summary>
-public sealed record HybridEntry(byte MbrType, long StartLba, long SectorCount, bool Active = false);
-
 /// <summary>
 /// Builds a hybrid MBR: a 0xEE entry covering the GPT structures plus up to three real entries that
 /// mirror GPT partitions, for BIOS-only software that cannot read GPT (DOS, old Boot Camp setups).

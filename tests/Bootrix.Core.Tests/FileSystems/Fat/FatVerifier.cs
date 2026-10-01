@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Globalization;
 using System.Text.RegularExpressions;
+using Bootrix.Core.FileSystems.Fat;
 using Bootrix.Core.Tests.Tooling;
 
 namespace Bootrix.Core.Tests.FileSystems.Fat;
@@ -74,6 +75,25 @@ internal static partial class FatVerifier
         }
 
         return fields;
+    }
+
+    /// <summary>DiscUtils parses the BPB on its own; it has to find the same type and geometry and be able to write a file.</summary>
+    public static void DiscUtilsAgrees(string imagePath, FatLayout layout)
+    {
+        using var stream = new FileStream(imagePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite, 4096, FileOptions.RandomAccess);
+        using var fs = new DiscUtils.Fat.FatFileSystem(stream);
+
+        Assert.Equal((int)layout.Type, (int)fs.FatVariant);
+        Assert.Equal(layout.SectorsPerCluster, fs.SectorsPerCluster);
+        Assert.Equal(layout.BytesPerSector, fs.SectorSize);
+        Assert.Equal(layout.ReservedSectors, fs.ReservedSectorCount);
+
+        using (var file = fs.OpenFile("DISCUTIL.TXT", FileMode.Create))
+        {
+            file.Write("written by DiscUtils"u8);
+        }
+
+        Assert.True(fs.FileExists("DISCUTIL.TXT"));
     }
 
     [GeneratedRegex(@"(\d+) data clusters")]
