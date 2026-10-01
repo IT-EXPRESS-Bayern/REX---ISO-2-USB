@@ -52,6 +52,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task PopOs() => Check(new PopOsProvider(Http), "popos", expectSigned: false);
 
     [LiveFact]
+    public Task ProxmoxVe() => Check(new ProxmoxProvider(Http), "proxmox-ve", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
