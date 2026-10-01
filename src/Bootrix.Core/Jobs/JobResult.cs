@@ -12,6 +12,9 @@ public enum JobOutcome
 
 public sealed record JobResult(JobOutcome Outcome, TimeSpan Duration, Exception? Error = null, string? FailedStep = null)
 {
+    /// <summary>Values the steps stored in the job context, such as the write report.</summary>
+    public IReadOnlyDictionary<string, object?> Values { get; init; } = new Dictionary<string, object?>();
+
     public bool Succeeded => Outcome == JobOutcome.Succeeded;
 
     public ErrorDescription? Describe(Localization.Localizer? localizer = null) =>

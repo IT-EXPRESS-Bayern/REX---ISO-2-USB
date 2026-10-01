@@ -82,6 +82,8 @@ public sealed class JobContext
 
     public void OnCleanup(IDisposable disposable) => OnCleanup(disposable.Dispose);
 
+    internal IReadOnlyDictionary<string, object?> Snapshot() => new Dictionary<string, object?>(_values);
+
     internal async Task RunCleanupsAsync()
     {
         while (_cleanups.TryPop(out var cleanup))

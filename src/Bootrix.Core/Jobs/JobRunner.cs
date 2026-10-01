@@ -83,17 +83,17 @@ public sealed class JobRunner(ILogger<JobRunner> logger, TimeProvider? timeProvi
             index = steps.Count - 1;
             var finished = Stopwatch.GetElapsedTime(started);
             logger.LogInformation("Job {JobId} finished in {Duration}", job.Id, finished);
-            return new JobResult(JobOutcome.Succeeded, finished);
+            return new JobResult(JobOutcome.Succeeded, finished) { Values = context.Snapshot() };
         }
         catch (OperationCanceledException ex) when (cancellationToken.IsCancellationRequested || abortToken.IsCancellationRequested)
         {
             logger.LogWarning("Job {JobId} canceled during step {Step}", job.Id, failedStep);
-            return new JobResult(JobOutcome.Canceled, Stopwatch.GetElapsedTime(started), ex, failedStep);
+            return new JobResult(JobOutcome.Canceled, Stopwatch.GetElapsedTime(started), ex, failedStep) { Values = context.Snapshot() };
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Job {JobId} failed during step {Step}", job.Id, failedStep);
-            return new JobResult(JobOutcome.Failed, Stopwatch.GetElapsedTime(started), ex, failedStep);
+            return new JobResult(JobOutcome.Failed, Stopwatch.GetElapsedTime(started), ex, failedStep) { Values = context.Snapshot() };
         }
         finally
         {
