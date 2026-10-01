@@ -42,3 +42,53 @@ damit sich jede Datei nachprüfen lässt.
 - SHA-256 x64: `ba853ee1e3fc5f5798581f02e8e066ba07a0a2375f0bf444fe981431fd508495`
 - SHA-256 arm64: `b34549c6eff728a2f2fe68903a9fde28d8ac717f1b521e7f38b1e4106320c992`
 - Die DLL liegt neben der Programmdatei und wird nicht in die Einzeldatei eingebettet; vor dem Laden wird der Hash geprüft.
+
+## freedos/
+
+FreeDOS-Startsektoren und die Programme für FreeDOS-Datenträger. Sie werden zur Laufzeit auf den Zielträger
+geschrieben (jeweils als eigenständige Programme, nicht mit Bootrix verbunden); Bootrix selbst linkt keinen
+dieser Codes.
+
+### Startsektoren: `fat12com.bin`, `fat16com.bin`, `fat32lba.bin`
+
+- Aus dem Quelltext gebaut: `tools/bootcode/freedos/boot.asm` (FAT12 und FAT16, je mit `-dISFAT12` bzw. `-dISFAT16`)
+  und `boot32lb.asm` (FAT32, LBA), unverändert aus https://github.com/FDOS/kernel, Tag `ke2043`
+  (Commit `4f7bdda16a84c416a82a2616aa67335ca4f2bd74`), Verzeichnis `boot/`.
+- Lizenz: GNU GPL, Version 2 oder (nach Wahl) jede spätere Version; Text in `freedos/COPYING.kernel.txt`.
+- Bauen und prüfen: `tools/bootcode/build.sh` (nasm 2.16), `tools/bootcode/build.sh --check` vergleicht mit den
+  eingecheckten Dateien. Die Übersetzung von `ke2043` ergibt dieselben Bytes wie der Startsektor, den `SYS.COM`
+  von FreeDOS 1.4 schreibt.
+- Die BPB-Felder und der Rest des Sektors kommen vom FAT-Formatter von Bootrix; die Dateien enthalten nur den Code.
+
+### Kernel und Kommandointerpreter
+
+- `KERNL386.SYS` (FAT32-fähig, ab 386), `KERNL86.SYS` (für 8086/286, FAT32-fähig): Paket `kernel.zip` der
+  FreeDOS-1.4-Distribution (Kernel 2043, Quelle https://github.com/FDOS/kernel). Lizenz: GNU GPL, Version 2
+  (`COPYING.kernel.txt`, `kernel.lsm`).
+- `COMMAND.COM`: FreeCOM 0.86a, Paket `freecom.zip` derselben Distribution (Quelle https://github.com/FDOS/freecom).
+  Lizenz: GNU GPL, Version 2 (`COPYING.freecom.txt`, `freecom.lsm`).
+- Herkunft: `FD14-LiteUSB.zip` (SHA-256 `857dcd2ebf9d3d094320154db5fb5b830acba6fb98f981a95a0ca7ab3350338b`, die vom
+  Projekt in `verify.txt` veröffentlichte Prüfsumme), Pfad `PACKAGES/BASE/kernel.zip` bzw. `freecom.zip` im Abbild
+  `FD14LITE.img`. `tools/bootcode/fetch-freedos.sh` lädt die Distribution, prüft die Summe und vergleicht die
+  entpackten Dateien Byte für Byte mit diesen.
+- Quelltexte: liegen in denselben Paketen unter `SOURCE/KERNEL/SOURCES.ZIP` und `SOURCE/FREECOM/SOURCES.ZIP`
+  (https://www.ibiblio.org/pub/micro/pc-stuff/freedos/files/repositories/1.4/base/kernel.zip und `freecom.zip`).
+- Der Kernel wird beim Schreiben im Konfigurationsbereich angepasst (Byte 0x0D, `FORCELBA`); das ist die
+  Einstellung, die das FreeDOS-eigene `SYS CONFIG` setzt.
+
+| Datei | SHA-256 |
+|---|---|
+| `freedos/fat12com.bin` | `0742aecaf453713e1895ee835143a133a6fb8f90374d1050e7064d6e4e290eeb` |
+| `freedos/fat16com.bin` | `39586cd0f55f7732791a990770163d4af9827623e418203921d6f23819b94cb5` |
+| `freedos/fat32lba.bin` | `eb86f238f70d559f3dc66d082fc55c8459c77b4fe9e2fa9d48c440cf4a7c9a74` |
+| `freedos/KERNL386.SYS` | `932c0c155701eddb7b902f7269a1b2ce31f5c82a6dc195172f2336d18a74e1fb` |
+| `freedos/KERNL86.SYS` | `f34a7483c575fcf2709d9a7d0bc3db81c6211c279530f9e1bf78576b9233924d` |
+| `freedos/COMMAND.COM` | `077808379e896476f7f69d62e6c8989d8fc23e8ef58d1c8492db1ac106784107` |
+
+## MS-DOS 8.0 (Startdiskette von Windows ME)
+
+Nichts davon liegt im Repository oder wird von Bootrix verteilt. Auf ausdrücklichen Wunsch des Benutzers lädt
+Bootrix `diskcopy.dll` zur Laufzeit vom Microsoft-Symbolserver
+(`https://msdl.microsoft.com/download/symbols/diskcopy.dll/54505118173000/diskcopy.dll`), prüft die Größe, den
+SHA-256 (`95fc0786f5bc0a6db5c0604b31ac18fbed0502a2c6858e5fb02a647983ae03c7`) und die Authenticode-Signatur von
+Microsoft und entnimmt die Dateien dem darin eingebetteten 1,44-MB-Diskettenabbild.
