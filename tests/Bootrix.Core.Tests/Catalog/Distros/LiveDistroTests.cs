@@ -46,6 +46,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task Kali() => Check(new KaliProvider(Http), "kali", expectSigned: true);
 
     [LiveFact]
+    public Task Manjaro() => Check(new ManjaroProvider(Http), "manjaro", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
