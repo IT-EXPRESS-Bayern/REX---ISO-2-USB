@@ -308,4 +308,29 @@
   <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Beenden Sie alle Bootrix-Fenster und starten Sie das Programm neu.</value></data>
   <data name="Error.MediaWriterUnavailable.Cause" xml:space="preserve"><value>Für dieses Image ({0}) gibt es in dieser Version von Bootrix noch keinen Schreibweg ({1}).</value></data>
   <data name="Error.MediaWriterUnavailable.Action" xml:space="preserve"><value>Versuchen Sie den Modus „Abbild 1:1 schreiben (DD)“, falls das Image dafür geeignet ist.</value></data>
+  <data name="Error.AnswerFileExists.Cause" xml:space="preserve"><value>Das Image enthält bereits eine Antwortdatei (autounattend.xml), die laut Auftrag nicht ersetzt werden darf.</value></data>
+  <data name="Error.AnswerFileExists.Action" xml:space="preserve"><value>Erlauben Sie das Ersetzen (das Original wird als autounattend.xml.original gesichert) oder verzichten Sie auf Optionen, die eine Antwortdatei brauchen.</value></data>
+  <data name="Error.DriverFolderRejected.Cause" xml:space="preserve"><value>Der Treiberordner „{0}“ kann nicht verwendet werden: {1}</value></data>
+  <data name="Error.DriverFolderRejected.Action" xml:space="preserve"><value>Wählen Sie einen Ordner, der nur entpackte Treiber (.inf, .sys, .cat) enthält, keine Programme und keine Verknüpfungen.</value></data>
+  <data name="Error.DriverInjectionFailed.Cause" xml:space="preserve"><value>Keiner der {0} Treiber konnte in das Windows-Image eingebunden werden ({1}).</value></data>
+  <data name="Error.DriverInjectionFailed.Action" xml:space="preserve"><value>Prüfen Sie, ob die Treiber signiert sind und zur Architektur des Images passen. Der Ordner $WinPEDriver$ auf dem Medium enthält die Treiber trotzdem.</value></data>
+  <data name="Error.BootManager2023Unavailable.Cause" xml:space="preserve"><value>Dieses Windows-Image enthält keine mit der Windows UEFI CA 2023 signierten Startdateien (Build {0}): {1}</value></data>
+  <data name="Error.BootManager2023Unavailable.Action" xml:space="preserve"><value>Verwenden Sie ein aktuelles Windows-11-Image (25H2 oder neuer) oder wählen Sie die bisherige Signatur (Windows Production PCA 2011).</value></data>
+  <data name="Error.BootManager2023Unverified.Cause" xml:space="preserve"><value>Die ausgetauschten Startdateien tragen nicht die Signatur der Windows UEFI CA 2023: {0}. Die ursprünglichen Dateien wurden wiederhergestellt.</value></data>
+  <data name="Error.BootManager2023Unverified.Action" xml:space="preserve"><value>Verwenden Sie ein unverändertes Original-Image von Microsoft oder wählen Sie die bisherige Signatur (Windows Production PCA 2011).</value></data>
+  <data name="Driver.Reject.NotFound" xml:space="preserve"><value>Der Ordner existiert nicht oder kann nicht gelesen werden.</value></data>
+  <data name="Driver.Reject.Root" xml:space="preserve"><value>Ein Laufwerks-Stammverzeichnis ist als Treiberordner zu allgemein.</value></data>
+  <data name="Driver.Reject.Link" xml:space="preserve"><value>Enthält eine Verknüpfung (Symlink oder Junction): {0}</value></data>
+  <data name="Driver.Reject.NotReadable" xml:space="preserve"><value>Ein Eintrag kann nicht gelesen werden: {0}</value></data>
+  <data name="Driver.Reject.NoDriver" xml:space="preserve"><value>Enthält keine Treiberbeschreibung (.inf).</value></data>
+  <data name="Driver.Reject.TooLarge" xml:space="preserve"><value>Die Treiber sind größer als {0}.</value></data>
+  <data name="Driver.Reject.TooManyFiles" xml:space="preserve"><value>Es sind mehr als {0} Dateien.</value></data>
+  <data name="Driver.Reject.TooDeep" xml:space="preserve"><value>Zu tief verschachtelt (mehr als {0} Ebenen): {1}</value></data>
+  <data name="Driver.Reject.BadName" xml:space="preserve"><value>Ungültiger Datei- oder Ordnername: {0}</value></data>
+  <data name="Driver.Reject.PathTooLong" xml:space="preserve"><value>Der Pfad ist zu lang: {0}</value></data>
+  <data name="Customization.EditionUnknown" xml:space="preserve"><value>Das Image enthält die Edition „{0}“ nicht (vorhanden: {1}).</value></data>
+  <data name="Boot2023.Reason.NoBootImage" xml:space="preserve"><value>boot.wim fehlt oder enthält kein Setup-Abbild.</value></data>
+  <data name="Boot2023.Reason.NoSourceFiles" xml:space="preserve"><value>boot.wim enthält \Windows\Boot\EFI_EX\bootmgfw_EX.efi nicht.</value></data>
+  <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>Auf dem Medium fehlt \EFI\BOOT\{0}.</value></data>
+  <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} ist keine gültige EFI-Datei.</value></data>
 </root>

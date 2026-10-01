@@ -107,6 +107,14 @@ public sealed record WindowsSetupOptions
     public BootCertificate BootCertificate { get; init; } = BootCertificate.Auto;
 
     public IReadOnlyList<string> DriverFolders { get; init; } = [];
+
+    /// <summary>
+    /// Also add the drivers to boot.wim (Setup) and install.wim with DISM. Off by default: the $WinPEDriver$ folder is
+    /// loaded by Setup and carried into the installed system, and the DISM route rewrites gigabytes on the stick.
+    /// </summary>
+    public bool InjectDriversIntoImages { get; init; }
+
+    public ExistingAnswerFilePolicy ExistingAnswerFile { get; init; } = ExistingAnswerFilePolicy.ReplaceAndKeepOriginal;
 }
 
 public sealed record VerifyOptions

@@ -336,29 +336,8 @@ public sealed class TinyBuilder
             context.Set("tiny.iso", options.IsoPath);
         }
 
-        private void ApplyRegistry(string mountDirectory, IReadOnlyList<RegistryChange> changes, CancellationToken cancellationToken)
-        {
-            foreach (var group in changes.GroupBy(c => c.Hive))
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                using var hive = owner._files.LoadHive(mountDirectory, group.Key);
-                foreach (var change in group)
-                {
-                    switch (change.Action)
-                    {
-                        case RegistryAction.SetValue:
-                            hive.SetValue(change.Key, change.Name!, change.Kind, change.Value!);
-                            break;
-                        case RegistryAction.DeleteKey:
-                            hive.DeleteKey(change.Key);
-                            break;
-                        case RegistryAction.DeleteValue:
-                            hive.DeleteValue(change.Key, change.Name!);
-                            break;
-                    }
-                }
-            }
-        }
+        private void ApplyRegistry(string mountDirectory, IReadOnlyList<RegistryChange> changes, CancellationToken cancellationToken) =>
+            RegistryChangeApplier.Apply(owner._files, mountDirectory, changes, cancellationToken);
 
         private string FindSourceImage()
         {
