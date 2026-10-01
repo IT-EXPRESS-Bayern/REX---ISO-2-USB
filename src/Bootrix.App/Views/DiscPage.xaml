@@ -1,0 +1,146 @@
+<Page x:Class="Bootrix.App.Views.DiscPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      Title="{loc:Loc Disc.Title}"
+      AllowDrop="True"
+      DragOver="OnDragOver"
+      Drop="OnDrop">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,16,32,32" MaxWidth="900" HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc Disc.Title}" FontTypography="Title" Margin="0,0,0,8" />
+            <ui:TextBlock Text="{loc:Loc Disc.Intro}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,20" />
+
+            <!-- Action -->
+            <ui:TextBlock Text="{loc:Loc Disc.Action}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <ComboBox MinWidth="360" HorizontalAlignment="Left" Margin="0,0,0,24"
+                      ItemsSource="{Binding Actions}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedAction}" />
+
+            <!-- Drives -->
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Text="{loc:Loc Disc.Drives}" FontTypography="Subtitle" VerticalAlignment="Center" />
+                <ui:Button Grid.Column="1" Content="{loc:Loc Write.Refresh}" Icon="{ui:SymbolIcon ArrowSync24}"
+                           Command="{Binding RefreshCommand}" />
+            </Grid>
+            <ui:TextBlock Text="{loc:Loc Disc.NoDrives}" Appearance="Secondary" Margin="0,0,0,16"
+                          Visibility="{Binding HasDrives, Converter={StaticResource InverseBoolToVisibility}}" />
+            <ItemsControl ItemsSource="{Binding Drives}" Margin="0,0,0,24">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="12" CornerRadius="6" Margin="0,0,0,6"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <CheckBox IsChecked="{Binding IsSelected}" IsEnabled="{Binding IsEnabled}">
+                                    <StackPanel>
+                                        <ui:TextBlock Text="{Binding Title}" />
+                                        <ui:TextBlock Text="{Binding Details}" Appearance="Secondary" FontTypography="Caption" />
+                                    </StackPanel>
+                                </CheckBox>
+                                <ui:Button Grid.Column="1" Content="{loc:Loc Disc.Eject}" Icon="{ui:SymbolIcon ArrowEject20}"
+                                           Command="{Binding DataContext.EjectCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                           CommandParameter="{Binding}" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <!-- Burn -->
+            <StackPanel Visibility="{Binding IsBurn, Converter={StaticResource BoolToVisibility}}">
+                <ui:TextBlock Text="{loc:Loc Disc.Image}" FontTypography="Subtitle" Margin="0,0,0,8" />
+                <Border Padding="16" CornerRadius="6" Margin="0,0,0,16"
+                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <ui:TextBlock Text="{Binding ImagePath}" TextTrimming="CharacterEllipsis" />
+                            <ui:TextBlock Text="{loc:Loc Disc.ImageNone}" Appearance="Secondary"
+                                          Visibility="{Binding HasImage, Converter={StaticResource InverseBoolToVisibility}}" />
+                        </StackPanel>
+                        <ui:Button Grid.Column="1" Content="{loc:Loc Disc.ImagePick}" Icon="{ui:SymbolIcon FolderOpen24}"
+                                   Command="{Binding PickImageCommand}" Margin="16,0,0,0" />
+                    </Grid>
+                </Border>
+
+                <ui:TextBlock Text="{loc:Loc Disc.Verify}" FontTypography="BodyStrong" Margin="0,0,0,4" />
+                <ComboBox MinWidth="240" HorizontalAlignment="Left" Margin="0,0,0,12"
+                          ItemsSource="{Binding VerifyLevels}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedVerify}" />
+                <CheckBox Content="{loc:Loc Disc.ReadBack}" IsChecked="{Binding ReadBack}" Margin="0,0,0,4" />
+                <CheckBox Content="{loc:Loc Disc.Finalize}" IsChecked="{Binding Finalize}" Margin="0,0,0,4" />
+                <CheckBox Content="{loc:Loc Disc.Overwrite}" IsChecked="{Binding Overwrite}" Margin="0,0,0,16" />
+            </StackPanel>
+
+            <!-- Rip -->
+            <StackPanel Visibility="{Binding IsRip, Converter={StaticResource BoolToVisibility}}">
+                <Border Padding="16" CornerRadius="6" Margin="0,0,0,16"
+                        Background="{DynamicResource ControlFillColorDefaultBrush}"
+                        BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel VerticalAlignment="Center">
+                            <ui:TextBlock Text="{Binding OutputPath}" TextTrimming="CharacterEllipsis" />
+                            <ui:TextBlock Text="{loc:Loc Disc.OutputNone}" Appearance="Secondary"
+                                          Visibility="{Binding HasOutput, Converter={StaticResource InverseBoolToVisibility}}" />
+                        </StackPanel>
+                        <ui:Button Grid.Column="1" Content="{loc:Loc Disc.OutputPick}" Icon="{ui:SymbolIcon Save24}"
+                                   Command="{Binding PickOutputCommand}" Margin="16,0,0,0" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <!-- Erase -->
+            <StackPanel Visibility="{Binding IsErase, Converter={StaticResource BoolToVisibility}}">
+                <ui:TextBlock Text="{loc:Loc Disc.EraseMode}" FontTypography="BodyStrong" Margin="0,0,0,4" />
+                <ComboBox MinWidth="360" HorizontalAlignment="Left" Margin="0,0,0,16"
+                          ItemsSource="{Binding EraseModes}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedErase}" />
+            </StackPanel>
+
+            <CheckBox Content="{loc:Loc Disc.EjectWhenDone}" IsChecked="{Binding EjectWhenDone}" Margin="0,0,0,16" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                <ui:Button Content="{Binding StartText}" Icon="{ui:SymbolIcon Play24}" Appearance="Primary"
+                           Command="{Binding StartCommand}" MinWidth="140" />
+                <ui:Button Content="{Binding CancelText}" Icon="{ui:SymbolIcon Stop24}" Margin="8,0,0,0"
+                           Command="{Binding CancelCommand}"
+                           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,16" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBlock Text="{Binding ProgressTitle}" />
+                    <ui:TextBlock Grid.Column="1" Appearance="Secondary">
+                        <Run Text="{Binding SpeedText, Mode=OneWay}" />
+                        <Run Text="  " />
+                        <Run Text="{Binding RemainingText, Mode=OneWay}" />
+                    </ui:TextBlock>
+                </Grid>
+                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Percent, Mode=OneWay}" Height="6" Margin="0,8,0,0" />
+            </StackPanel>
+
+            <ui:InfoBar IsOpen="{Binding HasResult, Mode=OneWay}" IsClosable="False"
+                        Title="{Binding ResultTitle}" Message="{Binding ResultMessage}"
+                        Severity="{Binding ResultSeverity}" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

@@ -347,4 +347,62 @@
   <data name="Tiny.Group.news-and-interests.Hint" xml:space="preserve"><value>Switches off the taskbar widget and Meet Now.</value></data>
   <data name="Tiny.Group.game-bar" xml:space="preserve"><value>Game bar and game capture</value></data>
   <data name="Tiny.Group.game-bar.Hint" xml:space="preserve"><value>Switches off the Game Bar and Game DVR.</value></data>
+  <data name="Nav.Disc" xml:space="preserve"><value>Disc</value></data>
+  <data name="Disc.Title" xml:space="preserve"><value>CD, DVD and Blu-ray</value></data>
+  <data name="Disc.Intro" xml:space="preserve"><value>Burns images to discs, reads discs into ISO files and erases rewritable discs. When reading, unreadable sectors are retried and listed; copy-protected discs are refused.</value></data>
+  <data name="Disc.Drives" xml:space="preserve"><value>Drives</value></data>
+  <data name="Disc.NoDrives" xml:space="preserve"><value>No optical drive was found.</value></data>
+  <data name="Disc.Drive.Reader" xml:space="preserve"><value>read only</value></data>
+  <data name="Disc.Media.None" xml:space="preserve"><value>no disc inserted</value></data>
+  <data name="Disc.Media.NoMedia" xml:space="preserve"><value>no disc inserted</value></data>
+  <data name="Disc.Media.Blank" xml:space="preserve"><value>blank</value></data>
+  <data name="Disc.Media.Appendable" xml:space="preserve"><value>open for another session</value></data>
+  <data name="Disc.Media.Rewritable" xml:space="preserve"><value>rewritable, holds data</value></data>
+  <data name="Disc.Media.Closed" xml:space="preserve"><value>finalized</value></data>
+  <data name="Disc.Media.NotWritable" xml:space="preserve"><value>not writable</value></data>
+  <data name="Disc.Media.Free" xml:space="preserve"><value>{0} free</value></data>
+  <data name="Disc.Eject" xml:space="preserve"><value>Eject</value></data>
+  <data name="Disc.Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Disc.Action.Burn" xml:space="preserve"><value>Burn an image</value></data>
+  <data name="Disc.Action.Rip" xml:space="preserve"><value>Read a disc into an ISO file</value></data>
+  <data name="Disc.Action.Erase" xml:space="preserve"><value>Erase a rewritable disc</value></data>
+  <data name="Disc.Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Disc.ImagePick" xml:space="preserve"><value>Choose image …</value></data>
+  <data name="Disc.ImageNone" xml:space="preserve"><value>No image chosen yet.</value></data>
+  <data name="Disc.ImageFilter" xml:space="preserve"><value>Disc images|*.iso;*.img;*.cue;*.bin;*.nrg;*.mdf;*.ccd;*.dmg|All files|*.*</value></data>
+  <data name="Disc.Verify" xml:space="preserve"><value>Check by the drive</value></data>
+  <data name="Disc.Verify.None" xml:space="preserve"><value>None</value></data>
+  <data name="Disc.Verify.Quick" xml:space="preserve"><value>Quick</value></data>
+  <data name="Disc.Verify.Full" xml:space="preserve"><value>Full</value></data>
+  <data name="Disc.ReadBack" xml:space="preserve"><value>Read the disc back afterwards and compare it with the image (SHA-256)</value></data>
+  <data name="Disc.Finalize" xml:space="preserve"><value>Finalize the disc (needed for boot and installation media)</value></data>
+  <data name="Disc.Overwrite" xml:space="preserve"><value>Overwrite a rewritable disc that already holds data</value></data>
+  <data name="Disc.EjectWhenDone" xml:space="preserve"><value>Eject the disc when done</value></data>
+  <data name="Disc.OutputPick" xml:space="preserve"><value>Save as …</value></data>
+  <data name="Disc.OutputNone" xml:space="preserve"><value>No output file chosen yet.</value></data>
+  <data name="Disc.EraseMode" xml:space="preserve"><value>Erase mode</value></data>
+  <data name="Disc.Erase.Quick" xml:space="preserve"><value>Quick (table of contents only)</value></data>
+  <data name="Disc.Erase.Full" xml:space="preserve"><value>Full (overwrites the whole disc, takes as long as burning)</value></data>
+  <data name="Disc.Start.Burn" xml:space="preserve"><value>Burn</value></data>
+  <data name="Disc.Start.Rip" xml:space="preserve"><value>Read</value></data>
+  <data name="Disc.Start.Erase" xml:space="preserve"><value>Erase</value></data>
+  <data name="Disc.NeedOne" xml:space="preserve"><value>Choose exactly one drive.</value></data>
+  <data name="Disc.NeedDrive" xml:space="preserve"><value>Choose at least one recorder.</value></data>
+  <data name="Disc.Confirm.Title" xml:space="preserve"><value>Overwrite the disc?</value></data>
+  <data name="Disc.Confirm.Erase" xml:space="preserve"><value>The contents of the disc in {0} will be erased. This cannot be undone.</value></data>
+  <data name="Disc.Confirm.Overwrite" xml:space="preserve"><value>The disc in {0} holds data that will be overwritten. This cannot be undone.</value></data>
+  <data name="Disc.Confirm.Button" xml:space="preserve"><value>Continue</value></data>
+  <data name="Disc.Done" xml:space="preserve"><value>Done after {0}.</value></data>
+  <data name="Step.Burn.CheckMedia" xml:space="preserve"><value>Checking the disc</value></data>
+  <data name="Step.Burn.HashSource" xml:space="preserve"><value>Reading the image and computing its checksum</value></data>
+  <data name="Step.Burn.Write" xml:space="preserve"><value>Burning</value></data>
+  <data name="Step.Burn.ReadBack" xml:space="preserve"><value>Reading the disc back and comparing</value></data>
+  <data name="Step.Burn.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Step.Folder.Scan" xml:space="preserve"><value>Collecting files</value></data>
+  <data name="Step.Erase.Check" xml:space="preserve"><value>Checking the disc</value></data>
+  <data name="Step.Erase.Run" xml:space="preserve"><value>Erasing</value></data>
+  <data name="Step.Erase.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Step.Rip.Check" xml:space="preserve"><value>Checking the disc</value></data>
+  <data name="Step.Rip.Read" xml:space="preserve"><value>Reading the disc</value></data>
+  <data name="Step.Rip.Finish" xml:space="preserve"><value>Finishing</value></data>
 </root>

@@ -347,4 +347,62 @@
   <data name="Tiny.Group.news-and-interests.Hint" xml:space="preserve"><value>Schaltet das Widget in der Taskleiste und „Jetzt besprechen“ ab.</value></data>
   <data name="Tiny.Group.game-bar" xml:space="preserve"><value>Game Bar und Spielaufnahme</value></data>
   <data name="Tiny.Group.game-bar.Hint" xml:space="preserve"><value>Schaltet Game Bar und Game DVR ab.</value></data>
+  <data name="Nav.Disc" xml:space="preserve"><value>Disc</value></data>
+  <data name="Disc.Title" xml:space="preserve"><value>CD, DVD und Blu-ray</value></data>
+  <data name="Disc.Intro" xml:space="preserve"><value>Brennt Abbilder auf Discs, liest Discs in ISO-Dateien aus und löscht wiederbeschreibbare Discs. Beim Auslesen werden unlesbare Sektoren mehrfach wiederholt und gelistet; kopiergeschützte Discs werden abgelehnt.</value></data>
+  <data name="Disc.Drives" xml:space="preserve"><value>Laufwerke</value></data>
+  <data name="Disc.NoDrives" xml:space="preserve"><value>Es wurde kein optisches Laufwerk gefunden.</value></data>
+  <data name="Disc.Drive.Reader" xml:space="preserve"><value>nur Lesen</value></data>
+  <data name="Disc.Media.None" xml:space="preserve"><value>keine Disc eingelegt</value></data>
+  <data name="Disc.Media.NoMedia" xml:space="preserve"><value>keine Disc eingelegt</value></data>
+  <data name="Disc.Media.Blank" xml:space="preserve"><value>leer</value></data>
+  <data name="Disc.Media.Appendable" xml:space="preserve"><value>offen für eine weitere Sitzung</value></data>
+  <data name="Disc.Media.Rewritable" xml:space="preserve"><value>wiederbeschreibbar, enthält Daten</value></data>
+  <data name="Disc.Media.Closed" xml:space="preserve"><value>abgeschlossen</value></data>
+  <data name="Disc.Media.NotWritable" xml:space="preserve"><value>nicht beschreibbar</value></data>
+  <data name="Disc.Media.Free" xml:space="preserve"><value>{0} frei</value></data>
+  <data name="Disc.Eject" xml:space="preserve"><value>Auswerfen</value></data>
+  <data name="Disc.Action" xml:space="preserve"><value>Aktion</value></data>
+  <data name="Disc.Action.Burn" xml:space="preserve"><value>Abbild brennen</value></data>
+  <data name="Disc.Action.Rip" xml:space="preserve"><value>Disc in eine ISO-Datei auslesen</value></data>
+  <data name="Disc.Action.Erase" xml:space="preserve"><value>Wiederbeschreibbare Disc löschen</value></data>
+  <data name="Disc.Image" xml:space="preserve"><value>Abbild</value></data>
+  <data name="Disc.ImagePick" xml:space="preserve"><value>Abbild wählen …</value></data>
+  <data name="Disc.ImageNone" xml:space="preserve"><value>Noch kein Abbild gewählt.</value></data>
+  <data name="Disc.ImageFilter" xml:space="preserve"><value>Disc-Abbilder|*.iso;*.img;*.cue;*.bin;*.nrg;*.mdf;*.ccd;*.dmg|Alle Dateien|*.*</value></data>
+  <data name="Disc.Verify" xml:space="preserve"><value>Prüfung durch das Laufwerk</value></data>
+  <data name="Disc.Verify.None" xml:space="preserve"><value>Keine</value></data>
+  <data name="Disc.Verify.Quick" xml:space="preserve"><value>Schnell</value></data>
+  <data name="Disc.Verify.Full" xml:space="preserve"><value>Vollständig</value></data>
+  <data name="Disc.ReadBack" xml:space="preserve"><value>Disc danach auslesen und mit dem Abbild vergleichen (SHA-256)</value></data>
+  <data name="Disc.Finalize" xml:space="preserve"><value>Disc abschließen (nötig für Start- und Installationsmedien)</value></data>
+  <data name="Disc.Overwrite" xml:space="preserve"><value>Wiederbeschreibbare Disc mit vorhandenen Daten überschreiben</value></data>
+  <data name="Disc.EjectWhenDone" xml:space="preserve"><value>Disc nach dem Vorgang auswerfen</value></data>
+  <data name="Disc.OutputPick" xml:space="preserve"><value>Speichern unter …</value></data>
+  <data name="Disc.OutputNone" xml:space="preserve"><value>Noch keine Zieldatei gewählt.</value></data>
+  <data name="Disc.EraseMode" xml:space="preserve"><value>Löschart</value></data>
+  <data name="Disc.Erase.Quick" xml:space="preserve"><value>Schnell (nur das Inhaltsverzeichnis)</value></data>
+  <data name="Disc.Erase.Full" xml:space="preserve"><value>Vollständig (überschreibt die ganze Disc, dauert so lange wie das Brennen)</value></data>
+  <data name="Disc.Start.Burn" xml:space="preserve"><value>Brennen</value></data>
+  <data name="Disc.Start.Rip" xml:space="preserve"><value>Auslesen</value></data>
+  <data name="Disc.Start.Erase" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Disc.NeedOne" xml:space="preserve"><value>Wählen Sie genau ein Laufwerk.</value></data>
+  <data name="Disc.NeedDrive" xml:space="preserve"><value>Wählen Sie mindestens einen Brenner.</value></data>
+  <data name="Disc.Confirm.Title" xml:space="preserve"><value>Disc überschreiben?</value></data>
+  <data name="Disc.Confirm.Erase" xml:space="preserve"><value>Der Inhalt der Disc in {0} wird gelöscht. Das lässt sich nicht rückgängig machen.</value></data>
+  <data name="Disc.Confirm.Overwrite" xml:space="preserve"><value>Die Disc in {0} enthält Daten, die überschrieben werden. Das lässt sich nicht rückgängig machen.</value></data>
+  <data name="Disc.Confirm.Button" xml:space="preserve"><value>Fortfahren</value></data>
+  <data name="Disc.Done" xml:space="preserve"><value>Fertig nach {0}.</value></data>
+  <data name="Step.Burn.CheckMedia" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Step.Burn.HashSource" xml:space="preserve"><value>Abbild einlesen und Prüfsumme bilden</value></data>
+  <data name="Step.Burn.Write" xml:space="preserve"><value>Brennen</value></data>
+  <data name="Step.Burn.ReadBack" xml:space="preserve"><value>Disc auslesen und vergleichen</value></data>
+  <data name="Step.Burn.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Step.Folder.Scan" xml:space="preserve"><value>Dateien erfassen</value></data>
+  <data name="Step.Erase.Check" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Step.Erase.Run" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Step.Erase.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Step.Rip.Check" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Step.Rip.Read" xml:space="preserve"><value>Disc auslesen</value></data>
+  <data name="Step.Rip.Finish" xml:space="preserve"><value>Abschließen</value></data>
 </root>

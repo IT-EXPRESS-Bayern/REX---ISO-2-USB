@@ -63,6 +63,8 @@ public class UiStringsTests
             "Tiny.RemoveFiles", "Tiny.Registry", "Tiny.CleanupStore", "Tiny.Unmount", "Tiny.Compress", "Tiny.PatchBootImage",
             "Tiny.Unattend", "Tiny.CreateIso",
             "Write.CheckTargets", "Write.Prepare", "Write.Finish", "Write.Linux.Copy", "Write.Linux.Bootloader", "Write.Linux.Verify",
+            "Burn.CheckMedia", "Burn.HashSource", "Burn.Write", "Burn.ReadBack", "Burn.Finish", "Folder.Scan",
+            "Erase.Check", "Erase.Run", "Erase.Finish", "Rip.Check", "Rip.Read", "Rip.Finish",
             "Dos.PrepareSystem", "Dos.CopyFiles", "Dos.WriteMbr", "Dos.Superfloppy",
         ];
 

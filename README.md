@@ -38,8 +38,8 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 | Linux-ISO-Modus, Syslinux/GRUB, Persistenz | umgesetzt, unter QEMU (BIOS und UEFI) geprüft |
 | FreeDOS, MS-DOS, Disketten, Laufwerk formatieren | umgesetzt, FreeDOS unter QEMU geprüft |
 | Laufwerk wiederherstellen, Medium prüfen, komprimierte Images, bmap, Persistenz bei DD | umgesetzt |
-| Oberfläche: Schreiben, Downloads, Tiny-Builder, Werkstatt (Zielgeräte-Check) | umgesetzt |
-| Oberfläche: Disc, Werkzeuge (Laufwerk wiederherstellen, Medium prüfen) | folgt |
+| Oberfläche: Schreiben, Downloads, Disc, Tiny-Builder, Werkstatt (Zielgeräte-Check) | umgesetzt |
+| Oberfläche: Werkzeuge (Laufwerk wiederherstellen, Medium prüfen) | folgt |
 | Backup/Restore von Datenträgern, sichere Löschung, Windows To Go, Multiboot | geplant |
 
 ## Kommandozeile

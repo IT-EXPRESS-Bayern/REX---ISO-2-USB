@@ -43,6 +43,23 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public string? PickDiscImage(string? startDirectory)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = localizer.Get("Disc.Image"),
+            Filter = localizer.Get("Disc.ImageFilter"),
+            CheckFileExists = true,
+        };
+
+        if (!string.IsNullOrEmpty(startDirectory) && Directory.Exists(startDirectory))
+        {
+            dialog.InitialDirectory = startDirectory;
+        }
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
     public string? PickSaveIso(string? startDirectory, string suggestedName)
     {
         var dialog = new SaveFileDialog
