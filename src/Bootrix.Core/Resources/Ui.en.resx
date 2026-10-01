@@ -405,4 +405,24 @@
   <data name="Step.Rip.Check" xml:space="preserve"><value>Checking the disc</value></data>
   <data name="Step.Rip.Read" xml:space="preserve"><value>Reading the disc</value></data>
   <data name="Step.Rip.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Nav.Tools" xml:space="preserve"><value>Tools</value></data>
+  <data name="Tools.Title" xml:space="preserve"><value>Tools</value></data>
+  <data name="Tools.Intro" xml:space="preserve"><value>Checks sticks against their image and returns sticks to a clean state after a hybrid image.</value></data>
+  <data name="Tools.Tool" xml:space="preserve"><value>Tool</value></data>
+  <data name="Tools.Tool.Verify" xml:space="preserve"><value>Check a medium against its image</value></data>
+  <data name="Tools.Tool.Restore" xml:space="preserve"><value>Restore a drive</value></data>
+  <data name="Tools.Verify.Hint" xml:space="preserve"><value>Reads the medium and compares it with the image. Nothing on the medium is changed.</value></data>
+  <data name="Tools.Verify.Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Tools.Verify.Mode" xml:space="preserve"><value>Comparison</value></data>
+  <data name="Tools.Verify.Mode.Auto" xml:space="preserve"><value>Automatic</value></data>
+  <data name="Tools.Verify.Mode.Raw" xml:space="preserve"><value>Byte for byte</value></data>
+  <data name="Tools.Verify.Mode.Files" xml:space="preserve"><value>Files of the image</value></data>
+  <data name="Tools.Verify.Done" xml:space="preserve"><value>The medium matches the image ({0} compared).</value></data>
+  <data name="Tools.Restore.Hint" xml:space="preserve"><value>Erases the partition tables and the start and end of the drive and creates one partition across the whole disk. All data is lost.</value></data>
+  <data name="Tools.Restore.Scheme" xml:space="preserve"><value>Partition table</value></data>
+  <data name="Tools.Restore.FileSystem" xml:space="preserve"><value>File system</value></data>
+  <data name="Tools.Restore.Label" xml:space="preserve"><value>Label</value></data>
+  <data name="Tools.Start.Verify" xml:space="preserve"><value>Check</value></data>
+  <data name="Tools.Start.Restore" xml:space="preserve"><value>Restore</value></data>
+  <data name="Job.Done" xml:space="preserve"><value>Done after {0}.</value></data>
 </root>

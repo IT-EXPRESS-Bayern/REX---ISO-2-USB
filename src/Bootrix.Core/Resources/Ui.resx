@@ -405,4 +405,24 @@
   <data name="Step.Rip.Check" xml:space="preserve"><value>Disc prüfen</value></data>
   <data name="Step.Rip.Read" xml:space="preserve"><value>Disc auslesen</value></data>
   <data name="Step.Rip.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Nav.Tools" xml:space="preserve"><value>Werkzeuge</value></data>
+  <data name="Tools.Title" xml:space="preserve"><value>Werkzeuge</value></data>
+  <data name="Tools.Intro" xml:space="preserve"><value>Prüft Sticks gegen ihr Abbild und bringt Sticks nach einem Hybrid-Abbild wieder in einen sauberen Zustand.</value></data>
+  <data name="Tools.Tool" xml:space="preserve"><value>Werkzeug</value></data>
+  <data name="Tools.Tool.Verify" xml:space="preserve"><value>Medium gegen Abbild prüfen</value></data>
+  <data name="Tools.Tool.Restore" xml:space="preserve"><value>Laufwerk wiederherstellen</value></data>
+  <data name="Tools.Verify.Hint" xml:space="preserve"><value>Liest das Medium und vergleicht es mit dem Abbild. Am Medium wird nichts verändert.</value></data>
+  <data name="Tools.Verify.Image" xml:space="preserve"><value>Abbild</value></data>
+  <data name="Tools.Verify.Mode" xml:space="preserve"><value>Vergleich</value></data>
+  <data name="Tools.Verify.Mode.Auto" xml:space="preserve"><value>Automatisch</value></data>
+  <data name="Tools.Verify.Mode.Raw" xml:space="preserve"><value>Byte für Byte</value></data>
+  <data name="Tools.Verify.Mode.Files" xml:space="preserve"><value>Dateien des Abbilds</value></data>
+  <data name="Tools.Verify.Done" xml:space="preserve"><value>Das Medium stimmt mit dem Abbild überein ({0} verglichen).</value></data>
+  <data name="Tools.Restore.Hint" xml:space="preserve"><value>Löscht Partitionstabellen sowie Anfang und Ende des Laufwerks und legt eine einzige Partition über den ganzen Datenträger an. Alle Daten gehen verloren.</value></data>
+  <data name="Tools.Restore.Scheme" xml:space="preserve"><value>Partitionstabelle</value></data>
+  <data name="Tools.Restore.FileSystem" xml:space="preserve"><value>Dateisystem</value></data>
+  <data name="Tools.Restore.Label" xml:space="preserve"><value>Bezeichnung</value></data>
+  <data name="Tools.Start.Verify" xml:space="preserve"><value>Prüfen</value></data>
+  <data name="Tools.Start.Restore" xml:space="preserve"><value>Wiederherstellen</value></data>
+  <data name="Job.Done" xml:space="preserve"><value>Fertig nach {0}.</value></data>
 </root>

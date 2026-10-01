@@ -36,8 +36,6 @@ public sealed partial class DiscViewModel : ObservableObject
     private readonly SettingsStore _settings;
     private readonly Localizer _localizer;
     private readonly ILogger<DiscViewModel> _logger;
-    private CancellationTokenSource? _soft;
-    private CancellationTokenSource? _abort;
 
     public DiscViewModel(
         IOpticalService optical,
@@ -48,6 +46,7 @@ public sealed partial class DiscViewModel : ObservableObject
         IDialogService dialogs,
         SettingsStore settings,
         Localizer localizer,
+        JobProgressViewModel job,
         ILogger<DiscViewModel> logger)
     {
         _optical = optical;
@@ -59,8 +58,19 @@ public sealed partial class DiscViewModel : ObservableObject
         _settings = settings;
         _localizer = localizer;
         _logger = logger;
+        Job = job;
 
-        _cancelText = localizer.Get("Write.Cancel");
+        job.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(JobProgressViewModel.IsBusy))
+            {
+                OnPropertyChanged(nameof(IsIdle));
+                StartCommand.NotifyCanExecuteChanged();
+                RefreshCommand.NotifyCanExecuteChanged();
+                PickImageCommand.NotifyCanExecuteChanged();
+                PickOutputCommand.NotifyCanExecuteChanged();
+            }
+        };
         BuildOptions();
         _selectedAction = Actions[0];
         _selectedVerify = VerifyLevels[1];
@@ -68,6 +78,8 @@ public sealed partial class DiscViewModel : ObservableObject
         localizer.CultureChanged += (_, _) => BuildOptions();
         optical.DrivesChanged += (_, _) => Application.Current.Dispatcher.InvokeAsync(() => RefreshAsync());
     }
+
+    public JobProgressViewModel Job { get; }
 
     public ObservableCollection<DriveItem> Drives { get; } = [];
 
@@ -111,44 +123,9 @@ public sealed partial class DiscViewModel : ObservableObject
     private bool _ejectWhenDone;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(StartCommand))]
-    [NotifyCanExecuteChangedFor(nameof(RefreshCommand))]
-    [NotifyCanExecuteChangedFor(nameof(PickImageCommand))]
-    [NotifyCanExecuteChangedFor(nameof(PickOutputCommand))]
-    [NotifyPropertyChangedFor(nameof(IsIdle))]
-    private bool _isBusy;
-
-    [ObservableProperty]
     private bool _hasDrives;
 
-    [ObservableProperty]
-    private double _percent;
-
-    [ObservableProperty]
-    private string _progressTitle = "";
-
-    [ObservableProperty]
-    private string _speedText = "";
-
-    [ObservableProperty]
-    private string _remainingText = "";
-
-    [ObservableProperty]
-    private string _cancelText;
-
-    [ObservableProperty]
-    private bool _hasResult;
-
-    [ObservableProperty]
-    private string _resultTitle = "";
-
-    [ObservableProperty]
-    private string _resultMessage = "";
-
-    [ObservableProperty]
-    private InfoBarSeverity _resultSeverity = InfoBarSeverity.Informational;
-
-    public bool IsIdle => !IsBusy;
+    public bool IsIdle => Job.IsIdle;
 
     public bool IsBurn => SelectedAction.Action == DiscAction.Burn;
 
@@ -178,7 +155,7 @@ public sealed partial class DiscViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsIdle))]
     public async Task RefreshAsync()
     {
-        if (IsBusy)
+        if (!IsIdle)
         {
             return;
         }
@@ -225,7 +202,7 @@ public sealed partial class DiscViewModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Listing the optical drives failed");
-            ShowError(ex);
+            Job.ShowError(ex);
         }
     }
 
@@ -261,19 +238,19 @@ public sealed partial class DiscViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(CanStart))]
     private async Task StartAsync()
     {
-        HasResult = false;
+        Job.ClearResult();
         var selected = Drives.Where(d => d.IsSelected).ToList();
         var action = SelectedAction.Action;
 
         if (action != DiscAction.Burn && selected.Count != 1)
         {
-            ShowResult(InfoBarSeverity.Warning, _localizer.Get("Disc.NeedOne"), "");
+            Job.ShowWarning(_localizer.Get("Disc.NeedOne"));
             return;
         }
 
         if (action == DiscAction.Burn && !File.Exists(ImagePath))
         {
-            ShowError(new BootrixException(ErrorCode.ImageUnreadable, ImagePath ?? "") { Arguments = [ImagePath ?? ""] });
+            Job.ShowError(new BootrixException(ErrorCode.ImageUnreadable, ImagePath ?? "") { Arguments = [ImagePath ?? ""] });
             return;
         }
 
@@ -282,59 +259,24 @@ public sealed partial class DiscViewModel : ObservableObject
             return;
         }
 
-        IsBusy = true;
-        Percent = 0;
-        ProgressTitle = "";
-        SpeedText = RemainingText = "";
-        CancelText = _localizer.Get("Write.Cancel");
-
-        using var soft = new CancellationTokenSource();
-        using var abort = new CancellationTokenSource();
-        _soft = soft;
-        _abort = abort;
-
         try
         {
-            var job = CreateJob(action, selected);
-            IProgress<ProgressReport> progress = new Progress<ProgressReport>(OnProgress);
-            var result = await _runner.RunAsync(job, new DelegateProgressSink(progress.Report), soft.Token, abort.Token);
-            ShowOutcome(result);
+            await Job.RunAsync(_runner, CreateJob(action, selected), duration => _localizer.Get("Disc.Done", ByteSize.FormatDuration(duration)));
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "The disc job failed before it could report a result");
-            ShowError(ex);
-        }
-        finally
-        {
-            _soft = _abort = null;
-            IsBusy = false;
-            await RefreshAsync();
-        }
-    }
-
-    [RelayCommand]
-    private void Cancel()
-    {
-        if (_soft is null || _abort is null)
-        {
-            return;
+            // The image could not be opened or is of a kind that cannot be burned.
+            _logger.LogWarning(ex, "The disc job could not be set up");
+            Job.ShowError(ex);
         }
 
-        if (_soft.IsCancellationRequested)
-        {
-            _abort.Cancel();
-            return;
-        }
-
-        _soft.Cancel();
-        CancelText = _localizer.Get("Write.CancelNow");
+        await RefreshAsync();
     }
 
     [RelayCommand]
     private async Task EjectAsync(DriveItem? item)
     {
-        if (item is null || IsBusy)
+        if (item is null || !IsIdle)
         {
             return;
         }
@@ -347,7 +289,7 @@ public sealed partial class DiscViewModel : ObservableObject
         catch (Exception ex)
         {
             _logger.LogWarning(ex, "Ejecting failed");
-            ShowError(ex);
+            Job.ShowError(ex);
         }
     }
 
@@ -438,49 +380,5 @@ public sealed partial class DiscViewModel : ObservableObject
         {
             StartCommand.NotifyCanExecuteChanged();
         }
-    }
-
-    private void OnProgress(ProgressReport report)
-    {
-        var view = ProgressView.From(report, _localizer);
-        Percent = view.Percent;
-        ProgressTitle = view.Title;
-        SpeedText = view.Speed;
-        RemainingText = view.Remaining;
-    }
-
-    private void ShowOutcome(JobResult result)
-    {
-        switch (result.Outcome)
-        {
-            case JobOutcome.Succeeded:
-                ShowResult(InfoBarSeverity.Success, _localizer.Get("Disc.Done", ByteSize.FormatDuration(result.Duration)), "");
-                if (_settings.Current.PlaySoundWhenDone)
-                {
-                    SystemSounds.Asterisk.Play();
-                }
-
-                break;
-            case JobOutcome.Canceled:
-                ShowResult(InfoBarSeverity.Warning, _localizer.Get("Write.Canceled"), "");
-                break;
-            default:
-                ShowError(result.Error ?? new BootrixException(ErrorCode.Unknown, "the job failed"));
-                break;
-        }
-    }
-
-    private void ShowError(Exception exception)
-    {
-        var description = ErrorCatalog.Describe(exception, _localizer);
-        ShowResult(InfoBarSeverity.Error, description.Cause, $"{description.Action}  ({description.Code})");
-    }
-
-    private void ShowResult(InfoBarSeverity severity, string title, string message)
-    {
-        ResultSeverity = severity;
-        ResultTitle = title;
-        ResultMessage = message;
-        HasResult = true;
     }
 }

@@ -55,6 +55,8 @@ public partial class App : Application
             await Task.Delay(1500);
             window.Navigation.Navigate(typeof(DiscPage));
             await Task.Delay(1000);
+            window.Navigation.Navigate(typeof(ToolsPage));
+            await Task.Delay(1000);
             window.Navigation.Navigate(typeof(TinyPage));
             await Task.Delay(1000);
             window.Navigation.Navigate(typeof(WorkshopPage));
@@ -112,12 +114,16 @@ public partial class App : Application
         services.AddSingleton<WriteOptionsViewModel>();
         services.AddSingleton<WriteViewModel>();
         services.AddSingleton<DownloadsViewModel>();
+        services.AddTransient<DeviceListViewModel>();
+        services.AddTransient<JobProgressViewModel>();
+        services.AddSingleton<ToolsViewModel>();
         services.AddSingleton<DiscViewModel>();
         services.AddSingleton<TinyViewModel>();
         services.AddSingleton<WorkshopViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddTransient<WritePage>();
         services.AddTransient<DownloadsPage>();
+        services.AddTransient<ToolsPage>();
         services.AddTransient<DiscPage>();
         services.AddTransient<TinyPage>();
         services.AddTransient<WorkshopPage>();

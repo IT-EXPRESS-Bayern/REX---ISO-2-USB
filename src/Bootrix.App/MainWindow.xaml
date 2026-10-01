@@ -43,6 +43,11 @@
                         <ui:SymbolIcon Symbol="Wrench24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="{loc:Loc Nav.Tools}" TargetPageType="{x:Type views:ToolsPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="WrenchScrewdriver24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
                 <ui:NavigationViewItem Content="{loc:Loc Nav.Workshop}" TargetPageType="{x:Type views:WorkshopPage}">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Desktop24" />

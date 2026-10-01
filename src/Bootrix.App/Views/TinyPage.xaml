@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
       xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      xmlns:controls="clr-namespace:Bootrix.App.Controls"
       Title="{loc:Loc Tiny.Title}"
       AllowDrop="True"
       DragOver="OnDragOver"
@@ -98,33 +99,10 @@
 
             <ui:TextBlock Text="{loc:Loc Tiny.Space}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,16" />
 
-            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
-                <ui:Button Content="{loc:Loc Tiny.Build}" Icon="{ui:SymbolIcon Play24}" Appearance="Primary"
-                           Command="{Binding BuildCommand}" MinWidth="140" />
-                <ui:Button Content="{Binding CancelText}" Icon="{ui:SymbolIcon Stop24}" Margin="8,0,0,0"
-                           Command="{Binding CancelCommand}"
-                           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
-            </StackPanel>
+            <ui:Button Content="{loc:Loc Tiny.Build}" Icon="{ui:SymbolIcon Play24}" Appearance="Primary"
+                       Command="{Binding BuildCommand}" MinWidth="140" HorizontalAlignment="Left" Margin="0,0,0,16" />
 
-            <StackPanel Margin="0,0,0,16" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <ui:TextBlock Text="{Binding ProgressTitle}" />
-                    <ui:TextBlock Grid.Column="1" Appearance="Secondary">
-                        <Run Text="{Binding SpeedText, Mode=OneWay}" />
-                        <Run Text="  " />
-                        <Run Text="{Binding RemainingText, Mode=OneWay}" />
-                    </ui:TextBlock>
-                </Grid>
-                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Percent, Mode=OneWay}" Height="6" Margin="0,8,0,0" />
-            </StackPanel>
-
-            <ui:InfoBar IsOpen="{Binding HasResult, Mode=OneWay}" IsClosable="False"
-                        Title="{Binding ResultTitle}" Message="{Binding ResultMessage}"
-                        Severity="{Binding ResultSeverity}" />
+            <controls:JobProgressPanel DataContext="{Binding Job}" />
         </StackPanel>
     </ScrollViewer>
 </Page>
