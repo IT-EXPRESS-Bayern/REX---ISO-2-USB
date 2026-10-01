@@ -11,6 +11,7 @@
     <PackageVersion Include="LTRData.DiscUtils.Iso9660" Version="1.0.89" />
     <PackageVersion Include="LTRData.DiscUtils.Udf" Version="1.0.89" />
     <PackageVersion Include="LTRData.DiscUtils.Streams" Version="1.0.89" />
+    <PackageVersion Include="Microsoft.Dism" Version="6.1.0" />
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Extensions.TimeProvider.Testing" Version="10.10.0" />

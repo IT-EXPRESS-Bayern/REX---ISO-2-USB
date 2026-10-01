@@ -402,8 +402,6 @@ public sealed class TinyBuilderTests : IDisposable
             return Task.CompletedTask;
         }
 
-        public Task<string> GetDefaultLanguageAsync(string mountDirectory, CancellationToken cancellationToken) => Task.FromResult(Language);
-
         public Task CleanupComponentStoreAsync(string mountDirectory, CancellationToken cancellationToken)
         {
             Calls.Add("cleanup-store");
@@ -476,6 +474,8 @@ public sealed class TinyBuilderTests : IDisposable
             Calls.Add("arch");
             return Task.FromResult(Architecture);
         }
+
+        public Task<string> GetDefaultLanguageAsync(string imagePath, int index, CancellationToken cancellationToken) => Task.FromResult(Language);
 
         public Task CreateAsync(string mediaDirectory, string isoPath, string volumeLabel, bool uefi2023, IProgress<double>? progress, CancellationToken cancellationToken)
         {

@@ -163,6 +163,30 @@ public sealed class WimFileTests : IDisposable
         Assert.Equal("Edition One", result.GetImageProperty(1, "NAME"));
     }
 
+    [NeedsWimlibFact]
+    public void SolidLzmsOutputRoundTripsLikeAnEsd()
+    {
+        var tree = CreateSampleTree(8, 400_000);
+        var wim = Capture(tree);
+        var esd = Path.Combine(_dir, "solid.esd");
+
+        using (var file = WimFile.Open(wim))
+        {
+            file.WriteImage(esd, 1, WimCompression.Lzms, recompress: true, solid: true);
+        }
+
+        using (var solid = WimFile.Open(esd))
+        {
+            Assert.Equal(WimCompression.Lzms, solid.Info.Compression);
+        }
+
+        var target = Path.Combine(_dir, "restored-solid");
+        var (code, output) = WimTestTools.Run("wimapply", esd, "1", target);
+        Assert.True(code == 0, output);
+        var (diffCode, diffOutput) = WimTestTools.Run("diff", "-r", tree, target);
+        Assert.True(diffCode == 0, diffOutput);
+    }
+
     [Fact]
     public void InfoStructureIsParsedAtTheDocumentedOffsets()
     {
@@ -186,5 +210,46 @@ public sealed class WimFileTests : IDisposable
     private sealed class SyncProgress(Action<double> handler) : IProgress<double>
     {
         public void Report(double value) => handler(value);
+    }
+}
+
+public sealed class WimInstallImageToolsTests : IDisposable
+{
+    private readonly string _dir = Path.Combine(Path.GetTempPath(), "bootrix-wimtools-" + Guid.NewGuid().ToString("N"));
+
+    public WimInstallImageToolsTests() => Directory.CreateDirectory(_dir);
+
+    public void Dispose() => Directory.Delete(_dir, recursive: true);
+
+    [Theory]
+    [InlineData("0", "x86")]
+    [InlineData("5", "arm")]
+    [InlineData("9", "amd64")]
+    [InlineData("12", "arm64")]
+    [InlineData(null, "amd64")]
+    public void ArchitectureNumbersMapToNames(string? value, string expected)
+    {
+        Assert.Equal(expected, WimInstallImageTools.MapArchitecture(value));
+    }
+
+    [NeedsWimlibFact]
+    public async Task ListsEditionsAndExportsOneAsSingleImageWim()
+    {
+        var tree = Path.Combine(_dir, "tree");
+        Directory.CreateDirectory(tree);
+        File.WriteAllText(Path.Combine(tree, "a.txt"), "hello");
+        var wim = Path.Combine(_dir, "multi.wim");
+        Assert.Equal(0, WimTestTools.Run("wimcapture", tree, wim, "Windows 11 Home", "--compress=none").ExitCode);
+        Assert.Equal(0, WimTestTools.Run("wimappend", tree, wim, "Windows 11 Pro", "--compress=none").ExitCode);
+        var tools = new WimInstallImageTools();
+
+        var editions = await tools.GetEditionsAsync(wim, CancellationToken.None);
+        await tools.ExportEditionAsync(wim, 2, Path.Combine(_dir, "pro.wim"), Bootrix.Core.Tiny.InstallImageCompression.Maximum, null, CancellationToken.None);
+
+        Assert.Equal(["Windows 11 Home", "Windows 11 Pro"], editions.Select(e => e.Name));
+        using var pro = WimFile.Open(Path.Combine(_dir, "pro.wim"));
+        Assert.Equal(1, pro.Info.ImageCount);
+        Assert.Equal("Windows 11 Pro", pro.GetImageProperty(1, "NAME"));
+        Assert.Equal(WimCompression.Lzx, pro.Info.Compression);
     }
 }

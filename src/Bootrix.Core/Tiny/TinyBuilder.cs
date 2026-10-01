@@ -184,7 +184,7 @@ public sealed class TinyBuilder
         {
             if (profile.Packages.Count > 0)
             {
-                var language = await owner._servicing.GetDefaultLanguageAsync(_mount, cancellationToken).ConfigureAwait(false);
+                var language = await owner._tools.GetDefaultLanguageAsync(InstallImage, 1, cancellationToken).ConfigureAwait(false);
                 var patterns = profile.Packages.Select(p => p.Pattern.Replace("{lang}", language, StringComparison.Ordinal)).ToList();
                 var packages = await owner._servicing.GetPackagesAsync(_mount, cancellationToken).ConfigureAwait(false);
                 foreach (var package in packages.Where(p => patterns.Any(x => p.Identity.StartsWith(x, StringComparison.OrdinalIgnoreCase))))

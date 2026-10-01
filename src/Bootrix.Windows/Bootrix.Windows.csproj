@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Dism" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Bootrix.Core\Bootrix.Core.csproj" />
   </ItemGroup>
 

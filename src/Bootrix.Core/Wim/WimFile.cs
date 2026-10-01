@@ -116,7 +116,7 @@ public sealed unsafe class WimFile : IDisposable
     }
 
     /// <summary>Writes one image (or all) to a new file; used to extract a single edition from a multi-edition install.wim.</summary>
-    public void WriteImage(string destination, int image, WimCompression? compression = null, bool recompress = false, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
+    public void WriteImage(string destination, int image, WimCompression? compression = null, bool recompress = false, bool solid = false, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
     {
         ThrowIfDisposed();
         _cancellation = cancellationToken;
@@ -142,7 +142,7 @@ public sealed unsafe class WimFile : IDisposable
             }
 
             using var path = new NativeString(destination);
-            var flags = recompress ? WimLibNative.WriteRecompress : 0;
+            var flags = (recompress ? WimLibNative.WriteRecompress : 0) | (solid ? WimLibNative.WriteSolid : 0);
             var code = WimLibNative.Write(_handle, path.Pointer, image, flags, 0);
             ThrowIfCanceled(cancellationToken);
             ThrowIfFailed(code, $"write {destination}");

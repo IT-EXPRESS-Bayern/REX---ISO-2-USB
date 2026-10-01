@@ -41,9 +41,6 @@ public interface IImageServicing
 
     Task RemoveCapabilityAsync(string mountDirectory, string name, CancellationToken cancellationToken);
 
-    /// <summary>The UI language of the image as a tag such as "de-DE"; used to pick the matching language feature packages.</summary>
-    Task<string> GetDefaultLanguageAsync(string mountDirectory, CancellationToken cancellationToken);
-
     /// <summary>Removes superseded components (/StartComponentCleanup /ResetBase).</summary>
     Task CleanupComponentStoreAsync(string mountDirectory, CancellationToken cancellationToken);
 }
@@ -85,7 +82,11 @@ public interface IInstallImageTools
     /// <summary>Writes one edition of a WIM or ESD as a new single-image WIM.</summary>
     Task ExportEditionAsync(string source, int index, string destination, InstallImageCompression compression, IProgress<double>? progress, CancellationToken cancellationToken);
 
+    /// <summary>"amd64", "arm64", "x86" or "arm".</summary>
     Task<string> GetArchitectureAsync(string imagePath, int index, CancellationToken cancellationToken);
+
+    /// <summary>The default UI language of the image as a tag such as "de-DE"; used to pick the matching language feature packages.</summary>
+    Task<string> GetDefaultLanguageAsync(string imagePath, int index, CancellationToken cancellationToken);
 }
 
 public sealed record InstallEdition(int Index, string Name, string? Description, long TotalBytes);
