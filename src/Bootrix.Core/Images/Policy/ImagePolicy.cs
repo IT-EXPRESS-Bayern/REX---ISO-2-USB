@@ -24,6 +24,18 @@ public sealed class ImagePolicy
 
     public bool Knows(string family) => _families.ContainsKey(family);
 
+    /// <summary>The behaviour switches of a family; <see cref="FamilyTraits.None"/> for an unknown or missing one.</summary>
+    public FamilyTraits TraitsOf(string? family)
+    {
+        if (family is null || !_families.TryGetValue(family, out var policy))
+        {
+            return FamilyTraits.None;
+        }
+
+        bool Has(string flag) => policy.Flags.Contains(flag, StringComparer.OrdinalIgnoreCase);
+        return new FamilyTraits(Has("casper"), Has("liveBoot"), policy.LabelPatch == true, policy.Persistence?.Extract == true);
+    }
+
     public static ImagePolicy Load(Stream json)
     {
         var document = JsonSerializer.Deserialize<PolicyDocument>(json, CoreJson.Options)

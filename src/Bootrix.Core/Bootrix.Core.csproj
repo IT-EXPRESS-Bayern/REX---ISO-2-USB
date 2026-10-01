@@ -32,6 +32,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\..\assets\third-party\syslinux\6.03\*" LogicalName="Bootrix.Core.Boot.Syslinux.6.03/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\assets\third-party\syslinux\6.04-pre1\*" LogicalName="Bootrix.Core.Boot.Syslinux.6.04-pre1/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\assets\third-party\syslinux-mbr\mbr.bin;..\..\assets\third-party\syslinux-mbr\mbr_f.bin;..\..\assets\third-party\syslinux-mbr\gptmbr.bin" LogicalName="Bootrix.Core.Boot.Syslinux.mbr/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\assets\third-party\grub\2.12\*" LogicalName="Bootrix.Core.Boot.Grub.2.12/%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\assets\third-party\uefi-ntfs\uefi-ntfs.img" LogicalName="Bootrix.Core.Writing.Linux.uefi-ntfs.img" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="Bootrix.Core.Tests" />
   </ItemGroup>
 

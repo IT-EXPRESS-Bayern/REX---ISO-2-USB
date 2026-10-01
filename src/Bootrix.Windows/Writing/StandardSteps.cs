@@ -34,8 +34,9 @@ public static class StandardSteps
         WriteServices services,
         MediaWriteContext write,
         Func<Core.Planning.PlannedPartition, FatFormatOptions, FatFormatOptions>? customizeFat = null,
-        double weight = 6) =>
-        new DelegateJobStep(PrepareKey, weight, (context, ct) => PrepareAsync(services, write, customizeFat, context, ct));
+        double weight = 6,
+        Func<MediaWriteTarget, IReadOnlyList<PartitionPayload>>? extraPayloads = null) =>
+        new DelegateJobStep(PrepareKey, weight, (context, ct) => PrepareAsync(services, write, customizeFat, extraPayloads, context, ct));
 
     /// <summary>Flushes every volume, refreshes the partition tables and closes the journal entry.</summary>
     public static IJobStep Finish(WriteServices services, MediaWriteContext write, double weight = 4) =>
@@ -67,6 +68,7 @@ public static class StandardSteps
         WriteServices services,
         MediaWriteContext write,
         Func<Core.Planning.PlannedPartition, FatFormatOptions, FatFormatOptions>? customizeFat,
+        Func<MediaWriteTarget, IReadOnlyList<PartitionPayload>>? extraPayloads,
         JobContext context,
         CancellationToken cancellationToken)
     {
@@ -95,7 +97,7 @@ public static class StandardSteps
                 new PrepareRequest(
                     target.Device,
                     layout,
-                    PlanLayout.FatPayloads(target.Plan, customizeFat),
+                    [.. PlanLayout.FatPayloads(target.Plan, customizeFat), .. extraPayloads?.Invoke(target) ?? []],
                     PlanLayout.MountedPartitions(target.Plan)),
                 cancellationToken).ConfigureAwait(false);
 

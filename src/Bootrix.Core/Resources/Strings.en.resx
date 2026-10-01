@@ -331,4 +331,25 @@
   <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>The medium has no \EFI\BOOT\{0}.</value></data>
   <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} is not a valid EFI file.</value></data>
   <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>The boot files could not be read from boot.wim: {0}</value></data>
+  <data name="Error.BootloaderInstallFailed.Cause" xml:space="preserve"><value>The boot loader ({0}) could not be set up on the medium: {1}</value></data>
+  <data name="Error.BootloaderInstallFailed.Action" xml:space="preserve"><value>Write the drive again. If the error persists, choose the "Write image byte for byte (DD)" mode if the image is suited for it.</value></data>
+  <data name="Error.FileCopyFailed.Cause" xml:space="preserve"><value>The file "{0}" could not be copied to the medium: {1}</value></data>
+  <data name="Error.FileCopyFailed.Action" xml:space="preserve"><value>Check that the drive is still connected and not write-protected, then try again.</value></data>
+  <data name="Linux.Notice.SyslinuxInstalled" xml:space="preserve"><value>Syslinux {0} was installed; it matches version {1} in the image.</value></data>
+  <data name="Linux.Notice.SyslinuxVersionDiffers" xml:space="preserve"><value>The image uses Syslinux {0}; {1} is installed. If the stick does not start with it, use the "Write image byte for byte (DD)" mode if the image is suited for it.</value></data>
+  <data name="Linux.Notice.SyslinuxModulesReplaced" xml:space="preserve"><value>The Syslinux modules of the image belong to another generation; {0} files were replaced or added with the matching version.</value></data>
+  <data name="Linux.Notice.GrubInstalled" xml:space="preserve"><value>GRUB {0} was installed as the BIOS boot loader; it reads the menu of the image.</value></data>
+  <data name="Linux.Notice.GrubInsteadOfSyslinuxFileSystem" xml:space="preserve"><value>Syslinux cannot start from {0}; GRUB was installed instead.</value></data>
+  <data name="Linux.Notice.GrubInsteadOfSyslinuxVersion" xml:space="preserve"><value>The image contains Syslinux {0}, for which Bootrix has no matching version; GRUB, which reads the menu of the image, was installed instead.</value></data>
+  <data name="Linux.Notice.GrubMenuRelocated" xml:space="preserve"><value>The GRUB menu of the image is in boot/grub2; boot/grub/grub.cfg now points there.</value></data>
+  <data name="Linux.Notice.BiosNeeds512ByteSectors" xml:space="preserve"><value>Drives with 4096-byte sectors cannot be started by Syslinux or GRUB in BIOS mode; the stick starts in UEFI mode only.</value></data>
+  <data name="Linux.Notice.NoBiosLoader" xml:space="preserve"><value>No boot loader was possible for BIOS mode (file system {0}, no suitable menu in the image); the stick starts in UEFI mode only.</value></data>
+  <data name="Linux.Notice.LabelRewritten" xml:space="preserve"><value>The label "{0}" was replaced by "{1}" in the boot configuration ({2} lines).</value></data>
+  <data name="Linux.Notice.PersistenceParameterAdded" xml:space="preserve"><value>The kernel parameter "{0}" was added to {1} boot lines.</value></data>
+  <data name="Linux.Notice.PersistenceNotPatched" xml:space="preserve"><value>Bootrix does not know the persistence parameter of "{0}". The partition exists, but the boot lines were left alone; the parameter has to be given by hand at boot.</value></data>
+  <data name="Linux.Notice.PersistenceNoBootLine" xml:space="preserve"><value>No line in the boot configuration takes the parameter "{0}"; persistence has to be requested by hand at boot.</value></data>
+  <data name="Linux.Notice.EsxiPartitionAdded" xml:space="preserve"><value>"-p 1" was added to the boot lines for ESXi.</value></data>
+  <data name="Linux.Notice.FileSkipped" xml:space="preserve"><value>The file "{0}" was not copied: {1}</value></data>
+  <data name="Linux.Notice.EfiLoadersFromBootImage" xml:space="preserve"><value>The EFI loaders were missing from the file tree and were taken from the EFI image of the image.</value></data>
+  <data name="Linux.Notice.ChecksumsUpdated" xml:space="preserve"><value>{0} lines of the checksum list (md5sum.txt) were adjusted to changed files.</value></data>
 </root>
