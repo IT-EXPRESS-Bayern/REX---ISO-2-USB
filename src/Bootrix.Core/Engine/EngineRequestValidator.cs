@@ -17,6 +17,8 @@ public static class EngineRequestValidator
     {
         [typeof(RawWriteJobRequest)] = (request, problems) => ValidateRawWrite((RawWriteJobRequest)request, problems),
         [typeof(WriteImageJobRequest)] = (request, problems) => ValidateWriteImage((WriteImageJobRequest)request, problems),
+        [typeof(RestoreDriveJobRequest)] = (request, problems) => ValidateRestore((RestoreDriveJobRequest)request, problems),
+        [typeof(VerifyJobRequest)] = (request, problems) => ValidateVerify((VerifyJobRequest)request, problems),
     };
 
     public static IReadOnlyList<string> Validate(EngineJobRequest? request)
@@ -88,6 +90,40 @@ public static class EngineRequestValidator
         if (request.LocalAccountPassword is { Length: > 127 })
         {
             problems.Add("local account password is too long");
+        }
+    }
+
+    private static void ValidateRestore(RestoreDriveJobRequest request, List<string> problems)
+    {
+        ValidateTargets(request.Targets, problems);
+        if (request.Label is { Length: > 32 })
+        {
+            problems.Add("volume label is longer than 32 characters");
+        }
+
+        if (!Enum.IsDefined(request.Scheme) || !Enum.IsDefined(request.FileSystem))
+        {
+            problems.Add("partition scheme or file system is not known");
+        }
+
+        if (request.ClusterSizeBytes is { } cluster && (cluster < 512 || cluster > 32 * 1024 * 1024 || !int.IsPow2(cluster)))
+        {
+            problems.Add("cluster size is not a power of two between 512 bytes and 32 MiB");
+        }
+    }
+
+    private static void ValidateVerify(VerifyJobRequest request, List<string> problems)
+    {
+        if (!EnginePathRules.IsAbsoluteFilePath(request.ImagePath))
+        {
+            problems.Add("image path is not an absolute file path");
+        }
+
+        ValidateTargets(request.Targets, problems);
+        ValidateArchiveEntry(request.ArchiveEntry, problems);
+        if (!Enum.IsDefined(request.Mode) || !Enum.IsDefined(request.BlockMap))
+        {
+            problems.Add("verification mode is not known");
         }
     }
 

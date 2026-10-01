@@ -12,7 +12,9 @@ namespace Bootrix.Core.Engine;
 /// </summary>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(RawWriteJobRequest), "raw-write")]
+[JsonDerivedType(typeof(RestoreDriveJobRequest), "restore-drive")]
 [JsonDerivedType(typeof(TinyBuildJobRequest), "tiny-build")]
+[JsonDerivedType(typeof(VerifyJobRequest), "verify-media")]
 [JsonDerivedType(typeof(WriteImageJobRequest), "write-image")]
 public abstract record EngineJobRequest;
 
