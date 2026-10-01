@@ -72,6 +72,14 @@
   <data name="Step.Restore.Finish" xml:space="preserve"><value>Abschließen</value></data>
   <data name="Step.Verify.Check" xml:space="preserve"><value>Ziel prüfen</value></data>
   <data name="Step.Verify.Compare" xml:space="preserve"><value>Medium mit dem Abbild vergleichen</value></data>
+  <data name="Step.Write.CheckTargets" xml:space="preserve"><value>Ziele prüfen</value></data>
+  <data name="Step.Write.Prepare" xml:space="preserve"><value>Datenträger vorbereiten</value></data>
+  <data name="Step.Write.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Step.Write.Customize" xml:space="preserve"><value>Medium anpassen</value></data>
+  <data name="Step.Write.Windows.Source" xml:space="preserve"><value>Installationsabbild öffnen</value></data>
+  <data name="Step.Write.Windows.Copy" xml:space="preserve"><value>Dateien kopieren</value></data>
+  <data name="Step.Write.Windows.BootCode" xml:space="preserve"><value>Startcode schreiben</value></data>
+  <data name="Step.Write.Windows.Verify" xml:space="preserve"><value>Geschriebene Daten prüfen</value></data>
   <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Arbeitsordner vorbereiten</value></data>
   <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Installationsmedium kopieren</value></data>
   <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Edition extrahieren</value></data>

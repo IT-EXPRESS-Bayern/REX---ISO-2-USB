@@ -11,9 +11,11 @@ internal static partial class VirtDisk
     public const uint DeviceVhdx = 3;
 
     public const uint AccessAttachReadOnly = 0x00010000;
+    public const uint AccessAttachReadWrite = 0x00020000;
     public const uint AccessGetInfo = 0x00080000;
 
     public const uint AttachFlagReadOnly = 0x1;
+    public const uint AttachFlagNoDriveLetter = 0x2;
 
     public static readonly Guid VendorMicrosoft = new("ec984aec-a0f9-47e9-901f-71415a66345b");
 
