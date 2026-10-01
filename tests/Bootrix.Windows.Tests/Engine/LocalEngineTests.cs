@@ -156,6 +156,38 @@ public class LocalEngineTests
         Assert.Empty(harness.Created);
     }
 
+    private sealed record HandledRequest(string Text) : EngineJobRequest;
+
+    private sealed class RecordingHandler : EngineJobHandler<HandledRequest>
+    {
+        public List<string> Seen { get; } = [];
+
+        protected override Task<EngineJobResult> RunAsync(HandledRequest request, IProgress<ProgressReport> progress, CancellationToken cancellationToken, CancellationToken abortToken)
+        {
+            Seen.Add(request.Text);
+            return Task.FromResult(new EngineJobResult { Outcome = JobOutcome.Succeeded, ImageBytes = 42 });
+        }
+    }
+
+    [Fact]
+    public async Task ARegisteredHandler_RunsItsOwnKindOfRequest()
+    {
+        var harness = new Harness();
+        var handler = new RecordingHandler();
+        var engine = new LocalEngine(
+            harness.Disks,
+            new JobRunner(NullLogger<JobRunner>.Instance),
+            _ => OneStep((_, _) => Task.CompletedTask),
+            TestDisks.Identity,
+            handlers: [handler]);
+
+        var result = await engine.RunJobAsync(new HandledRequest("hello"), new SyncProgress(), default);
+
+        Assert.True(result.Succeeded);
+        Assert.Equal(42, result.ImageBytes);
+        Assert.Equal(["hello"], handler.Seen);
+    }
+
     [Fact]
     public async Task SoftCancel_StopsTheJobAndReportsCancellation()
     {

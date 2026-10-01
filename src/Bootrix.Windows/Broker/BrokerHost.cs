@@ -8,17 +8,12 @@ using Bootrix.Core.Images;
 using Bootrix.Core.Ipc;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Logging;
-using Bootrix.Core.Tiny;
-using Bootrix.Core.Wim;
 using Bootrix.Core.Writing;
-using Bootrix.Windows.Dism;
 using Bootrix.Windows.Engine;
 using Bootrix.Windows.Interop;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Platform;
 using Bootrix.Windows.Storage;
-using Bootrix.Windows.Tiny;
-using Bootrix.Windows.Tools;
 using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 
@@ -167,15 +162,8 @@ internal static class BrokerHost
         var restore = new RestoreDriveJob(disks, services.Preparer, journal, loggers.CreateLogger<RestoreDriveJob>());
         var verify = new VerifyMediaJob(disks, images, loggers.CreateLogger<VerifyMediaJob>());
         var jobs = new JobRunner(loggers.CreateLogger<JobRunner>());
-        var installTools = new WimInstallImageTools();
-        var tiny = new TinyBuildRunner(
-            new TinyBuilder(new DismImageServicing(), new ImageFileSystem(), installTools, new OscdimgIsoWriter(new OscdimgLocator())),
-            installTools,
-            jobs,
-            paths,
-            loggers.CreateLogger<TinyBuildRunner>(),
-            new ClientUserFiles(client));
-        return new LocalEngine(disks, jobs, rawWrite, writeImage, restore, verify, tiny, loggers.CreateLogger<LocalEngine>());
+        var handlers = BrokerHandlers.Create(new BrokerHandlerContext(disks, client, images, journal, jobs, paths, loggers));
+        return new LocalEngine(disks, jobs, rawWrite, writeImage, restore, verify, handlers, loggers.CreateLogger<LocalEngine>());
     }
 
     /// <summary>

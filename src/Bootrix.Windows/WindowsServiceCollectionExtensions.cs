@@ -42,6 +42,7 @@ public static class WindowsServiceCollectionExtensions
         services.AddSingleton<IIsoWriter, OscdimgIsoWriter>();
         services.AddSingleton<TinyBuilder>();
         services.AddSingleton<TinyBuildRunner>();
+        services.AddSingleton<IEngineJobHandler, TinyBuildHandler>();
 
         services.AddSingleton<IOpticalService, ImapiOpticalService>();
         services.AddSingleton<BurnImageJob>();

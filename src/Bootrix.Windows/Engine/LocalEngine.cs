@@ -8,7 +8,6 @@ using Bootrix.Core.Writing;
 using Bootrix.Core.Writing.Restore;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
-using Bootrix.Windows.Tiny;
 using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -27,7 +26,7 @@ public sealed class LocalEngine : IEngine
     private readonly Func<StorageDevice, DiskIdentity> _capture;
     private readonly ILogger _logger;
     private readonly Dictionary<Type, JobKind> _kinds;
-    private readonly Dictionary<Type, Func<EngineJobRequest, IProgress<ProgressReport>, CancellationToken, CancellationToken, Task<EngineJobResult>>> _selfRunning = [];
+    private readonly Dictionary<Type, IEngineJobHandler> _handlers;
 
     public LocalEngine(
         IDiskService disks,
@@ -36,12 +35,10 @@ public sealed class LocalEngine : IEngine
         WriteImageJobFactory writeImage,
         RestoreDriveJob restore,
         VerifyMediaJob verify,
-        TinyBuildRunner tiny,
+        IEnumerable<IEngineJobHandler>? handlers = null,
         ILogger<LocalEngine>? logger = null)
-        : this(disks, runner, rawWrite.Create, DiskIdentityReader.Capture, logger)
+        : this(disks, runner, rawWrite.Create, DiskIdentityReader.Capture, logger, handlers)
     {
-        _selfRunning[typeof(TinyBuildJobRequest)] = async (request, progress, cancellationToken, abortToken) =>
-            EngineJobResult.From(await tiny.RunAsync((TinyBuildJobRequest)request, new DelegateProgressSink(progress.Report), cancellationToken, abortToken).ConfigureAwait(false));
         _kinds[typeof(WriteImageJobRequest)] = new(
             (request, ct) => writeImage.CreateAsync((WriteImageJobRequest)request, ct),
             SummarizeRawWrite);
@@ -58,12 +55,14 @@ public sealed class LocalEngine : IEngine
         JobRunner runner,
         Func<RawWriteRequest, IJob> createRawWrite,
         Func<StorageDevice, DiskIdentity> capture,
-        ILogger? logger = null)
+        ILogger? logger = null,
+        IEnumerable<IEngineJobHandler>? handlers = null)
     {
         _disks = disks;
         _runner = runner;
         _capture = capture;
         _logger = logger ?? NullLogger.Instance;
+        _handlers = (handlers ?? []).ToDictionary(handler => handler.RequestType);
 
         // One entry per kind of request. A new kind of job adds its request type here, how to build the
         // job from it, and how to read its result; the validator of the broker has a matching table.
@@ -100,9 +99,9 @@ public sealed class LocalEngine : IEngine
         ArgumentNullException.ThrowIfNull(progress);
 
         var started = Stopwatch.GetTimestamp();
-        if (_selfRunning.TryGetValue(request.GetType(), out var run))
+        if (_handlers.TryGetValue(request.GetType(), out var handler))
         {
-            return await run(request, progress, cancellationToken, abortToken).ConfigureAwait(false);
+            return await handler.RunAsync(request, progress, cancellationToken, abortToken).ConfigureAwait(false);
         }
 
         if (!_kinds.TryGetValue(request.GetType(), out var kind))
