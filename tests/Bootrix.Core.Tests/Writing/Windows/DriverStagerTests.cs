@@ -94,9 +94,21 @@ public sealed class DriverStagerTests : IDisposable
     }
 
     [Fact]
+    public async Task Stage_FolderWithParentReferences_IsRefusedAndNothingIsWritten()
+    {
+        var source = Source("pack", ("a.inf", "A"));
+        var sneaky = Path.Combine(source, "..", "pack");
+
+        var ex = await Assert.ThrowsAsync<BootrixException>(() => StageAsync([sneaky]));
+
+        Assert.Equal(ErrorCode.DriverFolderRejected, ex.Code);
+        Assert.False(_folder.Exists("$WinPEDriver$"));
+    }
+
+    [Fact]
     public async Task Stage_FolderNamesAreMadeSafeForTheMedium()
     {
-        var source = Source("Treiber für Netzwerk & Co: 1.0 ", ("a.inf", "A"));
+        var source = Source("Treiber für Netzwerk & Co (1.0)", ("a.inf", "A"));
 
         await StageAsync([source]);
 

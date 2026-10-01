@@ -131,13 +131,14 @@ public sealed class DriverStager(IUserContext user, DriverLimits? limits = null,
     /// <summary>Folders named twice, or inside another named folder, are copied once.</summary>
     private static List<string> Distinct(IReadOnlyList<string> folders)
     {
-        var full = folders
+        // Compared by their normalized form, but handed on as given: the scan has to see a ".." that the user typed.
+        var named = folders
             .Where(folder => !string.IsNullOrWhiteSpace(folder))
-            .Select(folder => Path.IsPathFullyQualified(folder) ? Path.TrimEndingDirectorySeparator(Path.GetFullPath(folder)) : folder)
-            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .Select(folder => (Given: folder, Key: Path.IsPathFullyQualified(folder) ? Path.TrimEndingDirectorySeparator(Path.GetFullPath(folder)) : folder))
+            .DistinctBy(entry => entry.Key, StringComparer.OrdinalIgnoreCase)
             .ToList();
 
-        return [.. full.Where(folder => !full.Any(other => IsInside(folder, other)))];
+        return [.. named.Where(entry => !named.Any(other => IsInside(entry.Key, other.Key))).Select(entry => entry.Given)];
     }
 
     private static bool IsInside(string folder, string parent) =>
