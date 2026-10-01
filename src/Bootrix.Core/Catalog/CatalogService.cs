@@ -6,9 +6,15 @@ using Microsoft.Extensions.Logging;
 namespace Bootrix.Core.Catalog;
 
 /// <summary>Combines all providers. A provider that fails is reported next to the results of the others, never instead of them.</summary>
-public sealed class CatalogService(IEnumerable<ICatalogProvider> providers, ILogger<CatalogService> logger)
+public sealed class CatalogService(IEnumerable<ICatalogProvider> providers, ILogger<CatalogService> logger, IReadOnlySet<string>? hiddenProducts = null)
 {
     private readonly IReadOnlyList<ICatalogProvider> _providers = [.. providers];
+
+    /// <summary>
+    /// Products that another provider lists as well. The one that resolves versions and signatures live is kept,
+    /// the duplicate is hidden from listings; its variants can still be resolved by id.
+    /// </summary>
+    private readonly IReadOnlySet<string> _hidden = hiddenProducts ?? new HashSet<string>();
 
     public async Task<CatalogListing<CatalogProduct>> ListProductsAsync(CancellationToken cancellationToken)
     {
@@ -16,7 +22,7 @@ public sealed class CatalogService(IEnumerable<ICatalogProvider> providers, ILog
         var results = await Task.WhenAll(tasks).ConfigureAwait(false);
 
         return new CatalogListing<CatalogProduct>(
-            [.. results.SelectMany(r => r.Items).OrderBy(p => p.Family).ThenBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)],
+            [.. results.SelectMany(r => r.Items).Where(p => !_hidden.Contains(p.Id)).OrderBy(p => p.Family).ThenBy(p => p.Name, StringComparer.CurrentCultureIgnoreCase)],
             [.. results.Where(r => r.Failure is not null).Select(r => r.Failure!)]);
     }
 

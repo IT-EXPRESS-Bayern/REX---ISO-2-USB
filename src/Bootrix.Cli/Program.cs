@@ -3,7 +3,10 @@ using System.CommandLine;
 using Bootrix.Cli.Commands;
 using Bootrix.Core;
 using Bootrix.Core.Hosting;
+using Bootrix.Core.Catalog;
 using Bootrix.Core.Jobs;
+using Bootrix.Core.Library;
+using Bootrix.Core.Net;
 using Bootrix.Core.Storage;
 using Bootrix.Core.Tiny;
 using Bootrix.Windows;
@@ -16,6 +19,7 @@ Directory.CreateDirectory(paths.DataDirectory);
 
 await using var services = new ServiceCollection()
     .AddBootrixCore(paths)
+    .AddBootrixCatalog(paths)
     .AddBootrixWindows()
     .BuildServiceProvider();
 
@@ -27,6 +31,12 @@ var root = new RootCommand($"{AppInfo.Name} {AppInfo.Version} - bootable media f
         services.GetRequiredService<IDiskService>(),
         services.GetRequiredService<RawWriteJob>(),
         services.GetRequiredService<JobRunner>()),
+    CatalogCommand.Create(services.GetRequiredService<CatalogService>()),
+    DownloadCommand.Create(
+        services.GetRequiredService<CatalogService>(),
+        services.GetRequiredService<SegmentedDownloader>(),
+        services.GetRequiredService<ImageLibrary>()),
+    LibraryCommand.Create(services.GetRequiredService<ImageLibrary>()),
     TinyCommand.Create(
         services.GetRequiredService<TinyBuildRunner>(),
         services.GetRequiredService<IInstallImageTools>(),

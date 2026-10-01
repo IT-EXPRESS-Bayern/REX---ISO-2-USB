@@ -117,4 +117,18 @@ public class CatalogServiceTests
 
         Assert.Equal(ErrorCode.CatalogUnavailable, ex.Code);
     }
+
+    [Fact]
+    public async Task HiddenProductsAreLeftOutOfTheListingButStayResolvable()
+    {
+        var provider = new FakeProvider("rescue", Product("rescue", "rescue-clonezilla", "Clonezilla", CatalogFamily.Rescue), Product("rescue", "rescue-chntpw", "chntpw", CatalogFamily.Rescue));
+        var service = new CatalogService([provider], NullLogger<CatalogService>.Instance, new HashSet<string> { "rescue-clonezilla" });
+
+        var listing = await service.ListProductsAsync(CancellationToken.None);
+        var variant = new CatalogVariant { Id = "v", ProductId = "rescue-clonezilla", Provider = "rescue", Name = "x" };
+        var request = await service.ResolveAsync(variant, null, CancellationToken.None);
+
+        Assert.Equal(["chntpw"], listing.Items.Select(p => p.Name));
+        Assert.NotNull(request);
+    }
 }

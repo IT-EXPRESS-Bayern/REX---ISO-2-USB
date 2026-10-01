@@ -3,6 +3,7 @@ using System.Text.Json;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Json;
 using Bootrix.Core.Jobs;
+using Bootrix.Core.Net;
 
 namespace Bootrix.Cli.Output;
 
@@ -67,6 +68,39 @@ public sealed class ConsoleWriter(bool json, TextWriter? output = null, TextWrit
         }
 
         var line = FormatProgress(report);
+        _err.Write('\r' + line.PadRight(_lastProgressLength));
+        _lastProgressLength = line.Length;
+    }
+
+    public void WriteDownloadProgress(DownloadProgress progress)
+    {
+        if (Json)
+        {
+            WriteObject(new
+            {
+                type = "download-progress",
+                phase = progress.Phase.ToString().ToLowerInvariant(),
+                bytesDone = progress.BytesDone,
+                bytesTotal = progress.BytesTotal,
+                bytesPerSecond = (long)progress.BytesPerSecond,
+                etaSeconds = progress.Eta?.TotalSeconds,
+                connections = progress.ActiveSegments,
+            });
+            return;
+        }
+
+        var percent = progress.BytesTotal is > 0 ? $"{progress.BytesDone * 100.0 / progress.BytesTotal.Value,5:0.0}%" : "     ";
+        var line = $"{progress.Phase,-11} {percent}  {FormatSize(progress.BytesDone)}";
+        if (progress.BytesPerSecond > 1024)
+        {
+            line += $"  {FormatSize((long)progress.BytesPerSecond)}/s  {progress.ActiveSegments} conn";
+        }
+
+        if (progress.Eta is { } eta)
+        {
+            line += $"  ETA {(eta.TotalHours >= 1 ? $"{(int)eta.TotalHours}:{eta.Minutes:00}:{eta.Seconds:00}" : $"{eta.Minutes}:{eta.Seconds:00}")}";
+        }
+
         _err.Write('\r' + line.PadRight(_lastProgressLength));
         _lastProgressLength = line.Length;
     }

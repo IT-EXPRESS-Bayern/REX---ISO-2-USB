@@ -29,16 +29,19 @@ public sealed class RescueCatalogStore
     private const string CacheFileName = "rescue-catalog.signed.json";
 
     private readonly string _cachePath;
-    private readonly SignedManifestVerifier _verifier;
+    private readonly SignedManifestVerifier? _verifier;
     private readonly ILogger<RescueCatalogStore> _logger;
     private readonly TimeProvider _time;
     private readonly object _gate = new();
     private RescueCatalogSnapshot? _current;
 
-    public RescueCatalogStore(string cacheDirectory, SignedManifestVerifier verifier, ILogger<RescueCatalogStore> logger, TimeProvider? time = null)
+    /// <param name="verifier">
+    /// Checks signed updates. Null while the project has no trusted signing key: the catalog inside the program is used
+    /// and every update is refused.
+    /// </param>
+    public RescueCatalogStore(string cacheDirectory, SignedManifestVerifier? verifier, ILogger<RescueCatalogStore> logger, TimeProvider? time = null)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(cacheDirectory);
-        ArgumentNullException.ThrowIfNull(verifier);
         ArgumentNullException.ThrowIfNull(logger);
 
         _cachePath = Path.Combine(cacheDirectory, CacheFileName);
@@ -74,7 +77,8 @@ public sealed class RescueCatalogStore
     /// </summary>
     public RescueCatalogUpdate Apply(ReadOnlySpan<byte> envelope)
     {
-        var manifest = _verifier.Verify(envelope, Channel);
+        var verifier = _verifier ?? throw new BootrixException(ErrorCode.SignatureInvalid, "no trusted signing key is configured");
+        var manifest = verifier.Verify(envelope, Channel);
         var document = RescueCatalogReader.Read(manifest.Payload);
 
         lock (_gate)
@@ -106,6 +110,11 @@ public sealed class RescueCatalogStore
 
     private RescueCatalogDocument? TryLoadCache()
     {
+        if (_verifier is null)
+        {
+            return null;
+        }
+
         byte[] envelope;
         try
         {
