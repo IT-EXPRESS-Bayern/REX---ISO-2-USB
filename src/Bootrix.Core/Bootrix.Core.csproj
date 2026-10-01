@@ -14,6 +14,11 @@
     <PackageReference Include="LTRData.DiscUtils.Streams" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Boot\revocations.json" LogicalName="Bootrix.Core.Boot.revocations.json" />
   </ItemGroup>
 
 </Project>
