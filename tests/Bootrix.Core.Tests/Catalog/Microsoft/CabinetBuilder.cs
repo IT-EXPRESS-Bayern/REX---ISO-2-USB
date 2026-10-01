@@ -25,6 +25,9 @@ internal sealed class CabinetBuilder
 
     public int DataReserve { get; init; }
 
+    /// <summary>Bytes behind the last block that count towards the cabinet size, like the signature of a signed cabinet.</summary>
+    public byte[] Trailer { get; init; } = [];
+
     public static ushort Lzx(int windowBits) => (ushort)(3 | (windowBits << 8));
 
     public CabinetBuilder Folder(ushort compression, params (byte[] Payload, int Uncompressed)[] blocks)
@@ -96,20 +99,22 @@ internal sealed class CabinetBuilder
         {
             foreach (var (payload, uncompressed) in blocks)
             {
-                var block = new byte[8];
+                // The reserved bytes sit between the size fields and the data, and the checksum covers them.
+                var block = new byte[8 + DataReserve];
                 BinaryPrimitives.WriteUInt16LittleEndian(block.AsSpan(4), (ushort)payload.Length);
                 BinaryPrimitives.WriteUInt16LittleEndian(block.AsSpan(6), (ushort)uncompressed);
+                Array.Fill(block, (byte)0xCD, 8, DataReserve);
                 if (Checksums)
                 {
                     BinaryPrimitives.WriteUInt32LittleEndian(block, Checksum(payload, Checksum(block.AsSpan(4), 0)));
                 }
 
                 output.Write(block);
-                output.Write(new byte[DataReserve]);
                 output.Write(payload);
             }
         }
 
+        output.Write(Trailer);
         var bytes = output.ToArray();
         BinaryPrimitives.WriteUInt32LittleEndian(bytes.AsSpan(8), (uint)bytes.Length);
         return bytes;

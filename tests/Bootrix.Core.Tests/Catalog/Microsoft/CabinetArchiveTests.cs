@@ -45,18 +45,14 @@ public class CabinetArchiveTests
     public void Extract_ReservedAreasAndAppendedSignature_AreSkipped()
     {
         // The layout of an Authenticode-signed cabinet: 20 reserved header bytes and a signature behind the last block.
-        var cabinet = new CabinetBuilder { HeaderReserve = 20, FolderReserve = 3, DataReserve = 2 }
+        var cabinet = new CabinetBuilder { HeaderReserve = 20, FolderReserve = 3, DataReserve = 2, Trailer = Noise(100) }
             .Folder(CabinetBuilder.Stored, ("signed"u8.ToArray(), 6))
             .Folder(CabinetBuilder.Stored, ("also"u8.ToArray(), 4))
             .File("a", 0, 0, 6)
             .File("b", 1, 0, 4)
             .Build();
 
-        var signed = new byte[cabinet.Length + 100];
-        cabinet.CopyTo(signed, 0);
-        Array.Fill(signed, (byte)0x30, cabinet.Length, 100);
-
-        var archive = CabinetArchive.Parse(signed);
+        var archive = CabinetArchive.Parse(cabinet);
 
         Assert.Equal("signed", Encoding.ASCII.GetString(archive.Extract(archive.Entries[0])));
         Assert.Equal("also", Encoding.ASCII.GetString(archive.Extract(archive.Entries[1])));
@@ -348,7 +344,7 @@ public class CabinetArchiveTests
         Assert.Throws<InvalidDataException>(() => CabinetArchive.Parse(cabinet[..length]));
     }
 
-    private static byte[] MsZipBlock(byte[] data)
+    internal static byte[] MsZipBlock(byte[] data)
     {
         using var packed = new MemoryStream();
         packed.Write("CK"u8);
@@ -361,7 +357,7 @@ public class CabinetArchiveTests
     }
 
     /// <summary>A hand-assembled fixed-Huffman deflate block: one literal, one match, end of block.</summary>
-    private static byte[] MsZipBlockWithMatch(byte literal, int length, int distance)
+    internal static byte[] MsZipBlockWithMatch(byte literal, int length, int distance)
     {
         var bits = new List<bool>();
 

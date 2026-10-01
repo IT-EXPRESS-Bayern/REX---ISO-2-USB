@@ -236,8 +236,10 @@ internal sealed class CabinetArchive
             var payloadStart = position + 8 + DataReserve;
             Require(_data, payloadStart, compressed);
 
-            // Zero means "not computed".
-            if (checksum != 0 && Checksum(_data.AsSpan((int)payloadStart, compressed), Checksum(header[4..], 0)) != checksum)
+            // Zero means "not computed". The checksum starts at the size fields and covers the reserved bytes behind
+            // them, as 7-Zip reads it and as the specification words it ("from cbData through ab").
+            var sizesAndReserve = _data.AsSpan((int)position + 4, 4 + DataReserve);
+            if (checksum != 0 && Checksum(_data.AsSpan((int)payloadStart, compressed), Checksum(sizesAndReserve, 0)) != checksum)
             {
                 throw new InvalidDataException($"Checksum of data block {i} does not match.");
             }
