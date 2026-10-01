@@ -115,6 +115,48 @@ public sealed unsafe class WimFile : IDisposable
         }
     }
 
+    /// <summary>
+    /// Extracts files or folders of one image into <paramref name="destination"/>, each directly below it without the
+    /// folders above (<c>Windows/Boot/EFI_EX</c> ends up as <c>destination/EFI_EX</c>). A path the image does not
+    /// contain is skipped, not an error: the caller looks at what arrived.
+    /// </summary>
+    public void ExtractPaths(int image, string destination, IReadOnlyList<string> imagePaths, CancellationToken cancellationToken = default)
+    {
+        ThrowIfDisposed();
+        ArgumentException.ThrowIfNullOrEmpty(destination);
+        ArgumentNullException.ThrowIfNull(imagePaths);
+        cancellationToken.ThrowIfCancellationRequested();
+        if (imagePaths.Count == 0)
+        {
+            return;
+        }
+
+        var natives = new NativeString[imagePaths.Count];
+        var pointers = new nint[imagePaths.Count];
+        try
+        {
+            for (var i = 0; i < natives.Length; i++)
+            {
+                natives[i] = new NativeString(imagePaths[i]);
+                pointers[i] = natives[i].Pointer;
+            }
+
+            using var target = new NativeString(destination);
+            fixed (nint* paths = pointers)
+            {
+                var flags = WimLibNative.ExtractGlobPaths | WimLibNative.ExtractNoPreserveDirStructure | WimLibNative.ExtractNoAcls;
+                ThrowIfFailed(WimLibNative.ExtractPaths(_handle, image, target.Pointer, paths, (nuint)pointers.Length, flags), $"extract from image {image}");
+            }
+        }
+        finally
+        {
+            foreach (var native in natives)
+            {
+                native.Dispose();
+            }
+        }
+    }
+
     /// <summary>Writes one image (or all) to a new file; used to extract a single edition from a multi-edition install.wim.</summary>
     public void WriteImage(string destination, int image, WimCompression? compression = null, bool recompress = false, bool solid = false, IProgress<double>? progress = null, CancellationToken cancellationToken = default)
     {

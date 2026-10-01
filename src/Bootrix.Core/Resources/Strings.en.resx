@@ -299,4 +299,30 @@
   <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Close all Bootrix windows and start the program again.</value></data>
   <data name="Error.MediaWriterUnavailable.Cause" xml:space="preserve"><value>This version of Bootrix has no way to write this image ({0}) yet ({1}).</value></data>
   <data name="Error.MediaWriterUnavailable.Action" xml:space="preserve"><value>Try the "Write image byte for byte (DD)" mode if the image is suited for it.</value></data>
+  <data name="Error.AnswerFileExists.Cause" xml:space="preserve"><value>The image already contains an answer file (autounattend.xml) that the job says must not be replaced.</value></data>
+  <data name="Error.AnswerFileExists.Action" xml:space="preserve"><value>Allow replacing it (the original is kept as autounattend.xml.original) or drop the options that need an answer file.</value></data>
+  <data name="Error.DriverFolderRejected.Cause" xml:space="preserve"><value>The driver folder "{0}" cannot be used: {1}</value></data>
+  <data name="Error.DriverFolderRejected.Action" xml:space="preserve"><value>Choose a folder that contains only unpacked drivers (.inf, .sys, .cat), no programs and no links.</value></data>
+  <data name="Error.DriverInjectionFailed.Cause" xml:space="preserve"><value>None of the {0} drivers could be added to the Windows image ({1}).</value></data>
+  <data name="Error.DriverInjectionFailed.Action" xml:space="preserve"><value>Check that the drivers are signed and match the architecture of the image. The $WinPEDriver$ folder on the medium still holds them.</value></data>
+  <data name="Error.BootManager2023Unavailable.Cause" xml:space="preserve"><value>This Windows image has no boot files signed with the Windows UEFI CA 2023 (build {0}): {1}</value></data>
+  <data name="Error.BootManager2023Unavailable.Action" xml:space="preserve"><value>Use a current Windows 11 image (25H2 or newer) or choose the previous signature (Windows Production PCA 2011).</value></data>
+  <data name="Error.BootManager2023Unverified.Cause" xml:space="preserve"><value>The replaced boot files do not carry the Windows UEFI CA 2023 signature: {0}. The original files were restored.</value></data>
+  <data name="Error.BootManager2023Unverified.Action" xml:space="preserve"><value>Use an unmodified original image from Microsoft or choose the previous signature (Windows Production PCA 2011).</value></data>
+  <data name="Driver.Reject.NotFound" xml:space="preserve"><value>The folder does not exist or cannot be read.</value></data>
+  <data name="Driver.Reject.Root" xml:space="preserve"><value>A drive root is too broad for a driver folder.</value></data>
+  <data name="Driver.Reject.Link" xml:space="preserve"><value>Contains a link (symbolic link or junction): {0}</value></data>
+  <data name="Driver.Reject.NotReadable" xml:space="preserve"><value>An entry cannot be read: {0}</value></data>
+  <data name="Driver.Reject.NoDriver" xml:space="preserve"><value>Contains no driver description (.inf).</value></data>
+  <data name="Driver.Reject.TooLarge" xml:space="preserve"><value>The drivers are larger than {0}.</value></data>
+  <data name="Driver.Reject.TooManyFiles" xml:space="preserve"><value>There are more than {0} files.</value></data>
+  <data name="Driver.Reject.TooDeep" xml:space="preserve"><value>Nested too deeply (more than {0} levels): {1}</value></data>
+  <data name="Driver.Reject.BadName" xml:space="preserve"><value>Invalid file or folder name: {0}</value></data>
+  <data name="Driver.Reject.PathTooLong" xml:space="preserve"><value>The path is too long: {0}</value></data>
+  <data name="Customization.EditionUnknown" xml:space="preserve"><value>The image has no edition "{0}" (available: {1}).</value></data>
+  <data name="Boot2023.Reason.NoBootImage" xml:space="preserve"><value>boot.wim is missing or has no Setup image.</value></data>
+  <data name="Boot2023.Reason.NoSourceFiles" xml:space="preserve"><value>boot.wim does not contain \Windows\Boot\EFI_EX\bootmgfw_EX.efi.</value></data>
+  <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>The medium has no \EFI\BOOT\{0}.</value></data>
+  <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} is not a valid EFI file.</value></data>
+  <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>The boot files could not be read from boot.wim: {0}</value></data>
 </root>

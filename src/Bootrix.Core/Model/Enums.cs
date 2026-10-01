@@ -57,3 +57,19 @@ public enum BootCertificate
     Windows2011,
     Windows2023,
 }
+
+/// <summary>What to do when the Windows image already carries an autounattend.xml and Bootrix has one of its own to write.</summary>
+public enum ExistingAnswerFilePolicy
+{
+    /// <summary>Write Bootrix' file and keep the old one next to it as autounattend.xml.original.</summary>
+    ReplaceAndKeepOriginal,
+
+    /// <summary>Write Bootrix' file; the old one is lost.</summary>
+    Replace,
+
+    /// <summary>Leave the image's file alone and write nothing.</summary>
+    Keep,
+
+    /// <summary>Stop the job.</summary>
+    Fail,
+}

@@ -62,6 +62,13 @@ public enum ErrorCode
     InsufficientSpace = 6003,
     ImageMountFailed = 6004,
 
+    // 61xx: changes to Windows setup media after copying
+    AnswerFileExists = 6101,
+    DriverFolderRejected = 6102,
+    DriverInjectionFailed = 6103,
+    BootManager2023Unavailable = 6104,
+    BootManager2023Unverified = 6105,
+
     // 7xxx: optical
     NoRecorder = 7001,
     MediaNotSupported = 7002,
