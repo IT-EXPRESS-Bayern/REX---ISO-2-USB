@@ -217,7 +217,18 @@ public static class ImageIntegrityChecker
 
     private static void CheckWim(Stream image, long? imageLength, List<ImageWarning> findings)
     {
-        var header = WimHeader.Parse(ImageContainerSniffer.ReadAt(image, 0, WimHeader.Size));
+        WimHeader header;
+        try
+        {
+            header = WimHeader.Parse(ImageContainerSniffer.ReadAt(image, 0, WimHeader.Size));
+        }
+        catch (BootrixException)
+        {
+            // The signature is there but the header is not: the file is not a usable WIM.
+            findings.Add(new ImageWarning(ImageWarningKeys.WimUnreadable, WarningSeverity.Error, "WIM"));
+            return;
+        }
+
         if (imageLength is { } length && header.ExpectedLength > length)
         {
             findings.Add(new ImageWarning(ImageWarningKeys.WimTruncated, WarningSeverity.Error, header.ExpectedLength, length));
