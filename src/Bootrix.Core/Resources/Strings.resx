@@ -182,6 +182,28 @@
   <data name="Error.ReadError.Action" xml:space="preserve"><value>Reinigen Sie die Disc oder verwenden Sie ein anderes Laufwerk.</value></data>
   <data name="Error.CopyProtected.Cause" xml:space="preserve"><value>Die Disc ist kopiergeschützt.</value></data>
   <data name="Error.CopyProtected.Action" xml:space="preserve"><value>Kopiergeschützte Medien werden nicht kopiert.</value></data>
+  <data name="Error.MediaNotBlank.Cause" xml:space="preserve"><value>Die Disc ist nicht leer.</value></data>
+  <data name="Error.MediaNotBlank.Action" xml:space="preserve"><value>Löschen Sie die Disc zuerst oder legen Sie einen leeren Rohling ein. Bei wiederbeschreibbaren Discs kann das Überschreiben erlaubt werden.</value></data>
+  <data name="Error.AudioDiscNotSupported.Cause" xml:space="preserve"><value>Dies ist eine Audio-CD und kann nicht als ISO-Abbild gesichert werden.</value></data>
+  <data name="Error.AudioDiscNotSupported.Action" xml:space="preserve"><value>Verwenden Sie zum Kopieren von Audio-CDs ein Programm zum Auslesen von Audiospuren.</value></data>
+  <data name="Error.MixedModeDiscNotSupported.Cause" xml:space="preserve"><value>Die Disc enthält Audio- und Datenspuren (Mixed-Mode) und kann nicht als ISO-Abbild gesichert werden.</value></data>
+  <data name="Error.MixedModeDiscNotSupported.Action" xml:space="preserve"><value>Ein ISO-Abbild enthält nur eine Datenspur. Sichern Sie die Disc mit einem Programm, das BIN/CUE schreibt.</value></data>
+  <data name="Error.DiscFileTooLarge.Cause" xml:space="preserve"><value>Die Datei „{0}“ ist größer als 4 GB und passt nicht in ein ISO-9660-Dateisystem.</value></data>
+  <data name="Error.DiscFileTooLarge.Action" xml:space="preserve"><value>Für Windows-Installationsmedien mit großer install.wim ist das ISO-Remaster nötig; es verkleinert das Abbild und erzeugt ein bootfähiges ISO.</value></data>
+  <data name="Error.OpticalUnavailable.Cause" xml:space="preserve"><value>Die Brennfunktion von Windows (IMAPI) ist nicht verfügbar: {0}</value></data>
+  <data name="Error.OpticalUnavailable.Action" xml:space="preserve"><value>Prüfen Sie, ob Brennen per Gruppenrichtlinie gesperrt ist und ob die Windows-Medienkomponenten installiert sind.</value></data>
+  <data name="Burn.CheckMedia" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Burn.HashSource" xml:space="preserve"><value>Prüfsumme der Quelle berechnen</value></data>
+  <data name="Burn.Write" xml:space="preserve"><value>Disc brennen</value></data>
+  <data name="Burn.ReadBack" xml:space="preserve"><value>Disc zurücklesen und vergleichen</value></data>
+  <data name="Burn.Finish" xml:space="preserve"><value>Brennvorgang abschließen</value></data>
+  <data name="Folder.Scan" xml:space="preserve"><value>Ordner untersuchen</value></data>
+  <data name="Rip.Check" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Rip.Read" xml:space="preserve"><value>Disc auslesen</value></data>
+  <data name="Rip.Finish" xml:space="preserve"><value>Bericht schreiben</value></data>
+  <data name="Erase.Check" xml:space="preserve"><value>Disc prüfen</value></data>
+  <data name="Erase.Run" xml:space="preserve"><value>Disc löschen</value></data>
+  <data name="Erase.Finish" xml:space="preserve"><value>Löschen abschließen</value></data>
 
   <data name="Error.EfiBinaryInvalid.Cause" xml:space="preserve"><value>Die Datei ist keine gültige EFI-Anwendung: {0}</value></data>
   <data name="Error.EfiBinaryInvalid.Action" xml:space="preserve"><value>Prüfen Sie, ob die Datei vollständig kopiert wurde, und erstellen Sie das Medium bei Bedarf neu.</value></data>

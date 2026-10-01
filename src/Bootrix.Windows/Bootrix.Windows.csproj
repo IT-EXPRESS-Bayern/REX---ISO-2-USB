@@ -9,7 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Dism" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" PrivateAssets="all" />
     <PackageReference Include="System.Management" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="Optical\Optical.NativeMethods.txt" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,4 @@
+[*.cs]
+# The tests build COMException values to feed the HRESULT translation and call the IStream members through the interface, as IMAPI does.
+dotnet_diagnostic.CA2201.severity = none
+dotnet_diagnostic.CA1859.severity = none

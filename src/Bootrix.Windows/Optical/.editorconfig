@@ -1,0 +1,4 @@
+[*.cs]
+# The generated IMAPI bindings are marked SupportedOSPlatform("windows6.0.6000"), while the assembly attribute says plain "windows".
+# The project targets Windows 10 1809 and later, which satisfies every one of them.
+dotnet_diagnostic.CA1416.severity = none
