@@ -28,6 +28,12 @@ public enum ErrorCode
     DeviceRemoved = 2007,
     LayoutRejected = 2008,
     VolumeNotMounted = 2009,
+    SectorSizeUnsupported = 2010,
+    FileSystemUnsupported = 2011,
+    FileTooLargeForFileSystem = 2012,
+    FileSystemTooSmall = 2013,
+    WriteModeUnsupported = 2014,
+    PersistenceTooSmall = 2015,
 
     // 3xxx: images
     ImageUnreadable = 3001,

@@ -37,6 +37,18 @@
   <data name="Error.LayoutRejected.Action" xml:space="preserve"><value>Unplug the stick, plug it in again and retry.</value></data>
   <data name="Error.VolumeNotMounted.Cause" xml:space="preserve"><value>Windows did not mount the new volume in time.</value></data>
   <data name="Error.VolumeNotMounted.Action" xml:space="preserve"><value>Retry, or temporarily disable your antivirus.</value></data>
+  <data name="Error.SectorSizeUnsupported.Cause" xml:space="preserve"><value>The device reports {0}-byte sectors, which {1} does not support.</value></data>
+  <data name="Error.SectorSizeUnsupported.Action" xml:space="preserve"><value>Use a device with 512-byte sectors.</value></data>
+  <data name="Error.FileSystemUnsupported.Cause" xml:space="preserve"><value>The file system {0} cannot be used for this medium ({1}).</value></data>
+  <data name="Error.FileSystemUnsupported.Action" xml:space="preserve"><value>Choose another file system or "Automatic".</value></data>
+  <data name="Error.FileTooLargeForFileSystem.Cause" xml:space="preserve"><value>The image contains a file of {1} that does not fit {0} (limit 4 GiB).</value></data>
+  <data name="Error.FileTooLargeForFileSystem.Action" xml:space="preserve"><value>Choose exFAT or NTFS.</value></data>
+  <data name="Error.FileSystemTooSmall.Cause" xml:space="preserve"><value>The partition ({1}) is too small for {0}.</value></data>
+  <data name="Error.FileSystemTooSmall.Action" xml:space="preserve"><value>Choose another file system or a larger device.</value></data>
+  <data name="Error.WriteModeUnsupported.Cause" xml:space="preserve"><value>The write mode {0} is not possible for this image ({1}).</value></data>
+  <data name="Error.WriteModeUnsupported.Action" xml:space="preserve"><value>Choose the "Automatic" mode.</value></data>
+  <data name="Error.PersistenceTooSmall.Cause" xml:space="preserve"><value>There is not enough room for persistence ({0}); at least {1} are needed.</value></data>
+  <data name="Error.PersistenceTooSmall.Action" xml:space="preserve"><value>Reduce the persistence size or use a larger device.</value></data>
   <data name="Error.ImageUnreadable.Cause" xml:space="preserve"><value>The image could not be read: {0}</value></data>
   <data name="Error.ImageUnreadable.Action" xml:space="preserve"><value>Check that the file is complete and not in use.</value></data>
   <data name="Error.ImageTruncated.Cause" xml:space="preserve"><value>The image is incomplete. Expected {0}, found {1}.</value></data>
@@ -82,4 +94,30 @@
   <data name="Error.Unknown.Cause" xml:space="preserve"><value>An unexpected error occurred.</value></data>
   <data name="Error.Unknown.Action" xml:space="preserve"><value>Export the diagnostic bundle and send it to support.</value></data>
   <data name="App.Name" xml:space="preserve"><value>Bootrix</value></data>
+
+  <data name="Plan.Warning.FixedDisk" xml:space="preserve"><value>The target is a fixed internal disk, not a removable device. Check your selection carefully.</value></data>
+  <data name="Plan.Warning.FourKnUsbBridge" xml:space="preserve"><value>The device reports 4096-byte sectors, as USB adapters often do. The partitioning is only readable behind this adapter; connected directly to SATA the drive will look empty.</value></data>
+  <data name="Plan.Warning.FourKnBios" xml:space="preserve"><value>With 4096-byte sectors many BIOS computers will not boot from this medium; only UEFI is reliable.</value></data>
+  <data name="Plan.Warning.FourKnLegacyIgnored" xml:space="preserve"><value>The old-BIOS adjustments assume 512-byte sectors and are not applied to this device.</value></data>
+  <data name="Plan.Warning.FourKnHybridImage" xml:space="preserve"><value>Hybrid images carry a partition table for 512-byte sectors. On this device with 4096-byte sectors the medium will probably not boot.</value></data>
+  <data name="Plan.Warning.LargeDriveGpt" xml:space="preserve"><value>The device is larger than 2 TiB ({0}). MBR cannot address that, so GPT is used; BIOS computers usually cannot boot from it.</value></data>
+  <data name="Plan.Warning.MbrCapped" xml:space="preserve"><value>MBR addresses at most {0}. The rest of the device ({1}) stays unused.</value></data>
+  <data name="Plan.Warning.BiosOnGpt" xml:space="preserve"><value>This medium uses GPT, which only few BIOS computers can boot from. Choose MBR for BIOS boot.</value></data>
+  <data name="Plan.Warning.LegacyNeedsMbr" xml:space="preserve"><value>The old-BIOS adjustments require MBR; the partition scheme was changed to MBR.</value></data>
+  <data name="Plan.Warning.LegacyNeedsBios" xml:space="preserve"><value>The old-BIOS adjustments only concern BIOS boot and are not applied when booting through UEFI only.</value></data>
+  <data name="Plan.Warning.LegacyCapacityLimited" xml:space="preserve"><value>For old BIOS versions the partition is limited to {0}; the rest of the device ({1}) stays unused.</value></data>
+  <data name="Plan.Warning.GrubNeedsGap" xml:space="preserve"><value>GRUB needs 1 MiB of free space in front of the first partition; the partition start was moved.</value></data>
+  <data name="Plan.Warning.NoEfiBootFiles" xml:space="preserve"><value>The image contains no UEFI boot files; UEFI computers probably cannot boot from it.</value></data>
+  <data name="Plan.Warning.NoBiosBootFiles" xml:space="preserve"><value>The image contains no BIOS boot files; BIOS computers probably cannot boot from it.</value></data>
+  <data name="Plan.Warning.ArmHasNoBios" xml:space="preserve"><value>ARM64 systems have no BIOS; the medium is prepared for UEFI only.</value></data>
+  <data name="Plan.Warning.RawCopyReadOnlyMedia" xml:space="preserve"><value>The image is written as is. Windows shows the device like a read-only disc and may offer to format it; do not. The remaining capacity stays unused.</value></data>
+  <data name="Plan.Warning.PersistenceUnsupported" xml:space="preserve"><value>Persistence is not supported for this image and is ignored.</value></data>
+  <data name="Plan.Warning.PersistenceReduced" xml:space="preserve"><value>Persistence was reduced from {0} to {1} because the device has no more room.</value></data>
+  <data name="Plan.Warning.LinuxNtfsSupport" xml:space="preserve"><value>NTFS on Linux media requires the boot loader and initramfs to read NTFS. The UEFI:NTFS partition is written as well.</value></data>
+  <data name="Plan.Warning.ExFatCasper" xml:space="preserve"><value>Ubuntu-based systems cannot find their live medium on exFAT. Choose FAT32 or NTFS.</value></data>
+  <data name="Plan.Warning.CapacityNotUsed" xml:space="preserve"><value>The file system is limited to {0}; {1} of the device stay unused.</value></data>
+  <data name="Plan.Warning.DosNeedsMbr" xml:space="preserve"><value>DOS only boots from MBR; the partition scheme was changed to MBR.</value></data>
+  <data name="Plan.Warning.SuperfloppyBoot" xml:space="preserve"><value>Without a partition table not every computer will boot; many BIOS versions and UEFI devices offer only diskette emulation for it.</value></data>
+  <data name="Plan.Warning.NonStandardFloppySize" xml:space="preserve"><value>The size {0} matches no standard diskette format; a FAT12 file system of that size is created.</value></data>
+  <data name="Plan.Warning.UefiNtfsCa2011" xml:space="preserve"><value>UEFI:NTFS is signed with the Microsoft UEFI CA 2011. Devices that only trust the 2023 authority may refuse to start it; FAT32 with a split WIM file avoids this.</value></data>
 </root>
