@@ -59,4 +59,9 @@ public enum ErrorCode
     BurnFailed = 7003,
     ReadError = 7004,
     CopyProtected = 7005,
+    MediaNotBlank = 7006,
+    AudioDiscNotSupported = 7007,
+    MixedModeDiscNotSupported = 7008,
+    DiscFileTooLarge = 7009,
+    OpticalUnavailable = 7010,
 }
