@@ -15,7 +15,7 @@ public static class Program
             return exitCode;
         }
 
-        var app = new App();
+        var app = new App { SmokeTest = args.Contains("--smoke-test", StringComparer.OrdinalIgnoreCase) };
         app.InitializeComponent();
         return app.Run();
     }

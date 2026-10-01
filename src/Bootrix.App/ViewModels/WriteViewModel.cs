@@ -4,12 +4,14 @@ using System.ComponentModel;
 using System.Media;
 using Bootrix.App.Services;
 using Bootrix.Core.Engine;
+using Bootrix.Core.Images;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Localization;
 using Bootrix.Core.Presentation;
 using Bootrix.Core.Settings;
 using Bootrix.Core.Storage;
+using Bootrix.Core.Writing;
 using Bootrix.Core.Text;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -19,7 +21,7 @@ using Wpf.Ui.Controls;
 
 namespace Bootrix.App.ViewModels;
 
-public sealed partial class WriteViewModel : ObservableObject
+public sealed partial class WriteViewModel : ObservableObject, IDisposable
 {
     private static readonly string[] RawExtensions = [".iso", ".img", ".bin", ".raw"];
 
@@ -28,13 +30,26 @@ public sealed partial class WriteViewModel : ObservableObject
     private readonly SettingsStore _settings;
     private readonly Localizer _localizer;
     private readonly ILogger<WriteViewModel> _logger;
+    private readonly MediaPlanService _planner;
+    private CancellationTokenSource? _previewCts;
+    private ImageInspection? _inspection;
+    private string? _inspectedPath;
 
     private CancellationTokenSource? _soft;
     private CancellationTokenSource? _abort;
     private int _refreshRunning;
 
-    public WriteViewModel(IEngine engine, IDialogService dialogs, SettingsStore settings, Localizer localizer, ILogger<WriteViewModel> logger)
+    public WriteViewModel(
+        IEngine engine,
+        IDialogService dialogs,
+        SettingsStore settings,
+        Localizer localizer,
+        MediaPlanService planner,
+        WriteOptionsViewModel options,
+        ILogger<WriteViewModel> logger)
     {
+        _planner = planner;
+        Options = options;
         _engine = engine;
         _dialogs = dialogs;
         _settings = settings;
@@ -47,7 +62,28 @@ public sealed partial class WriteViewModel : ObservableObject
         _engine.DevicesChanged += (_, _) => Application.Current.Dispatcher.InvokeAsync(() => RefreshAsync());
         settings.Changed += (_, _) => Application.Current.Dispatcher.InvokeAsync(() => RefreshAsync());
         localizer.CultureChanged += (_, _) => Application.Current.Dispatcher.InvokeAsync(() => RefreshAsync());
+
+        options.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName != nameof(WriteOptionsViewModel.IsWindowsImage))
+            {
+                SchedulePreview();
+            }
+        };
+        _previewMessage = localizer.Get("Plan.Waiting");
     }
+
+    public WriteOptionsViewModel Options { get; }
+
+    public void Dispose()
+    {
+        _previewCts?.Cancel();
+        _previewCts?.Dispose();
+    }
+
+    public ObservableCollection<SummaryLine> PreviewLines { get; } = [];
+
+    public ObservableCollection<SummaryWarning> PreviewWarnings { get; } = [];
 
     public ObservableCollection<DeviceItem> Devices { get; } = [];
 
@@ -97,6 +133,20 @@ public sealed partial class WriteViewModel : ObservableObject
     [ObservableProperty]
     private bool _hasDevices;
 
+    /// <summary>Why there is no preview (nothing chosen yet, or the image cannot be written), shown instead of the plan.</summary>
+    [ObservableProperty]
+    private string _previewMessage;
+
+    [ObservableProperty]
+    private bool _hasPreviewMessage = true;
+
+    [ObservableProperty]
+    private bool _hasPreview;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(StartCommand))]
+    private bool _previewBlocksWriting;
+
     public bool IsIdle => !IsBusy;
 
     public int SelectedCount => Devices.Count(d => d.IsSelected);
@@ -106,7 +156,10 @@ public sealed partial class WriteViewModel : ObservableObject
     partial void OnImagePathChanged(string? value)
     {
         ImageInfo = DescribeImage(value);
+        SchedulePreview();
     }
+
+    partial void OnVerifyChanged(bool value) => SchedulePreview();
 
     public void SetImage(string path)
     {
@@ -225,7 +278,7 @@ public sealed partial class WriteViewModel : ObservableObject
                 identified.Add(new EngineTarget(target.Device.DevicePath, identity));
             }
 
-            var request = new RawWriteJobRequest { ImagePath = ImagePath!, Targets = identified, Verify = Verify };
+            var request = new WriteImageJobRequest { ImagePath = ImagePath!, Targets = identified, Spec = Options.ToSpec(Verify) };
             var result = await _engine.RunJobAsync(request, new Progress<ProgressReport>(OnProgress), soft.Token, abort.Token);
             ShowOutcome(result);
         }
@@ -260,7 +313,7 @@ public sealed partial class WriteViewModel : ObservableObject
         CancelText = _localizer.Get("Write.CancelNow");
     }
 
-    private bool CanStart() => !IsBusy && !string.IsNullOrWhiteSpace(ImagePath) && Devices.Any(d => d.IsSelected);
+    private bool CanStart() => !IsBusy && !string.IsNullOrWhiteSpace(ImagePath) && Devices.Any(d => d.IsSelected) && !PreviewBlocksWriting;
 
     private void OnItemChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -275,6 +328,91 @@ public sealed partial class WriteViewModel : ObservableObject
         OnPropertyChanged(nameof(SelectedCount));
         OnPropertyChanged(nameof(SelectedText));
         StartCommand.NotifyCanExecuteChanged();
+        SchedulePreview();
+    }
+
+    private void SchedulePreview()
+    {
+        var previous = _previewCts;
+        var cts = _previewCts = new CancellationTokenSource();
+        previous?.Cancel();
+        previous?.Dispose();
+        _ = RunPreviewAsync(cts.Token);
+    }
+
+    private async Task RunPreviewAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            // Typing in the label box or clicking through options should not inspect the image on every keystroke.
+            await Task.Delay(250, cancellationToken);
+            await RefreshPreviewAsync(cancellationToken);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "The preview failed");
+            ShowPreviewMessage(ErrorCatalog.Describe(ex, _localizer).Cause, blocks: false);
+        }
+    }
+
+    private async Task RefreshPreviewAsync(CancellationToken cancellationToken)
+    {
+        var device = Devices.FirstOrDefault(d => d.IsSelected)?.Device;
+        if (string.IsNullOrWhiteSpace(ImagePath) || !File.Exists(ImagePath) || device is null)
+        {
+            ShowPreviewMessage(_localizer.Get("Plan.Waiting"), blocks: false);
+            return;
+        }
+
+        if (_inspection is null || !string.Equals(_inspectedPath, ImagePath, StringComparison.OrdinalIgnoreCase))
+        {
+            _inspection = null;
+            _inspection = await _planner.InspectAsync(ImagePath, cancellationToken);
+            _inspectedPath = ImagePath;
+        }
+
+        Options.IsWindowsImage = _inspection.Profile.Kind is ImageKind.WindowsSetup or ImageKind.WindowsPe;
+
+        try
+        {
+            var preview = MediaPlanService.Plan(_inspection, Options.ToSpec(Verify).Target, device);
+            var summary = PlanSummary.From(preview, _localizer);
+
+            PreviewLines.Clear();
+            foreach (var line in summary.Lines)
+            {
+                PreviewLines.Add(line);
+            }
+
+            PreviewWarnings.Clear();
+            foreach (var warning in summary.Warnings)
+            {
+                PreviewWarnings.Add(warning);
+            }
+
+            HasPreview = true;
+            HasPreviewMessage = false;
+            PreviewBlocksWriting = summary.HasErrors;
+        }
+        catch (BootrixException ex)
+        {
+            // A plan that cannot be made (too small, unsupported combination) is an answer, not a crash.
+            var description = ErrorCatalog.Describe(ex, _localizer);
+            ShowPreviewMessage($"{description.Cause} {description.Action}", blocks: true);
+        }
+    }
+
+    private void ShowPreviewMessage(string message, bool blocks)
+    {
+        PreviewLines.Clear();
+        PreviewWarnings.Clear();
+        HasPreview = false;
+        PreviewMessage = message;
+        HasPreviewMessage = true;
+        PreviewBlocksWriting = blocks;
     }
 
     private void OnProgress(ProgressReport report)

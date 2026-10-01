@@ -34,6 +34,23 @@ jobs:
         run: |
           dotnet publish src/Bootrix.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o artifacts/win-x64
           dotnet publish src/Bootrix.Cli -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o artifacts/win-x64
+      - name: GUI smoke test
+        shell: pwsh
+        run: |
+          $process = Start-Process artifacts/win-x64/Bootrix.exe -ArgumentList '--smoke-test' -PassThru
+          if (-not $process.WaitForExit(90000)) {
+            $process.Kill()
+            throw 'The GUI smoke test timed out.'
+          }
+          if ($process.ExitCode -ne 0) {
+            Get-Content artifacts/win-x64/smoke-test-error.txt -ErrorAction SilentlyContinue
+            throw "The GUI smoke test failed with exit code $($process.ExitCode)."
+          }
+      - name: CLI smoke test
+        shell: pwsh
+        run: |
+          artifacts/win-x64/bootrix-cli.exe tiny profiles
+          artifacts/win-x64/bootrix-cli.exe disks --all --json
       - uses: actions/upload-artifact@v4
         with:
           name: bootrix-win-x64

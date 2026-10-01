@@ -123,7 +123,119 @@
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
 
-            <!-- Options and start -->
+            <!-- Preview of the plan -->
+            <ui:TextBlock Text="{loc:Loc Plan.Heading}" FontTypography="Subtitle" Margin="0,8,0,8" />
+            <Border Padding="16" CornerRadius="6" Margin="0,0,0,16"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                <StackPanel>
+                    <ui:TextBlock Text="{Binding PreviewMessage}" Appearance="Secondary" TextWrapping="Wrap"
+                                  Visibility="{Binding HasPreviewMessage, Converter={StaticResource BoolToVisibility}}" />
+                    <ItemsControl ItemsSource="{Binding PreviewLines}"
+                                  Visibility="{Binding HasPreview, Converter={StaticResource BoolToVisibility}}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,0,0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="170" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <ui:TextBlock Text="{Binding Label}" Appearance="Secondary" />
+                                    <ui:TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <ItemsControl ItemsSource="{Binding PreviewWarnings}" Margin="0,8,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <ui:TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,0,0,4" FontTypography="Caption">
+                                    <ui:TextBlock.Style>
+                                        <Style TargetType="ui:TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Severity}" Value="Warning">
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Severity}" Value="Error">
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:TextBlock.Style>
+                                </ui:TextBlock>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Options -->
+            <Expander Header="{loc:Loc Opt.Heading}" Margin="0,0,0,16">
+                <StackPanel Margin="0,8,0,0" DataContext="{Binding Options}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="170" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ui:TextBlock Text="{loc:Loc Opt.Mode}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ComboBox Grid.Column="1" Margin="0,0,0,8" MinWidth="260" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding Modes}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding Mode}" />
+
+                        <ui:TextBlock Grid.Row="1" Text="{loc:Loc Opt.Scheme}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ComboBox Grid.Row="1" Grid.Column="1" Margin="0,0,0,8" MinWidth="260" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding Schemes}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding Scheme}" />
+
+                        <ui:TextBlock Grid.Row="2" Text="{loc:Loc Opt.Firmware}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ComboBox Grid.Row="2" Grid.Column="1" Margin="0,0,0,8" MinWidth="260" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding Firmwares}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding Firmware}" />
+
+                        <ui:TextBlock Grid.Row="3" Text="{loc:Loc Opt.FileSystem}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ComboBox Grid.Row="3" Grid.Column="1" Margin="0,0,0,8" MinWidth="260" HorizontalAlignment="Left"
+                                  ItemsSource="{Binding FileSystems}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding FileSystem}" />
+
+                        <ui:TextBlock Grid.Row="4" Text="{loc:Loc Opt.Label}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ui:TextBox Grid.Row="4" Grid.Column="1" Margin="0,0,0,8" MinWidth="260" MaxLength="32" HorizontalAlignment="Left"
+                                    Text="{Binding Label, UpdateSourceTrigger=PropertyChanged}" />
+
+                        <ui:TextBlock Grid.Row="5" Text="{loc:Loc Opt.Persistence}" VerticalAlignment="Center" Margin="0,0,0,8" />
+                        <ui:TextBox Grid.Row="5" Grid.Column="1" Margin="0,0,0,8" MinWidth="120" HorizontalAlignment="Left"
+                                    Text="{Binding PersistenceMegabytes, UpdateSourceTrigger=LostFocus}" />
+                    </Grid>
+
+                    <CheckBox Content="{loc:Loc Opt.LegacyBios}" IsChecked="{Binding LegacyBios}" Margin="0,0,0,8" />
+
+                    <StackPanel Visibility="{Binding IsWindowsImage, Converter={StaticResource BoolToVisibility}}" Margin="0,8,0,0">
+                        <ui:TextBlock Text="{loc:Loc Opt.Windows.Heading}" FontTypography="BodyStrong" Margin="0,0,0,8" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.BypassTpm}" IsChecked="{Binding BypassTpm}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.BypassSecureBoot}" IsChecked="{Binding BypassSecureBoot}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.BypassRam}" IsChecked="{Binding BypassRam}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.BypassCpu}" IsChecked="{Binding BypassCpu}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.BypassStorage}" IsChecked="{Binding BypassStorage}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.SkipPrivacy}" IsChecked="{Binding SkipPrivacyQuestions}" />
+                        <CheckBox Content="{loc:Loc Opt.Windows.DisableBitLocker}" IsChecked="{Binding DisableBitLocker}" />
+                        <Grid Margin="0,8,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="170" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ui:TextBlock Text="{loc:Loc Opt.Windows.LocalAccount}" VerticalAlignment="Center" />
+                            <ui:TextBox Grid.Column="1" MinWidth="260" MaxLength="20" HorizontalAlignment="Left"
+                                        Text="{Binding LocalAccountName, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </StackPanel>
+                </StackPanel>
+            </Expander>
+
             <CheckBox Content="{loc:Loc Write.Verify}" IsChecked="{Binding Verify}" Margin="0,0,0,16" />
 
             <StackPanel Orientation="Horizontal" Margin="0,0,0,16">

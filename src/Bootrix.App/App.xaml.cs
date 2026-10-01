@@ -20,6 +20,12 @@ public partial class App : Application
 {
     private ServiceProvider? _services;
 
+    /// <summary>
+    /// Starts the window, visits every page and quits with exit code 0, or 1 and a file next to the program
+    /// that says what broke. CI runs this on Windows because XAML mistakes only show up when the pages are loaded.
+    /// </summary>
+    internal bool SmokeTest { get; init; }
+
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -31,7 +37,36 @@ public partial class App : Application
         ApplyLanguage(_services.GetRequiredService<SettingsStore>().Current.Language);
         DispatcherUnhandledException += OnUnhandledException;
 
-        _services.GetRequiredService<MainWindow>().Show();
+        var window = _services.GetRequiredService<MainWindow>();
+        window.Show();
+
+        if (SmokeTest)
+        {
+            _ = Dispatcher.InvokeAsync(() => RunSmokeTestAsync(window), DispatcherPriority.ApplicationIdle);
+        }
+    }
+
+    private async Task RunSmokeTestAsync(MainWindow window)
+    {
+        try
+        {
+            await Task.Delay(1500);
+            window.Navigation.Navigate(typeof(SettingsPage));
+            await Task.Delay(500);
+            window.Navigation.Navigate(typeof(WritePage));
+            await Task.Delay(1500);
+            Shutdown(0);
+        }
+        catch (Exception ex)
+        {
+            ReportSmokeFailure(ex);
+        }
+    }
+
+    private void ReportSmokeFailure(Exception exception)
+    {
+        File.WriteAllText(Path.Combine(AppContext.BaseDirectory, "smoke-test-error.txt"), exception.ToString());
+        Shutdown(1);
     }
 
     protected override void OnExit(ExitEventArgs e)
@@ -54,6 +89,7 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
         services.AddBootrixCore(paths);
+        services.AddBootrixCatalog(paths);
         services.AddBootrixWindows();
 
         services.AddSingleton(provider => new SettingsStore(
@@ -64,6 +100,7 @@ public partial class App : Application
         services.AddSingleton<ThemeSwitcher>();
 
         services.AddSingleton<MainWindow>();
+        services.AddSingleton<WriteOptionsViewModel>();
         services.AddSingleton<WriteViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddTransient<WritePage>();
@@ -74,6 +111,13 @@ public partial class App : Application
 
     private void OnUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
+        if (SmokeTest)
+        {
+            e.Handled = true;
+            ReportSmokeFailure(e.Exception);
+            return;
+        }
+
         var logger = _services?.GetService<ILogger<App>>();
         logger?.LogError(e.Exception, "Unhandled exception in the user interface");
 
