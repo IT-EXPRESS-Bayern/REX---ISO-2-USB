@@ -165,5 +165,20 @@ public sealed class BrokerLauncher
         }
     }
 
-    private static string? EntryAssemblyPath() => System.Reflection.Assembly.GetEntryAssembly()?.Location;
+    /// <summary>
+    /// The managed entry assembly next to the program, which only exists when Bootrix runs through the dotnet host
+    /// (development). A single-file build has none, and the executable itself is the thing to start. Assembly.Location
+    /// is no option: it is empty in a single-file app and the publish refuses to build with it.
+    /// </summary>
+    private static string? EntryAssemblyPath()
+    {
+        var name = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name;
+        if (name is null)
+        {
+            return null;
+        }
+
+        var candidate = Path.Combine(AppContext.BaseDirectory, name + ".dll");
+        return File.Exists(candidate) ? candidate : null;
+    }
 }
