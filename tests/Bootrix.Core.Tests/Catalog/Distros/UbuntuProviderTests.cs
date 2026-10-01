@@ -54,17 +54,35 @@ public class UbuntuProviderTests
         Assert.Equal("Ubuntu 26.04.1 LTS Desktop", desktop.Name);
         Assert.Equal("26.04.1", desktop.Version);
         Assert.Equal(new DateOnly(2026, 4, 23), desktop.ReleaseDate);
-        Assert.Equal([Architectures()], desktop.Architectures);
+        Assert.Equal(["x64"], desktop.Architectures);
         Assert.Equal("ubuntu", desktop.ProductId);
         Assert.Equal("ubuntu", desktop.Provider);
     }
 
     [Fact]
-    public async Task Variants_MarkTheNewestLtsDesktopAsRecommended()
+    public async Task LtsReleases_AreMarkedAndSortedFirst_WhileAnInterimReleaseIsNot()
     {
-        var variants = await Provider(UbuntuSite()).ListVariantsAsync("ubuntu", CancellationToken.None);
+        var interim = DistroFixtures.Text("ubuntu/meta-release")
+            + "\nDist: stonking\nName: Test\nVersion: 26.10\nDate: Thu, 15 October 2026 00:00:00 UTC\nSupported: 1\n";
+        var web = UbuntuSite()
+            .Serve(MetaRelease, interim)
+            .ServeFixture(Releases + "26.10/SHA256SUMS", "ubuntu/ubuntu-26.04.SHA256SUMS");
 
-        Assert.Equal(["26.04.1/desktop"], variants.Where(v => v.IsRecommended).Select(v => v.Id));
+        var variants = await Provider(web).ListVariantsAsync("ubuntu", CancellationToken.None);
+
+        Assert.Equal(["26.10", "26.04", "24.04", "22.04"], variants.Select(v => v.Properties["series"]).Distinct());
+        Assert.All(variants.Where(v => v.Properties["series"] != "26.10"), v =>
+        {
+            Assert.True(v.IsRecommended, v.Id);
+            Assert.Equal("true", v.Properties["lts"]);
+            Assert.Contains("LTS", v.Name, StringComparison.Ordinal);
+        });
+        Assert.All(variants.Where(v => v.Properties["series"] == "26.10"), v =>
+        {
+            Assert.False(v.IsRecommended);
+            Assert.Equal("false", v.Properties["lts"]);
+            Assert.DoesNotContain("LTS", v.Name, StringComparison.Ordinal);
+        });
     }
 
     [Fact]
@@ -88,7 +106,7 @@ public class UbuntuProviderTests
         Assert.Equal("24.04.5/desktop", only.Id);
         Assert.Equal("Ubuntu MATE 24.04.5 LTS Desktop", only.Name);
         Assert.Equal("ubuntu-mate-24.04.5-desktop-amd64.iso", only.Properties["file"]);
-        Assert.False(only.IsRecommended);
+        Assert.True(only.IsRecommended);
     }
 
     [Fact]
@@ -242,6 +260,4 @@ public class UbuntuProviderTests
 
         await Assert.ThrowsAsync<ArgumentException>(() => Provider(UbuntuSite()).ResolveAsync(foreign, null, CancellationToken.None));
     }
-
-    private static string Architectures() => "x64";
 }

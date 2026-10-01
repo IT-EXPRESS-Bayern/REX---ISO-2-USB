@@ -65,7 +65,6 @@ public sealed class UbuntuProvider : ICatalogProvider
             .Where(r => r.Supported && (r.Date is null || r.Date > cutoff))
             .OrderByDescending(r => r.Version)
             .ToList();
-        var newestLts = releases.Where(r => r.IsLts).Select(r => r.Version).DefaultIfEmpty().Max();
 
         var checksums = await Task.WhenAll(releases.Select(r => _http.TryGetBytesAsync(new Uri(flavour.BaseUrl(r.Series) + "SHA256SUMS"), cancellationToken))).ConfigureAwait(false);
 
@@ -91,8 +90,8 @@ public sealed class UbuntuProvider : ICatalogProvider
                     Version = image.Version.ToString(),
                     Architectures = [Architectures.X64],
                     ReleaseDate = release.Date,
-                    IsRecommended = release.IsLts && release.Version.Equals(newestLts) && image.Kind == "desktop",
-                    Properties = VariantProperties.Signed(("base", baseUrl), ("file", image.FileName), ("series", release.Series)),
+                    IsRecommended = release.IsLts,
+                    Properties = VariantProperties.Signed(("base", baseUrl), ("file", image.FileName), ("series", release.Series), ("lts", release.IsLts ? "true" : "false")),
                 });
             }
         }
