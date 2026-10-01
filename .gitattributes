@@ -16,3 +16,4 @@ tests/Bootrix.Core.Tests/Net/Fixtures/** -text
 
 # recorded vendor responses and catalogs are compared byte for byte
 tests/Bootrix.Core.Tests/Catalog/Microsoft/Fixtures/** -text
+tests/Bootrix.Core.Tests/Catalog/Distros/Fixtures/** -text

@@ -1,0 +1,126 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Catalog;
+using Bootrix.Core.Catalog.Distros;
+using Bootrix.Core.Errors;
+using Bootrix.Core.Tests.Catalog.Distros.Support;
+using Bootrix.Core.Tests.Net.Support;
+using Xunit.Abstractions;
+
+namespace Bootrix.Core.Tests.Catalog.Distros;
+
+/// <summary>
+/// Runs each provider against the vendor's real servers (<c>BOOTRIX_LIVE_TESTS=1</c>): lists the variants, resolves
+/// the recommended one including the real signature check, and asks the file server for the image's size. These tests
+/// are what notices a vendor changing its layout or rotating a key; the unit tests above cannot.
+/// </summary>
+public class LiveDistroTests(ITestOutputHelper output)
+{
+    private static HttpClient Http => LiveVendor.Http;
+
+    [LiveFact]
+    public Task Ubuntu() => Check(new UbuntuProvider(Http), "ubuntu", expectSigned: true);
+
+    [LiveFact]
+    public Task Kubuntu() => Check(new UbuntuProvider(Http), "kubuntu", expectSigned: true);
+
+    [LiveFact]
+    public Task LinuxMint() => Check(new LinuxMintProvider(Http), "linuxmint", expectSigned: true);
+
+    [LiveFact]
+    public Task FedoraWorkstation() => Check(new FedoraProvider(Http), "fedora-workstation", expectSigned: true);
+
+    [LiveFact]
+    public Task FedoraServer() => Check(new FedoraProvider(Http), "fedora-server", expectSigned: true, architecture: "x64");
+
+    [LiveFact]
+    public Task ArchLinux() => Check(new ArchLinuxProvider(Http), "archlinux", expectSigned: false);
+
+    [LiveFact]
+    public Task OpenSuseLeap() => Check(new OpenSuseProvider(Http), "opensuse-leap", expectSigned: true, architecture: "x64");
+
+    [LiveFact]
+    public Task OpenSuseTumbleweed() => Check(new OpenSuseProvider(Http), "opensuse-tumbleweed", expectSigned: true);
+
+    [LiveFact]
+    public Task Kali() => Check(new KaliProvider(Http), "kali", expectSigned: true);
+
+    [LiveFact]
+    public Task Manjaro() => Check(new ManjaroProvider(Http), "manjaro", expectSigned: false);
+
+    [LiveFact]
+    public Task PopOs() => Check(new PopOsProvider(Http), "popos", expectSigned: false);
+
+    [LiveFact]
+    public Task ProxmoxVe() => Check(new ProxmoxProvider(Http), "proxmox-ve", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
+    public Task TrueNas() => Check(new TrueNasProvider(Http), "truenas", expectSigned: false);
+
+    [LiveFact]
+    public Task Clonezilla() => Check(new ClonezillaProvider(Http), "clonezilla", expectSigned: true);
+
+    [LiveFact]
+    public Task GPartedLive() => Check(new GPartedLiveProvider(Http), "gparted-live", expectSigned: true);
+
+    [LiveFact]
+    public Task Memtest86Plus() => Check(new Memtest86PlusProvider(Http), "memtest86plus", expectSigned: false);
+
+    [LiveFact]
+    public Task FreeBsd() => Check(new FreeBsdProvider(Http), "freebsd", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
+    public Task Rescuezilla() => Check(new RescuezillaProvider(Http), "rescuezilla", expectSigned: false);
+
+    [LiveFact]
+    public Task ZorinOs() => Check(new ZorinOsProvider(Http), "zorin", expectSigned: false);
+
+    [LiveFact]
+    public Task ElementaryOs() => Check(new ElementaryOsProvider(Http), "elementary", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
+    public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
+
+    /// <summary>
+    /// Lists the product, resolves the recommended (or else first) variant and checks that the primary address serves
+    /// a file of the announced size. A missing network ends the test quietly; any answer from a vendor does not.
+    /// </summary>
+    private async Task Check(ICatalogProvider provider, string productId, bool expectSigned, string? architecture = null)
+    {
+        try
+        {
+            var products = await provider.ListProductsAsync(CancellationToken.None);
+            Assert.Contains(products, p => p.Id == productId);
+
+            var variants = await provider.ListVariantsAsync(productId, CancellationToken.None);
+            Assert.NotEmpty(variants);
+            var variant = variants.FirstOrDefault(v => v.IsRecommended) ?? variants[0];
+            Assert.All(variants, v => Assert.Equal(
+                expectSigned ? DistroProperties.PinnedKey : DistroProperties.TlsOnly,
+                v.Properties[DistroProperties.HashTrust]));
+
+            if (variant.ManualUrl is not null)
+            {
+                Assert.StartsWith("https://", variant.ManualUrl, StringComparison.Ordinal);
+                return;
+            }
+
+            var arch = architecture ?? (variant.Architectures.Count > 0 ? variant.Architectures[0] : null);
+            var request = await provider.ResolveAsync(variant, arch, CancellationToken.None);
+
+            Assert.NotEmpty(request.ExpectedHashes);
+            Assert.All(request.Sources, s => Assert.StartsWith("http", s.Url.Scheme, StringComparison.Ordinal));
+            var length = await LiveVendor.ProbeFirstWorking(request);
+            Assert.True(length > 100_000, $"{request.Url} announced only {length} bytes.");
+            if (request.ExpectedSize is { } expected)
+            {
+                Assert.Equal(expected, length);
+            }
+
+            output.WriteLine($"{provider.Id}/{variant.Id} [{arch}]: {request.Url} {length} bytes, {request.ExpectedHashes[0]}, {request.Sources.Count} source(s), {variants.Count} variant(s)");
+        }
+        catch (BootrixException ex) when (LiveVendor.IsOffline(ex))
+        {
+            // No route to the vendor from here; nothing was learned about the vendor.
+        }
+    }
+}

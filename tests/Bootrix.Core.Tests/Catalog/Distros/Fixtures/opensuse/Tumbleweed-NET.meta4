@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<metalink xmlns="urn:ietf:params:xml:ns:metalink">
+  <generator>MirrorCache</generator>
+  <origin dynamic="true">https://download.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</origin>
+  <published>2026-10-01T07:41:28Z</published>
+  <publisher>
+    <name>openSUSE</name>
+    <url>download.opensuse.org</url>
+  </publisher>
+  <file name="openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso">
+    <size>419430400</size>
+    <!-- <mtime>1790708280</mtime> -->
+    <hash type="md5">e7807a02b170142421a661df2d1b54fb</hash>
+    <hash type="sha-1">37d14a5ce33a84f4d72eb2fc200a10299e01139e</hash>
+    <hash type="sha-256">48436b02921bb1e3f4c385db8861baeee2368d2c60b490bc17373f1ba374c586</hash>
+    <hash type="sha-512">3fb489a572f8976d1fc8e6359bc3c183eb3b7f8b181194e238e1a95576e7a217645e5ce8b4e14c6707d61ff030b7abb81de8dbac244808cff023f75f1a6c994a</hash>
+    <pieces length="4194304" type="sha-1">
+      <hash>476084e9871921d35c3fa85e62d312eb9eb64f3e</hash>
+      <hash>6e2c67f59259988a548f2a652767c29398e2fa1e</hash>
+      <hash>b15eff0a4d225f770b774fe13c8644889c3ea02c</hash>
+      <hash>11810546449dcfaa1d21f54a79bee45c0b8cf4dc</hash>
+      <hash>bc2917c1ed2094d8e3b775ceff336745cd8acd9b</hash>
+      <hash>ab92312d937cca458618feac63136cc0530bb7e8</hash>
+      <hash>5ca09fb5aff9e464f46e51dfa47f64853299143c</hash>
+      <hash>62e1c7fae1664b3b3af4e92625fdb0b50198582e</hash>
+      <hash>20d8c1f8044982dea5aad259e50be1ee4e493a01</hash>
+      <hash>3b92f44eb048af905e7f455af8a6a3c445219f2b</hash>
+      <hash>b0fc7253fa96048c5ba1a66506309ae850f3437f</hash>
+      <hash>0dc1ee2ccc4315a9d79d3fb9653033cfdf194b91</hash>
+      <hash>ec59752b1cb50099ad744c8742531813fcd178ef</hash>
+      <hash>10d2eaa06202dc06e95cd758ce00cc0118b9cde2</hash>
+      <hash>b8e6f1745eb328b37baad954b6bdcc3edc55e7d4</hash>
+      <hash>d4d83957274cdacbd649563cf84841c4ca0d0354</hash>
+      <hash>48ea58884494b13efd70e738720bf42862ebe4de</hash>
+      <hash>afc762cc49b2eed688d4736fb9417bebeac3ab4c</hash>
+      <hash>09c8367ecc9127a23d0a3f50ba10dd3c3a003227</hash>
+      <hash>fa122f4175958bee8d7e5eb5ef35de2652eb68c8</hash>
+      <hash>a55a237a16ca31a92c9264cea0bef0fc7e7b5327</hash>
+      <hash>71e99b22d27d8eb95e5ec83366137b13e7a5cb6d</hash>
+      <hash>431d8f77537eaf533d39068573454c592d2b2d1a</hash>
+      <hash>80164fa7d4726f4d308a25381682261175853c15</hash>
+      <hash>3fa874a067bd31ebfe783be8f3b2a56e86118286</hash>
+      <hash>a250395edbfeed8caf5136e48eb7e113e2a17e61</hash>
+      <hash>b2d53e7700ad91ad21adff7252d1a9bd6f8f19e6</hash>
+      <hash>2d7096fa9f290f22bc93cff9cdaa67a87283ebc0</hash>
+      <hash>05d362596896b4425c47ab01ae5724c2a09218fc</hash>
+      <hash>bd551d2f08f648dbc10bc689d6b98443add7b6e9</hash>
+      <hash>c14e5ed73caa027e0af5899a9418501bc50ea804</hash>
+      <hash>ff6b534f197cdf8002d12358371d0ecdee31299a</hash>
+      <hash>95d9bd2321fe5c0aeb555fbda4b424293753c662</hash>
+      <hash>c3b7eee4a393475b437bce975858744e7e2aa176</hash>
+      <hash>8cd3040cd0151bbd91da966cc165558562110dd5</hash>
+      <hash>ed51009b7c37a7a189da2aa985b1640491c2ecb9</hash>
+      <hash>c0e7c64034daca28274c601dea6dcb9e8c0a280f</hash>
+      <hash>ca5093bceed3013333107b31852f9cf3ba700ac7</hash>
+      <hash>5b034633d8fd976ac139c0d0b2f5f46a039866f0</hash>
+      <hash>9b7831cf80ec6220f4fb53b4b78c759a0540bf72</hash>
+      <hash>d9b980caf4c450f7d7b98e4af8f0e42244ac30c8</hash>
+      <hash>2f9e79f999e1d81c7f07a0b37631f509b32867cc</hash>
+      <hash>0e550380b3d7681b8d21d97687301b502eb15841</hash>
+      <hash>88a7bac4c1291d1495e76132ff705af72b326349</hash>
+      <hash>cb320701fe2d51caf56097410375e103e33092aa</hash>
+      <hash>d90b2e65b4917dbd90165ffecb0aaa8c55f3f223</hash>
+      <hash>bf613dd972ae838eacf12f00ac715c1c590ce092</hash>
+      <hash>d07423b9d057cc0c39bf38eef4d5f03662df9fed</hash>
+      <hash>4a0d783c522240a73a20ea60398bd5427af4c19a</hash>
+      <hash>df756a16f1df29be52ab563f32aa527db3f218a5</hash>
+      <hash>7b6507c8b7e4528807faedb955533665b188481f</hash>
+      <hash>2a13b2a643e2a2ba96e9a979f633ca54b1f46f57</hash>
+      <hash>e581221368e58d7463ee254d9bfc3b21eb9a3ac0</hash>
+      <hash>fd3246c76fe728e1425270310722723e57492a83</hash>
+      <hash>27e031e97c84ecd4196816045accebbfc85c6277</hash>
+      <hash>24548566a76aafcc6c37d8d4c494f6913be642cc</hash>
+      <hash>05dd72fdcc3bc4e8c58dd8fe24d0175b477f1aa6</hash>
+      <hash>437c61c37df6c858fb12321534441a6732ebac45</hash>
+      <hash>932c82e561d6f9347cc1c128ea291a3edc23b87d</hash>
+      <hash>4a762ca1f5da907f4890b79cdd2036411b4a986b</hash>
+      <hash>b0728bdb9c0950f3d6f6783d4efc6075144801a3</hash>
+      <hash>4b3f0bb645b95f807f14fc5037a37702a0bdaf0d</hash>
+      <hash>2a81dcc167a6909d7652b06ce362ac9ac6f261e8</hash>
+      <hash>304c63e269ad4b12c5bf2873dbdee634dad87a02</hash>
+      <hash>3e858a46c485d90ed8993f675442ee8366a80539</hash>
+      <hash>40c019e46337779418d652de3ac9a3c393dd8984</hash>
+      <hash>2770e366f781a581e9b167e8a583a624d3a7e34e</hash>
+      <hash>39e056ee48236a331293b412abb485187cf912da</hash>
+      <hash>5f3d0523fce43bdedbee7c2316c3433ff0897bdc</hash>
+      <hash>ec95ba0c2bd570cc399dddfb34845b1ffa81ea81</hash>
+      <hash>10b52d0f404c7f683ad5a9a375466328e5ad99b8</hash>
+      <hash>5b1b186aaee96df5248e92e88baeb4e86e18079b</hash>
+      <hash>adc2c36d127f30061bb4320a6f08985f7591ebbb</hash>
+      <hash>1fa54b7b19ad9f2b3def8d2369aa9a109c39a528</hash>
+      <hash>f051015e73aec3dbcff916f2def72f138d3fc2da</hash>
+      <hash>8c65dd95dbb275088621bb6ea1c44c75fc34eaf2</hash>
+      <hash>5b7d4af25b6888dea225ebb644b128bcf45c5ad8</hash>
+      <hash>9e7964a9b4db7565a15e727f1d29d8a564621e1c</hash>
+      <hash>d03bc662a209988968d8e530111095c223407ff0</hash>
+      <hash>2d8f6443854702380b0017019fbc1d05698fc789</hash>
+      <hash>388ce9252e71d350d8859716962cc1cea32cdd0b</hash>
+      <hash>59bf822533a4b19a9ab45438e38454fe0add1a01</hash>
+      <hash>2e0d2329afb10608b7ad661968d22881be018f01</hash>
+      <hash>c54ee97cef0a922ed3242a1b393e6319c96976e7</hash>
+      <hash>314b4eec4a9097b89949941c00f25e313e3c8f08</hash>
+      <hash>c4742abd2214ad2d6875ffa58e7bda89b37e13cc</hash>
+      <hash>ef03cd006ebacd54178eb36e4366159c3413ea75</hash>
+      <hash>323beb15e1a44f04d7bd011e8ff13f0e915fb7c0</hash>
+      <hash>39c929be335fda669548d732733a1828adb817fa</hash>
+      <hash>6de7c8f0cbc6b6250c70d7af885bf4c21c320b2f</hash>
+      <hash>29a0a8b9cc27577105999be7173e1c3911083c0e</hash>
+      <hash>bc75aa58e1b2705186eff925d2626ced9facf610</hash>
+      <hash>4d5fb92cb74a110bb5436009ee2acc3780137fde</hash>
+      <hash>e5b0358c39236909fc11e7fc3c281bc3571a8020</hash>
+      <hash>bc0c5d4a614764f16c9b82bfdf61c59eb2c1c41b</hash>
+      <hash>2b95f4a917ca57a70fcfcb837f0d115019fff4cb</hash>
+      <hash>98b7ae94af1e196d78160e042e1fb16137795d04</hash>
+      <hash>4b0f844950f3826e714eeb6a2df7c7e5e74e6ada</hash>
+      <hash>1f49eca08656ce84dddee307cd5a4686de667c6f</hash>
+      <hash>70ea350948312be443157f8e286a437517700c6d</hash>
+    </pieces>
+    <!-- Mirrors which handle this country (US):  -->
+    <url location="US" priority="1">https://mirror.umd.edu/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="US" priority="2">https://slc-mirror.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <!-- Mirrors in the same continent (NA):  -->
+    <!-- Mirrors in other parts of the world:  -->
+    <url location="UA" priority="3">https://mirror.mai.co.ua/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="BR" priority="4">https://opensuse.ic.ufmt.br/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="PT" priority="5">https://ftp.rnl.tecnico.ulisboa.pt/pub/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="NL" priority="6">https://mirror.nl.leaseweb.net/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="NL" priority="7">https://opensuse.mirror.liteserver.nl/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="FR" priority="8">https://fr2.rpmfind.net/linux/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="DE" priority="9">https://ftp.halifax.rwth-aachen.de/opensuse/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <url location="SE" priority="10">https://ftp.acc.umu.se/mirror/opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso</url>
+    <!-- File origin location:  -->
+    <!-- https://downloadcontent2.opensuse.org/tumbleweed/iso/openSUSE-Tumbleweed-NET-x86_64-Snapshot20260929-Media.iso -->
+  </file>
+</metalink>

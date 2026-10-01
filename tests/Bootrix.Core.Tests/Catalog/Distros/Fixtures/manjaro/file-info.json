@@ -1,0 +1,183 @@
+{
+ "official": {
+  "plasma": {
+   "notes": "",
+   "date": "",
+   "image": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-260825-linux71.iso",
+   "torrent": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-260825-linux71.iso.torrent",
+   "checksum": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-260825-linux71.iso.sha256",
+   "signature": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-260825-linux71.iso.sig",
+   "minimal": {
+    "image": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-minimal-260825-linux71.iso",
+    "torrent": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-minimal-260825-linux71.iso.torrent",
+    "checksum": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-minimal-260825-linux71.iso.sha256",
+    "signature": "https://download.manjaro.org/kde/26.1.1/manjaro-kde-26.1.1-minimal-260825-linux71.iso.sig"
+   }
+  },
+  "xfce": {
+   "notes": "",
+   "date": "",
+   "image": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-260825-linux71.iso",
+   "torrent": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-260825-linux71.iso.torrent",
+   "checksum": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-260825-linux71.iso.sha256",
+   "signature": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-260825-linux71.iso.sig",
+   "minimal": {
+    "image": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-minimal-260825-linux71.iso",
+    "torrent": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-minimal-260825-linux71.iso.torrent",
+    "checksum": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-minimal-260825-linux71.iso.sha256",
+    "signature": "https://download.manjaro.org/xfce/26.1.1/manjaro-xfce-26.1.1-minimal-260825-linux71.iso.sig"
+   }
+  },
+  "gnome": {
+   "notes": "",
+   "date": "",
+   "image": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-260825-linux71.iso",
+   "torrent": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-260825-linux71.iso.torrent",
+   "checksum": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-260825-linux71.iso.sha256",
+   "signature": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-260825-linux71.iso.sig",
+   "minimal": {
+    "image": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-minimal-260825-linux71.iso",
+    "torrent": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-minimal-260825-linux71.iso.torrent",
+    "checksum": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-minimal-260825-linux71.iso.sha256",
+    "signature": "https://download.manjaro.org/gnome/26.1.1/manjaro-gnome-26.1.1-minimal-260825-linux71.iso.sig"
+   }
+  }
+ },
+ "community": {
+  "cinnamon": {
+   "notes": "",
+   "date": "",
+   "image": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-250609-linux612.iso",
+   "torrent": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-250609-linux612.iso.torrent",
+   "checksum": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-250609-linux612.iso.sha512",
+   "signature": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-250609-linux612.iso.sig",
+   "minimal": {
+    "image": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-minimal-250609-linux612.iso",
+    "torrent": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-minimal-250609-linux612.iso.torrent",
+    "checksum": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-minimal-250609-linux612.iso.sha512",
+    "signature": "https://download.manjaro.org/cinnamon/25.0.3/manjaro-cinnamon-25.0.3-minimal-250609-linux612.iso.sig"
+   }
+  },
+  "i3": {
+   "notes": "",
+   "date": "",
+   "image": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-250609-linux612.iso",
+   "torrent": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-250609-linux612.iso.torrent",
+   "checksum": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-250609-linux612.iso.sha512",
+   "signature": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-250609-linux612.iso.sig",
+   "minimal": {
+    "image": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-minimal-250609-linux612.iso",
+    "torrent": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-minimal-250609-linux612.iso.torrent",
+    "checksum": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-minimal-250609-linux612.iso.sha512",
+    "signature": "https://download.manjaro.org/i3/25.0.3/manjaro-i3-25.0.3-minimal-250609-linux612.iso.sig"
+   }
+  },
+  "sway": {
+   "notes": "",
+   "date": "",
+   "custom": "https://manjaro-sway.download/"
+  }
+ },
+ "arm": {
+  "Generic": {
+   "gnome": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-gnome-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-gnome-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-gnome-generic-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "plasma": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "mate": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-mate-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-mate-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-mate-generic-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "minimal": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-minimal-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-minimal-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-minimal-generic-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "sway": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-sway-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-sway-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-sway-generic-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "xfce": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-xfce-generic-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-xfce-generic-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-images/releases/download/23.02/Manjaro-ARM-xfce-generic-23.02.img.xz.sha1",
+    "signature": ""
+   }
+  },
+  "Generic EFI": {
+   "gnome": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot.",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-gnome-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-gnome-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-gnome-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "plasma": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-kde-plasma-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "mate": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-mate-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-mate-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-mate-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "minimal": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-minimal-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-minimal-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-minimal-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "sway": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-sway-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-sway-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-sway-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   },
+   "xfce": {
+    "notes": "Requires Board firmware on SPI, like Tow-Boot",
+    "date": "",
+    "image": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-xfce-generic-efi-23.02.img.xz",
+    "torrent": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-xfce-generic-efi-23.02.img.xz.torrent",
+    "checksum": "https://github.com/manjaro-arm/generic-efi-images/releases/download/23.02/Manjaro-ARM-xfce-generic-efi-23.02.img.xz.sha1",
+    "signature": ""
+   }
+  }
+ }
+}

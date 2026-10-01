@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<metalink xmlns="urn:ietf:params:xml:ns:metalink">
+  <generator>MirrorCache</generator>
+  <origin dynamic="true">https://download.opensuse.org/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</origin>
+  <published>2026-10-01T07:41:28Z</published>
+  <publisher>
+    <name>openSUSE</name>
+    <url>download.opensuse.org</url>
+  </publisher>
+  <file name="Leap-16.0-online-installer-x86_64-Build178.27.install.iso">
+    <size>746586112</size>
+    <!-- <mtime>1781954534</mtime> -->
+    <hash type="md5">d8cfa7316342b94de635f8cd834b24b5</hash>
+    <hash type="sha-1">8c224cf0bc37689c811c95e102ea002cea2879ec</hash>
+    <hash type="sha-256">abd6bfa138fd2f0e76a2c3ceeb652cac1227fd82159d2ce2e18845c8e2c3ba14</hash>
+    <hash type="sha-512">47241c708de25e18cf2d58fb592aa4b4ad9120e1c26b020350e3dc9c8e68efafaeaaf31ddd989825b5bbbfe3f95fbbb72afc8ee34ceb7d7de664536dd49cd441</hash>
+    <pieces length="4194304" type="sha-1">
+      <hash>dae00464c8eb864d8aec4a1b2e8d59ab15fccd46</hash>
+      <hash>84a8858a5b234eccba62160bc3adcac63cd26ab7</hash>
+      <hash>9760a7ea2220c9929390497db41f56137717cbba</hash>
+      <hash>8e84825e56272eee1b6adf7f984dea38b802ac5e</hash>
+      <hash>c5820a528d1c573f87eb9fbaf16713eed3a94271</hash>
+      <hash>698a6a55dcd9f4898d14f72cd8907ca9e6df9c43</hash>
+      <hash>96d5aab1bb24098ab199d8b971cefd6bdfa49425</hash>
+      <hash>2a545dd44d922c431c758e45877c808f1e2d5eb0</hash>
+      <hash>d73bad8147c4bec2ebb69eabe94a317fd5c3b1c1</hash>
+      <hash>4dabbfa624c614ab6f86272e816b8607c1f53fa7</hash>
+      <hash>d2e9d150a6eac4d51ae216a857837d598a93b672</hash>
+      <hash>3216cebc4354139ac596d86928e2b40197c2c6c1</hash>
+      <hash>59099ad779aaf986f18150559719b8dfdabe0250</hash>
+      <hash>1a7c5398bcbe3767eb92556a588e4548add60bc9</hash>
+      <hash>65e680ff075e05235b347e8434226af5ce3545a5</hash>
+      <hash>355563a86d37409b7bf87307aeddde03a521f7ff</hash>
+      <hash>2ea19d320af88ebba557fd9b14d9f978a2a9c962</hash>
+      <hash>9c48901c366f48ece413130151453ae65105e584</hash>
+      <hash>badf17d4b117a0964d07ed4de30564d70c38617b</hash>
+      <hash>56aa6090e96237cedbc0dc659d6179ac07656327</hash>
+      <hash>44027760f7e7c46a25f8949e6bd01ca08c021abd</hash>
+      <hash>6fbb2f939a17eea1c6fc37a2d1ea1034caf8d104</hash>
+      <hash>f03825b84582a4740c78b3c774f0fbd033d7e1a3</hash>
+      <hash>e2fd04cbe732cd37b78041f13963ae40588bf718</hash>
+      <hash>b9be007946182e1f4b768a41c596451e0bd7621c</hash>
+      <hash>67ae9d7ec82075def6fb3cbf79dcc6420879f561</hash>
+      <hash>886884f1a69b4eb2c09dbca5f0e06444f548d652</hash>
+      <hash>1b5eac5c6d921d3e115299d59bef807ed6c07fdf</hash>
+      <hash>e5255a514a9de0769e4686a2aff02c32e8a9a3d3</hash>
+      <hash>628bec45fea0086b05fe8275d4695a925172bc5d</hash>
+      <hash>128dd20717637b226b8bd4b0ccd4f86af701cb67</hash>
+      <hash>4fa43305df7150fd206230a266c8195ec1e4e094</hash>
+      <hash>898053dbac927fc08a23aa0a91be5bc39b9fcf5b</hash>
+      <hash>9c2ae9f86bf47f5879bd09ba54b0e27a475c2cfc</hash>
+      <hash>5a9da6f8dd338094d62b3415c50ff3994f4357e4</hash>
+      <hash>8979d13585ecfe7bda404e5299aa893755abe134</hash>
+      <hash>917fcc87c310815a1b05c8bc8fb0fae86a9378ee</hash>
+      <hash>7858a0b75775bba61cb12820741303ed91acddd8</hash>
+      <hash>548c6e3cd02f7a10c12b5c0fc282b562d5449cad</hash>
+      <hash>744c13ff5b671ab5d1df67351b7e59dd1c217788</hash>
+      <hash>804fa2e826f9072ee011373cb0dd4271386a918e</hash>
+      <hash>7f1e6ff095fc3edff8bc891c7a0dcece39b967d3</hash>
+      <hash>dec7efd6bf397fbca56bfef02a28593d588c55c4</hash>
+      <hash>a8ba53b965af8c6a2f336c9b2d17c0df3a98559f</hash>
+      <hash>dc6bc0f37db813d2a87b076d79d394ac38adfad9</hash>
+      <hash>2206a1cfb12c1a2469ed8701b3751942e3aff500</hash>
+      <hash>b0c757e72ba933abf2212be247275dd590dede0d</hash>
+      <hash>1ecd2a5996e05cb3fff4d896676c1a0c8e133ad4</hash>
+      <hash>77ac8e5c0840d9af140e0a1653d59e2b68e8fb8b</hash>
+      <hash>83d93feffac8e60b3835f042702bea03bbf42435</hash>
+      <hash>da84113bc41eb4d9ac0b83669b6d50ca049aafd5</hash>
+      <hash>522e786d91360a94fc245661ca0f7a747fa7a406</hash>
+      <hash>3ec3cca8e9f4066b3a164cfed44a3c78ce092cf5</hash>
+      <hash>6e9e1468643a8aae7b4ae08155fb2788d04868f2</hash>
+      <hash>775c0c7860cba9f55d0a0f5e9b194f7c4f50a221</hash>
+      <hash>18815a7779150e03767e14a0eff887f9fbde89ca</hash>
+      <hash>ae931ed31c4b884fee3d53da8b6e14ab066c7744</hash>
+      <hash>5ee1c4661c965836047222ae08d23ae9f5a40489</hash>
+      <hash>d1605af92e751639596f3563059330ea389e77b2</hash>
+      <hash>202c49835c4fac7fefdcecba747299b86736a284</hash>
+      <hash>b5f200a9dc6add1dad302b48818ae92b77ce691c</hash>
+      <hash>6e5c7a8f9b54621fde3a518d1c9ec9918d6c2b29</hash>
+      <hash>25bd3e6206678b9aaa8629d7b204299ea0140ebb</hash>
+      <hash>fb172a68454adb1cd0ec956a8a7070fa16b3f3a6</hash>
+      <hash>28df609c9803849a052a50bfecefaab19ee4fc8b</hash>
+      <hash>c251957110358c176392fe9b0bee6cb8690dcdbe</hash>
+      <hash>b4d5ef2e6a5437a938da28cdda459dcaf9a5b040</hash>
+      <hash>41f19c342e3c0dfbb382cebc92e793b65663aca4</hash>
+      <hash>f74970cb6542d904c9a21d1a6aa5132f6469b89e</hash>
+      <hash>617aee870cb88339e252fc2cfbc95382c97b529e</hash>
+      <hash>9d729abe75ab4c1974c59602deaa1feb604b74a4</hash>
+      <hash>ad2a69f2d7b88653fe073a521d39578af49db983</hash>
+      <hash>978e27127ba18176ae619332fcac006e53d8b07f</hash>
+      <hash>2668a9cbb43106472e7b0c9af65ffb4b3fb81b70</hash>
+      <hash>3e14d47425e2a96ea40d1ba6f4f20c4780b97624</hash>
+      <hash>830574aead2ff4eb2b7e3e9c1845a213b3e3c8c6</hash>
+      <hash>4250ca15102bc1410f5fb4827710e8603aed7646</hash>
+      <hash>6a037b088da07189e37193c2d2fba80def360960</hash>
+      <hash>2e312ac03f7a03192cedf35272a15f4faf0a12a9</hash>
+      <hash>bb1300f7f6d33b2d5923a1fc08ae37d5a2dc0ec2</hash>
+      <hash>bd77040ef32a91f7c4c72f4c1555f7d2400027ef</hash>
+      <hash>8fc33bd515a8f7c418e4cf894b01b3a178d60d2c</hash>
+      <hash>d6589f67a509090e3effb55c3fa73da19b6f7855</hash>
+      <hash>98d0cb5f7691a25dc3e597157a55160a75755a96</hash>
+      <hash>c00a2ece848b7f44a9f346e2912b8335fdb1b2ba</hash>
+      <hash>6d0184b19dbe9d5014e7df407aed4c6ce186def3</hash>
+      <hash>08840fa2b3a60bb0b4a1af95d635ef18c95af566</hash>
+      <hash>a21d128540416c4789d41e384ac50662128faf2a</hash>
+      <hash>9aab2bfb2aec8d0789fb511fa4483d08ef5e3fb1</hash>
+      <hash>7d4a9b7b43dd44fd7ac91eb2d85a25236325907d</hash>
+      <hash>0ab99f422195722f888e5a3bdfd103f7bcaec044</hash>
+      <hash>ed9ef2dad59321c3376370d3624ea0506460a3e0</hash>
+      <hash>84ddcc6ce65ae7153bc5535100719cce7bc64be7</hash>
+      <hash>0a9c1693bee1de885b949656753c561c7b4c18e6</hash>
+      <hash>e89ee88dd909365ae38b41d1c86d52d5750593d3</hash>
+      <hash>842e6280d42b4a9613240cf47c9273fabdae2283</hash>
+      <hash>7e9b82af44bc083d305eed142d64b1b3c9bdaff6</hash>
+      <hash>4d1e006befef8e5bade9e3daeb3618db818a1d5e</hash>
+      <hash>cce2af64184b66a049416e27651d24d79cd5823d</hash>
+      <hash>ab0f4480a07251b56a1111e2c6d87c6aa923ea17</hash>
+      <hash>91bf3a3e68d4e63f2e86fa2b6ff0f84f7ff4f35f</hash>
+      <hash>76838db9306f27443482e471a6aae1aa3372a9af</hash>
+      <hash>8dcda62cdec7e17637b1bc3bf0fda9b65a42f652</hash>
+      <hash>76491906db2aff6515ca4b22cd274ed8017962f5</hash>
+      <hash>990d8fcdf817c131fed97691c9535db19c705184</hash>
+      <hash>cf583a0318a34b338e13940441868597b323c652</hash>
+      <hash>66e37360e4b01f81ecb22f50be434a7423373156</hash>
+      <hash>71b9b1af1073d6004e1b0a62d36eb48060c53cac</hash>
+      <hash>19447e87aacd3d56b1afdebc0e711b4664db78b6</hash>
+      <hash>2b07d5fc3456ee59758baed69161a789f0fd8b5d</hash>
+      <hash>807187a13054ab16fd3ddd5ce3b29920a828325e</hash>
+      <hash>b5546c53a775bc73a6061c6b9fc5618ac0e14dde</hash>
+      <hash>f70b6878fbc3224772e576a33b4d4ae95657ecce</hash>
+      <hash>6c064a53f6673600cfc32b181dbed050138c3a21</hash>
+      <hash>4c9eebca61ab8f0f7205d4771dd1ff69860cf02a</hash>
+      <hash>745ad2e18ba9473495e2a518526dd95bdd5eab76</hash>
+      <hash>923388e3b84e04f715e37f37568739389c492a39</hash>
+      <hash>5f28d9acc3ce1d4c16223360bfe1ef6f6bbeca5d</hash>
+      <hash>83ab844cc77fc0a9e56a0a1f81c2f932f6bf1cae</hash>
+      <hash>5eab93a3b1cb572d16bfe1f389137d810ccc90c7</hash>
+      <hash>665251397ad06ad282daa7d70f9f45ad6daf83ae</hash>
+      <hash>161693be5755f3f2b24d0c0634559b0f46b66c8e</hash>
+      <hash>51d03fcdd78079a3a4721c00528cf5055a34a4d8</hash>
+      <hash>52f6c761d8328bf5b6dc9e05df59a7b51fbe562c</hash>
+      <hash>ee2ae84e22f473c5024c816dd36efe90e1cc4aaf</hash>
+      <hash>5cb5f3cbb8a5336729c48e3f6bf1f5a2c9c34389</hash>
+      <hash>91a8ef759c21657370d38ec3d27f26b9b85d1657</hash>
+      <hash>83ac1618de1264d8d957e964d5f8611995545701</hash>
+      <hash>025706a025466df276b2924c2e99b91c2b1feec0</hash>
+      <hash>0ca8101edb6e112e6c02f958a09daac5d4133f38</hash>
+      <hash>b02a9b8fe45d4dc41763af015e88a71b888ed4e1</hash>
+      <hash>b6a2ce4e4e10af7aab0c479a4e2c2e1e100f4475</hash>
+      <hash>c715939263efaa91b1debd42fc77b962c2f80e38</hash>
+      <hash>8331c5ba489d39e2e4522a0cdc0ed762e3a09497</hash>
+      <hash>989661414604a00a9f72db9303677ce054572569</hash>
+      <hash>fbab42bab7bc9a46ec7175f4f3757ed719465a25</hash>
+      <hash>416c030a5de552d286c81e1cfc578bfb464645ad</hash>
+      <hash>38e84e5ce034e1eb79b367719f47db6449a483ca</hash>
+      <hash>397b34d480587592183ce9427ff29e99e5239f0a</hash>
+      <hash>de825a7fcffc0714fdf4cac73a8efad100a51534</hash>
+      <hash>978096cfee88acd31bf004d331b37290e1e2d769</hash>
+      <hash>087a62cdf0cb8d5916007becc13ad706e67a862a</hash>
+      <hash>6c8262447d763c6951a2310471335d5765143192</hash>
+      <hash>dabdcd821d1e619022e422ef122681d1af426fcd</hash>
+      <hash>d08f76f4a3f67a0e82060f9975d39157b002692a</hash>
+      <hash>55a9f762015cc4ec58dd3a3bbf2055a884f58fa1</hash>
+      <hash>d28e5defcf0becc70490c68265952543f13672f5</hash>
+      <hash>f6e78b89ace1d0526a5923db3b2a8660f64dbafb</hash>
+      <hash>81244b724ebb332c1bfadc00154074e71ecf19c4</hash>
+      <hash>67525a68a531f1c4bdbf896e056ea489a94b523f</hash>
+      <hash>cb39617fcb15603854755523ba8e5bf018217597</hash>
+      <hash>72da7646fb8e0cdbad0f0d331f6358c711caca3b</hash>
+      <hash>66fbae6856eaf431445b652adfed72d800d10703</hash>
+      <hash>f53f07f45e3b77f89572bb3a672fdeb41f5a7736</hash>
+      <hash>f404b48b1d18fc0c074fb743a301cd4813cfdfe5</hash>
+      <hash>b3955ca9199ccce15f3d5c7d94c99744d825e8fd</hash>
+      <hash>3f3e1449acf4fdd38af3ce9a525057a6d7a6ff0b</hash>
+      <hash>d391d7f82011950f551fee5b98fd0f400f40c715</hash>
+      <hash>2369656ce3c3cb7fa322ee9f16580e7c3e1da951</hash>
+      <hash>725c964884afc6d484b4f8680940c9233ce1a932</hash>
+      <hash>c88c373b21a0ace12834f786d1e02aad6b289743</hash>
+      <hash>6b3420c721e41a8cd5653c485b88b02a55eb3ed8</hash>
+      <hash>60353b9d0304fd00888e3308bf9032df8dafcdce</hash>
+      <hash>ecfb5078cd1e35ed43c4bc499c0fb9beb3150da5</hash>
+      <hash>bd7679414f8bbb8b98cec3b1d82128ba06e3fb22</hash>
+      <hash>b851ab7afbf29d5195caf449f567b75655398b32</hash>
+      <hash>bda8b2079ed9103861ec1431c0dfda018088b754</hash>
+      <hash>118e0e6ffaa2116dfd9632afd34e282bb8e7789a</hash>
+      <hash>bf7692d1167ae0020017d6e77cbab306dc9673cd</hash>
+      <hash>49e8e3761480c486e661667650d6acbce4779d38</hash>
+      <hash>272b2514a418d861cf911ee003d353108fd56052</hash>
+      <hash>98669880275997dec9270e3169009948e0979df9</hash>
+      <hash>2771eb61b135cc87618653a03ea99c080d4e9520</hash>
+      <hash>f44f9f3d7ecfd1f1bf429bb2608a01cd6b7a041c</hash>
+      <hash>61c520a27895289e50aa7e669ad0d5cd94bd3e84</hash>
+      <hash>93bad4792c2c8f20ff92d674b48531700117abe8</hash>
+      <hash>e2553073b16ef9b99220e34c86b6967ab1d65f15</hash>
+      <hash>7451434bae457400225b925a021074bfce8dac3a</hash>
+    </pieces>
+    <!-- Mirrors which handle this country (US):  -->
+    <url location="US" priority="1">https://slc-mirror.opensuse.org/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="US" priority="2">https://mirror.fcix.net/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="US" priority="3">https://mirrors.rit.edu/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <!-- Mirrors in the same continent (NA):  -->
+    <url location="CA" priority="4">https://mirror.csclub.uwaterloo.ca/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <!-- Mirrors in other parts of the world:  -->
+    <url location="PT" priority="5">https://mirror.randhost.com/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="NG" priority="6">https://mirror.tech.africa/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="ZA" priority="7">https://mirror.africloud.com/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="UA" priority="8">https://mirror.mai.co.ua/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="EC" priority="9">https://mirror.cedia.org.ec/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <url location="PT" priority="10">https://ftp.rnl.tecnico.ulisboa.pt/pub/opensuse/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso</url>
+    <!-- File origin location:  -->
+    <!-- https://downloadcontent2.opensuse.org/distribution/leap/16.0/offline/Leap-16.0-online-installer-x86_64-Build178.27.install.iso -->
+  </file>
+</metalink>
