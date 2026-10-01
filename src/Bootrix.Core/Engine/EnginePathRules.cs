@@ -140,6 +140,6 @@ internal static partial class EnginePathRules
         return !ReservedNames.Contains(baseName);
     }
 
-    [GeneratedRegex(@"^[A-Za-z0-9_&.\-{}#@$()+,;=]+$")]
+    [GeneratedRegex(@"^[A-Za-z0-9_&.\-{}#@$()+,;=]+\z")]
     private static partial Regex DeviceInterfaceName();
 }

@@ -96,6 +96,7 @@ public class EngineRequestValidatorTests
     [InlineData(@"\\?\usbstor#disk#1")]
     [InlineData(@"\\?\usbstor#disk#1#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}\extra")]
     [InlineData(@"\\?\usbstor#disk 1#1#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}")]
+    [InlineData("\\\\?\\usbstor#disk#1#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}\n")]
     public void EverythingElse_IsNoDiskInterfacePath(string? path)
     {
         Assert.False(EnginePathRules.IsDeviceInterfacePath(path, EnginePathRules.DiskInterfaceGuid), path);

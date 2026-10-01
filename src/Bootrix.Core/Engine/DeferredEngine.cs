@@ -20,6 +20,7 @@ public sealed class DeferredEngine : IEngine, IAsyncDisposable
     private readonly ILogger _logger;
     private readonly SemaphoreSlim _gate = new(1, 1);
     private IEngine? _privileged;
+    private int _disposed;
 
     /// <param name="unprivileged">Serves <see cref="ListDisksAsync"/> and <see cref="DevicesChanged"/>.</param>
     /// <param name="startPrivileged">Creates the engine for everything else; may show a consent prompt and may throw <see cref="BootrixException"/>.</param>
@@ -77,6 +78,11 @@ public sealed class DeferredEngine : IEngine, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
+        if (Interlocked.Exchange(ref _disposed, 1) == 1)
+        {
+            return;
+        }
+
         await _gate.WaitAsync().ConfigureAwait(false);
         try
         {
