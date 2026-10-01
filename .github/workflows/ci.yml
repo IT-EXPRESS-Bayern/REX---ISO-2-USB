@@ -33,7 +33,8 @@ jobs:
         with:
           global-json-file: global.json
       - run: dotnet build Bootrix.slnx -c Release
-      - run: dotnet test Bootrix.slnx -c Release --no-build
+      # One test project at a time: the timing tests of the broker flake when the Core tests keep all cores busy next to them.
+      - run: dotnet test Bootrix.slnx -c Release --no-build -m:1
       - name: Publish (x64)
         run: |
           dotnet publish src/Bootrix.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o artifacts/win-x64
