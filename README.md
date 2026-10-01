@@ -4,7 +4,7 @@ Bootrix erstellt bootfähige Medien: USB-Sticks, Festplatten, SD-Karten, Diskett
 
 Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Win32-Engine, eigene Kommandozeile). Es läuft unter Windows 10 und 11 (x64 und Arm64).
 
-> **Stand:** in Entwicklung. Core, Engine, Katalog, Downloader und Teile der Oberfläche sind umgesetzt und werden bei jedem Push auf Linux und Windows getestet. Die Schreibwege für Windows-, Linux-, DOS- und Apple-Medien kommen schrittweise dazu; was bereits geht und was noch fehlt, steht unter [Funktionsstand](#funktionsstand). Die Pfade, die echte Hardware brauchen, stehen in der [Hardware-Checkliste](docs/hardware-checkliste.md).
+> **Stand:** in Entwicklung. Core, Engine, Katalog, Downloader und Teile der Oberfläche sind umgesetzt und werden bei jedem Push auf Linux und Windows getestet. Die Schreibwege für Windows-, Linux-, DOS- und Apple-Medien kommen schrittweise dazu; was bereits geht und was noch fehlt, steht unter [Funktionsstand](#funktionsstand). Die Pfade, die echte Hardware brauchen, stehen in der [Hardware-Checkliste](docs/hardware-checkliste.md); der Aufbau ist in [docs/architektur.md](docs/architektur.md) beschrieben.
 
 ## Was Bootrix anders macht
 
