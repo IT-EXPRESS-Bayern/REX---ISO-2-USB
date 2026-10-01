@@ -84,7 +84,7 @@ public sealed class MediaSourceTests : IDisposable
         using var reader = new StreamReader(stream);
 
         Assert.Equal("wim data", await reader.ReadToEndAsync());
-        Assert.Equal(_dir.File("tree/sources/boot.wim"), source.LocalPath("sources/boot.wim"));
+        Assert.Equal(Path.GetFullPath(_dir.File("tree/sources/boot.wim")), Path.GetFullPath(source.LocalPath("sources/boot.wim")!));
         Assert.Throws<FileNotFoundException>(() => source.OpenRead("sources/missing.wim"));
     }
 
