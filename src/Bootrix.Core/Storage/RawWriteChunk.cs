@@ -32,11 +32,14 @@ internal sealed class BufferPool : IDisposable
     }
 }
 
+/// <summary>The part of a chunk that goes to the device: <see cref="Length"/> bytes from the buffer at <see cref="BufferOffset"/> to the device at <see cref="DeviceOffset"/>.</summary>
+internal readonly record struct ChunkSegment(int BufferOffset, long DeviceOffset, int Length);
+
 /// <summary>
 /// One block of data on its way to several targets. The buffer goes back to the pool when the
-/// last target has finished with it.
+/// last target has finished with it. Without <paramref name="segments"/> the whole padded block is written.
 /// </summary>
-internal sealed class Chunk(AlignedBuffer buffer, long offset, int paddedLength, int dataLength, BufferPool? pool)
+internal sealed class Chunk(AlignedBuffer buffer, long offset, int paddedLength, int dataLength, BufferPool? pool, IReadOnlyList<ChunkSegment>? segments = null)
 {
     private readonly TaskCompletionSource _released = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private int _pending;
@@ -48,6 +51,8 @@ internal sealed class Chunk(AlignedBuffer buffer, long offset, int paddedLength,
     public int PaddedLength { get; } = paddedLength;
 
     public int DataLength { get; } = dataLength;
+
+    public IReadOnlyList<ChunkSegment> Segments { get; } = segments ?? [new ChunkSegment(0, offset, paddedLength)];
 
     public void Expect(int consumers)
     {
