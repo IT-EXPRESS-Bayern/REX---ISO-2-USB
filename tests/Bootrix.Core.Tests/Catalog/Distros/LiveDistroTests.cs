@@ -43,6 +43,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task OpenSuseTumbleweed() => Check(new OpenSuseProvider(Http), "opensuse-tumbleweed", expectSigned: true);
 
     [LiveFact]
+    public Task Kali() => Check(new KaliProvider(Http), "kali", expectSigned: true);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
