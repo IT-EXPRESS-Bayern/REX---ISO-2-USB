@@ -64,6 +64,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task GPartedLive() => Check(new GPartedLiveProvider(Http), "gparted-live", expectSigned: true);
 
     [LiveFact]
+    public Task Memtest86Plus() => Check(new Memtest86PlusProvider(Http), "memtest86plus", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
@@ -96,7 +99,7 @@ public class LiveDistroTests(ITestOutputHelper output)
             Assert.NotEmpty(request.ExpectedHashes);
             Assert.All(request.Sources, s => Assert.StartsWith("http", s.Url.Scheme, StringComparison.Ordinal));
             var length = await ProbeLength(request.Url);
-            Assert.True(length > 1_000_000, $"{request.Url} announced only {length} bytes.");
+            Assert.True(length > 100_000, $"{request.Url} announced only {length} bytes.");
             if (request.ExpectedSize is { } expected)
             {
                 Assert.Equal(expected, length);
