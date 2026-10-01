@@ -79,6 +79,50 @@
   <data name="Error.ReadError.Action" xml:space="preserve"><value>Clean the disc or use a different drive.</value></data>
   <data name="Error.CopyProtected.Cause" xml:space="preserve"><value>The disc is copy-protected.</value></data>
   <data name="Error.CopyProtected.Action" xml:space="preserve"><value>Copy-protected media are not copied.</value></data>
+  <data name="Error.EfiBinaryInvalid.Cause" xml:space="preserve"><value>The file is not a valid EFI application: {0}</value></data>
+  <data name="Error.EfiBinaryInvalid.Action" xml:space="preserve"><value>Check that the file was copied completely and recreate the media if necessary.</value></data>
+  <data name="Error.RevocationDataInvalid.Cause" xml:space="preserve"><value>The Secure Boot revocation list is invalid or damaged: {0}</value></data>
+  <data name="Error.RevocationDataInvalid.Action" xml:space="preserve"><value>Use the embedded revocation list or download the data again.</value></data>
+
+  <data name="Efi.Finding.NoSignature" xml:space="preserve"><value>{0} is not signed.</value></data>
+  <data name="Efi.Finding.SignatureInvalid" xml:space="preserve"><value>The signature of {0} does not match the file content or is damaged.</value></data>
+  <data name="Efi.Finding.SignedBy" xml:space="preserve"><value>{0} is signed by: {1}.</value></data>
+  <data name="Efi.Finding.OtherSigner" xml:space="preserve"><value>{0} is not signed by a Microsoft Secure Boot CA (signer: {1}).</value></data>
+  <data name="Efi.Finding.MachineMismatch" xml:space="preserve"><value>{0} contains code for {1}, but its file name stands for {2}.</value></data>
+  <data name="Efi.Finding.NotEfiApplication" xml:space="preserve"><value>{0} is not an EFI application (subsystem {1}).</value></data>
+  <data name="Efi.Finding.Unreadable" xml:space="preserve"><value>{0} could not be read as an EFI file: {1}</value></data>
+  <data name="Efi.Revoked.DbxHash" xml:space="preserve"><value>{0}: The hash {1} is listed in the DBX (added {2}). Devices with a current DBX refuse to start the file and report a security violation.</value></data>
+  <data name="Efi.Revoked.Sbat" xml:space="preserve"><value>{0}: SBAT generation too low ({1},{2} &lt; {1},{3}, level {4}). Devices with this SbatLevel refuse the file.</value></data>
+  <data name="Efi.Revoked.Svn" xml:space="preserve"><value>{0}: The Secure Version Number {1} is below the DBX minimum {2}. Devices that applied the SVN update refuse the boot manager.</value></data>
+  <data name="Efi.Revoked.Certificate" xml:space="preserve"><value>{0}: The certificate “{1}” of the signature chain is listed in the DBX. Devices that applied this revocation (CVE-2023-24932) do not accept the signature.</value></data>
+  <data name="Efi.Advice.ReplaceRevoked" xml:space="preserve"><value>Use a current version of {0} (a newer image of the distribution or of Windows).</value></data>
+  <data name="Efi.Advice.UpdateSbat" xml:space="preserve"><value>Update {0} to a version with SBAT generation “{1}” of {2} or higher.</value></data>
+  <data name="Efi.Advice.UpdateBootManager" xml:space="preserve"><value>Use a Windows image whose boot manager {0} has Secure Version Number {1} or higher (current level of security updates).</value></data>
+  <data name="Efi.Advice.Windows2023" xml:space="preserve"><value>{0} is signed only with the Windows Production PCA 2011. Devices that know only the Windows UEFI CA 2023, or that revoked the PCA 2011, need a Windows image with a 2023-signed boot manager (for example Windows 11 25H2).</value></data>
+  <data name="Efi.Advice.DualSignedLoader" xml:space="preserve"><value>{0} is signed only with the Microsoft UEFI CA 2011. Use a version that is additionally signed with the Microsoft UEFI CA 2023 (for Linux a current shim) so that the medium also starts on firmware without the 2011 certificates.</value></data>
+  <data name="Efi.Advice.ThirdPartyCa" xml:space="preserve"><value>The medium starts through a Microsoft third-party CA (UEFI CA). Secured-core PCs and the default Windows 11 25H2 configuration do not have this CA in the db. Enable “Microsoft UEFI CA” (third-party certificate) in the firmware, or use FAT32 with a split WIM instead of NTFS with UEFI:NTFS for Windows setup.</value></data>
+  <data name="Efi.Advice.SecureBootOff" xml:space="preserve"><value>{0} is not signed. Turn Secure Boot off in the firmware or enroll its hash or a key of your own there.</value></data>
+  <data name="Efi.Advice.EnrollKey" xml:space="preserve"><value>The certificate “{1}” that signed {0} is not in the firmware db. Enroll it there or as a MOK, otherwise the medium only starts with Secure Boot turned off.</value></data>
+  <data name="Efi.Advice.FixSignature" xml:space="preserve"><value>The signature of {0} is invalid. Copy the file again or download the image again.</value></data>
+  <data name="Efi.Summary.NoEfiFiles" xml:space="preserve"><value>No EFI programs were found; the medium does not start in UEFI mode.</value></data>
+  <data name="Efi.Summary.Revoked" xml:space="preserve"><value>Revoked at the current revocation level (DBX, SBAT, SVN): {0}. The medium does not start on devices with that level.</value></data>
+  <data name="Efi.Summary.NoSignature" xml:space="preserve"><value>The entry points are not signed; the medium only starts with Secure Boot turned off.</value></data>
+  <data name="Efi.Summary.InvalidSignature" xml:space="preserve"><value>The signature of an entry point does not match the file; firmware with Secure Boot rejects it.</value></data>
+  <data name="Efi.Summary.NotMicrosoftSigned" xml:space="preserve"><value>The boot loaders are not signed by a Microsoft Secure Boot CA; with Secure Boot the medium only starts if the key is enrolled in the firmware.</value></data>
+  <data name="Efi.Summary.Only2011" xml:space="preserve"><value>Starts only on devices whose db contains the 2011 certificates; it does not start on devices that have only the 2023 CAs.</value></data>
+  <data name="Efi.Summary.Only2023" xml:space="preserve"><value>Starts only on devices whose db contains the 2023 certificates; older firmware without the 2023 CAs rejects the medium.</value></data>
+  <data name="Efi.Summary.Both" xml:space="preserve"><value>Starts on devices with the 2011 certificates and on devices with the 2023 certificates.</value></data>
+  <data name="Efi.Profile.Legacy2011" xml:space="preserve"><value>Older firmware (2011 CAs only, old DBX)</value></data>
+  <data name="Efi.Profile.Updated2011And2023" xml:space="preserve"><value>Updated firmware (2011 and 2023 CAs)</value></data>
+  <data name="Efi.Profile.Only2023" xml:space="preserve"><value>Firmware with 2023 CAs only (third-party CA present, no 2011 CAs)</value></data>
+  <data name="Efi.Profile.SecuredCore" xml:space="preserve"><value>Secured-core / Windows 11 25H2 default (Windows UEFI CA 2023 only, no third-party CA)</value></data>
+  <data name="Efi.Profile.Pca2011Revoked" xml:space="preserve"><value>New hardware with third-party CAs (Microsoft configuration for Linux) or PC with revoked Windows Production PCA 2011 (CVE-2023-24932)</value></data>
+  <data name="Efi.Verdict.Boots" xml:space="preserve"><value>Boots</value></data>
+  <data name="Efi.Verdict.NoSignature" xml:space="preserve"><value>Unsigned (only without Secure Boot)</value></data>
+  <data name="Efi.Verdict.SignerNotInDb" xml:space="preserve"><value>Signing CA not in db</value></data>
+  <data name="Efi.Verdict.SignatureInvalid" xml:space="preserve"><value>Signature invalid</value></data>
+  <data name="Efi.Verdict.Revoked" xml:space="preserve"><value>Revoked</value></data>
+
   <data name="Error.Unknown.Cause" xml:space="preserve"><value>An unexpected error occurred.</value></data>
   <data name="Error.Unknown.Action" xml:space="preserve"><value>Export the diagnostic bundle and send it to support.</value></data>
   <data name="App.Name" xml:space="preserve"><value>Bootrix</value></data>

@@ -16,9 +16,11 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
     <PackageReference Include="System.IO.Hashing" />
+    <PackageReference Include="System.Security.Cryptography.Pkcs" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Boot\revocations.json" LogicalName="Bootrix.Core.Boot.revocations.json" />
     <EmbeddedResource Include="Tiny\Profiles\*.json" />
   </ItemGroup>
 
