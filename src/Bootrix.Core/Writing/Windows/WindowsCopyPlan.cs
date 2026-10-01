@@ -16,11 +16,12 @@ namespace Bootrix.Core.Writing.Windows;
 /// </remarks>
 public sealed class WindowsCopyPlan
 {
-    private WindowsCopyPlan(IReadOnlyList<string> directories, IReadOnlyList<CopyItem> items, IReadOnlyList<MediaSourceFile> excluded)
+    private WindowsCopyPlan(IReadOnlyList<string> directories, IReadOnlyList<CopyItem> items, IReadOnlyList<MediaSourceFile> excluded, long splitPartBytes)
     {
         Directories = directories;
         Items = items;
         Excluded = excluded;
+        SplitPartBytes = splitPartBytes;
         TotalBytes = items.Sum(item => item.Bytes);
     }
 
@@ -32,6 +33,9 @@ public sealed class WindowsCopyPlan
     public IReadOnlyList<MediaSourceFile> Excluded { get; }
 
     public long TotalBytes { get; }
+
+    /// <summary>Size limit for the parts of a split install image.</summary>
+    public long SplitPartBytes { get; }
 
     public bool HasSplit => Items.Any(item => item.Action == CopyAction.SplitInstallImage);
 
@@ -58,7 +62,7 @@ public sealed class WindowsCopyPlan
             .ThenBy(item => item.Source.Path, StringComparer.OrdinalIgnoreCase)
             .ToList();
 
-        return new WindowsCopyPlan(AllDirectories(directories, included), items, excluded);
+        return new WindowsCopyPlan(AllDirectories(directories, included), items, excluded, options.SplitPartBytes);
     }
 
     /// <summary>"install.swm", then "install2.swm", "install3.swm": the naming wimlib and DISM both use for the parts of a split WIM.</summary>
