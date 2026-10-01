@@ -46,6 +46,8 @@ public enum ErrorCode
     DownloadHashMismatch = 5003,
     CatalogUnavailable = 5004,
     SignatureInvalid = 5005,
+    ChecksumFileInvalid = 5006,
+    MetalinkInvalid = 5007,
 
     // 6xxx: Windows servicing and tools
     ExternalToolFailed = 6001,

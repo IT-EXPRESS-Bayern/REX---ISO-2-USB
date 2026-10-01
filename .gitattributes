@@ -10,3 +10,6 @@
 *.img binary
 *.iso binary
 *.efi binary
+
+# signed distribution files must stay byte-identical on every platform
+tests/Bootrix.Core.Tests/Net/Fixtures/** -text
