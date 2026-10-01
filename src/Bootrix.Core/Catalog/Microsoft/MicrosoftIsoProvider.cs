@@ -257,10 +257,13 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
     {
         for (var attempt = 0; ; attempt++)
         {
-            var session = new MicrosoftSession(_http, endpoints, _time, _logger);
+            var session = new MicrosoftSession(_http, endpoints, _time, _logger) { RegisterProfilingTag = attempt > 0 };
 
             try
             {
+                // The page's script starts the handshake when the page loads, before anyone picks a language.
+                await session.HandshakeAsync(cancellationToken).ConfigureAwait(false);
+
                 var skus = await session.GetSkusAsync(route.EditionId, cancellationToken).ConfigureAwait(false);
                 ThrowIfRefused(skus.Errors, endpoints);
 
@@ -269,7 +272,7 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
                         ? $"Edition {route.EditionId} lists no language"
                         : $"'{route.Language}' is no longer offered for edition {route.EditionId}");
 
-                var links = await session.GetLinksAsync(sku.Id, registerTag: attempt > 0, cancellationToken).ConfigureAwait(false);
+                var links = await session.GetLinksAsync(sku.Id, cancellationToken).ConfigureAwait(false);
                 ThrowIfRefused(links.Errors, endpoints);
 
                 if (links.Links.Count == 0)

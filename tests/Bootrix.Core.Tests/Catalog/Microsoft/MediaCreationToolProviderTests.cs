@@ -115,6 +115,9 @@ public class MediaCreationToolProviderTests
         Assert.Equal([new FileHash(HashKind.Sha1, "f1f75016fdee2d81d220be4ac2876f6f564e780f")], request.ExpectedHashes);
         Assert.Equal(4_685_348_140, request.ExpectedSize);
         Assert.Null(request.LinkResolver);
+
+        // SHA-1 from the catalog is accepted as an integrity check by the downloader; only MD5 is not.
+        request.Validate();
     }
 
     [Fact]

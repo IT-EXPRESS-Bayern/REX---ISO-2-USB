@@ -18,6 +18,13 @@ internal sealed class CabinetBuilder
 
     public ushort Flags { get; init; }
 
+    /// <summary>Sizes of the reserved areas; any non-zero value switches the header flag on. Signed cabinets reserve 20 bytes in the header.</summary>
+    public int HeaderReserve { get; init; }
+
+    public int FolderReserve { get; init; }
+
+    public int DataReserve { get; init; }
+
     public static ushort Lzx(int windowBits) => (ushort)(3 | (windowBits << 8));
 
     public CabinetBuilder Folder(ushort compression, params (byte[] Payload, int Uncompressed)[] blocks)
@@ -34,7 +41,9 @@ internal sealed class CabinetBuilder
 
     public byte[] Build()
     {
-        var folderTableEnd = 36 + 8 * _folders.Count;
+        var reserved = HeaderReserve > 0 || FolderReserve > 0 || DataReserve > 0;
+        var folderTableStart = 36 + (reserved ? 4 + HeaderReserve : 0);
+        var folderTableEnd = folderTableStart + (8 + FolderReserve) * _folders.Count;
         var fileTable = _files.Sum(f => 16 + (f.Utf8 ? Encoding.UTF8 : Encoding.Latin1).GetByteCount(f.Name) + 1);
         var dataStart = folderTableEnd + fileTable;
 
@@ -46,8 +55,18 @@ internal sealed class CabinetBuilder
         header[25] = 1;
         BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(26), (ushort)_folders.Count);
         BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(28), (ushort)_files.Count);
-        BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(30), Flags);
+        BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(30), (ushort)(Flags | (reserved ? 0x0004 : 0)));
         output.Write(header);
+
+        if (reserved)
+        {
+            var reserve = new byte[4 + HeaderReserve];
+            BinaryPrimitives.WriteUInt16LittleEndian(reserve, (ushort)HeaderReserve);
+            reserve[2] = (byte)FolderReserve;
+            reserve[3] = (byte)DataReserve;
+            Array.Fill(reserve, (byte)0xAB, 4, HeaderReserve);
+            output.Write(reserve);
+        }
 
         var offset = dataStart;
         foreach (var (type, blocks) in _folders)
@@ -57,7 +76,8 @@ internal sealed class CabinetBuilder
             BinaryPrimitives.WriteUInt16LittleEndian(entry.AsSpan(4), (ushort)blocks.Count);
             BinaryPrimitives.WriteUInt16LittleEndian(entry.AsSpan(6), type);
             output.Write(entry);
-            offset += blocks.Sum(b => 8 + b.Payload.Length);
+            output.Write(new byte[FolderReserve]);
+            offset += blocks.Sum(b => 8 + DataReserve + b.Payload.Length);
         }
 
         foreach (var (name, folder, fileOffset, length, utf8) in _files)
@@ -85,6 +105,7 @@ internal sealed class CabinetBuilder
                 }
 
                 output.Write(block);
+                output.Write(new byte[DataReserve]);
                 output.Write(payload);
             }
         }

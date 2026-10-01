@@ -32,14 +32,19 @@ internal sealed partial class MicrosoftSession(HttpClient http, MicrosoftEndpoin
     public string Id { get; } = Guid.NewGuid().ToString();
 
     /// <summary>
+    /// Also announce the session at the profiling service before the handshake. The pages needed that in earlier
+    /// years and it is not needed today; it is only switched on for the second attempt after a refusal.
+    /// </summary>
+    public bool RegisterProfilingTag { get; init; }
+
+    /// <summary>
     /// Fetches the script that Microsoft's fingerprinting service hands out for the session and calls the address
     /// it names, exactly the first request the page's hidden frame makes. The frame's own script, which would
-    /// collect browser details, is not run. With <paramref name="registerTag"/> the session is also announced at
-    /// the profiling service, a step the pages needed in earlier years and that is only tried after a refusal.
+    /// collect browser details, is not run.
     /// </summary>
-    public async Task HandshakeAsync(bool registerTag, CancellationToken cancellationToken)
+    public async Task HandshakeAsync(CancellationToken cancellationToken)
     {
-        if (registerTag)
+        if (RegisterProfilingTag)
         {
             await GetAsync(new Uri($"https://vlscppe.microsoft.com/tags?org_id={TagOrganisation}&session_id={Id}"), cancellationToken).ConfigureAwait(false);
         }
@@ -72,18 +77,18 @@ internal sealed partial class MicrosoftSession(HttpClient http, MicrosoftEndpoin
 
         if (skus.Errors.Any(e => e.IsSentinelReject) && !_handshakeDone)
         {
-            await HandshakeAsync(registerTag: false, cancellationToken).ConfigureAwait(false);
+            await HandshakeAsync(cancellationToken).ConfigureAwait(false);
             skus = Parse(await GetAsync(url, cancellationToken).ConfigureAwait(false), MicrosoftApiResponses.ParseSkus);
         }
 
         return skus;
     }
 
-    public async Task<LinkResponse> GetLinksAsync(string skuId, bool registerTag, CancellationToken cancellationToken)
+    public async Task<LinkResponse> GetLinksAsync(string skuId, CancellationToken cancellationToken)
     {
         if (!_handshakeDone)
         {
-            await HandshakeAsync(registerTag, cancellationToken).ConfigureAwait(false);
+            await HandshakeAsync(cancellationToken).ConfigureAwait(false);
         }
 
         var url = ApiUrl("GetProductDownloadLinksBySku", "undefined", Uri.EscapeDataString(skuId));
