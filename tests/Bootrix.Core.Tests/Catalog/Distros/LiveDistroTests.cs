@@ -49,6 +49,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task Manjaro() => Check(new ManjaroProvider(Http), "manjaro", expectSigned: false);
 
     [LiveFact]
+    public Task PopOs() => Check(new PopOsProvider(Http), "popos", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
