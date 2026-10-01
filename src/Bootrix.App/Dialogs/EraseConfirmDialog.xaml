@@ -1,0 +1,27 @@
+<ui:ContentDialog x:Class="Bootrix.App.Dialogs.EraseConfirmDialog"
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+                  xmlns:loc="clr-namespace:Bootrix.App.Localization"
+                  Title="{loc:Loc Write.Confirm.Title}"
+                  PrimaryButtonText="{loc:Loc Write.Confirm.Ok}"
+                  CloseButtonText="{loc:Loc Write.Confirm.Cancel}"
+                  PrimaryButtonAppearance="Danger"
+                  DefaultButton="Close"
+                  IsPrimaryButtonEnabled="False">
+    <ItemsControl x:Name="Rows" MinWidth="420">
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                <StackPanel Margin="0,0,0,16">
+                    <TextBlock FontWeight="SemiBold" TextWrapping="Wrap">
+                        <Run Text="{Binding Title, Mode=OneWay}" />
+                        <Run Text="  " />
+                        <Run Text="{Binding SizeText, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock Margin="0,4,0,6" Opacity="0.8" TextWrapping="Wrap" Text="{Binding Prompt, Mode=OneWay}" />
+                    <ui:TextBox Text="{Binding Typed, UpdateSourceTrigger=PropertyChanged}" />
+                </StackPanel>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
+</ui:ContentDialog>

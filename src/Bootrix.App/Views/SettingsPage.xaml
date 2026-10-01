@@ -1,0 +1,68 @@
+<Page x:Class="Bootrix.App.Views.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      Title="{loc:Loc Settings.Title}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,16,32,32" MaxWidth="760" HorizontalAlignment="Left">
+            <ui:TextBlock Text="{loc:Loc Settings.Title}" FontTypography="Title" Margin="0,0,0,20" />
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <ui:TextBlock Text="{loc:Loc Settings.Language}" />
+                </ui:CardControl.Header>
+                <ComboBox MinWidth="200"
+                          ItemsSource="{Binding Languages}"
+                          DisplayMemberPath="Display"
+                          SelectedValuePath="Code"
+                          SelectedValue="{Binding Language}" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <ui:TextBlock Text="{loc:Loc Settings.Theme}" />
+                </ui:CardControl.Header>
+                <ComboBox MinWidth="200"
+                          ItemsSource="{Binding Themes}"
+                          DisplayMemberPath="Display"
+                          SelectedValuePath="Theme"
+                          SelectedValue="{Binding Theme}" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock Text="{loc:Loc Settings.ShowUsbHdd}" />
+                        <ui:TextBlock Text="{loc:Loc Settings.ShowUsbHdd.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch IsChecked="{Binding ShowUsbHardDisks}" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock Text="{loc:Loc Settings.ServiceMode}" />
+                        <ui:TextBlock Text="{loc:Loc Settings.ServiceMode.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch IsChecked="{Binding ServiceMode}" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <ui:TextBlock Text="{loc:Loc Settings.Verify}" />
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch IsChecked="{Binding VerifyAfterWrite}" />
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <ui:TextBlock Text="{loc:Loc Settings.Sound}" />
+                </ui:CardControl.Header>
+                <ui:ToggleSwitch IsChecked="{Binding PlaySoundWhenDone}" />
+            </ui:CardControl>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

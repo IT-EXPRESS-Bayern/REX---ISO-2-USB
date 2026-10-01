@@ -48,7 +48,7 @@
   <data name="Protect.Offline" xml:space="preserve"><value>Offline</value></data>
   <data name="Settings.Title" xml:space="preserve"><value>Settings</value></data>
   <data name="Settings.Language" xml:space="preserve"><value>Language</value></data>
-  <data name="Settings.Language.System" xml:space="preserve"><value>System language</value></data>
+  <data name="Settings.Language.System" xml:space="preserve"><value>Automatic</value></data>
   <data name="Settings.Theme" xml:space="preserve"><value>Theme</value></data>
   <data name="Settings.Theme.System" xml:space="preserve"><value>Like Windows</value></data>
   <data name="Settings.Theme.Light" xml:space="preserve"><value>Light</value></data>

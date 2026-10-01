@@ -21,9 +21,17 @@ public sealed record BootrixPaths
         DataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "Bootrix"),
     };
 
+    /// <summary>Settings and logs of the unprivileged window belong to the user, not to every account on the machine.</summary>
+    public static BootrixPaths ForCurrentUser() => new()
+    {
+        DataDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bootrix"),
+    };
+
     public static BootrixPaths ForPortable(string programDirectory) => new() { DataDirectory = Path.Combine(programDirectory, "data") };
 
     /// <summary>A marker file next to the program switches to portable mode; nothing is written to the registry or to ProgramData then.</summary>
-    public static BootrixPaths Detect(string programDirectory) =>
-        File.Exists(Path.Combine(programDirectory, "portable.marker")) ? ForPortable(programDirectory) : ForInstalled();
+    public static BootrixPaths Detect(string programDirectory, bool perUser = false) =>
+        File.Exists(Path.Combine(programDirectory, "portable.marker"))
+            ? ForPortable(programDirectory)
+            : perUser ? ForCurrentUser() : ForInstalled();
 }
