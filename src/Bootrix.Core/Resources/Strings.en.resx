@@ -114,9 +114,9 @@
   <data name="Efi.Summary.Both" xml:space="preserve"><value>Starts on devices with the 2011 certificates and on devices with the 2023 certificates.</value></data>
   <data name="Efi.Profile.Legacy2011" xml:space="preserve"><value>Older firmware (2011 CAs only, old DBX)</value></data>
   <data name="Efi.Profile.Updated2011And2023" xml:space="preserve"><value>Updated firmware (2011 and 2023 CAs)</value></data>
-  <data name="Efi.Profile.Only2023" xml:space="preserve"><value>Firmware with 2023 CAs only (with third-party CA)</value></data>
-  <data name="Efi.Profile.SecuredCore" xml:space="preserve"><value>Secured-core / Windows default (Windows UEFI CA 2023 only, no third-party CA)</value></data>
-  <data name="Efi.Profile.Pca2011Revoked" xml:space="preserve"><value>PC with revoked Windows Production PCA 2011 (CVE-2023-24932)</value></data>
+  <data name="Efi.Profile.Only2023" xml:space="preserve"><value>Firmware with 2023 CAs only (third-party CA present, no 2011 CAs)</value></data>
+  <data name="Efi.Profile.SecuredCore" xml:space="preserve"><value>Secured-core / Windows 11 25H2 default (Windows UEFI CA 2023 only, no third-party CA)</value></data>
+  <data name="Efi.Profile.Pca2011Revoked" xml:space="preserve"><value>New hardware with third-party CAs (Microsoft configuration for Linux) or PC with revoked Windows Production PCA 2011 (CVE-2023-24932)</value></data>
   <data name="Efi.Verdict.Boots" xml:space="preserve"><value>Boots</value></data>
   <data name="Efi.Verdict.NoSignature" xml:space="preserve"><value>Unsigned (only without Secure Boot)</value></data>
   <data name="Efi.Verdict.SignerNotInDb" xml:space="preserve"><value>Signing CA not in db</value></data>

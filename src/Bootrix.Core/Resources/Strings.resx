@@ -123,9 +123,9 @@
   <data name="Efi.Summary.Both" xml:space="preserve"><value>Startet auf Geräten mit den 2011-Zertifikaten und auf Geräten mit den 2023-Zertifikaten.</value></data>
   <data name="Efi.Profile.Legacy2011" xml:space="preserve"><value>Ältere Firmware (nur 2011-CAs, alte DBX)</value></data>
   <data name="Efi.Profile.Updated2011And2023" xml:space="preserve"><value>Aktualisierte Firmware (2011- und 2023-CAs)</value></data>
-  <data name="Efi.Profile.Only2023" xml:space="preserve"><value>Firmware nur mit 2023-CAs (mit Drittanbieter-CA)</value></data>
-  <data name="Efi.Profile.SecuredCore" xml:space="preserve"><value>Secured-core / Windows-Standard (nur Windows UEFI CA 2023, ohne Drittanbieter-CA)</value></data>
-  <data name="Efi.Profile.Pca2011Revoked" xml:space="preserve"><value>PC mit gesperrter Windows Production PCA 2011 (CVE-2023-24932)</value></data>
+  <data name="Efi.Profile.Only2023" xml:space="preserve"><value>Firmware nur mit 2023-CAs (Drittanbieter-CA vorhanden, keine 2011-CAs)</value></data>
+  <data name="Efi.Profile.SecuredCore" xml:space="preserve"><value>Secured-core / Standard von Windows 11 25H2 (nur Windows UEFI CA 2023, keine Drittanbieter-CA)</value></data>
+  <data name="Efi.Profile.Pca2011Revoked" xml:space="preserve"><value>Neue Hardware mit Drittanbieter-CAs (Microsoft-Konfiguration für Linux) oder PC mit gesperrter Windows Production PCA 2011 (CVE-2023-24932)</value></data>
   <data name="Efi.Verdict.Boots" xml:space="preserve"><value>Startet</value></data>
   <data name="Efi.Verdict.NoSignature" xml:space="preserve"><value>Nicht signiert (nur ohne Secure Boot)</value></data>
   <data name="Efi.Verdict.SignerNotInDb" xml:space="preserve"><value>Signatur-CA nicht in der db</value></data>

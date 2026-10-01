@@ -9,13 +9,19 @@ public enum FirmwareProfileId
     /// <summary>Updated firmware with the 2011 and the 2023 CAs side by side.</summary>
     Updated2011And2023,
 
-    /// <summary>Firmware whose db holds only 2023 CAs, but still the third-party ones.</summary>
+    /// <summary>
+    /// Firmware whose db holds the 2023 CAs including the third-party ones but none of the 2011 CAs. Microsoft documents no
+    /// such configuration; it stands for devices from which the 2011 certificates were removed.
+    /// </summary>
     Only2023,
 
-    /// <summary>Secured-core or default Windows 11 25H2 configuration: Windows UEFI CA 2023 only, no third-party CA.</summary>
+    /// <summary>Secured-core or the default configuration of Windows 11 25H2 devices: Windows UEFI CA 2023 only, no third-party CA.</summary>
     SecuredCore,
 
-    /// <summary>Updated firmware that additionally applied the CVE-2023-24932 mitigation (Windows Production PCA 2011 in the DBX).</summary>
+    /// <summary>
+    /// The Windows Production PCA 2011 is revoked (CVE-2023-24932 mitigation) while the third-party CAs stay. The same outcome
+    /// follows from Microsoft's alternative configuration for Linux, whose db has no PCA 2011 but the 2011 UEFI CA next to the 2023 CAs.
+    /// </summary>
     Pca2011Revoked,
 }
 

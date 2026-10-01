@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using System.Security.Cryptography;
 using System.Security.Cryptography.Pkcs;
 using System.Security.Cryptography.X509Certificates;
 using Bootrix.Core.Boot;
@@ -274,6 +275,25 @@ public class SignatureTests(AuthorityFixture authorities, SigningFixture signing
 
         Assert.Equal(30, report.Signatures.Count);
         Assert.All(report.Signatures, s => Assert.NotNull(s.Problem));
+    }
+
+    [Fact]
+    public void SignatureBlockWithManyCertificates_IsRejectedBeforeAnyChainIsBuilt()
+    {
+        var now = DateTimeOffset.UtcNow;
+        var fillers = Enumerable.Range(0, 40).Select(i =>
+        {
+            using var key = ECDsa.Create(ECCurve.NamedCurves.nistP256);
+            return new CertificateRequest("CN=filler " + i, key, HashAlgorithmName.SHA256).CreateSelfSigned(now.AddDays(-1), now.AddDays(1));
+        }).ToList();
+        var image = PeBuilder.Typical().Build();
+        var block = authorities.Own.SignDigest(EfiBinary.Parse(image).ComputeAuthenticodeHash(HashAlgorithmName.SHA256), extraCertificates: fillers);
+
+        var signature = Assert.Single(Analyze(PeBuilder.Typical().AddCertificate(block).Build()).Signatures);
+
+        Assert.Contains("too many certificates", signature.Problem, StringComparison.Ordinal);
+        Assert.False(signature.IsIntact);
+        fillers.ForEach(f => f.Dispose());
     }
 
     [Fact]

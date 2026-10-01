@@ -20,6 +20,7 @@ internal sealed class EfiSignatureReader(IReadOnlyList<X509Certificate2> pinnedA
     private const int MaxNestingDepth = 3;
     private const int MaxSignatures = 32;
     private const int MaxChainLength = 8;
+    private const int MaxCertificatesPerBlock = 32;
 
     private static readonly Dictionary<string, (string Name, HashAlgorithmName Algorithm)> DigestAlgorithms = new()
     {
@@ -120,6 +121,13 @@ internal sealed class EfiSignatureReader(IReadOnlyList<X509Certificate2> pinnedA
             foreach (var certificate in cms.Certificates)
             {
                 owned.Add(certificate);
+            }
+
+            // Every candidate issuer costs a signature verification while the chain is built.
+            if (owned.Count > MaxCertificatesPerBlock)
+            {
+                AddProblem(context, nested, "signature block carries too many certificates");
+                return;
             }
 
             var digestMatches = DigestMatches(context, digestOid, digest);
