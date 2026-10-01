@@ -99,4 +99,16 @@
   <data name="Error.ImageLegacyFormat.Action" xml:space="preserve"><value>Konvertieren Sie das Image auf einem Mac in eine .dmg- oder .cdr-Datei.</value></data>
   <data name="Error.ImageAppleArchive.Cause" xml:space="preserve"><value>Das Image ist ein verschlüsseltes Apple-Archiv (.aea).</value></data>
   <data name="Error.ImageAppleArchive.Action" xml:space="preserve"><value>Das Archiv benötigt Schlüsseldienste von Apple. Entpacken Sie es auf einem Mac.</value></data>
+
+  <data name="Apple.Hint.MacOnly" xml:space="preserve"><value>Das Abbild enthält nur Mac-Dateisysteme und lässt sich nur an einem Mac verwenden.</value></data>
+  <data name="Apple.Hint.BootableMacVolume" xml:space="preserve"><value>Das Abbild enthält ein startfähiges Mac-Volume (Systemordner gesetzt).</value></data>
+  <data name="Apple.Hint.DataVolumeOnly" xml:space="preserve"><value>Das Abbild enthält nur ein Datenvolume ohne Systemordner und startet nicht.</value></data>
+  <data name="Apple.Hint.BareVolume" xml:space="preserve"><value>Das Abbild ist ein einzelnes Volume ohne Partitionstabelle. Für einen startfähigen Stick ist eine GPT mit HFS+-Partition nötig.</value></data>
+  <data name="Apple.Hint.HybridDisc" xml:space="preserve"><value>Hybrid-Datenträger aus ISO 9660 und HFS. Beim Brennen als Rohabbild bleibt der Start am Mac erhalten.</value></data>
+  <data name="Apple.Hint.IsoHybridWithApm" xml:space="preserve"><value>PC-ISO mit Apple-Partitionsblock. Für Intel-Macs den DD-Modus verwenden.</value></data>
+  <data name="Apple.Hint.ClassicHfs" xml:space="preserve"><value>Klassisches HFS (Mac OS 9 und älter): startet nicht an aktuellen Macs.</value></data>
+  <data name="Apple.Hint.ApfsContainer" xml:space="preserve"><value>APFS-Container: Der Inhalt kann unter Windows nicht gelesen werden, das Abbild wird unverändert kopiert.</value></data>
+  <data name="Apple.Hint.T2Restriction" xml:space="preserve"><value>Macs mit T2-Sicherheitschip starten von externen Medien nur, wenn dies im Startsicherheitsdienstprogramm erlaubt wurde.</value></data>
+  <data name="Apple.Hint.AppleSiliconUnsupported" xml:space="preserve"><value>Macs mit Apple-Silicon-Chip starten nicht von einem unter Windows erstellten Stick; unterstützt werden nur Intel-Macs.</value></data>
+  <data name="Apple.Hint.PartitionExceedsImage" xml:space="preserve"><value>Das Abbild ist kürzer, als die Partitionstabelle angibt, und möglicherweise abgeschnitten.</value></data>
 </root>

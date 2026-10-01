@@ -91,4 +91,16 @@
   <data name="Error.ImageLegacyFormat.Action" xml:space="preserve"><value>Convert the image to a .dmg or .cdr file on a Mac.</value></data>
   <data name="Error.ImageAppleArchive.Cause" xml:space="preserve"><value>The image is an encrypted Apple archive (.aea).</value></data>
   <data name="Error.ImageAppleArchive.Action" xml:space="preserve"><value>The archive needs key services from Apple. Unpack it on a Mac.</value></data>
+
+  <data name="Apple.Hint.MacOnly" xml:space="preserve"><value>The image contains only Mac file systems and can only be used on a Mac.</value></data>
+  <data name="Apple.Hint.BootableMacVolume" xml:space="preserve"><value>The image contains a bootable Mac volume (system folder is blessed).</value></data>
+  <data name="Apple.Hint.DataVolumeOnly" xml:space="preserve"><value>The image contains only a data volume without a system folder and will not boot.</value></data>
+  <data name="Apple.Hint.BareVolume" xml:space="preserve"><value>The image is a single volume without a partition table. A bootable stick needs a GPT with an HFS+ partition.</value></data>
+  <data name="Apple.Hint.HybridDisc" xml:space="preserve"><value>Hybrid disc of ISO 9660 and HFS. Burning it as a raw image keeps it bootable on a Mac.</value></data>
+  <data name="Apple.Hint.IsoHybridWithApm" xml:space="preserve"><value>PC ISO with an Apple partition block. Use DD mode for Intel Macs.</value></data>
+  <data name="Apple.Hint.ClassicHfs" xml:space="preserve"><value>Classic HFS (Mac OS 9 and earlier): does not boot on current Macs.</value></data>
+  <data name="Apple.Hint.ApfsContainer" xml:space="preserve"><value>APFS container: the contents cannot be read on Windows, the image is copied unchanged.</value></data>
+  <data name="Apple.Hint.T2Restriction" xml:space="preserve"><value>Macs with the T2 security chip boot from external media only if this was allowed in Startup Security Utility.</value></data>
+  <data name="Apple.Hint.AppleSiliconUnsupported" xml:space="preserve"><value>Apple silicon Macs do not boot from a stick created on Windows; only Intel Macs are supported.</value></data>
+  <data name="Apple.Hint.PartitionExceedsImage" xml:space="preserve"><value>The image is shorter than its partition table claims and may be truncated.</value></data>
 </root>
