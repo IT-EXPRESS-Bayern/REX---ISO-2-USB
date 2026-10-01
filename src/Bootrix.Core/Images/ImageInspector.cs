@@ -38,7 +38,7 @@ public sealed class ImageInspector(ILogger<ImageInspector>? logger = null)
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {
-            throw ImageErrors.Unreadable($"{path}: {ex.Message}", ex);
+            throw ImageFailures.Unreadable($"{path}: {ex.Message}", ex);
         }
 
         await using (stream.ConfigureAwait(false))

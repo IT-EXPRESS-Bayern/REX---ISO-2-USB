@@ -39,7 +39,7 @@ public sealed partial class ElToritoTests : IDisposable
 
     private static (long CatalogSector, List<ReferenceEntry> Entries) Reference(string iso)
     {
-        var report = ExternalTool.Run("xorriso", ["-indev", iso, "-report_el_torito", "plain"], null, null, null).StandardOutput;
+        var report = ReferenceTool.Run("xorriso", ["-indev", iso, "-report_el_torito", "plain"], null, null, null).StandardOutput;
         var catalog = Regex.Match(report, @"El Torito catalog\s+:\s+(\d+)");
         var entries = ReferenceLine().Matches(report).Select(match => new ReferenceEntry(
             match.Groups[2].Value,

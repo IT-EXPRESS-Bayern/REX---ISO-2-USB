@@ -28,13 +28,13 @@ internal static class WimXmlParser
         }
         catch (XmlException ex)
         {
-            throw ImageErrors.Unreadable("The XML data of the WIM is malformed: " + ex.Message, ex);
+            throw ImageFailures.Unreadable("The XML data of the WIM is malformed: " + ex.Message, ex);
         }
 
         var root = document.Root;
         if (root is null || root.Name.LocalName != "WIM")
         {
-            throw ImageErrors.Unreadable("The XML data of the WIM has no WIM element.");
+            throw ImageFailures.Unreadable("The XML data of the WIM has no WIM element.");
         }
 
         var editions = root.Elements("IMAGE").Select(ParseImage).OrderBy(edition => edition.Index).ToList();

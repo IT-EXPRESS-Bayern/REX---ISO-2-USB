@@ -6,7 +6,7 @@ public sealed class ToolFactAttribute : FactAttribute
 {
     public ToolFactAttribute(params string[] tools)
     {
-        var missing = tools.Where(tool => !ExternalTool.Exists(tool)).ToArray();
+        var missing = tools.Where(tool => !ReferenceTool.Exists(tool)).ToArray();
         if (missing.Length > 0)
         {
             Skip = "Reference tool not installed: " + string.Join(", ", missing);

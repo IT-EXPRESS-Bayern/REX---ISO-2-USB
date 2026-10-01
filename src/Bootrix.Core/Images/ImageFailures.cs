@@ -4,7 +4,7 @@ using Bootrix.Core.Errors;
 namespace Bootrix.Core.Images;
 
 /// <summary>Builds the image-related exceptions with the arguments the localized texts expect.</summary>
-internal static class ImageErrors
+internal static class ImageFailures
 {
     public static BootrixException Unreadable(string detail, Exception? inner = null) =>
         new(ErrorCode.ImageUnreadable, detail, inner) { Arguments = [detail] };

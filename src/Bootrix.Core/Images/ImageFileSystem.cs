@@ -9,7 +9,7 @@ using Bootrix.Core.Images.Disk;
 
 namespace Bootrix.Core.Images;
 
-internal enum FileSystemKind
+internal enum ImageFileSystemKind
 {
     Iso9660,
     Iso9660RockRidge,
@@ -28,14 +28,14 @@ internal sealed class ImageFileSystem : IDisposable
 
     private readonly DiscFileSystem _fileSystem;
 
-    private ImageFileSystem(DiscFileSystem fileSystem, FileSystemKind kind, ImageFileIndex index)
+    private ImageFileSystem(DiscFileSystem fileSystem, ImageFileSystemKind kind, ImageFileIndex index)
     {
         _fileSystem = fileSystem;
         Kind = kind;
         Index = index;
     }
 
-    public FileSystemKind Kind { get; }
+    public ImageFileSystemKind Kind { get; }
 
     public ImageFileIndex Index { get; }
 
@@ -48,7 +48,7 @@ internal sealed class ImageFileSystem : IDisposable
     /// </summary>
     public static ImageFileSystem? OpenIso(Stream iso, bool joliet, bool udfPresent, int entryLimit, CancellationToken cancellationToken)
     {
-        if (udfPresent && TryOpen(() => new UdfReader(iso), FileSystemKind.Udf, entryLimit, cancellationToken) is { } udf)
+        if (udfPresent && TryOpen(() => new UdfReader(iso), ImageFileSystemKind.Udf, entryLimit, cancellationToken) is { } udf)
         {
             return udf;
         }
@@ -58,17 +58,17 @@ internal sealed class ImageFileSystem : IDisposable
             return null;
         }
 
-        var rockRidge = TryOpen(() => new CDReader(iso, false, true), FileSystemKind.Iso9660, entryLimit, cancellationToken, reader => ((CDReader)reader).ActiveVariant);
-        if (rockRidge is { Kind: FileSystemKind.Iso9660RockRidge } || !joliet)
+        var rockRidge = TryOpen(() => new CDReader(iso, false, true), ImageFileSystemKind.Iso9660, entryLimit, cancellationToken, reader => ((CDReader)reader).ActiveVariant);
+        if (rockRidge is { Kind: ImageFileSystemKind.Iso9660RockRidge } || !joliet)
         {
             return rockRidge;
         }
 
-        return TryOpen(() => new CDReader(iso, true, true), FileSystemKind.Iso9660Joliet, entryLimit, cancellationToken) ?? rockRidge;
+        return TryOpen(() => new CDReader(iso, true, true), ImageFileSystemKind.Iso9660Joliet, entryLimit, cancellationToken) ?? rockRidge;
     }
 
     public static ImageFileSystem? OpenFat(Stream partition, int entryLimit, CancellationToken cancellationToken) =>
-        TryOpen(() => new FatFileSystem(partition, Ownership.None), FileSystemKind.Fat, entryLimit, cancellationToken);
+        TryOpen(() => new FatFileSystem(partition, Ownership.None), ImageFileSystemKind.Fat, entryLimit, cancellationToken);
 
     /// <summary>
     /// Opens the FAT volume at <paramref name="offset"/> of <paramref name="parent"/>, or returns null when the first
@@ -81,7 +81,7 @@ internal sealed class ImageFileSystem : IDisposable
             return null;
         }
 
-        if (!FatBootSector.LooksLikeFatBootSector(ContainerSniffer.ReadAt(parent, offset, 512)))
+        if (!FatBootSector.LooksLikeFatBootSector(ImageContainerSniffer.ReadAt(parent, offset, 512)))
         {
             return null;
         }
@@ -91,7 +91,7 @@ internal sealed class ImageFileSystem : IDisposable
 
     private static ImageFileSystem? TryOpen(
         Func<DiscFileSystem> create,
-        FileSystemKind kind,
+        ImageFileSystemKind kind,
         int entryLimit,
         CancellationToken cancellationToken,
         Func<DiscFileSystem, Iso9660Variant>? variant = null)
@@ -102,8 +102,8 @@ internal sealed class ImageFileSystem : IDisposable
             fileSystem = create();
             var effectiveKind = variant?.Invoke(fileSystem) switch
             {
-                Iso9660Variant.RockRidge => FileSystemKind.Iso9660RockRidge,
-                Iso9660Variant.Joliet => FileSystemKind.Iso9660Joliet,
+                Iso9660Variant.RockRidge => ImageFileSystemKind.Iso9660RockRidge,
+                Iso9660Variant.Joliet => ImageFileSystemKind.Iso9660Joliet,
                 _ => kind,
             };
 

@@ -106,18 +106,18 @@ public sealed record WimHeader
     {
         if (data.Length < Size)
         {
-            throw ImageErrors.Unreadable("The file is shorter than a WIM header.");
+            throw ImageFailures.Unreadable("The file is shorter than a WIM header.");
         }
 
         if (!HasSignature(data))
         {
-            throw ImageErrors.Unreadable("The WIM signature is missing.");
+            throw ImageFailures.Unreadable("The WIM signature is missing.");
         }
 
         var headerSize = BinaryPrimitives.ReadUInt32LittleEndian(data[8..]);
         if (headerSize != Size)
         {
-            throw ImageErrors.Unsupported($"WIM header of {headerSize} bytes");
+            throw ImageFailures.Unsupported($"WIM header of {headerSize} bytes");
         }
 
         return new WimHeader

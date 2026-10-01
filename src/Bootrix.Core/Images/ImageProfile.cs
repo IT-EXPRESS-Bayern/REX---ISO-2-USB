@@ -74,6 +74,11 @@ public sealed record ImageProfile
     /// <summary>The partition table lists an EFI system partition, so UEFI can boot a raw copy of the image.</summary>
     public bool HasEspPartition { get; init; }
 
+    public bool HasGpt { get; init; }
+
+    /// <summary>The MBR holds only the 0xEE protective entry; legacy BIOSes sometimes refuse to boot such disks.</summary>
+    public bool HasProtectiveMbr { get; init; }
+
     /// <summary>Length of the image as it is written in raw (DD) mode; 0 when it is not known, as with most compressed images.</summary>
     public long ImageBytes { get; init; }
 

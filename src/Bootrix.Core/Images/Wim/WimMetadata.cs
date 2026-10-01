@@ -53,7 +53,7 @@ public sealed record WimMetadata
         stream.Position = 0;
         if (stream.ReadAtLeast(buffer, buffer.Length, throwOnEndOfStream: false) < buffer.Length)
         {
-            throw ImageErrors.Unreadable("The file is shorter than a WIM header.");
+            throw ImageFailures.Unreadable("The file is shorter than a WIM header.");
         }
 
         var header = WimHeader.Parse(buffer);
@@ -78,7 +78,7 @@ public sealed record WimMetadata
         var read = await stream.ReadAtLeastAsync(buffer, buffer.Length, throwOnEndOfStream: false, cancellationToken).ConfigureAwait(false);
         if (read < buffer.Length)
         {
-            throw ImageErrors.Unreadable("The file is shorter than a WIM header.");
+            throw ImageFailures.Unreadable("The file is shorter than a WIM header.");
         }
 
         var header = WimHeader.Parse(buffer);
@@ -105,19 +105,19 @@ public sealed record WimMetadata
 
         if (xml.End > fileLength || xml.Offset < WimHeader.Size)
         {
-            throw ImageErrors.Truncated(header.ExpectedLength, fileLength);
+            throw ImageFailures.Truncated(header.ExpectedLength, fileLength);
         }
 
         // Microsoft's and wimlib's writers store the XML uncompressed; a compressed one would need the
         // chunk table and the codec, which are only available for the file contents.
         if (xml.IsCompressed)
         {
-            throw ImageErrors.Unsupported("a WIM with a compressed XML resource");
+            throw ImageFailures.Unsupported("a WIM with a compressed XML resource");
         }
 
         if (xml.StoredSize > MaxXmlBytes)
         {
-            throw ImageErrors.Unreadable("The XML data of the WIM is implausibly large.");
+            throw ImageFailures.Unreadable("The XML data of the WIM is implausibly large.");
         }
 
         return xml;

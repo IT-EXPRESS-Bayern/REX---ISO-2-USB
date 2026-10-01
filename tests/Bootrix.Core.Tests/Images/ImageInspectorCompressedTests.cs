@@ -35,7 +35,7 @@ public sealed class ImageInspectorCompressedTests : IDisposable
 
     private string Compress(string tool, string[] arguments, string source, string target)
     {
-        ExternalTool.Run(tool, arguments, _dir.Path, source, target);
+        ReferenceTool.Run(tool, arguments, _dir.Path, source, target);
         return target;
     }
 
@@ -129,7 +129,7 @@ public sealed class ImageInspectorCompressedTests : IDisposable
         File.Copy(iso, Path.Combine(folder, "ubuntu.iso"));
         File.WriteAllText(Path.Combine(folder, "SHA256SUMS"), new string('0', 64) + " ubuntu.iso\n");
         var zip = _dir.File("download.zip");
-        ExternalTool.Run("zip", ["-q", "-j", zip, Path.Combine(folder, "ubuntu.iso"), Path.Combine(folder, "SHA256SUMS")], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", zip, Path.Combine(folder, "ubuntu.iso"), Path.Combine(folder, "SHA256SUMS")], null, null, null);
 
         var result = await new ImageInspector().InspectAsync(zip);
 

@@ -8,7 +8,7 @@ using DiscUtils.Udf;
 namespace Bootrix.Core.Images;
 
 /// <summary>Decides what kind of image a (decompressed) stream is from its first 64 KiB and its last 512 bytes.</summary>
-internal static class ContainerSniffer
+internal static class ImageContainerSniffer
 {
     public const int HeadLength = 64 * 1024;
     private const int FooterLength = 512;

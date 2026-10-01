@@ -155,14 +155,14 @@ public sealed class CompressedImageStream : Stream
         var format = CompressionSniffer.Detect(head[..headLength]);
         if (format == CompressionFormat.None)
         {
-            throw ImageErrors.Unsupported("not a compressed image (no known magic bytes)");
+            throw ImageFailures.Unsupported("not a compressed image (no known magic bytes)");
         }
 
         if (format == CompressionFormat.Zip)
         {
             if (!source.CanSeek)
             {
-                throw ImageErrors.Unsupported("zip archives must be read from a seekable source");
+                throw ImageFailures.Unsupported("zip archives must be read from a seekable source");
             }
 
             source.Position = start;
@@ -176,7 +176,7 @@ public sealed class CompressedImageStream : Stream
             source.Position = start + input.Pulled;
             if (structure.Verdict == StructureVerdict.Broken && options.CheckStructure)
             {
-                throw ImageErrors.Unreadable($"{format} file is incomplete or damaged: {structure.Problem}");
+                throw ImageFailures.Unreadable($"{format} file is incomplete or damaged: {structure.Problem}");
             }
         }
 
@@ -203,12 +203,12 @@ public sealed class CompressedImageStream : Stream
                 case CompressionFormat.Lzma:
                     return OpenLzma(input, ref structure);
                 default:
-                    throw ImageErrors.Unsupported(format.ToString());
+                    throw ImageFailures.Unsupported(format.ToString());
             }
         }
         catch (Exception ex) when (IsDecoderFailure(ex))
         {
-            throw ImageErrors.Unreadable($"{format}: {ex.Message}", ex);
+            throw ImageFailures.Unreadable($"{format}: {ex.Message}", ex);
         }
     }
 
@@ -233,7 +233,7 @@ public sealed class CompressedImageStream : Stream
     {
         if (!source.CanSeek)
         {
-            throw ImageErrors.Unsupported("zip archives must be read from a seekable source");
+            throw ImageFailures.Unsupported("zip archives must be read from a seekable source");
         }
 
         ZipArchive? archive = null;
@@ -244,7 +244,7 @@ public sealed class CompressedImageStream : Stream
             var chosen = ZipEntrySelector.Select(candidates, entryName);
             if (chosen.IsEncrypted)
             {
-                throw ImageErrors.Encrypted($"zip entry '{chosen.FullName}' is encrypted");
+                throw ImageFailures.Encrypted($"zip entry '{chosen.FullName}' is encrypted");
             }
 
             var info = new ArchiveEntryInfo(chosen.FullName, chosen.Length, chosen.CompressedLength);
@@ -254,7 +254,7 @@ public sealed class CompressedImageStream : Stream
         catch (Exception ex) when (IsDecoderFailure(ex))
         {
             archive?.Dispose();
-            throw ImageErrors.Unreadable($"zip: {ex.Message}", ex);
+            throw ImageFailures.Unreadable($"zip: {ex.Message}", ex);
         }
         catch
         {
@@ -274,7 +274,7 @@ public sealed class CompressedImageStream : Stream
         }
         catch (Exception ex) when (IsDecoderFailure(ex))
         {
-            throw ImageErrors.Unreadable($"{Format}: {ex.Message}", ex);
+            throw ImageFailures.Unreadable($"{Format}: {ex.Message}", ex);
         }
     }
 
@@ -287,7 +287,7 @@ public sealed class CompressedImageStream : Stream
         }
         catch (Exception ex) when (IsDecoderFailure(ex))
         {
-            throw ImageErrors.Unreadable($"{Format}: {ex.Message}", ex);
+            throw ImageFailures.Unreadable($"{Format}: {ex.Message}", ex);
         }
     }
 
@@ -300,7 +300,7 @@ public sealed class CompressedImageStream : Stream
         _produced += read;
         if (read == 0 && requested > 0 && UncompressedLength is { } expected && _produced != expected)
         {
-            throw ImageErrors.Truncated(expected, _produced);
+            throw ImageFailures.Truncated(expected, _produced);
         }
 
         return read;

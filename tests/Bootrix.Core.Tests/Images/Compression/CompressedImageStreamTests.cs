@@ -20,7 +20,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile(data);
         var target = _dir.File(output);
-        ExternalTool.Run(tool, arguments, _dir.Path, raw, target);
+        ReferenceTool.Run(tool, arguments, _dir.Path, raw, target);
         return target;
     }
 
@@ -86,7 +86,7 @@ public sealed class CompressedImageStreamTests : IDisposable
         file.Write(BitConverter.GetBytes(System.IO.Hashing.Crc32.HashToUInt32(data)));
         file.Write(BitConverter.GetBytes((uint)data.Length));
         var path = _dir.Write("fields.gz", file.ToArray());
-        ExternalTool.Run("gzip", ["-t", path], null, null, null);
+        ReferenceTool.Run("gzip", ["-t", path], null, null, null);
 
         using var stream = CompressedImageStream.Open(path);
 
@@ -201,7 +201,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var target = _dir.File("a.zst");
-        ExternalTool.Run("zstd", ["-q", "-3", "-o", target, raw], null, null, null);
+        ReferenceTool.Run("zstd", ["-q", "-3", "-o", target, raw], null, null, null);
 
         using var stream = CompressedImageStream.Open(target);
 
@@ -228,8 +228,8 @@ public sealed class CompressedImageStreamTests : IDisposable
         var second = Payload.AsSpan(1_500_000, 600_000).ToArray();
         var rawFirst = _dir.Write("first.bin", first);
         var rawSecond = _dir.Write("second.bin", second);
-        ExternalTool.Run("zstd", ["-q", "-o", _dir.File("first.zst"), rawFirst], null, null, null);
-        ExternalTool.Run("zstd", ["-q", "--long=27", "-o", _dir.File("second.zst"), rawSecond], null, null, null);
+        ReferenceTool.Run("zstd", ["-q", "-o", _dir.File("first.zst"), rawFirst], null, null, null);
+        ReferenceTool.Run("zstd", ["-q", "--long=27", "-o", _dir.File("second.zst"), rawSecond], null, null, null);
         var joined = _dir.Write("joined.zst", [.. File.ReadAllBytes(_dir.File("first.zst")), .. File.ReadAllBytes(_dir.File("second.zst"))]);
 
         using var stream = CompressedImageStream.Open(joined);
@@ -306,7 +306,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var path = Compress("compress", ["-c"], "ref.Z");
         var reference = _dir.File("ref.out");
-        ExternalTool.Run("uncompress", ["-c", path], null, null, reference);
+        ReferenceTool.Run("uncompress", ["-c", path], null, null, reference);
 
         using var stream = CompressedImageStream.Open(path);
 
@@ -318,7 +318,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var zip = _dir.File("one.zip");
-        ExternalTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
 
         using var stream = CompressedImageStream.Open(zip);
 
@@ -334,7 +334,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var zip = _dir.File("big.zip");
-        ExternalTool.Run("zip", ["-q", "-fz", "-j", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-fz", "-j", zip, raw], null, null, null);
 
         using var stream = CompressedImageStream.Open(zip);
 
@@ -351,7 +351,7 @@ public sealed class CompressedImageStreamTests : IDisposable
         File.WriteAllText(Path.Combine(folder, "README.txt"), new string('x', 50_000));
         File.WriteAllBytes(Path.Combine(folder, "tool.iso"), Payload.AsSpan(0, 20_000).ToArray());
         File.WriteAllText(Path.Combine(folder, "tool.iso.sha256"), "00");
-        ExternalTool.Run("zip", ["-q", "-r", zip, "."], folder, null, null);
+        ReferenceTool.Run("zip", ["-q", "-r", zip, "."], folder, null, null);
 
         using var chosen = CompressedImageStream.Open(zip);
         Assert.Equal("tool.iso", chosen.EntryName);
@@ -361,7 +361,7 @@ public sealed class CompressedImageStreamTests : IDisposable
         Assert.Equal("README.txt", named.EntryName);
 
         var plain = _dir.File("plain.zip");
-        ExternalTool.Run("zip", ["-q", plain, "README.txt", "tool.iso.sha256"], folder, null, null);
+        ReferenceTool.Run("zip", ["-q", plain, "README.txt", "tool.iso.sha256"], folder, null, null);
         using var largest = CompressedImageStream.Open(plain);
         Assert.Equal("README.txt", largest.EntryName);
     }
@@ -374,7 +374,7 @@ public sealed class CompressedImageStreamTests : IDisposable
         File.WriteAllBytes(Path.Combine(folder, "disk.img"), Payload.AsSpan(0, 10_000).ToArray());
         File.WriteAllBytes(Path.Combine(folder, "__MACOSX", "._disk.img"), new byte[500_000]);
         var zip = _dir.File("mac.zip");
-        ExternalTool.Run("zip", ["-q", "-r", zip, "."], folder, null, null);
+        ReferenceTool.Run("zip", ["-q", "-r", zip, "."], folder, null, null);
 
         using var stream = CompressedImageStream.Open(zip);
 
@@ -387,7 +387,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var zip = _dir.File("one.zip");
-        ExternalTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
 
         var ex = Assert.Throws<BootrixException>(() =>
             CompressedImageStream.Open(zip, new CompressedImageOptions { EntryName = "missing.iso" }));
@@ -400,7 +400,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var zip = _dir.File("secret.zip");
-        ExternalTool.Run("zip", ["-q", "-j", "-P", "secret", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", "-P", "secret", zip, raw], null, null, null);
 
         var ex = Assert.Throws<BootrixException>(() => CompressedImageStream.Open(zip));
 
@@ -447,7 +447,7 @@ public sealed class CompressedImageStreamTests : IDisposable
     {
         var raw = RawFile();
         var zip = _dir.File("cut.zip");
-        ExternalTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
         Truncate(zip, 0.9);
 
         var ex = Assert.Throws<BootrixException>(() => CompressedImageStream.Open(zip));

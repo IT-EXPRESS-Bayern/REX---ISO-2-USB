@@ -224,7 +224,7 @@ public sealed class WimMetadataTests : IDisposable
         File.WriteAllText(Path.Combine(tree, "Windows", "a.txt"), "hello " + name);
         File.WriteAllBytes(Path.Combine(tree, "Windows", "zeros.bin"), new byte[200_000]);
         var wim = _dir.File(name + ".wim");
-        ExternalTool.Run("wimcapture", [tree, wim, imageName, imageName + " description", "--compress=" + compression], null, null, null);
+        ReferenceTool.Run("wimcapture", [tree, wim, imageName, imageName + " description", "--compress=" + compression], null, null, null);
         if (properties.Length > 0)
         {
             var arguments = new List<string> { wim, "1" };
@@ -234,12 +234,12 @@ public sealed class WimMetadataTests : IDisposable
                 arguments.Add(property);
             }
 
-            ExternalTool.Run("wiminfo", arguments, null, null, null);
+            ReferenceTool.Run("wiminfo", arguments, null, null, null);
         }
 
         if (extra is not null)
         {
-            ExternalTool.Run("wimappend", [Path.Combine(_dir.Path, "tree-" + name), wim, extra[0], extra[1]], null, null, null);
+            ReferenceTool.Run("wimappend", [Path.Combine(_dir.Path, "tree-" + name), wim, extra[0], extra[1]], null, null, null);
         }
 
         return wim;
@@ -256,7 +256,7 @@ public sealed class WimMetadataTests : IDisposable
     /// <summary>Parses the "Key:   value" blocks of <c>wiminfo</c> into one dictionary per image.</summary>
     private static List<Dictionary<string, string>> WimInfoImages(string path)
     {
-        var text = ExternalTool.Run("wiminfo", path).StandardOutput;
+        var text = ReferenceTool.Run("wiminfo", path).StandardOutput;
         var images = new List<Dictionary<string, string>>();
         var current = new Dictionary<string, string>();
         foreach (var line in text.Split('\n').Select(l => l.TrimEnd('\r')).SkipWhile(l => !l.StartsWith("Available Images", StringComparison.Ordinal)).Skip(2))
@@ -324,7 +324,7 @@ public sealed class WimMetadataTests : IDisposable
                 actual.Languages);
         }
 
-        var info = ExternalTool.Run("wiminfo", wim).StandardOutput;
+        var info = ReferenceTool.Run("wiminfo", wim).StandardOutput;
         var expectedCompression = compression switch { "LZX" => WimCompression.Lzx, "XPRESS" => WimCompression.Xpress, _ => WimCompression.None };
         Assert.Equal(expectedCompression, metadata.Header.Compression);
         Assert.Contains($"Image Count:    {metadata.Header.ImageCount}", info, StringComparison.Ordinal);
@@ -367,7 +367,7 @@ public sealed class WimMetadataTests : IDisposable
     {
         var wim = Capture("source", "Windows 11 Pro", "LZX", WindowsProperties, ["Windows 11 Home", "Home edition"]);
         var esd = _dir.File("image.esd");
-        ExternalTool.Run("wimexport", [wim, "all", esd, "--solid"], null, null, null);
+        ReferenceTool.Run("wimexport", [wim, "all", esd, "--solid"], null, null, null);
 
         var metadata = ReadFile(esd);
 
@@ -391,9 +391,9 @@ public sealed class WimMetadataTests : IDisposable
         }
 
         var wim = _dir.File("big.wim");
-        ExternalTool.Run("wimcapture", [tree, wim, "Windows 10 Pro", "Pro", "--compress=XPRESS"], null, null, null);
-        ExternalTool.Run("wiminfo", [wim, "1", "--image-property", "WINDOWS/ARCH=0", "--image-property", "WINDOWS/VERSION/BUILD=19045"], null, null, null);
-        ExternalTool.Run("wimsplit", [wim, _dir.File("part.swm"), "1"], null, null, null);
+        ReferenceTool.Run("wimcapture", [tree, wim, "Windows 10 Pro", "Pro", "--compress=XPRESS"], null, null, null);
+        ReferenceTool.Run("wiminfo", [wim, "1", "--image-property", "WINDOWS/ARCH=0", "--image-property", "WINDOWS/VERSION/BUILD=19045"], null, null, null);
+        ReferenceTool.Run("wimsplit", [wim, _dir.File("part.swm"), "1"], null, null, null);
 
         var parts = Directory.GetFiles(_dir.Path, "part*.swm").Order().Select(ReadFile).ToList();
 

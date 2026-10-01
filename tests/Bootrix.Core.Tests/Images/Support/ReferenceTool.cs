@@ -3,10 +3,10 @@ using System.Diagnostics;
 
 namespace Bootrix.Core.Tests.Images.Support;
 
-public sealed record ToolResult(int ExitCode, string StandardOutput, string StandardError);
+public sealed record ReferenceToolResult(int ExitCode, string StandardOutput, string StandardError);
 
 /// <summary>Runs command line tools that serve as independent reference implementations in the tests.</summary>
-public static class ExternalTool
+public static class ReferenceTool
 {
     private static readonly TimeSpan Timeout = TimeSpan.FromSeconds(120);
 
@@ -31,9 +31,9 @@ public static class ExternalTool
     }
 
     /// <summary>Runs the tool and fails the test when it exits with a non-zero code.</summary>
-    public static ToolResult Run(string tool, params string[] arguments) => Run(tool, arguments, null, null, null);
+    public static ReferenceToolResult Run(string tool, params string[] arguments) => Run(tool, arguments, null, null, null);
 
-    public static ToolResult Run(string tool, IEnumerable<string> arguments, string? workingDirectory, string? stdinFile, string? stdoutFile)
+    public static ReferenceToolResult Run(string tool, IEnumerable<string> arguments, string? workingDirectory, string? stdinFile, string? stdoutFile)
     {
         var result = RunUnchecked(tool, arguments, workingDirectory, stdinFile, stdoutFile);
         if (result.ExitCode != 0)
@@ -44,7 +44,7 @@ public static class ExternalTool
         return result;
     }
 
-    public static ToolResult RunUnchecked(string tool, IEnumerable<string> arguments, string? workingDirectory = null, string? stdinFile = null, string? stdoutFile = null)
+    public static ReferenceToolResult RunUnchecked(string tool, IEnumerable<string> arguments, string? workingDirectory = null, string? stdinFile = null, string? stdoutFile = null)
     {
         var startInfo = new ProcessStartInfo(Find(tool) ?? tool)
         {
@@ -88,6 +88,6 @@ public static class ExternalTool
         }
 
         output.Wait();
-        return new ToolResult(process.ExitCode, text.ToString(), error.Result);
+        return new ReferenceToolResult(process.ExitCode, text.ToString(), error.Result);
     }
 }

@@ -63,7 +63,7 @@ internal static class ImageAnalyzer
         var evidence = new Evidence { Image = image, FileName = fileName, ImageLength = imageLength, Partial = partial };
         try
         {
-            evidence.Container = ContainerSniffer.Detect(image);
+            evidence.Container = ImageContainerSniffer.Detect(image);
             evidence.Layout = DiskLayoutReader.Read(image);
             Probe(evidence, cancellationToken);
             return Assemble(evidence);
@@ -94,7 +94,7 @@ internal static class ImageAnalyzer
             case ImageContainer.RawDisk:
                 e.Volumes.AddRange(PartitionFileSystems.Open(image, e.Layout, EntryLimit, cancellationToken));
                 break;
-            case ImageContainer.Vhd when ContainerSniffer.IsFixedVhd(ContainerSniffer.ReadAt(image, image.Length - 512, 512)):
+            case ImageContainer.Vhd when ImageContainerSniffer.IsFixedVhd(ImageContainerSniffer.ReadAt(image, image.Length - 512, 512)):
                 // A fixed VHD is the raw disk followed by a 512-byte footer.
                 var disk = new SubStream(image, Ownership.None, 0, image.Length - 512);
                 e.Layout = DiskLayoutReader.Read(disk);
@@ -135,6 +135,10 @@ internal static class ImageAnalyzer
             if (BootImageReader.Open(e.Image, entry, EntryLimit, cancellationToken) is { } volume)
             {
                 e.BootVolumes.Add(volume);
+            }
+            else if (entry.IsEfi)
+            {
+                e.Warnings.Add(new ImageWarning(ImageWarningKeys.BootImageUnreadable, WarningSeverity.Info));
             }
         }
     }
@@ -214,6 +218,8 @@ internal static class ImageAnalyzer
             WindowsBuild = e.Windows is null ? 0 : WindowsAnalyzer.Build(e.Windows),
             Container = e.Container,
             HasEspPartition = layout.HasEfiSystemPartition,
+            HasGpt = layout.HasGpt,
+            HasProtectiveMbr = layout.HasProtectiveMbr && layout.MbrPartitions.All(partition => partition.IsProtective),
             ImageBytes = length,
         };
 

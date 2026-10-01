@@ -121,7 +121,7 @@ public static class ImageIntegrityChecker
     internal static List<ImageWarning> CheckImage(Stream image, long? imageLength, string? fileName = null)
     {
         var findings = new List<ImageWarning>();
-        var container = ContainerSniffer.Detect(image);
+        var container = ImageContainerSniffer.Detect(image);
 
         // A fixed VHD is a raw disk with the footer at the very end, so a cut-off one looks like any other raw disk;
         // the file name is the only hint that the footer should be there.
@@ -217,7 +217,7 @@ public static class ImageIntegrityChecker
 
     private static void CheckWim(Stream image, long? imageLength, List<ImageWarning> findings)
     {
-        var header = WimHeader.Parse(ContainerSniffer.ReadAt(image, 0, WimHeader.Size));
+        var header = WimHeader.Parse(ImageContainerSniffer.ReadAt(image, 0, WimHeader.Size));
         if (imageLength is { } length && header.ExpectedLength > length)
         {
             findings.Add(new ImageWarning(ImageWarningKeys.WimTruncated, WarningSeverity.Error, header.ExpectedLength, length));
@@ -229,8 +229,8 @@ public static class ImageIntegrityChecker
     /// </summary>
     private static void CheckVhd(Stream image, List<ImageWarning> findings)
     {
-        var tail = ContainerSniffer.ReadAt(image, image.Length - 512, 512);
-        if (!ContainerSniffer.IsVhdFooter(tail))
+        var tail = ImageContainerSniffer.ReadAt(image, image.Length - 512, 512);
+        if (!ImageContainerSniffer.IsVhdFooter(tail))
         {
             findings.Add(new ImageWarning(ImageWarningKeys.VhdFooterMissing, WarningSeverity.Error));
         }

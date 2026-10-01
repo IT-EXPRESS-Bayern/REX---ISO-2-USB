@@ -143,7 +143,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
         Directory.CreateDirectory(tree);
         File.WriteAllBytes(Path.Combine(tree, "payload.bin"), new byte[3_000_000]);
         var iso = _dir.File("bridge.iso");
-        ExternalTool.Run("genisoimage", ["-quiet", "-udf", "-J", "-V", "UDF", "-o", iso, tree], null, null, null);
+        ReferenceTool.Run("genisoimage", ["-quiet", "-udf", "-J", "-V", "UDF", "-o", iso, tree], null, null, null);
         return iso;
     }
 
@@ -194,7 +194,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
         Directory.CreateDirectory(tree);
         File.WriteAllBytes(Path.Combine(tree, "a.bin"), new byte[500_000]);
         var wim = _dir.File("a.wim");
-        ExternalTool.Run("wimcapture", [tree, wim, "x", "x", "--compress=none"], null, null, null);
+        ReferenceTool.Run("wimcapture", [tree, wim, "x", "x", "--compress=none"], null, null, null);
         Assert.Empty(ImageIntegrityChecker.Check(wim).Findings);
 
         var full = new FileInfo(wim).Length;
@@ -213,7 +213,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
         foreach (var subformat in new[] { "fixed", "dynamic" })
         {
             var vhd = _dir.File(subformat + ".vhd");
-            ExternalTool.Run("qemu-img", "convert", "-f", "raw", "-O", "vpc", "-o", "subformat=" + subformat, raw, vhd);
+            ReferenceTool.Run("qemu-img", "convert", "-f", "raw", "-O", "vpc", "-o", "subformat=" + subformat, raw, vhd);
             Assert.Empty(ImageIntegrityChecker.Check(vhd).Findings);
 
             Truncate(vhd, new FileInfo(vhd).Length - 100);
@@ -225,7 +225,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
     {
         var raw = _dir.Write("raw-" + extension, data ?? TestDirectory.Compressible(2 * 1024 * 1024));
         var target = _dir.File("data." + extension);
-        ExternalTool.Run(tool, arguments, null, raw, target);
+        ReferenceTool.Run(tool, arguments, null, raw, target);
         return target;
     }
 
@@ -249,7 +249,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
     {
         var raw = _dir.Write("payload.img", TestDirectory.Compressible(1_000_000));
         var zip = _dir.File("a.zip");
-        ExternalTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
+        ReferenceTool.Run("zip", ["-q", "-j", zip, raw], null, null, null);
         Assert.True(ImageIntegrityChecker.Check(zip).IsComplete);
 
         Truncate(zip, new FileInfo(zip).Length / 2);
@@ -279,7 +279,7 @@ public sealed class ImageIntegrityCheckerTests : IDisposable
         var cut = _dir.File("cut.iso");
         File.WriteAllBytes(cut, File.ReadAllBytes(iso).AsSpan(0, (int)(new FileInfo(iso).Length / 2)).ToArray());
         var xz = _dir.File("cut.iso.xz");
-        ExternalTool.Run("xz", ["-c", "-1"], null, cut, xz);
+        ReferenceTool.Run("xz", ["-c", "-1"], null, cut, xz);
 
         var report = ImageIntegrityChecker.Check(xz);
 

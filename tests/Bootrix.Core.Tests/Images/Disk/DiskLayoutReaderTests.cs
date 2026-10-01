@@ -23,7 +23,7 @@ public sealed class DiskLayoutReaderTests : IDisposable
     /// <summary><c>sfdisk --json</c> as an independent description of the partition table.</summary>
     private static JsonElement SfdiskTable(string path)
     {
-        var json = ExternalTool.Run("sfdisk", "--json", path).StandardOutput;
+        var json = ReferenceTool.Run("sfdisk", "--json", path).StandardOutput;
         return JsonDocument.Parse(json).RootElement.GetProperty("partitiontable");
     }
 
@@ -77,7 +77,7 @@ public sealed class DiskLayoutReaderTests : IDisposable
         var layout = Read(path);
         var table = SfdiskTable(path);
         var reference = table.GetProperty("partitions").EnumerateArray().ToList();
-        var verify = ExternalTool.Run("sgdisk", "-v", path).StandardOutput;
+        var verify = ReferenceTool.Run("sgdisk", "-v", path).StandardOutput;
 
         Assert.True(layout.HasGpt);
         Assert.True(layout.GptHeaderValid);
@@ -140,7 +140,7 @@ public sealed class DiskLayoutReaderTests : IDisposable
     public void Read_4KnGpt_ReportsTheSectorSize()
     {
         var path = DiskImageBuilder.Create(_dir, "4kn.img", 32 * MiB);
-        var device = ExternalTool.RunUnchecked("losetup", ["--find", "--show", "--sector-size", "4096", path]);
+        var device = ReferenceTool.RunUnchecked("losetup", ["--find", "--show", "--sector-size", "4096", path]);
         if (device.ExitCode != 0)
         {
             // Loop devices are not available (unprivileged runner); nothing to compare against.
@@ -150,11 +150,11 @@ public sealed class DiskLayoutReaderTests : IDisposable
         var loop = device.StandardOutput.Trim();
         try
         {
-            ExternalTool.Run("sgdisk", "-n", "1:256:+1024", "-t", "1:ef00", "-c", "1:Four K", loop);
+            ReferenceTool.Run("sgdisk", "-n", "1:256:+1024", "-t", "1:ef00", "-c", "1:Four K", loop);
         }
         finally
         {
-            ExternalTool.RunUnchecked("losetup", ["-d", loop]);
+            ReferenceTool.RunUnchecked("losetup", ["-d", loop]);
         }
 
         var layout = Read(path);
@@ -170,7 +170,7 @@ public sealed class DiskLayoutReaderTests : IDisposable
     public void Read_FatVolumeImage_IsNotTreatedAsPartitionedDisk()
     {
         var path = DiskImageBuilder.Create(_dir, "floppy.img", 1440 * 1024);
-        ExternalTool.Run("mkfs.vfat", "-F", "12", path);
+        ReferenceTool.Run("mkfs.vfat", "-F", "12", path);
 
         var layout = Read(path);
 

@@ -51,7 +51,7 @@ public static class IsoBuilder
         var path = dir.File(name);
         File.WriteAllBytes(path, new byte[kib * 1024]);
         var fatType = kib < 16384 ? "12" : kib <= 65536 ? "16" : "32";
-        ExternalTool.Run("mkfs.vfat", ["-n", label, "-F", fatType, path], null, null, null);
+        ReferenceTool.Run("mkfs.vfat", ["-n", label, "-F", fatType, path], null, null, null);
         foreach (var (file, content) in files)
         {
             var source = dir.File("fat-src-" + Path.GetFileName(file));
@@ -61,10 +61,10 @@ public static class IsoBuilder
             foreach (var part in directories.Split('/', StringSplitOptions.RemoveEmptyEntries))
             {
                 current += "/" + part;
-                ExternalTool.RunUnchecked("mmd", ["-i", path, "::" + current]);
+                ReferenceTool.RunUnchecked("mmd", ["-i", path, "::" + current]);
             }
 
-            ExternalTool.Run("mcopy", ["-i", path, source, "::/" + file.Replace('\\', '/')], null, null, null);
+            ReferenceTool.Run("mcopy", ["-i", path, source, "::/" + file.Replace('\\', '/')], null, null, null);
         }
 
         return File.ReadAllBytes(path);
@@ -136,7 +136,7 @@ public static class IsoBuilder
         }
 
         arguments.Add(tree);
-        ExternalTool.Run("xorriso", arguments, dir.Path, null, null);
+        ReferenceTool.Run("xorriso", arguments, dir.Path, null, null);
         return iso;
     }
 

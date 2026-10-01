@@ -130,16 +130,16 @@ public sealed class ImageInspectorDiskTests : IDisposable
         Directory.CreateDirectory(Path.Combine(tree, "Windows"));
         File.WriteAllText(Path.Combine(tree, "Windows", "a.txt"), "a");
         var wimFile = _dir.File("install.wim");
-        ExternalTool.Run("wimcapture", [tree, wimFile, "Windows 11 Home", "Home", "--compress=LZX"], null, null, null);
-        ExternalTool.Run("wiminfo", [wimFile, "1", "--image-property", "WINDOWS/ARCH=12", "--image-property", "WINDOWS/VERSION/BUILD=26100"], null, null, null);
+        ReferenceTool.Run("wimcapture", [tree, wimFile, "Windows 11 Home", "Home", "--compress=LZX"], null, null, null);
+        ReferenceTool.Run("wiminfo", [wimFile, "1", "--image-property", "WINDOWS/ARCH=12", "--image-property", "WINDOWS/VERSION/BUILD=26100"], null, null, null);
 
         var fat = _dir.File("stick-fat.img");
         File.WriteAllBytes(fat, new byte[16 * MiB]);
-        ExternalTool.Run("mkfs.vfat", ["-F", "16", "-n", "WININSTALL", fat], null, null, null);
-        ExternalTool.Run("mmd", ["-i", fat, "::sources"], null, null, null);
-        ExternalTool.Run("mcopy", ["-i", fat, wimFile, "::sources/install.wim"], null, null, null);
-        ExternalTool.Run("mcopy", ["-i", fat, wimFile, "::sources/boot.wim"], null, null, null);
-        ExternalTool.Run("mcopy", ["-i", fat, _dir.Write("bootmgr", [1]), "::bootmgr"], null, null, null);
+        ReferenceTool.Run("mkfs.vfat", ["-F", "16", "-n", "WININSTALL", fat], null, null, null);
+        ReferenceTool.Run("mmd", ["-i", fat, "::sources"], null, null, null);
+        ReferenceTool.Run("mcopy", ["-i", fat, wimFile, "::sources/install.wim"], null, null, null);
+        ReferenceTool.Run("mcopy", ["-i", fat, wimFile, "::sources/boot.wim"], null, null, null);
+        ReferenceTool.Run("mcopy", ["-i", fat, _dir.Write("bootmgr", [1]), "::bootmgr"], null, null, null);
         var disk = DiskImageBuilder.CreateMbr(_dir, "stick.img", 64 * MiB, new MbrPartitionSpec(2048, 16 * MiB / 512, "e", Bootable: true));
         DiskImageBuilder.WriteAt(disk, 2048 * 512, File.ReadAllBytes(fat));
 
@@ -185,7 +185,7 @@ public sealed class ImageInspectorDiskTests : IDisposable
     public async Task Inspect_4KnGptImage_CarriesAHint()
     {
         var path = DiskImageBuilder.Create(_dir, "4kn.img", 32 * MiB);
-        var device = ExternalTool.RunUnchecked("losetup", ["--find", "--show", "--sector-size", "4096", path]);
+        var device = ReferenceTool.RunUnchecked("losetup", ["--find", "--show", "--sector-size", "4096", path]);
         if (device.ExitCode != 0)
         {
             return;
@@ -194,11 +194,11 @@ public sealed class ImageInspectorDiskTests : IDisposable
         var loop = device.StandardOutput.Trim();
         try
         {
-            ExternalTool.Run("sgdisk", "-n", "1:256:+1024", "-t", "1:ef00", loop);
+            ReferenceTool.Run("sgdisk", "-n", "1:256:+1024", "-t", "1:ef00", loop);
         }
         finally
         {
-            ExternalTool.RunUnchecked("losetup", ["-d", loop]);
+            ReferenceTool.RunUnchecked("losetup", ["-d", loop]);
         }
 
         var result = await Inspect(path);
@@ -212,7 +212,7 @@ public sealed class ImageInspectorDiskTests : IDisposable
         var raw = DiskImageBuilder.CreateMbr(_dir, "vhd-src.img", 16 * MiB, new MbrPartitionSpec(2048, 8192, "ef", Bootable: true));
         DiskImageBuilder.WriteAt(raw, 0, [0xFA, 0x31, 0xC0]);
         var vhd = _dir.File("fixed.vhd");
-        ExternalTool.Run("qemu-img", "convert", "-f", "raw", "-O", "vpc", "-o", "subformat=fixed", raw, vhd);
+        ReferenceTool.Run("qemu-img", "convert", "-f", "raw", "-O", "vpc", "-o", "subformat=fixed", raw, vhd);
 
         var result = await Inspect(vhd);
 
@@ -230,7 +230,7 @@ public sealed class ImageInspectorDiskTests : IDisposable
     {
         var raw = DiskImageBuilder.Create(_dir, "v-src.img", 8 * MiB);
         var target = _dir.File("disk." + format);
-        ExternalTool.Run("qemu-img", "convert", "-f", "raw", "-O", format, "-o", option, raw, target);
+        ReferenceTool.Run("qemu-img", "convert", "-f", "raw", "-O", format, "-o", option, raw, target);
 
         var result = await Inspect(target);
 

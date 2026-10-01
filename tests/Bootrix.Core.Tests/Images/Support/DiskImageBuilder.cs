@@ -31,7 +31,7 @@ public static class DiskImageBuilder
 
         var scriptFile = dir.File(name + ".sfdisk");
         File.WriteAllText(scriptFile, script.ToString());
-        ExternalTool.Run("sfdisk", ["--quiet", path], null, scriptFile, null);
+        ReferenceTool.Run("sfdisk", ["--quiet", path], null, scriptFile, null);
         return path;
     }
 
@@ -53,7 +53,7 @@ public static class DiskImageBuilder
         }
 
         arguments.Add(path);
-        ExternalTool.Run("sgdisk", arguments, null, null, null);
+        ReferenceTool.Run("sgdisk", arguments, null, null, null);
         return path;
     }
 

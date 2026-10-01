@@ -16,7 +16,7 @@ public sealed class ImageInspectorIsoTests : IDisposable
 
     private static HashSet<string> IsoinfoPaths(string iso, string extension)
     {
-        var output = ExternalTool.Run("isoinfo", "-f", extension, "-i", iso).StandardOutput;
+        var output = ReferenceTool.Run("isoinfo", "-f", extension, "-i", iso).StandardOutput;
         return [.. output.Split('\n', StringSplitOptions.RemoveEmptyEntries).Select(ImageFileIndex.Normalize).Where(path => path.Length > 0)];
     }
 
@@ -161,7 +161,7 @@ public sealed class ImageInspectorIsoTests : IDisposable
 
         var result = await new ImageInspector().InspectAsync(iso);
         var layout = result.Layout!;
-        var reference = ExternalTool.Run("sfdisk", "-d", iso).StandardOutput;
+        var reference = ReferenceTool.Run("sfdisk", "-d", iso).StandardOutput;
 
         Assert.True(result.Profile.IsHybrid);
         Assert.True(layout.HasMbrSignature);
@@ -326,7 +326,7 @@ public sealed class ImageInspectorIsoTests : IDisposable
         }
 
         var iso = _dir.File(name + ".iso");
-        ExternalTool.Run(
+        ReferenceTool.Run(
             "genisoimage",
             ["-quiet", "-udf", "-J", "-iso-level", "3", "-V", "CCCOMA_X64FRE_EN-US_DV9", "-o", iso,
              "-b", "boot/etfsboot.com", "-no-emul-boot", "-boot-load-size", "8",
@@ -341,7 +341,7 @@ public sealed class ImageInspectorIsoTests : IDisposable
         Directory.CreateDirectory(Path.Combine(tree, "Windows"));
         File.WriteAllText(Path.Combine(tree, "Windows", "marker.txt"), name);
         var wim = _dir.File(name + ".wim");
-        ExternalTool.Run("wimcapture", [tree, wim, imageName, imageName, "--compress=LZX"], null, null, null);
+        ReferenceTool.Run("wimcapture", [tree, wim, imageName, imageName, "--compress=LZX"], null, null, null);
         var arguments = new List<string> { wim, "1" };
         foreach (var property in properties)
         {
@@ -349,7 +349,7 @@ public sealed class ImageInspectorIsoTests : IDisposable
             arguments.Add(property);
         }
 
-        ExternalTool.Run("wiminfo", arguments, null, null, null);
+        ReferenceTool.Run("wiminfo", arguments, null, null, null);
         return File.ReadAllBytes(wim);
     }
 
