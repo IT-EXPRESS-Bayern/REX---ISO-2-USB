@@ -16,3 +16,6 @@ TestResults/
 # runtime files
 *.btxdl
 *.log
+
+# local agent worktrees
+.claude/

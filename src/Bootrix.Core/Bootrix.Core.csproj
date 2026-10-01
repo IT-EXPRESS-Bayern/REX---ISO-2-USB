@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <RootNamespace>Bootrix.Core</RootNamespace>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <AssemblyName>Bootrix.Core</AssemblyName>
   </PropertyGroup>
 
@@ -14,6 +15,7 @@
     <PackageReference Include="LTRData.DiscUtils.Streams" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="System.IO.Hashing" />
   </ItemGroup>
 
 </Project>
