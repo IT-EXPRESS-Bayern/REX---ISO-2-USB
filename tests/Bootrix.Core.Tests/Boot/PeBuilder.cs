@@ -11,7 +11,7 @@ internal sealed class PeBuilder
     private const int SectionAlignment = 0x1000;
 
     private readonly List<(string Name, byte[] Data, uint? VirtualSize)> _sections = [];
-    private readonly List<byte[]> _certificates = [];
+    private readonly List<(byte[] Data, ushort Type)> _certificates = [];
     private (ushort Major, ushort Minor, string Name)? _securityVersion;
 
     public bool Pe32Plus { get; set; } = true;
@@ -58,9 +58,9 @@ internal sealed class PeBuilder
         return this;
     }
 
-    public PeBuilder AddCertificate(byte[] pkcs7)
+    public PeBuilder AddCertificate(byte[] blob, ushort type = 0x0002)
     {
-        _certificates.Add(pkcs7);
+        _certificates.Add((blob, type));
         return this;
     }
 
@@ -136,13 +136,13 @@ internal sealed class PeBuilder
     private byte[] BuildCertificateTable()
     {
         using var table = new MemoryStream();
-        foreach (var blob in _certificates)
+        foreach (var (blob, type) in _certificates)
         {
             var length = 8 + blob.Length;
             var header = new byte[8];
             BinaryPrimitives.WriteUInt32LittleEndian(header, (uint)length);
             BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(4), 0x0200);
-            BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(6), 0x0002);
+            BinaryPrimitives.WriteUInt16LittleEndian(header.AsSpan(6), type);
             table.Write(header);
             table.Write(blob);
             table.Write(new byte[Align(length, 8) - length]);

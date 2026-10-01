@@ -22,7 +22,7 @@ public sealed record EfiCertificateInfo(
 /// <param name="SignatureValid">Whether the PKCS#7 signature itself verifies against the signer's key.</param>
 /// <param name="IsNested">True for signatures found in the nested-signature attribute.</param>
 /// <param name="Problem">Technical description when the structure could not be evaluated.</param>
-/// <param name="RevokedCertificate">Subject of a chain certificate that the revocation data lists, if any.</param>
+/// <param name="RevokedCertificate">Common name of the first chain certificate that the revocation data lists, if any.</param>
 public sealed record EfiSignature(
     SignatureAuthority Authority,
     EfiCertificateInfo? Signer,

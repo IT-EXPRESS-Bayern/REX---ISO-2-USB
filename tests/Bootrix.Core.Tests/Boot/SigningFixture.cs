@@ -32,7 +32,7 @@ public sealed class SigningFixture : IDisposable
     }
 
     /// <summary>Signs a PE image with Authenticode; <paramref name="nest"/> adds the signature next to an existing one.</summary>
-    internal byte[] Sign(byte[] image, string digest = "sha256", bool nest = false, string caName = "Bootrix Test CA", bool includeCa = true)
+    internal byte[] Sign(byte[] image, string digest = "sha256", bool nest = false, string caName = "Bootrix Test CA", bool includeCa = true, string? extraCertificatePem = null)
     {
         var identity = GetIdentity(caName);
         var input = WriteTemp(image);
@@ -44,7 +44,15 @@ public sealed class SigningFixture : IDisposable
             args.Add("-nest");
         }
 
-        args.AddRange(["-certs", includeCa ? identity.Chain : identity.Leaf, "-key", identity.Key, "-h", digest, "-in", input, "-out", output]);
+        args.AddRange(["-certs", includeCa ? identity.Chain : identity.Leaf, "-key", identity.Key, "-h", digest]);
+        if (extraCertificatePem is not null)
+        {
+            var extra = Path.Combine(_root.Value, Guid.NewGuid().ToString("N") + ".pem");
+            File.WriteAllText(extra, extraCertificatePem);
+            args.AddRange(["-ac", extra]);
+        }
+
+        args.AddRange(["-in", input, "-out", output]);
         ExternalTools.RunChecked("osslsigncode", [.. args]);
         return File.ReadAllBytes(output);
     }
