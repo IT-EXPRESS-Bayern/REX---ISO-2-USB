@@ -125,12 +125,11 @@ internal static class BrokerHost
     private static LocalEngine CreateEngine(DiskEnumerator disks, SecurePipeListener listener, BootrixPaths paths, ILoggerFactory loggers)
     {
         // Images are opened as the client, never with the broker's own rights; see ImpersonatingImageStreamProvider.
-        var images = new ImpersonatingImageStreamProvider(
-            new FileImageStreamProvider(),
-            new PipeClientImpersonator(() => listener.CurrentPipe));
+        var client = new PipeClientImpersonator(() => listener.CurrentPipe);
+        var images = new ImpersonatingImageStreamProvider(new FileImageStreamProvider(), client);
         var journal = new JobJournal(paths.JournalDirectory);
         var rawWrite = new RawWriteJob(disks, images, journal, loggers.CreateLogger<RawWriteJob>());
-        var services = new WriteServices(disks, new DiskPreparer(loggers.CreateLogger<DiskPreparer>()), journal, loggers);
+        var services = new WriteServices(disks, new DiskPreparer(loggers.CreateLogger<DiskPreparer>()), journal, loggers, client);
         var writeImage = new WriteImageJobFactory(
             disks,
             new MediaPlanService(new ImageInspector()),
