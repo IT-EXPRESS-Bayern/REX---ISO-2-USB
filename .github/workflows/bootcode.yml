@@ -1,0 +1,27 @@
+name: Boot code
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/bootcode/**'
+      - 'assets/third-party/freedos/**'
+  pull_request:
+    paths:
+      - 'tools/bootcode/**'
+      - 'assets/third-party/freedos/**'
+
+permissions:
+  contents: read
+
+jobs:
+  freedos:
+    name: FreeDOS-Startsektoren neu bauen und vergleichen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y nasm mtools unzip
+      - name: Startsektoren aus dem Quelltext bauen
+        run: tools/bootcode/build.sh --check
+      - name: Kernel und COMMAND.COM mit dem FreeDOS-1.4-Release vergleichen
+        run: tools/bootcode/fetch-freedos.sh

@@ -60,4 +60,38 @@ public class FreeDosBootTests
 
         Assert.Contains("FreeDOS", screen, StringComparison.Ordinal);
     }
+
+    // Controls for the tests above: the same machine and the same image with one thing wrong must not reach the marker,
+    // otherwise "the marker appeared" would prove nothing.
+
+    [RequiresToolFact(QemuScreen.Tool)]
+    public void StickWithoutKernel_StopsInTheBootSector()
+    {
+        var complete = MarkerSystem();
+        var withoutKernel = new DosSystem(DosFlavor.FreeDos, [.. complete.Files.Where(f => f.Path != "\\KERNEL.SYS")], complete.Customize);
+        var plan = DosImageBuilder.PlanStick(64 * DosImageBuilder.Mib, FileSystemKind.Fat16);
+        using var image = DosImageBuilder.BuildStick(plan, withoutKernel);
+
+        var screen = QemuScreen.Boot(Ide(image.Path), Marker, TimeSpan.FromSeconds(12));
+
+        Assert.DoesNotContain(Marker, screen, StringComparison.Ordinal);
+        Assert.Contains("Booting from Hard Disk", screen, StringComparison.Ordinal);
+    }
+
+    [RequiresToolFact(QemuScreen.Tool)]
+    public void StickWhoseBpbNamesAnotherPartitionStart_DoesNotBoot()
+    {
+        var plan = DosImageBuilder.PlanStick(64 * DosImageBuilder.Mib, FileSystemKind.Fat16);
+        using var image = DosImageBuilder.BuildStick(plan, MarkerSystem());
+        using (var stream = image.Open())
+        {
+            // Hidden sectors, bytes 0x1C to 0x1F of the boot sector: the loader adds them to every sector number it reads.
+            stream.Position = plan.Partitions[0].StartBytes + 0x1C;
+            stream.Write(BitConverter.GetBytes((uint)plan.Partitions[0].StartLba(512) + 1));
+        }
+
+        var screen = QemuScreen.Boot(Ide(image.Path), Marker, TimeSpan.FromSeconds(12));
+
+        Assert.DoesNotContain(Marker, screen, StringComparison.Ordinal);
+    }
 }

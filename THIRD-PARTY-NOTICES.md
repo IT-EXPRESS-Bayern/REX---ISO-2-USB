@@ -68,3 +68,16 @@ OF SUCH DAMAGE.
 The UDIF, sparse image and Apple Partition Map readers were written from the format descriptions in the 7-Zip
 sources (`DmgHandler.cpp`, LGPL-2.1-or-later) and the libmodi documentation by Joachim Metz (GFDL-1.3-or-later).
 No code from these projects, from dmg2img or from VirtualBox is included.
+
+## FreeDOS 1.4 (kernel, command interpreter, boot sectors)
+
+The FreeDOS kernel (`KERNL386.SYS`, `KERNL86.SYS`), the command interpreter FreeCOM (`COMMAND.COM`) and the FAT boot
+sectors are embedded as data and written to the DOS sticks and diskettes Bootrix creates. They are separate programs
+that run on the target PC; Bootrix does not link against them.
+
+- Kernel and boot sectors: https://github.com/FDOS/kernel, GNU General Public License version 2 (the boot sector
+  sources state "version 2, or (at your option) any later version"). License text: `assets/third-party/freedos/COPYING.kernel.txt`.
+- FreeCOM 0.86a: https://github.com/FDOS/freecom, GNU General Public License version 2.
+  License text: `assets/third-party/freedos/COPYING.freecom.txt`.
+- The source code of both is part of the packages `kernel.zip` and `freecom.zip` of the FreeDOS 1.4 distribution
+  (`SOURCE/KERNEL/SOURCES.ZIP`, `SOURCE/FREECOM/SOURCES.ZIP`), see `assets/third-party/SOURCES.md` for addresses and hashes.

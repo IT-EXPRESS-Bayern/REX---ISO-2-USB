@@ -32,3 +32,9 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] Backup-GPT eines Mac-GPT-Abbilds liegt nach dem Schreiben am Ende des Sticks (macOS Festplattendienstprogramm meldet keine Tabellenwarnung)
 - [ ] „Stick wiederherstellen“ nach einem Hybrid-ISO: Windows zeigt eine Partition über die volle Größe, keine alten Partitionen tauchen nach dem Neustecken wieder auf (alte Backup-GPT hinter dem Image)
 - [ ] „Stick gegen ISO prüfen“: DD-Stick (Rohvergleich) und ISO-Modus-Stick (Dateivergleich) bestehen; ein absichtlich veränderter Block bzw. eine veränderte Datei wird mit Offset bzw. Dateinamen gemeldet
+- [ ] FreeDOS-Stick (FAT16, FAT32, mit und ohne Alt-BIOS-Anpassungen) auf einem alten PC mit USB-Boot; Standard-MBR und `mbr_f` (erzwingt Laufwerk 80h)
+- [ ] MS-DOS-8.0-Stick (FAT16): hängt vom CHS-Geometrie-Eintrag im BPB ab; mit USB-HDD-, USB-ZIP- und USB-FDD-Modus des BIOS probieren
+- [ ] MS-DOS-Download: Prüfung von Größe, SHA-256 und Signatur von `diskcopy.dll` auf einem Rechner mit Windows, danach Boot des Sticks
+- [ ] 1,44-MB-Diskette mit FreeDOS und mit MS-DOS in einem echten Diskettenlaufwerk (intern und USB), Rücklesen nach dem Schreiben
+- [ ] Stick ohne Partitionstabelle (Superfloppy): nur zu prüfen, wo das BIOS ihn als Diskette startet; als Festplatte (DL=80h) stoppt der FreeDOS-Kernel
+- [ ] Datenträger formatieren (FAT, FAT32 bis 32 GB, exFAT, NTFS) über „Laufwerk formatieren“ auf Stick, SD-Karte und Diskette
