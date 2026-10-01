@@ -86,6 +86,53 @@ public class RpcConnectionTests
     }
 
     [Fact]
+    public async Task LargeMessages_CrossThePipeInBothDirections()
+    {
+        // Bigger than any socket or pipe buffer, so a frame arrives and leaves in many pieces.
+        var text = string.Concat(Enumerable.Range(0, 300_000).Select(i => (char)('a' + i % 26)));
+        await using var pair = await RpcPair.CreateAsync(h => h.Add<Echo, Echo>("echo", (p, _) => Task.FromResult(new Echo(p.Text + "!"))));
+
+        var result = await pair.Client.InvokeAsync<Echo>("echo", new Echo(text)).Within();
+
+        Assert.Equal(text + "!", result.Text);
+    }
+
+    [Fact]
+    public async Task ManyCallsWithRandomCancellation_EachEndsAndNothingHangs()
+    {
+        var random = new Random(42);
+        await using var pair = await RpcPair.CreateAsync(h => h.Add<Number, Number>("work", async (p, context) =>
+        {
+            await Task.Delay(p.Value % 7, context.CancellationToken);
+            return p;
+        }));
+
+        var calls = Enumerable.Range(0, 400).Select(async i =>
+        {
+            using var cts = new CancellationTokenSource();
+            var call = pair.Client.InvokeAsync<Number>("work", new Number(i), cts.Token);
+            if (random.Next(3) == 0)
+            {
+                cts.CancelAfter(random.Next(0, 5));
+            }
+
+            try
+            {
+                return (await call).Value == i;
+            }
+            catch (OperationCanceledException)
+            {
+                return true;
+            }
+        }).ToArray();
+
+        Assert.All(await Task.WhenAll(calls).Within(), ok => Assert.True(ok));
+
+        // The connection still works after the storm.
+        Assert.Equal(7, (await pair.Client.InvokeAsync<Number>("work", new Number(7)).Within()).Value);
+    }
+
+    [Fact]
     public async Task Notifications_ArriveInTheOrderTheyWereSent()
     {
         var received = new List<int>();

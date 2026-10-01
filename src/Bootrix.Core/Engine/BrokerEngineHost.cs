@@ -23,6 +23,9 @@ public sealed record BrokerEngineHostOptions
     /// <summary>Called when the client says it is done.</summary>
     public Action? OnShutdownRequested { get; init; }
 
+    /// <summary>A client that does not say hello within this time is dropped, so it cannot hold the only connection of the broker.</summary>
+    public TimeSpan HelloTimeout { get; init; } = TimeSpan.FromSeconds(10);
+
     public TimeProvider TimeProvider { get; init; } = TimeProvider.System;
 }
 
@@ -37,6 +40,7 @@ public sealed class BrokerEngineHost : IDisposable
     private readonly RpcConnection _connection;
     private readonly BrokerEngineHostOptions _options;
     private readonly ILogger _logger;
+    private readonly ITimer _helloTimer;
     private volatile bool _helloDone;
 
     public BrokerEngineHost(IEngine engine, RpcConnection connection, BrokerEngineHostOptions? options = null, ILogger? logger = null)
@@ -56,9 +60,14 @@ public sealed class BrokerEngineHost : IDisposable
             .AddNotification(BrokerProtocol.Shutdown, OnShutdown);
 
         _engine.DevicesChanged += OnDevicesChanged;
+        _helloTimer = _options.TimeProvider.CreateTimer(_ => OnHelloTimeout(), null, _options.HelloTimeout, Timeout.InfiniteTimeSpan);
     }
 
-    public void Dispose() => _engine.DevicesChanged -= OnDevicesChanged;
+    public void Dispose()
+    {
+        _engine.DevicesChanged -= OnDevicesChanged;
+        _helloTimer.Dispose();
+    }
 
     private Task<HelloResult> HelloAsync(HelloParams hello, RpcCallContext context)
     {
@@ -79,6 +88,7 @@ public sealed class BrokerEngineHost : IDisposable
         }
 
         _helloDone = true;
+        _helloTimer.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         var build = hello.Build ?? "";
         _logger.LogInformation("Client {Build} connected, protocol version {Version}", build.Length > 32 ? build[..32] : build, version);
         return Task.FromResult(new HelloResult(version, AppInfo.Version));
@@ -163,6 +173,17 @@ public sealed class BrokerEngineHost : IDisposable
         {
             throw new RpcFatalException("hello is required first");
         }
+    }
+
+    private void OnHelloTimeout()
+    {
+        if (_helloDone)
+        {
+            return;
+        }
+
+        _logger.LogWarning("No hello within {Timeout}, closing the connection", _options.HelloTimeout);
+        _ = _connection.DisposeAsync().AsTask();
     }
 
     private void OnShutdown()

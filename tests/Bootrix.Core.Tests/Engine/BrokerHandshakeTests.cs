@@ -6,6 +6,7 @@ using Bootrix.Core.Ipc;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Storage;
 using Bootrix.Core.Tests.Ipc;
+using Microsoft.Extensions.Time.Testing;
 
 namespace Bootrix.Core.Tests.Engine;
 
@@ -163,6 +164,44 @@ public class BrokerHandshakeTests
 
         Assert.Equal(ErrorCode.BrokerProtocol, ex.Code);
         Assert.False(server.IsClosed);
+    }
+
+    [Fact]
+    public async Task ClientThatNeverSaysHello_IsDroppedAfterTheTimeout()
+    {
+        var time = new FakeTimeProvider();
+        var (serverStream, clientStream) = await PipePair.CreateAsync();
+        var server = new RpcConnection(serverStream);
+        using var host = new BrokerEngineHost(new FakeEngine(), server, new BrokerEngineHostOptions { HelloTimeout = TimeSpan.FromSeconds(10), TimeProvider = time });
+        server.Start();
+        await using var client = new RpcConnection(clientStream);
+        client.Start();
+
+        time.Advance(TimeSpan.FromSeconds(9));
+        await Task.Delay(100);
+        Assert.False(server.IsClosed);
+        time.Advance(TimeSpan.FromSeconds(2));
+
+        await server.Completion.Within();
+        await client.Completion.Within();
+    }
+
+    [Fact]
+    public async Task ClientThatSaidHello_IsNotDroppedByTheHelloTimeout()
+    {
+        var time = new FakeTimeProvider();
+        var (serverStream, clientStream) = await PipePair.CreateAsync();
+        var server = new RpcConnection(serverStream);
+        using var host = new BrokerEngineHost(new FakeEngine(), server, new BrokerEngineHostOptions { HelloTimeout = TimeSpan.FromSeconds(10), TimeProvider = time });
+        server.Start();
+        await using var client = await BrokerEngineClient.ConnectAsync(clientStream).Within();
+
+        time.Advance(TimeSpan.FromMinutes(5));
+        await Task.Delay(100);
+
+        Assert.False(server.IsClosed);
+        Assert.True(client.IsConnected);
+        await server.DisposeAsync();
     }
 
     [Fact]
