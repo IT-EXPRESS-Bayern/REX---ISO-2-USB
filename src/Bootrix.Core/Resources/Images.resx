@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Image.Integrity.IsoTruncated" xml:space="preserve"><value>Das ISO-Image ist abgeschnitten: Laut Volume-Deskriptor sind {0:N0} Bytes nötig, die Datei hat {1:N0} Bytes.</value></data>
+  <data name="Image.Integrity.UdfTruncated" xml:space="preserve"><value>Das UDF-Dateisystem ist abgeschnitten: Erwartet werden {0:N0} Bytes, vorhanden sind {1:N0}.</value></data>
+  <data name="Image.Integrity.PartitionBeyondEnd" xml:space="preserve"><value>Partition {0} reicht bis Byte {1:N0}, das Image ist aber nur {2:N0} Bytes groß.</value></data>
+  <data name="Image.Integrity.GptBackupMissing" xml:space="preserve"><value>Die Sicherungs-GPT am Ende fehlt: Das Image müsste mindestens {0:N0} Bytes groß sein, ist aber nur {1:N0} Bytes groß.</value></data>
+  <data name="Image.Integrity.GptHeaderInvalid" xml:space="preserve"><value>Die Prüfsumme des GPT-Headers stimmt nicht.</value></data>
+  <data name="Image.Integrity.WimTruncated" xml:space="preserve"><value>Die WIM-Datei ist abgeschnitten: Der Header verweist bis Byte {0:N0}, die Datei hat nur {1:N0} Bytes.</value></data>
+  <data name="Image.Integrity.VhdFooterMissing" xml:space="preserve"><value>Der Footer der VHD-Datei fehlt; die Datei ist unvollständig.</value></data>
+  <data name="Image.Integrity.CompressedIncomplete" xml:space="preserve"><value>Die komprimierte Datei ({0}) ist unvollständig oder beschädigt: {1}</value></data>
+  <data name="Image.Integrity.CompressedUnverified" xml:space="preserve"><value>Das Format {0} enthält keine Endmarke; ob die Datei vollständig ist, zeigt sich erst beim vollständigen Entpacken.</value></data>
+  <data name="Image.Integrity.PartialDownload" xml:space="preserve"><value>Die Dateiendung „{0}“ kennzeichnet einen unfertigen Download.</value></data>
+  <data name="Image.Integrity.ImageOnTarget" xml:space="preserve"><value>Das Image liegt auf dem Ziel-Datenträger und würde beim Schreiben überschrieben.</value></data>
+
+  <data name="Image.Warning.CompressedSizeUnknown" xml:space="preserve"><value>Die entpackte Größe ist unbekannt, weil das Format sie nicht speichert; die Platzprüfung ist daher nur eine Schätzung.</value></data>
+  <data name="Image.Warning.AnalysisPartial" xml:space="preserve"><value>Es wurden nur die ersten {0} MiB des entpackten Images untersucht; Dateiliste und Familie können unvollständig sein.</value></data>
+  <data name="Image.Warning.FileTreeIncomplete" xml:space="preserve"><value>Die Dateistruktur des Images konnte nicht vollständig gelesen werden.</value></data>
+  <data name="Image.Warning.FileSystemUnreadable" xml:space="preserve"><value>Das Dateisystem des Images konnte nicht gelesen werden; die Erkennung beruht nur auf dem Kopfbereich.</value></data>
+  <data name="Image.Warning.WimUnreadable" xml:space="preserve"><value>Die Windows-Imagedatei „{0}“ konnte nicht gelesen werden; Edition, Build und Architektur sind unbekannt.</value></data>
+  <data name="Image.Warning.Win7EfiLoaderMissing" xml:space="preserve"><value>Das Image enthält bootmgr.efi, aber keinen UEFI-Loader unter \EFI\BOOT. Für den UEFI-Start muss bootmgfw.efi aus install.wim (Index 1) als bootx64.efi kopiert werden.</value></data>
+  <data name="Image.Warning.BootImageUnreadable" xml:space="preserve"><value>Das El-Torito-Bootimage konnte nicht gelesen werden.</value></data>
+  <data name="Image.Warning.NotBootable" xml:space="preserve"><value>Das Image enthält weder Bootdateien noch Bootcode und ist vermutlich nicht startfähig.</value></data>
+  <data name="Image.Warning.Sector4kImage" xml:space="preserve"><value>Die Partitionstabelle ist für Sektoren von 4096 Bytes angelegt und passt nur zu Datenträgern mit 4Kn-Sektoren.</value></data>
+
+  <data name="Image.Policy.Reason.VendorMandatesRawCopy" xml:space="preserve"><value>Der Hersteller schreibt das Direktschreiben (DD) vor; der ISO-Modus ist für dieses System bekanntermaßen fehlerhaft.</value></data>
+  <data name="Image.Policy.Reason.IsoModeOnly" xml:space="preserve"><value>Dieses System startet nur von extrahierten Dateien; ein Direktschreiben funktioniert nicht.</value></data>
+  <data name="Image.Policy.Reason.NotBootableAsDisk" xml:space="preserve"><value>Das Image hat keine Partitionstabelle (kein Hybrid-Image) und kann nicht direkt geschrieben werden; die Dateien müssen extrahiert werden.</value></data>
+  <data name="Image.Policy.Reason.RawImageOnly" xml:space="preserve"><value>Rohe Datenträgerabbilder werden immer direkt geschrieben.</value></data>
+  <data name="Image.Policy.Reason.HybridRawCopy" xml:space="preserve"><value>Hybrid-Image: Das Direktschreiben ist die zuverlässigste Methode und verändert nichts am Image.</value></data>
+  <data name="Image.Policy.Reason.PersistenceNeedsExtract" xml:space="preserve"><value>Für Persistenz wird der ISO-Modus verwendet, weil ein direkt geschriebenes Image keine beschreibbare Partition enthält.</value></data>
+  <data name="Image.Policy.Reason.PersistenceViaPartition" xml:space="preserve"><value>Die Persistenz wird als zusätzliche Partition hinter dem direkt geschriebenen Image angelegt.</value></data>
+  <data name="Image.Policy.Reason.WindowsSetupExtract" xml:space="preserve"><value>Windows-Medien sind keine Datenträgerabbilder; die Dateien werden kopiert und der Datenträger wird bootfähig gemacht.</value></data>
+  <data name="Image.Policy.Reason.WindowsStickRawCopy" xml:space="preserve"><value>Das Image ist bereits ein startfähiger Datenträger und wird direkt geschrieben.</value></data>
+  <data name="Image.Policy.Reason.WimApplied" xml:space="preserve"><value>WIM-Dateien werden von der Windows-Schicht auf den Datenträger angewendet.</value></data>
+  <data name="Image.Policy.Reason.DataImageAsk" xml:space="preserve"><value>Das Image enthält keine Startdaten: Sollen die Dateien kopiert oder das Image roh geschrieben werden?</value></data>
+  <data name="Image.Policy.Reason.FloppyImageRawCopy" xml:space="preserve"><value>Disketten- und Superfloppy-Images werden roh geschrieben.</value></data>
+  <data name="Image.Policy.Reason.PreferredModeUsed" xml:space="preserve"><value>Der gewählte Schreibmodus wird verwendet.</value></data>
+  <data name="Image.Policy.Reason.PreferredModeRefused" xml:space="preserve"><value>Der gewählte Schreibmodus funktioniert mit diesem Image nicht; es wird die empfohlene Methode verwendet.</value></data>
+
+  <data name="Image.Policy.Warning.DdReadOnlyLayout" xml:space="preserve"><value>Das Direktschreiben legt das schreibgeschützte ISO-Layout auf den Datenträger: Windows bietet danach evtl. das Formatieren an (bitte ablehnen), und der restliche Platz ist nicht nutzbar. „Datenträger wiederherstellen“ stellt den Normalzustand wieder her.</value></data>
+  <data name="Image.Policy.Warning.GptBackupAtIsoEnd" xml:space="preserve"><value>Nach dem Direktschreiben liegt die Sicherungs-GPT am Ende des ISO-Bereichs, nicht am Ende des Datenträgers.</value></data>
+  <data name="Image.Policy.Warning.UefiOnlyEdk2" xml:space="preserve"><value>Das Image enthält einen EFI-Eintrag, aber keine EFI-Systempartition: UEFI-Boot funktioniert nur auf Firmware auf EDK2-Basis.</value></data>
+  <data name="Image.Policy.Warning.GptProtectiveMbrLegacy" xml:space="preserve"><value>GPT mit schützendem MBR kann auf manchen älteren BIOS-Rechnern nicht starten. Für alte Geräte den ISO-Modus mit MBR wählen.</value></data>
+  <data name="Image.Policy.Warning.Sector4kTarget" xml:space="preserve"><value>Der Zieldatenträger hat 4096-Byte-Sektoren, die Partitionstabelle des Images geht von 512-Byte-Sektoren aus; das Image startet dort nicht zuverlässig.</value></data>
+  <data name="Image.Policy.Warning.SuperfloppyUnreliable" xml:space="preserve"><value>Disketten-Images als Superfloppy auf einen USB-Stick zu schreiben funktioniert nicht auf jedem BIOS; nur Legacy-/CSM-Start.</value></data>
+  <data name="Image.Policy.Warning.LabelChanged" xml:space="preserve"><value>Das Label „{0}“ passt nicht auf FAT und wird zu „{1}“; die Startkonfiguration wird entsprechend angepasst.</value></data>
+  <data name="Image.Policy.Warning.FatFileLimit" xml:space="preserve"><value>Das Image enthält Dateien ab 4 GiB; FAT32 kann sie nicht speichern. Ein anderes Dateisystem wählen oder den Direktmodus verwenden.</value></data>
+  <data name="Image.Policy.Warning.NtfsExfatHelper" xml:space="preserve"><value>NTFS und exFAT brauchen für UEFI-Start einen Hilfs-Treiber (UEFI:NTFS), und der Bootloader und das Initramfs des Systems müssen das Dateisystem lesen können.</value></data>
+  <data name="Image.Policy.Warning.CasperExfat" xml:space="preserve"><value>Ubuntu und Verwandte finden das Live-Medium auf exFAT nicht. FAT32 oder NTFS wählen.</value></data>
+  <data name="Image.Policy.Warning.BootloaderOffline" xml:space="preserve"><value>Die Bootloader-Dateien (Syslinux, GRUB) müssen zur Version im Image passen; ohne Internet wird die eingebettete Version verwendet oder auf Direktschreiben ausgewichen.</value></data>
+  <data name="Image.Policy.Warning.LegacyBiosOnly" xml:space="preserve"><value>Dieses Image startet nur im Legacy-/CSM-Modus des BIOS.</value></data>
+  <data name="Image.Policy.Warning.BsdIsoForOptical" xml:space="preserve"><value>ISO-Images der BSD-Systeme sind für optische Datenträger gedacht; für USB-Sticks das Abbild „memstick“ bzw. „install…img“ verwenden.</value></data>
+  <data name="Image.Policy.Warning.NotBootableOnPc" xml:space="preserve"><value>Dieses Image ist für Einplatinenrechner (ARM) gedacht und startet nicht auf einem PC.</value></data>
+  <data name="Image.Policy.Warning.RevokedLoaders" xml:space="preserve"><value>Die enthaltenen Bootloader sind teilweise widerrufen und starten bei aktiviertem Secure Boot ggf. nicht; Secure Boot für diesen Start abschalten.</value></data>
+  <data name="Image.Policy.Warning.PersistenceUnsupported" xml:space="preserve"><value>Für dieses Image ist keine Persistenz möglich.</value></data>
+  <data name="Image.Policy.Warning.PersistenceBootArgument" xml:space="preserve"><value>Persistenz wird nur genutzt, wenn beim Start der Kernel-Parameter „persistence“ angegeben wird (Kali bietet dafür einen Menüeintrag).</value></data>
+  <data name="Image.Policy.Warning.ImageLargerThanTarget" xml:space="preserve"><value>Das Image braucht {0:N0} Bytes, der Datenträger bietet nur {1:N0} Bytes.</value></data>
+  <data name="Image.Policy.Warning.EsxiSyslinux" xml:space="preserve"><value>ESXi startet über Syslinux; in der Konfiguration muss „-p 1“ ergänzt werden, damit der Installer die Dateien auf der ersten Partition findet.</value></data>
+</root>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Image.Integrity.IsoTruncated" xml:space="preserve"><value>The ISO image is cut off: its volume descriptor announces {0:N0} bytes, the file has {1:N0}.</value></data>
+  <data name="Image.Integrity.UdfTruncated" xml:space="preserve"><value>The UDF file system is cut off: {0:N0} bytes are expected, {1:N0} are present.</value></data>
+  <data name="Image.Integrity.PartitionBeyondEnd" xml:space="preserve"><value>Partition {0} extends to byte {1:N0}, but the image is only {2:N0} bytes long.</value></data>
+  <data name="Image.Integrity.GptBackupMissing" xml:space="preserve"><value>The backup GPT at the end is missing: the image would have to be at least {0:N0} bytes, it is only {1:N0}.</value></data>
+  <data name="Image.Integrity.GptHeaderInvalid" xml:space="preserve"><value>The checksum of the GPT header does not match.</value></data>
+  <data name="Image.Integrity.WimTruncated" xml:space="preserve"><value>The WIM file is cut off: its header refers to byte {0:N0}, the file has only {1:N0} bytes.</value></data>
+  <data name="Image.Integrity.VhdFooterMissing" xml:space="preserve"><value>The footer of the VHD file is missing; the file is incomplete.</value></data>
+  <data name="Image.Integrity.CompressedIncomplete" xml:space="preserve"><value>The compressed file ({0}) is incomplete or damaged: {1}</value></data>
+  <data name="Image.Integrity.CompressedUnverified" xml:space="preserve"><value>The {0} format has no end marker; whether the file is complete only shows when it is decompressed in full.</value></data>
+  <data name="Image.Integrity.PartialDownload" xml:space="preserve"><value>The file extension "{0}" marks an unfinished download.</value></data>
+  <data name="Image.Integrity.ImageOnTarget" xml:space="preserve"><value>The image is stored on the target disk and would be overwritten while it is being written.</value></data>
+
+  <data name="Image.Warning.CompressedSizeUnknown" xml:space="preserve"><value>The decompressed size is unknown because the format does not store it; the space check is therefore only an estimate.</value></data>
+  <data name="Image.Warning.AnalysisPartial" xml:space="preserve"><value>Only the first {0} MiB of the decompressed image were examined; the file list and family may be incomplete.</value></data>
+  <data name="Image.Warning.FileTreeIncomplete" xml:space="preserve"><value>The file structure of the image could not be read completely.</value></data>
+  <data name="Image.Warning.FileSystemUnreadable" xml:space="preserve"><value>The file system of the image could not be read; the detection is based on the header only.</value></data>
+  <data name="Image.Warning.WimUnreadable" xml:space="preserve"><value>The Windows image file "{0}" could not be read; edition, build and architecture are unknown.</value></data>
+  <data name="Image.Warning.Win7EfiLoaderMissing" xml:space="preserve"><value>The image contains bootmgr.efi but no UEFI loader under \EFI\BOOT. For UEFI boot, bootmgfw.efi has to be copied from install.wim (index 1) as bootx64.efi.</value></data>
+  <data name="Image.Warning.BootImageUnreadable" xml:space="preserve"><value>The El Torito boot image could not be read.</value></data>
+  <data name="Image.Warning.NotBootable" xml:space="preserve"><value>The image contains neither boot files nor boot code and is probably not bootable.</value></data>
+  <data name="Image.Warning.Sector4kImage" xml:space="preserve"><value>The partition table was written for 4096-byte sectors and only fits disks with 4Kn sectors.</value></data>
+
+  <data name="Image.Policy.Reason.VendorMandatesRawCopy" xml:space="preserve"><value>The vendor requires a raw (DD) write; ISO mode is known to be broken for this system.</value></data>
+  <data name="Image.Policy.Reason.IsoModeOnly" xml:space="preserve"><value>This system only boots from extracted files; a raw write does not work.</value></data>
+  <data name="Image.Policy.Reason.NotBootableAsDisk" xml:space="preserve"><value>The image has no partition table (it is not a hybrid image) and cannot be written directly; its files have to be extracted.</value></data>
+  <data name="Image.Policy.Reason.RawImageOnly" xml:space="preserve"><value>Raw disk images are always written directly.</value></data>
+  <data name="Image.Policy.Reason.HybridRawCopy" xml:space="preserve"><value>Hybrid image: a raw write is the most reliable method and leaves the image untouched.</value></data>
+  <data name="Image.Policy.Reason.PersistenceNeedsExtract" xml:space="preserve"><value>ISO mode is used for persistence because a raw copy of the image has no writable partition.</value></data>
+  <data name="Image.Policy.Reason.PersistenceViaPartition" xml:space="preserve"><value>Persistence is provided as an additional partition behind the raw copy of the image.</value></data>
+  <data name="Image.Policy.Reason.WindowsSetupExtract" xml:space="preserve"><value>Windows media are not disk images; the files are copied and the disk is made bootable.</value></data>
+  <data name="Image.Policy.Reason.WindowsStickRawCopy" xml:space="preserve"><value>The image already is a bootable disk and is written directly.</value></data>
+  <data name="Image.Policy.Reason.WimApplied" xml:space="preserve"><value>WIM files are applied to the disk by the Windows layer.</value></data>
+  <data name="Image.Policy.Reason.DataImageAsk" xml:space="preserve"><value>The image contains no boot data: should its files be copied or the image written raw?</value></data>
+  <data name="Image.Policy.Reason.FloppyImageRawCopy" xml:space="preserve"><value>Floppy and superfloppy images are written raw.</value></data>
+  <data name="Image.Policy.Reason.PreferredModeUsed" xml:space="preserve"><value>The write mode you chose is used.</value></data>
+  <data name="Image.Policy.Reason.PreferredModeRefused" xml:space="preserve"><value>The write mode you chose does not work with this image; the recommended method is used instead.</value></data>
+
+  <data name="Image.Policy.Warning.DdReadOnlyLayout" xml:space="preserve"><value>A raw write puts the read-only ISO layout on the disk: Windows may offer to format it afterwards (decline), and the remaining space is not usable. "Restore disk" brings back the normal state.</value></data>
+  <data name="Image.Policy.Warning.GptBackupAtIsoEnd" xml:space="preserve"><value>After a raw write the backup GPT sits at the end of the ISO area, not at the end of the disk.</value></data>
+  <data name="Image.Policy.Warning.UefiOnlyEdk2" xml:space="preserve"><value>The image has an EFI boot entry but no EFI system partition: UEFI boot only works on EDK2-based firmware.</value></data>
+  <data name="Image.Policy.Warning.GptProtectiveMbrLegacy" xml:space="preserve"><value>GPT with a protective MBR can fail to boot on some older BIOS machines. Choose ISO mode with MBR for old devices.</value></data>
+  <data name="Image.Policy.Warning.Sector4kTarget" xml:space="preserve"><value>The target disk has 4096-byte sectors while the image's partition table assumes 512-byte sectors; the image will not boot reliably there.</value></data>
+  <data name="Image.Policy.Warning.SuperfloppyUnreliable" xml:space="preserve"><value>Writing a floppy image to a USB stick as a superfloppy does not work on every BIOS; legacy/CSM boot only.</value></data>
+  <data name="Image.Policy.Warning.LabelChanged" xml:space="preserve"><value>The label "{0}" does not fit on FAT and becomes "{1}"; the boot configuration is adjusted accordingly.</value></data>
+  <data name="Image.Policy.Warning.FatFileLimit" xml:space="preserve"><value>The image contains files of 4 GiB or more, which FAT32 cannot hold. Choose another file system or use raw mode.</value></data>
+  <data name="Image.Policy.Warning.NtfsExfatHelper" xml:space="preserve"><value>NTFS and exFAT need a helper driver (UEFI:NTFS) for UEFI boot, and the system's boot loader and initramfs have to be able to read the file system.</value></data>
+  <data name="Image.Policy.Warning.CasperExfat" xml:space="preserve"><value>Ubuntu and relatives cannot find the live medium on exFAT. Choose FAT32 or NTFS.</value></data>
+  <data name="Image.Policy.Warning.BootloaderOffline" xml:space="preserve"><value>The boot loader files (Syslinux, GRUB) have to match the version in the image; without internet the embedded version is used or a raw write is chosen instead.</value></data>
+  <data name="Image.Policy.Warning.LegacyBiosOnly" xml:space="preserve"><value>This image only boots in the legacy/CSM mode of the BIOS.</value></data>
+  <data name="Image.Policy.Warning.BsdIsoForOptical" xml:space="preserve"><value>BSD ISO images are meant for optical media; for USB sticks use the "memstick" or "install...img" image.</value></data>
+  <data name="Image.Policy.Warning.NotBootableOnPc" xml:space="preserve"><value>This image is made for single-board computers (ARM) and does not boot on a PC.</value></data>
+  <data name="Image.Policy.Warning.RevokedLoaders" xml:space="preserve"><value>Some of the contained boot loaders are revoked and may not start with Secure Boot enabled; turn Secure Boot off for this boot.</value></data>
+  <data name="Image.Policy.Warning.PersistenceUnsupported" xml:space="preserve"><value>Persistence is not possible for this image.</value></data>
+  <data name="Image.Policy.Warning.PersistenceBootArgument" xml:space="preserve"><value>Persistence is only used when the kernel parameter "persistence" is given at boot (Kali has a menu entry for it).</value></data>
+  <data name="Image.Policy.Warning.ImageLargerThanTarget" xml:space="preserve"><value>The image needs {0:N0} bytes, the disk offers only {1:N0} bytes.</value></data>
+  <data name="Image.Policy.Warning.EsxiSyslinux" xml:space="preserve"><value>ESXi boots through Syslinux; "-p 1" has to be added to the configuration so that the installer finds its files on the first partition.</value></data>
+</root>

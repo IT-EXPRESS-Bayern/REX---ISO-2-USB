@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "families": {
+    "windows": { "name": "Windows setup media" },
+    "windows-nt5": { "inherits": "windows", "name": "Windows 2000 / XP / 2003", "extract": { "uefi": "No" } },
+    "winpe": { "inherits": "windows", "name": "Windows PE" },
+    "winpe-xp": { "inherits": "winpe", "name": "Windows PE built from XP sources", "extract": { "uefi": "No" } },
+    "hirens-pe": { "inherits": "winpe", "name": "Hiren's BootCD PE", "warnings": ["Image.Policy.Warning.RevokedLoaders"] },
+
+    "ubuntu": {
+      "name": "Ubuntu and derivatives (casper)",
+      "modes": ["RawCopy", "Extract"],
+      "default": "RawCopy",
+      "persistence": { "rawCopy": false, "extract": true, "preferred": "Extract" },
+      "labelPatch": false,
+      "flags": ["casper"]
+    },
+    "linuxmint": { "inherits": "ubuntu", "name": "Linux Mint" },
+    "zorin": { "inherits": "ubuntu", "name": "Zorin OS" },
+    "elementary": { "inherits": "ubuntu", "name": "elementary OS" },
+    "popos": {
+      "inherits": "ubuntu",
+      "name": "Pop!_OS",
+      "modes": ["RawCopy"],
+      "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"]
+    },
+
+    "debian": { "name": "Debian installer", "modes": ["RawCopy", "Extract"], "default": "RawCopy", "labelPatch": false },
+    "debian-live": {
+      "name": "Debian live-boot media",
+      "modes": ["RawCopy", "Extract"],
+      "default": "RawCopy",
+      "persistence": { "rawCopy": true, "extract": true, "preferred": "RawCopy" },
+      "labelPatch": false,
+      "flags": ["liveBoot"]
+    },
+    "kali": { "inherits": "debian-live", "name": "Kali Linux" },
+    "parrot": { "inherits": "debian-live", "name": "Parrot OS" },
+    "clonezilla": { "inherits": "debian-live", "name": "Clonezilla live" },
+    "gparted": { "inherits": "debian-live", "name": "GParted live" },
+
+    "fedora": { "name": "Fedora", "modes": ["RawCopy", "Extract"], "default": "RawCopy", "labelPatch": true },
+    "rhel": { "inherits": "fedora", "name": "Red Hat family (RHEL, Alma, Rocky, CentOS)" },
+
+    "arch": { "name": "Arch Linux and archiso", "modes": ["RawCopy", "Extract"], "default": "RawCopy", "labelPatch": true },
+    "endeavouros": { "inherits": "arch", "name": "EndeavourOS" },
+    "systemrescue": { "inherits": "arch", "name": "SystemRescue" },
+
+    "manjaro": { "name": "Manjaro", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "opensuse": { "name": "openSUSE", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "proxmox": { "name": "Proxmox", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "truenas": { "name": "TrueNAS", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "tails": { "name": "Tails", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "memtest86plus": { "name": "Memtest86+", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+    "memtest86": { "name": "MemTest86", "modes": ["RawCopy"], "default": "RawCopy", "reasons": ["Image.Policy.Reason.VendorMandatesRawCopy"] },
+
+    "esxi": {
+      "name": "VMware ESXi",
+      "modes": ["Extract"],
+      "default": "Extract",
+      "reasons": ["Image.Policy.Reason.IsoModeOnly"],
+      "warnings": ["Image.Policy.Warning.EsxiSyslinux"]
+    },
+    "reactos": { "name": "ReactOS", "modes": ["Extract"], "default": "Extract", "reasons": ["Image.Policy.Reason.IsoModeOnly"], "extract": { "uefi": "No" } },
+    "kolibrios": { "name": "KolibriOS", "modes": ["Extract"], "default": "Extract", "reasons": ["Image.Policy.Reason.IsoModeOnly"], "extract": { "uefi": "No" } },
+
+    "freebsd": { "name": "FreeBSD", "modes": ["RawCopy"], "default": "RawCopy" },
+    "openbsd": { "name": "OpenBSD", "modes": ["RawCopy"], "default": "RawCopy" },
+    "netbsd": { "name": "NetBSD", "modes": ["RawCopy"], "default": "RawCopy" },
+    "chromeos": { "name": "ChromeOS Flex", "modes": ["RawCopy"], "default": "RawCopy" },
+    "raspberrypi": {
+      "name": "Raspberry Pi OS",
+      "modes": ["RawCopy"],
+      "default": "RawCopy",
+      "raw": { "bios": "No", "uefi": "No" },
+      "warnings": ["Image.Policy.Warning.NotBootableOnPc"]
+    },
+
+    "freedos": {
+      "name": "FreeDOS",
+      "modes": ["Extract"],
+      "default": "Extract",
+      "reasons": ["Image.Policy.Reason.IsoModeOnly"],
+      "extract": { "uefi": "No" }
+    },
+    "ms-dos": { "inherits": "freedos", "name": "MS-DOS and Windows 9x boot disks" },
+    "pc-dos": { "inherits": "freedos", "name": "PC DOS" },
+    "dr-dos": { "inherits": "freedos", "name": "DR-DOS" }
+  }
+}

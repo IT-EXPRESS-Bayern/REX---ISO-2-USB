@@ -15,6 +15,7 @@ public sealed class Localizer
         new("Bootrix.Core.Resources.Strings", typeof(Localizer).Assembly),
         new("Bootrix.Core.Resources.Validation", typeof(Localizer).Assembly),
         new("Bootrix.Core.Resources.Ui", typeof(Localizer).Assembly),
+        new("Bootrix.Core.Resources.Images", typeof(Localizer).Assembly),
     ];
 
     public static Localizer Default { get; } = new();

@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "rules": [
+    { "family": "hirens-pe", "kind": "WindowsPe", "priority": 100, "any": ["HBCD_PE.ini", "HBCD_PE_x64.ini", "HBCD_PE_x86.ini"] },
+    { "family": "hirens-pe", "kind": "WindowsPe", "priority": 100, "label": "^HBCD_PE", "all": ["sources/boot.wim"] },
+    { "family": "winpe-xp", "kind": "WindowsPe", "priority": 99, "all": ["*/ntdetect.com", "*/txtsetup.sif"], "any": ["minint"] },
+    { "family": "winpe-xp", "kind": "WindowsPe", "priority": 99, "all": ["*/ntdetect.com"], "text": [{ "path": "i386/txtsetup.sif", "pattern": "^\\s*OsLoadOptions\\s*=.*/minint" }] },
+    { "family": "windows-nt5", "kind": "WindowsSetup", "priority": 92, "all": ["*/ntdetect.com", "*/txtsetup.sif"] },
+    { "family": "windows-nt5", "kind": "WindowsSetup", "priority": 92, "any": ["$WIN_NT$.~BT", "$WIN_NT$.~LS"] },
+    { "family": "windows", "kind": "WindowsSetup", "priority": 90, "any": ["sources/install.wim", "sources/install.esd", "sources/install.swm", "*/sources/install.wim", "*/sources/install.esd", "*/sources/install.swm"] },
+    { "family": "windows", "kind": "WindowsSetup", "priority": 85, "all": ["sources/setup.exe", "bootmgr"], "none": ["sources/boot.wim"] },
+    { "family": "winpe", "kind": "WindowsPe", "priority": 88, "all": ["sources/boot.wim"], "any": ["bootmgr", "bootmgr.efi", "boot/bcd", "efi/microsoft/boot/bcd", "boot/boot.sdi"] },
+
+    { "family": "esxi", "kind": "OtherOs", "priority": 100, "all": ["boot.cfg"], "any": ["mboot.c32", "b.b00", "s.v00", "efi/boot/boot.cfg"] },
+    { "family": "reactos", "kind": "OtherOs", "priority": 100, "any": ["reactos", "**/setupldr.sys", "**/freeldr.sys"] },
+    { "family": "kolibrios", "kind": "OtherOs", "priority": 100, "any": ["kolibri.img", "kolibri.iso"] },
+
+    { "family": "tails", "kind": "Linux", "priority": 100, "any": ["live/Tails.module", "live/tails.module"] },
+    { "family": "tails", "kind": "Linux", "priority": 100, "container": "disk", "partitionNames": ["Tails"] },
+    { "family": "proxmox", "kind": "Linux", "priority": 100, "any": ["proxmox", ".pve-cd-id.cfg"] },
+    { "family": "proxmox", "kind": "Linux", "priority": 100, "label": "^(PVE|PBS|PMG|PDM)$" },
+    { "family": "truenas", "kind": "Linux", "priority": 100, "any": ["TrueNAS-SCALE.update", "TrueNAS-MANIFEST", "FreeNAS-MANIFEST"] },
+    { "family": "truenas", "kind": "Linux", "priority": 100, "label": "^(TRUENAS|FREENAS|TrueNAS)" },
+    { "family": "clonezilla", "kind": "Linux", "priority": 100, "any": ["Clonezilla-Live-Version"] },
+    { "family": "gparted", "kind": "Linux", "priority": 100, "any": ["GParted-Live-Version"] },
+    { "family": "memtest86plus", "kind": "Linux", "priority": 100, "label": "^mem(test|tst)86\\+?" },
+    { "family": "memtest86plus", "kind": "Linux", "priority": 100, "all": ["boot/memtest.bin"], "none": ["casper", "live", "dists", "arch", "LiveOS", ".disk"] },
+    { "family": "memtest86", "kind": "Linux", "priority": 100, "any": ["efi/boot/mt86.png", "efi/boot/unifont.bin"] },
+    { "family": "systemrescue", "kind": "Linux", "priority": 96, "any": ["sysresccd", "sysrescue.d"] },
+    { "family": "systemrescue", "kind": "Linux", "priority": 96, "label": "^(RESCUE|SYSRESCUE)\\d" },
+
+    { "family": "manjaro", "kind": "Linux", "priority": 95, "any": [".miso", "manjaro"] },
+    { "family": "endeavouros", "kind": "Linux", "priority": 95, "label": "^EOS_" },
+    { "family": "popos", "kind": "Linux", "priority": 95, "any": ["casper*pop-os*"] },
+    { "family": "popos", "kind": "Linux", "priority": 95, "text": [{ "path": ".disk/info", "pattern": "^Pop!_OS" }] },
+
+    { "family": "linuxmint", "kind": "Linux", "priority": 85, "text": [{ "path": ".disk/info", "pattern": "^(Linux ?Mint|LMDE)" }] },
+    { "family": "zorin", "kind": "Linux", "priority": 85, "text": [{ "path": ".disk/info", "pattern": "^Zorin" }] },
+    { "family": "elementary", "kind": "Linux", "priority": 85, "text": [{ "path": ".disk/info", "pattern": "^elementary" }] },
+    { "family": "kali", "kind": "Linux", "priority": 85, "text": [{ "path": ".disk/info", "pattern": "^Kali" }] },
+    { "family": "parrot", "kind": "Linux", "priority": 85, "text": [{ "path": ".disk/info", "pattern": "^Parrot" }] },
+    { "family": "parrot", "kind": "Linux", "priority": 85, "label": "^Parrot" },
+
+    { "family": "debian-live", "kind": "Linux", "priority": 82, "any": ["live"], "text": [{ "path": ".disk/info", "pattern": "^Debian" }] },
+    { "family": "debian", "kind": "Linux", "priority": 80, "text": [{ "path": ".disk/info", "pattern": "^Debian" }] },
+    { "family": "ubuntu", "kind": "Linux", "priority": 80, "text": [{ "path": ".disk/info", "pattern": "^(Ubuntu|Kubuntu|Xubuntu|Lubuntu|Edubuntu)" }] },
+    { "family": "fedora", "kind": "Linux", "priority": 80, "text": [{ "path": ".treeinfo", "pattern": "^family\\s*=\\s*Fedora" }] },
+    { "family": "fedora", "kind": "Linux", "priority": 79, "label": "^Fedora", "any": ["LiveOS", "images/pxeboot"] },
+    { "family": "rhel", "kind": "Linux", "priority": 78, "text": [{ "path": ".treeinfo", "pattern": "^family\\s*=\\s*(Red Hat|AlmaLinux|Rocky|CentOS|Oracle|Scientific)" }] },
+    { "family": "opensuse", "kind": "Linux", "priority": 80, "label": "^(openSUSE|SLE[-_]|SUSE)" },
+    { "family": "opensuse", "kind": "Linux", "priority": 80, "text": [{ "path": "content", "pattern": "^PRODUCT\\s+(open)?SUSE" }] },
+
+    { "family": "arch", "kind": "Linux", "priority": 70, "any": ["*/boot/x86_64/vmlinuz*", "*/boot/i686/vmlinuz*", "*/x86_64/airootfs.sfs", "*/x86_64/airootfs.erofs", "arch/boot"] },
+    { "family": "arch", "kind": "Linux", "priority": 65, "all": ["boot/x86_64/vmlinuz*"], "none": ["boot/x86_64/loader", "content"] },
+    { "family": "rhel", "kind": "Linux", "priority": 60, "all": [".treeinfo", "images/pxeboot"] },
+    { "family": "debian-live", "kind": "Linux", "priority": 60, "all": ["live/filesystem.squashfs"] },
+    { "family": "ubuntu", "kind": "Linux", "priority": 60, "any": ["casper"] },
+
+    { "family": "freebsd", "kind": "Bsd", "priority": 85, "container": "iso", "all": ["boot/kernel/kernel"], "any": ["boot/loader", "boot/loader.efi", "boot/cdboot"] },
+    { "family": "freebsd", "kind": "Bsd", "priority": 85, "container": "disk", "gptTypes": ["83bd6b9d-7f41-11dc-be0b-001560b84f0f", "516e7cb6-6ecf-11d6-8ff8-00022d09712b", "516e7cba-6ecf-11d6-8ff8-00022d09712b"], "mbrTypes": [165] },
+    { "family": "openbsd", "kind": "Bsd", "priority": 85, "container": "iso", "any": ["*/amd64/bsd.rd", "*/i386/bsd.rd", "*/arm64/bsd.rd", "*/amd64/cdbr", "*/i386/cdbr"] },
+    { "family": "openbsd", "kind": "Bsd", "priority": 85, "container": "disk", "gptTypes": ["824cc7a0-36a8-11e3-890a-952519ad3f61"], "mbrTypes": [166] },
+    { "family": "netbsd", "kind": "Bsd", "priority": 85, "container": "iso", "any": ["binary/sets", "installation/miniroot"] },
+    { "family": "netbsd", "kind": "Bsd", "priority": 85, "container": "disk", "gptTypes": ["49f48d5a-b10e-11dc-b99b-0019d1879648"], "mbrTypes": [169] },
+
+    { "family": "chromeos", "kind": "RawDisk", "priority": 90, "container": "disk", "partitionNames": ["KERN-A", "ROOT-A"] },
+    { "family": "raspberrypi", "kind": "RawDisk", "priority": 80, "container": "disk", "all": ["cmdline.txt", "config.txt"], "any": ["start4.elf", "start.elf", "bootcode.bin", "kernel*.img"] },
+
+    { "family": "freedos", "kind": "Dos", "priority": 70, "any": ["fdconfig.sys", "freedos", "fdos", "kernel.sys", "fdauto.bat"] },
+    { "family": "pc-dos", "kind": "Dos", "priority": 66, "all": ["ibmbio.com", "ibmdos.com"] },
+    { "family": "dr-dos", "kind": "Dos", "priority": 66, "any": ["drbios.sys", "drdos.sys"] },
+    { "family": "ms-dos", "kind": "Dos", "priority": 65, "all": ["io.sys", "command.com"] }
+  ]
+}
