@@ -34,6 +34,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task FedoraServer() => Check(new FedoraProvider(Http), "fedora-server", expectSigned: true, architecture: "x64");
 
     [LiveFact]
+    public Task ArchLinux() => Check(new ArchLinuxProvider(Http), "archlinux", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
