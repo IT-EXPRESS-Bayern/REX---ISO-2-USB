@@ -110,7 +110,10 @@ public sealed class LinuxMediaVerifierTests : IDisposable
     [RequiresToolFact("xorriso")]
     public void Verify_LdlinuxSys_IsNotComparedBecauseTheInstallerRewritesIt()
     {
-        File.WriteAllBytes(Path.Combine(_root, "ldlinux.sys"), new byte[69632]);
+        // The builder marks the file read-only, as Syslinux does; unprivileged users cannot write over that.
+        var path = Path.Combine(_root, "ldlinux.sys");
+        File.SetAttributes(path, FileAttributes.Normal);
+        File.WriteAllBytes(path, new byte[69632]);
 
         Verify();
     }
