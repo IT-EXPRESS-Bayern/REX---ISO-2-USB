@@ -123,6 +123,19 @@ public class ExtFormatterTests
     }
 
     [Fact]
+    public void Format_CopiesDescriptorTableToEveryBackupGroup()
+    {
+        using var image = Format(300 * MiB, Options() with { BlockSize = 1024 });
+        var primary = image.ReadAt(2 * 1024, 2 * 1024);
+
+        foreach (var group in new[] { 1, 3, 5, 7, 9, 25, 27 })
+        {
+            var copy = image.ReadAt((1 + group * 8192L + 1) * 1024, 2 * 1024);
+            Assert.Equal(primary, copy);
+        }
+    }
+
+    [Fact]
     public void Format_RecordsJournalBackupInSuperblock()
     {
         using var image = Format(64 * MiB, Options());
