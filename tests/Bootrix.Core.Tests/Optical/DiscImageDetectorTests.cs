@@ -191,6 +191,7 @@ public sealed class DiscImageDetectorTests : IDisposable
         var source = DiscImageDetector.Open(path);
 
         Assert.Equal(DiscImageKind.Iso, source.Kind);
+        Assert.Equal(Path.GetFullPath(path), source.FilePath);
         Assert.Equal(data.Length, source.LengthBytes);
         Assert.Equal(64, source.SectorCount);
         using var stream = source.OpenStream();

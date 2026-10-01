@@ -39,7 +39,7 @@ public static class SectorMath
     public static int ToSectorsPerSecond(OpticalMediaFamily family, int? factor) =>
         factor is not { } x || x <= 0 ? -1 : checked(x * SectorsPerSecondAt1x(family));
 
-    internal static string FormatBytes(long bytes) => bytes switch
+    public static string FormatBytes(long bytes) => bytes switch
     {
         >= 1L << 30 => string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{bytes / (double)(1L << 30):0.#} GB"),
         >= 1L << 20 => string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{bytes / (double)(1L << 20):0.#} MB"),

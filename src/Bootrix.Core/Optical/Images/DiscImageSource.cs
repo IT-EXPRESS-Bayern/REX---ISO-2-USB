@@ -32,7 +32,8 @@ public enum DiscImageKind
 /// decoded on the fly.
 /// </summary>
 /// <param name="LengthBytes">Length of the user data; it need not be a multiple of the sector size, the burn pads it.</param>
-public sealed record DiscImageSource(string DisplayName, DiscImageKind Kind, long LengthBytes, Func<Stream> OpenStream)
+/// <param name="FilePath">Set when the image is a plain file that can be handed to the operating system as it is, without conversion.</param>
+public sealed record DiscImageSource(string DisplayName, DiscImageKind Kind, long LengthBytes, Func<Stream> OpenStream, string? FilePath = null)
 {
     public long SectorCount => SectorMath.SectorsFor(LengthBytes);
 

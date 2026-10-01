@@ -10,7 +10,7 @@ namespace Bootrix.Core.Optical;
 /// </summary>
 public interface IOpticalService
 {
-    IReadOnlyList<OpticalDrive> EnumerateDrives();
+    Task<IReadOnlyList<OpticalDrive>> EnumerateDrivesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>Raised (debounced) when a drive is added or removed.</summary>
     event EventHandler? DrivesChanged;

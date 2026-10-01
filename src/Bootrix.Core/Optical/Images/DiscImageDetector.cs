@@ -92,7 +92,8 @@ public static class DiscImageDetector
                     Path.GetFileName(path),
                     kind,
                     length,
-                    () => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 20, FileOptions.SequentialScan));
+                    () => new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read, 1 << 20, FileOptions.SequentialScan),
+                    Path.GetFullPath(path));
             case DiscImageKind.BinCue:
                 var cue = string.Equals(Path.GetExtension(path), ".cue", StringComparison.OrdinalIgnoreCase) ? path : Path.ChangeExtension(path, ".cue");
                 return CueBurnPlanner.FromFile(cue);

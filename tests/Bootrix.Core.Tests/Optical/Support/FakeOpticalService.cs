@@ -79,7 +79,8 @@ internal sealed class FakeOpticalService : IOpticalService
     /// <summary>The next <paramref name="times"/> attempts to open the drive for reading fail, as right after a burn.</summary>
     public void NotReady(string driveId, int times) => _notReady[driveId] = times;
 
-    public IReadOnlyList<OpticalDrive> EnumerateDrives() => Drives;
+    public Task<IReadOnlyList<OpticalDrive>> EnumerateDrivesAsync(CancellationToken cancellationToken = default) =>
+        Task.FromResult<IReadOnlyList<OpticalDrive>>(Drives);
 
     public Task<OpticalMedia> QueryMediaAsync(OpticalDrive drive, CancellationToken cancellationToken = default)
     {
