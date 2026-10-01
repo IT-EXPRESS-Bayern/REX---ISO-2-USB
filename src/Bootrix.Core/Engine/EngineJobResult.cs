@@ -28,6 +28,9 @@ public sealed record EngineJobResult
 
     public long ImageBytes { get; init; }
 
+    /// <summary>A result a job hands back as JSON, such as the findings of a stick test; each kind of job documents its own shape.</summary>
+    public string? ReportJson { get; init; }
+
     public bool Succeeded => Outcome == JobOutcome.Succeeded;
 
     public static EngineJobResult From(JobResult result)

@@ -6,7 +6,9 @@ using Bootrix.Core.Model;
 using Bootrix.Core.Presentation;
 using Bootrix.Core.Settings;
 using Bootrix.Core.Text;
+using Bootrix.Core.Storage.Testing;
 using Bootrix.Core.Writing.Verify;
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -16,6 +18,7 @@ public enum Tool
 {
     Verify,
     Restore,
+    Test,
 }
 
 /// <summary>Checking a medium against its image and bringing a drive back to a clean state.</summary>
@@ -46,6 +49,7 @@ public sealed partial class ToolsViewModel : ObservableObject
         _selectedMode = Modes[0];
         _selectedScheme = Schemes[0];
         _selectedFileSystem = FileSystems[0];
+        _selectedTestMode = TestModes[0];
         localizer.CultureChanged += (_, _) => BuildOptions();
         devices.SelectionChanged += (_, _) => StartCommand.NotifyCanExecuteChanged();
         job.PropertyChanged += (_, e) =>
@@ -71,9 +75,14 @@ public sealed partial class ToolsViewModel : ObservableObject
 
     public IReadOnlyList<OptionItem<FileSystemKind>> FileSystems { get; private set; } = [];
 
+    public IReadOnlyList<OptionItem<StickTestMode>> TestModes { get; private set; } = [];
+
+    /// <summary>The findings of the last stick test, one entry per stick.</summary>
+    public ObservableCollection<StickTestSummary> TestResults { get; } = [];
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StartCommand))]
-    [NotifyPropertyChangedFor(nameof(IsVerify), nameof(IsRestore), nameof(StartText), nameof(Hint))]
+    [NotifyPropertyChangedFor(nameof(IsVerify), nameof(IsRestore), nameof(IsTest), nameof(StartText), nameof(Hint))]
     private OptionItem<Tool> _selectedTool;
 
     [ObservableProperty]
@@ -86,6 +95,12 @@ public sealed partial class ToolsViewModel : ObservableObject
     private OptionItem<FileSystemKind> _selectedFileSystem;
 
     [ObservableProperty]
+    private OptionItem<StickTestMode> _selectedTestMode;
+
+    [ObservableProperty]
+    private bool _hasTestResults;
+
+    [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(StartCommand))]
     [NotifyPropertyChangedFor(nameof(HasImage))]
     private string? _imagePath;
@@ -96,6 +111,8 @@ public sealed partial class ToolsViewModel : ObservableObject
     public bool IsVerify => SelectedTool.Value == Tool.Verify;
 
     public bool IsRestore => SelectedTool.Value == Tool.Restore;
+
+    public bool IsTest => SelectedTool.Value == Tool.Test;
 
     public bool HasImage => !string.IsNullOrWhiteSpace(ImagePath);
 
@@ -127,7 +144,7 @@ public sealed partial class ToolsViewModel : ObservableObject
         Job.ClearResult();
         var targets = Devices.Selected;
 
-        if (IsRestore && !await _dialogs.ConfirmEraseAsync([.. targets.Select(t => new EraseTarget(t.Device, t.Description))]))
+        if ((IsRestore || IsTest) && !await _dialogs.ConfirmEraseAsync([.. targets.Select(t => new EraseTarget(t.Device, t.Description))]))
         {
             return;
         }
@@ -156,6 +173,22 @@ public sealed partial class ToolsViewModel : ObservableObject
                 Job.ShowSuccess(_localizer.Get("Tools.Verify.Done", ByteSize.Format(result.ImageBytes, _localizer.Culture)));
             }
         }
+        else if (IsTest)
+        {
+            TestResults.Clear();
+            HasTestResults = false;
+            var result = await Job.RunAsync(_engine, new StickTestJobRequest { Targets = identified, Mode = SelectedTestMode.Value });
+            if (result is { Succeeded: true, ReportJson: { } json })
+            {
+                foreach (var report in StickTestReport.Deserialize(json))
+                {
+                    TestResults.Add(StickTestView.Describe(report, _localizer));
+                }
+
+                HasTestResults = TestResults.Count > 0;
+                Job.ShowWarning(_localizer.Get("Test.AfterwardsFormat"));
+            }
+        }
         else
         {
             var request = new RestoreDriveJobRequest
@@ -177,6 +210,13 @@ public sealed partial class ToolsViewModel : ObservableObject
         [
             new(Tool.Verify, _localizer.Get("Tools.Tool.Verify")),
             new(Tool.Restore, _localizer.Get("Tools.Tool.Restore")),
+            new(Tool.Test, _localizer.Get("Tools.Tool.Test")),
+        ];
+        TestModes =
+        [
+            new(StickTestMode.Capacity, _localizer.Get("Tools.Test.Mode.Capacity")),
+            new(StickTestMode.Quick, _localizer.Get("Tools.Test.Mode.Quick")),
+            new(StickTestMode.Thorough, _localizer.Get("Tools.Test.Mode.Thorough")),
         ];
         Modes =
         [
@@ -204,6 +244,8 @@ public sealed partial class ToolsViewModel : ObservableObject
             SelectedMode = Modes.First(o => o.Value == SelectedMode.Value);
             SelectedScheme = Schemes.First(o => o.Value == SelectedScheme.Value);
             SelectedFileSystem = FileSystems.First(o => o.Value == SelectedFileSystem.Value);
+            SelectedTestMode = TestModes.First(o => o.Value == SelectedTestMode.Value);
+            OnPropertyChanged(nameof(TestModes));
             OnPropertyChanged(nameof(Tools));
             OnPropertyChanged(nameof(Modes));
             OnPropertyChanged(nameof(Schemes));

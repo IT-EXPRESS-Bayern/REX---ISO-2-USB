@@ -41,6 +41,7 @@ internal static class BrokerHandlers
         return
         [
             new CollectLogsHandler(context.Paths, userFiles),
+            new StickTestHandler(context.Disks, context.Jobs, new StickTestJob(context.Disks, context.Loggers.CreateLogger<StickTestJob>())),
             new TinyBuildHandler(tiny),
         ];
     }

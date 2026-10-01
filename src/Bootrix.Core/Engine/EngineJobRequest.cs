@@ -14,6 +14,7 @@ namespace Bootrix.Core.Engine;
 [JsonDerivedType(typeof(CollectLogsJobRequest), "collect-logs")]
 [JsonDerivedType(typeof(RawWriteJobRequest), "raw-write")]
 [JsonDerivedType(typeof(RestoreDriveJobRequest), "restore-drive")]
+[JsonDerivedType(typeof(StickTestJobRequest), "stick-test")]
 [JsonDerivedType(typeof(TinyBuildJobRequest), "tiny-build")]
 [JsonDerivedType(typeof(VerifyJobRequest), "verify-media")]
 [JsonDerivedType(typeof(WriteImageJobRequest), "write-image")]

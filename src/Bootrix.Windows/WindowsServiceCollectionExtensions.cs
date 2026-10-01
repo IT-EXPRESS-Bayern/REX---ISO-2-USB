@@ -35,6 +35,8 @@ public static class WindowsServiceCollectionExtensions
         services.AddSingleton<RawWriteJob>();
         services.AddSingleton<RestoreDriveJob>();
         services.AddSingleton<VerifyMediaJob>();
+        services.AddSingleton<StickTestJob>();
+        services.AddSingleton<IEngineJobHandler, StickTestHandler>();
         services.AddSingleton<DiskPreparer>();
 
         services.AddSingleton<IImageServicing, DismImageServicing>();

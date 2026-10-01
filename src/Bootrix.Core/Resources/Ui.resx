@@ -454,4 +454,30 @@
   <data name="Settings.About" xml:space="preserve"><value>Über Bootrix</value></data>
   <data name="Settings.About.Text" xml:space="preserve"><value>Bootrix {0}  ·  GPL-3.0-or-later  ·  © IT-EXPRESS Bayern</value></data>
   <data name="Settings.About.Source" xml:space="preserve"><value>Quelltext und Lizenzen</value></data>
+  <data name="Tools.Tool.Test" xml:space="preserve"><value>Stick testen (Kapazität und fehlerhafte Blöcke)</value></data>
+  <data name="Tools.Test.Hint" xml:space="preserve"><value>Schreibt Testdaten über den ganzen Stick und liest sie zurück: findet Sticks mit gefälschter Kapazität und defekte Speicherbereiche. Alle Daten auf dem Stick gehen verloren, danach muss er neu formatiert werden.</value></data>
+  <data name="Tools.Test.Mode" xml:space="preserve"><value>Umfang</value></data>
+  <data name="Tools.Test.Mode.Capacity" xml:space="preserve"><value>Nur Kapazität (etwa eine Minute)</value></data>
+  <data name="Tools.Test.Mode.Quick" xml:space="preserve"><value>Kapazität und schneller Blocktest (zwei Muster)</value></data>
+  <data name="Tools.Test.Mode.Thorough" xml:space="preserve"><value>Kapazität und gründlicher Blocktest (vier Muster, kann Stunden dauern)</value></data>
+  <data name="Tools.Start.Test" xml:space="preserve"><value>Testen</value></data>
+  <data name="Tools.Test.Results" xml:space="preserve"><value>Ergebnis</value></data>
+  <data name="Test.Verdict.Good" xml:space="preserve"><value>In Ordnung: die Kapazität stimmt, es wurden keine fehlerhaften Blöcke gefunden.</value></data>
+  <data name="Test.Verdict.GoodCapacity" xml:space="preserve"><value>Die Kapazität stimmt. Auf fehlerhafte Blöcke wurde nicht geprüft.</value></data>
+  <data name="Test.Verdict.Fake" xml:space="preserve"><value>Gefälschte Kapazität: der Stick gibt {0} an, hat aber nur etwa {1}.</value></data>
+  <data name="Test.Verdict.FakeUnknown" xml:space="preserve"><value>Gefälschte Kapazität: der Stick gibt {0} an, speichert aber nicht alles, was auf ihn geschrieben wird.</value></data>
+  <data name="Test.Verdict.Bad" xml:space="preserve"><value>Fehlerhafte Blöcke: {0} Bereich(e) mit zusammen {1} gefunden. Den Stick besser nicht mehr für wichtige Daten verwenden.</value></data>
+  <data name="Test.Line.Device" xml:space="preserve"><value>Stick</value></data>
+  <data name="Test.Line.Claimed" xml:space="preserve"><value>Angegebene Größe</value></data>
+  <data name="Test.Line.Write" xml:space="preserve"><value>Schreibgeschwindigkeit</value></data>
+  <data name="Test.Line.Read" xml:space="preserve"><value>Lesegeschwindigkeit</value></data>
+  <data name="Test.Line.Probe" xml:space="preserve"><value>Geprüfte Stellen</value></data>
+  <data name="Test.Line.Passes" xml:space="preserve"><value>Durchgänge des Blocktests</value></data>
+  <data name="Test.Line.Errors" xml:space="preserve"><value>Lese- und Schreibfehler</value></data>
+  <data name="Test.Speed" xml:space="preserve"><value>{0} MB/s</value></data>
+  <data name="Test.AfterwardsFormat" xml:space="preserve"><value>Der Stick enthält jetzt Testdaten und hat keine Partitionstabelle mehr. Mit „Laufwerk wiederherstellen“ oder auf der Schreiben-Seite lässt er sich neu einrichten.</value></data>
+  <data name="Step.Test.Check" xml:space="preserve"><value>Laufwerke prüfen</value></data>
+  <data name="Step.Test.Capacity" xml:space="preserve"><value>Kapazität prüfen</value></data>
+  <data name="Step.Test.BadBlocks" xml:space="preserve"><value>Auf fehlerhafte Blöcke prüfen</value></data>
+  <data name="Step.Test.Finish" xml:space="preserve"><value>Abschließen</value></data>
 </root>

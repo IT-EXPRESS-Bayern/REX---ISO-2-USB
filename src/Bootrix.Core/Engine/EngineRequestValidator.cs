@@ -22,6 +22,7 @@ public static class EngineRequestValidator
         [typeof(RestoreDriveJobRequest)] = (request, problems) => ValidateRestore((RestoreDriveJobRequest)request, problems),
         [typeof(VerifyJobRequest)] = (request, problems) => ValidateVerify((VerifyJobRequest)request, problems),
         [typeof(CollectLogsJobRequest)] = (request, problems) => CollectLogsRequestValidation.Validate((CollectLogsJobRequest)request, problems),
+        [typeof(StickTestJobRequest)] = (request, problems) => StickTestRequestValidation.Validate((StickTestJobRequest)request, problems),
         [typeof(TinyBuildJobRequest)] = (request, problems) => ValidateTinyBuild((TinyBuildJobRequest)request, problems),
     };
 
@@ -220,7 +221,7 @@ public static class EngineRequestValidator
         }
     }
 
-    private static void ValidateTargets(IReadOnlyList<EngineTarget>? targets, List<string> problems)
+    internal static void ValidateTargets(IReadOnlyList<EngineTarget>? targets, List<string> problems)
     {
         if (targets is null || targets.Count == 0)
         {

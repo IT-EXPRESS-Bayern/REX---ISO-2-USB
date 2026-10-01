@@ -454,4 +454,30 @@
   <data name="Settings.About" xml:space="preserve"><value>About Bootrix</value></data>
   <data name="Settings.About.Text" xml:space="preserve"><value>Bootrix {0}  ·  GPL-3.0-or-later  ·  © IT-EXPRESS Bayern</value></data>
   <data name="Settings.About.Source" xml:space="preserve"><value>Source code and licenses</value></data>
+  <data name="Tools.Tool.Test" xml:space="preserve"><value>Test a stick (capacity and bad blocks)</value></data>
+  <data name="Tools.Test.Hint" xml:space="preserve"><value>Writes test data over the whole stick and reads it back: finds sticks with a faked capacity and defective memory areas. All data on the stick is lost, and it has to be formatted again afterwards.</value></data>
+  <data name="Tools.Test.Mode" xml:space="preserve"><value>Scope</value></data>
+  <data name="Tools.Test.Mode.Capacity" xml:space="preserve"><value>Capacity only (about a minute)</value></data>
+  <data name="Tools.Test.Mode.Quick" xml:space="preserve"><value>Capacity and quick block test (two patterns)</value></data>
+  <data name="Tools.Test.Mode.Thorough" xml:space="preserve"><value>Capacity and thorough block test (four patterns, can take hours)</value></data>
+  <data name="Tools.Start.Test" xml:space="preserve"><value>Test</value></data>
+  <data name="Tools.Test.Results" xml:space="preserve"><value>Result</value></data>
+  <data name="Test.Verdict.Good" xml:space="preserve"><value>Good: the capacity is right and no bad blocks were found.</value></data>
+  <data name="Test.Verdict.GoodCapacity" xml:space="preserve"><value>The capacity is right. Bad blocks were not tested.</value></data>
+  <data name="Test.Verdict.Fake" xml:space="preserve"><value>Faked capacity: the stick claims {0} but only has about {1}.</value></data>
+  <data name="Test.Verdict.FakeUnknown" xml:space="preserve"><value>Faked capacity: the stick claims {0} but does not keep everything that is written to it.</value></data>
+  <data name="Test.Verdict.Bad" xml:space="preserve"><value>Bad blocks: {0} area(s) totalling {1} found. Better not use this stick for important data any more.</value></data>
+  <data name="Test.Line.Device" xml:space="preserve"><value>Stick</value></data>
+  <data name="Test.Line.Claimed" xml:space="preserve"><value>Claimed size</value></data>
+  <data name="Test.Line.Write" xml:space="preserve"><value>Write speed</value></data>
+  <data name="Test.Line.Read" xml:space="preserve"><value>Read speed</value></data>
+  <data name="Test.Line.Probe" xml:space="preserve"><value>Spots checked</value></data>
+  <data name="Test.Line.Passes" xml:space="preserve"><value>Passes of the block test</value></data>
+  <data name="Test.Line.Errors" xml:space="preserve"><value>Read and write errors</value></data>
+  <data name="Test.Speed" xml:space="preserve"><value>{0} MB/s</value></data>
+  <data name="Test.AfterwardsFormat" xml:space="preserve"><value>The stick now holds test data and has no partition table. Use "Restore a drive" or the Write page to set it up again.</value></data>
+  <data name="Step.Test.Check" xml:space="preserve"><value>Checking the drives</value></data>
+  <data name="Step.Test.Capacity" xml:space="preserve"><value>Checking the capacity</value></data>
+  <data name="Step.Test.BadBlocks" xml:space="preserve"><value>Testing for bad blocks</value></data>
+  <data name="Step.Test.Finish" xml:space="preserve"><value>Finishing</value></data>
 </root>

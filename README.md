@@ -39,7 +39,8 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 | FreeDOS, MS-DOS, Disketten, Laufwerk formatieren | umgesetzt, FreeDOS unter QEMU geprüft |
 | Laufwerk wiederherstellen, Medium prüfen, komprimierte Images, bmap, Persistenz bei DD | umgesetzt |
 | Oberfläche: Schreiben, Downloads, Disc, Tiny-Builder, Werkzeuge (Medium prüfen, Laufwerk wiederherstellen), Werkstatt (Zielgeräte-Check) | umgesetzt |
-| Backup/Restore von Datenträgern, sichere Löschung, Windows To Go, Multiboot | geplant |
+| Stick-Test (gefälschte Kapazität, fehlerhafte Blöcke) | umgesetzt (echte Sticks ungeprüft) |
+| Backup/Restore von Datenträgern, sichere Löschung, Windows To Go, Multiboot | in Arbeit |
 
 ## Kommandozeile
 
@@ -52,6 +53,7 @@ bootrix-cli write <image> -d <disk> [--mode extract] [--scheme gpt] [--fs ntfs] 
 bootrix-cli format -d <disk> [--fs fat32] [--label NAME]       bootrix-cli dos -d <disk> [--system freedos|msdos]
 bootrix-cli plan <image> --size-gb 16 [--json]                 bootrix-cli inspect <image> [--json]
 bootrix-cli verify <image> -d <disk> [--mode auto|raw|files]   bootrix-cli restore-drive -d <disk> [--scheme mbr|gpt] [--fs fat32]
+bootrix-cli stick-test -d <disk> [--mode capacity|quick|thorough]
 bootrix-cli disc drives|burn|rip|erase|eject
 bootrix-cli hash <datei> [-a sha256]
 bootrix-cli catalog products [-f windows|linux|bsd|dos|rescue|utility]

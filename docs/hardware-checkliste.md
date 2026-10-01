@@ -81,3 +81,11 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] Tiny11, Tiny11 Core und Tiny10 jeweils mit einer echten ISO bauen (Windows 11 24H2/25H2, Windows 10 22H2): Dauer, Platzbedarf im Arbeitsbereich (etwa das Dreifache des Installationsabbilds), Abbruch während „Apps entfernen“ und danach sauberes Aufräumen (`dism /get-mountedwiminfo` leer, keine Ordner unter `C:\ProgramData\Bootrix\work`)
 - [ ] Die gebaute ISO in einer virtuellen Maschine (UEFI und BIOS) installieren; mit gesetztem „Hardware-Prüfung überspringen“ auch in einer VM ohne TPM
 - [ ] Beim ersten Start des Tiny-Builders wird oscdimg aus dem Windows ADK oder von Microsoft geladen; der Hash wird geprüft und die Datei liegt unter `C:\ProgramData\Bootrix\tools`, das für Standardbenutzer nur lesbar ist
+
+## Stick-Test (Kapazität und fehlerhafte Blöcke)
+
+- [ ] Echter Stick mit richtiger Größe (8, 32, 128 GB): „nur Kapazität“ meldet „in Ordnung“, Geschwindigkeiten plausibel; danach hat der Stick keine Partitionstabelle mehr und lässt sich mit „Laufwerk wiederherstellen“ neu einrichten
+- [ ] Gefälschter Stick (Angebot „1 TB“ für wenige Euro, in Wahrheit 8–32 GB): die Kapazitätsprüfung meldet „Gefälschte Kapazität“ mit der geschätzten echten Größe; prüfen, ob ein Schreibfehler des Treibers statt stillem Überschreiben zu einer Fehlermeldung statt einem Ergebnis führt
+- [ ] Alter, abgenutzter Stick oder SD-Karte mit bekannten Defekten: der schnelle Blocktest findet fehlerhafte Bereiche und listet sie; Abbruch während des Tests und danach sauberes Aufräumen
+- [ ] Stick am USB-SATA-Adapter mit 4096-Byte-Sektoren: Test läuft ohne Ausrichtungsfehler
+- [ ] Dauer des gründlichen Tests auf einem 64-GB-Stick notiert

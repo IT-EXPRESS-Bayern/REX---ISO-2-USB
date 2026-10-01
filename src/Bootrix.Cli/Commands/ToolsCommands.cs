@@ -4,8 +4,11 @@ using Bootrix.Cli.Output;
 using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
+using Bootrix.Core.Localization;
 using Bootrix.Core.Model;
+using Bootrix.Core.Presentation;
 using Bootrix.Core.Storage;
+using Bootrix.Core.Storage.Testing;
 using Bootrix.Core.Writing.Verify;
 
 namespace Bootrix.Cli.Commands;
@@ -110,6 +113,92 @@ internal static class ToolsCommands
 
                     var request = new RestoreDriveJobRequest { Targets = targets, Scheme = partitionScheme, FileSystem = kind, Label = parse.GetValue(label) };
                     return await RunAsync(engine.Value, request, writer, _ => string.Empty, soft.Token, abort.Token).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    writer.EndProgress();
+                    writer.WriteError(ex);
+                    return ExitCodes.For(ex);
+                }
+            }
+        });
+        return command;
+    }
+
+    public static Command CreateTest(Lazy<IEngine> engine, Lazy<IDiskService> disks)
+    {
+        var diskOption = new Option<string[]>("--disk", "-d")
+        {
+            Description = "Stick to test: number (3), name (disk3) or serial number. Repeat for several.",
+            Required = true,
+            AllowMultipleArgumentsPerToken = true,
+        };
+        var confirm = new Option<string[]>("--confirm")
+        {
+            Description = "Serial number of each target (or diskN when it has none). Required instead of the interactive question.",
+            AllowMultipleArgumentsPerToken = true,
+        };
+        var mode = new Option<string>("--mode") { Description = "capacity (about a minute), quick (two patterns over the whole stick) or thorough (four patterns, can take hours).", DefaultValueFactory = _ => "capacity" };
+        var json = new Option<bool>("--json") { Description = "Machine readable output (one JSON object per line)." };
+
+        var command = new Command("stick-test", "Write test data over a stick and read it back: finds faked capacity and bad blocks. Destroys all data on the stick.") { diskOption, confirm, mode, json };
+        command.SetAction(async (parse, cancellationToken) =>
+        {
+            var writer = new ConsoleWriter(parse.GetValue(json));
+            var (soft, abort) = TargetPrompt.HookCancel(cancellationToken);
+            using (soft)
+            using (abort)
+            {
+                try
+                {
+                    if (!Enum.TryParse<StickTestMode>(parse.GetValue(mode), ignoreCase: true, out var testMode))
+                    {
+                        throw new BootrixException(ErrorCode.InvalidSpec, "test mode") { Arguments = ["--mode must be capacity, quick or thorough."] };
+                    }
+
+                    var targets = await TargetPrompt.ResolveAsync(engine.Value, disks.Value, parse.GetValue(diskOption) ?? [], parse.GetValue(confirm) ?? [], writer, destructive: true, soft.Token).ConfigureAwait(false);
+                    if (targets is null)
+                    {
+                        return ExitCodes.Usage;
+                    }
+
+                    var result = await engine.Value.RunJobAsync(
+                        new StickTestJobRequest { Targets = targets, Mode = testMode },
+                        new Progress<ProgressReport>(report => writer.WriteProgress(report)),
+                        soft.Token,
+                        abort.Token).ConfigureAwait(false);
+                    writer.EndProgress();
+
+                    if (!result.Succeeded)
+                    {
+                        var error = result.ToException()!;
+                        writer.WriteError(error);
+                        return ExitCodes.For(error);
+                    }
+
+                    var reports = StickTestReport.Deserialize(result.ReportJson ?? "[]");
+                    foreach (var report in reports)
+                    {
+                        if (writer.Json)
+                        {
+                            writer.WriteObject(new { type = "result", device = report.Device, serial = report.Serial, good = report.IsGood, report });
+                            continue;
+                        }
+
+                        var summary = StickTestView.Describe(report, Localizer.Default);
+                        writer.WriteLine(summary.VerdictText);
+                        foreach (var line in summary.Lines)
+                        {
+                            writer.WriteLine($"  {line.Label}: {line.Value}");
+                        }
+                    }
+
+                    if (!writer.Json)
+                    {
+                        writer.WriteLine(Localizer.Default.Get("Test.AfterwardsFormat"));
+                    }
+
+                    return reports.All(r => r.IsGood) ? ExitCodes.Success : ExitCodes.VerifyFailed;
                 }
                 catch (Exception ex)
                 {

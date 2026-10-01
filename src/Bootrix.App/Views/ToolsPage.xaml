@@ -67,12 +67,64 @@
                 </Grid>
             </StackPanel>
 
+            <!-- Stick test -->
+            <StackPanel Visibility="{Binding IsTest, Converter={StaticResource BoolToVisibility}}">
+                <ui:TextBlock Text="{loc:Loc Tools.Test.Mode}" FontTypography="BodyStrong" Margin="0,0,0,4" />
+                <ComboBox MinWidth="420" HorizontalAlignment="Left" Margin="0,0,0,24"
+                          ItemsSource="{Binding TestModes}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedTestMode}" />
+            </StackPanel>
+
             <controls:DeviceList DataContext="{Binding Devices}" />
 
             <ui:Button Content="{Binding StartText}" Icon="{ui:SymbolIcon Play24}" Appearance="Primary"
                        Command="{Binding StartCommand}" MinWidth="140" HorizontalAlignment="Left" Margin="0,0,0,16" />
 
             <controls:JobProgressPanel DataContext="{Binding Job}" />
+            <StackPanel Visibility="{Binding HasTestResults, Converter={StaticResource BoolToVisibility}}" Margin="0,16,0,0">
+                <ui:TextBlock Text="{loc:Loc Tools.Test.Results}" FontTypography="Subtitle" Margin="0,0,0,8" />
+                <ItemsControl ItemsSource="{Binding TestResults}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="16" CornerRadius="6" Margin="0,0,0,8"
+                                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                                <StackPanel>
+                                    <ui:TextBlock Text="{Binding VerdictText}" TextWrapping="Wrap" FontWeight="SemiBold" Margin="0,0,0,8">
+                                        <ui:TextBlock.Style>
+                                            <Style TargetType="ui:TextBlock">
+                                                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Verdict}" Value="FakeCapacity">
+                                                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Verdict}" Value="BadBlocks">
+                                                        <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ui:TextBlock.Style>
+                                    </ui:TextBlock>
+                                    <ItemsControl ItemsSource="{Binding Lines}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid Margin="0,2">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="200" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ui:TextBlock Text="{Binding Label}" Appearance="Secondary" />
+                                                    <ui:TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
         </StackPanel>
     </ScrollViewer>
 </Page>
