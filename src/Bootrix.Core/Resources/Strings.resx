@@ -361,4 +361,12 @@
   <data name="Linux.Notice.FileSkipped" xml:space="preserve"><value>Die Datei „{0}“ wurde nicht übernommen: {1}</value></data>
   <data name="Linux.Notice.EfiLoadersFromBootImage" xml:space="preserve"><value>Die EFI-Startdateien fehlten im Dateibaum und wurden aus dem EFI-Abbild des Images übernommen.</value></data>
   <data name="Linux.Notice.ChecksumsUpdated" xml:space="preserve"><value>{0} Zeilen der Prüfsummenliste (md5sum.txt) wurden an geänderte Dateien angepasst.</value></data>
+  <data name="Error.DosMbrNotBootable.Cause" xml:space="preserve"><value>Nach dem Partitionieren gibt es keine einzelne aktive FAT-Partition ({0}); ein PC könnte von diesem Datenträger nicht starten.</value></data>
+  <data name="Error.DosMbrNotBootable.Action" xml:space="preserve"><value>Ziehen Sie den Stick ab, stecken Sie ihn neu ein und schreiben Sie ihn erneut.</value></data>
+  <data name="Error.MsDosImageInvalid.Cause" xml:space="preserve"><value>Die von Microsoft geladene Datei enthält nicht das erwartete MS-DOS-Startdisketten-Abbild: {0}</value></data>
+  <data name="Error.MsDosImageInvalid.Action" xml:space="preserve"><value>Die Datei wurde nicht verwendet. Versuchen Sie es später erneut oder wählen Sie FreeDOS.</value></data>
+  <data name="Error.MsDosNotDownloaded.Cause" xml:space="preserve"><value>MS-DOS braucht Systemdateien von Microsoft. Sie sind nicht Teil von Bootrix und wurden noch nicht geladen.</value></data>
+  <data name="Error.MsDosNotDownloaded.Action" xml:space="preserve"><value>Bestätigen Sie den Download der Dateien von Microsoft (es gelten die Lizenzbedingungen von Microsoft) oder wählen Sie FreeDOS.</value></data>
+  <data name="Error.MsDosFilesUntrusted.Cause" xml:space="preserve"><value>Die von Microsoft geladene Datei {0} hat nicht die erwartete Größe, Prüfsumme oder Signatur und wurde verworfen.</value></data>
+  <data name="Error.MsDosFilesUntrusted.Action" xml:space="preserve"><value>Prüfen Sie die Internetverbindung und versuchen Sie es erneut. Bleibt der Fehler, hat Microsoft die Datei vermutlich geändert; wählen Sie dann FreeDOS.</value></data>
 </root>

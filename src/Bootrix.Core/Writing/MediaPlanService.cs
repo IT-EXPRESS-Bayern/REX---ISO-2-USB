@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Engine;
 using Bootrix.Core.Images;
 using Bootrix.Core.Planning;
 using Bootrix.Core.Profiles;
@@ -44,6 +45,13 @@ public sealed class MediaPlanService(ImageInspector inspector)
         inspection = inspection with { BmapPath = BlockMapLocator.Find(imagePath) };
         return AppleImagePlanning.Refine(inspection, source.Stream, source.Kind == ImageSourceKind.AppleContainer);
     }
+
+    /// <summary>What stands in for the image when nothing is copied from one: a DOS system or an empty, formatted drive.</summary>
+    public static ImageInspection InspectionFor(WriteSource source) => new()
+    {
+        Profile = new ImageProfile { Kind = source == WriteSource.Dos ? ImageKind.Dos : ImageKind.Unknown },
+        Container = ImageContainer.Unknown,
+    };
 
     public static WritePreview Plan(ImageInspection inspection, TargetOptions target, StorageDevice device) =>
         new(inspection, LayoutPlanner.Plan(inspection.Profile, target, CapsOf(device)));

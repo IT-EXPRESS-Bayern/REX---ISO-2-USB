@@ -35,14 +35,20 @@ public sealed class WriteImageJobFactory(
             throw new ArgumentException("At least one target disk is required.", nameof(request));
         }
 
-        // Opened through the image provider so that the broker looks at the file with the rights of the user who asked for it.
-        // Compressed files are looked at as they are, Apple containers by the volume they hold.
         AppleRefinement refined;
-        await using (var opened = await images.OpenForInspectionAsync(
-            request.ImagePath,
-            new ImageOpenOptions { ArchiveEntry = request.ArchiveEntry, BlockMap = request.BlockMap },
-            cancellationToken).ConfigureAwait(false))
+        if (request.Source == WriteSource.Image)
         {
+            if (string.IsNullOrWhiteSpace(request.ImagePath))
+            {
+                throw new ArgumentException("An image path is required to write an image.", nameof(request));
+            }
+
+            // Opened through the image provider so that the broker looks at the file with the rights of the user who asked for it.
+            // Compressed files are looked at as they are, Apple containers by the volume they hold.
+            await using var opened = await images.OpenForInspectionAsync(
+                request.ImagePath,
+                new ImageOpenOptions { ArchiveEntry = request.ArchiveEntry, BlockMap = request.BlockMap },
+                cancellationToken).ConfigureAwait(false);
             var found = await planner.InspectAsync(
                 opened.Stream,
                 Path.GetFileName(request.ImagePath),
@@ -50,11 +56,16 @@ public sealed class WriteImageJobFactory(
                 cancellationToken).ConfigureAwait(false);
             refined = AppleImagePlanning.Refine(found, opened.Stream, opened.Source?.Kind == ImageSourceKind.AppleContainer);
         }
+        else
+        {
+            // A DOS stick or a plain format has no image: a stand-in profile makes the planner and the writers choose the right way.
+            refined = AppleImagePlanning.Refine(MediaPlanService.InspectionFor(request.Source), Stream.Null, fromAppleContainer: false);
+        }
 
         var inspection = refined.Inspection;
         if (inspection.HasErrors)
         {
-            throw new BootrixException(ErrorCode.ImageUnsupported, request.ImagePath) { Arguments = [request.ImagePath] };
+            throw new BootrixException(ErrorCode.ImageUnsupported, request.ImagePath) { Arguments = [request.ImagePath ?? ""] };
         }
 
         var jobId = "write-" + Guid.NewGuid().ToString("N")[..8];
@@ -85,7 +96,7 @@ public sealed class WriteImageJobFactory(
         var context = new MediaWriteContext
         {
             JobId = jobId,
-            ImagePath = request.ImagePath,
+            ImagePath = request.ImagePath ?? "",
             Inspection = inspection,
             Spec = request.Spec,
             Targets = targets,
@@ -95,7 +106,7 @@ public sealed class WriteImageJobFactory(
             BlockMap = request.BlockMap,
         };
 
-        return new Job(jobId, Path.GetFileName(request.ImagePath), writer.CreateSteps(context));
+        return new Job(jobId, request.Source == WriteSource.Image ? Path.GetFileName(request.ImagePath!) : request.Source.ToString(), writer.CreateSteps(context));
     }
 
     /// <summary>Targets of different sizes may get different layouts, but they must all be written the same way.</summary>

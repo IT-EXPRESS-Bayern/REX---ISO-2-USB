@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Boot.Dos;
 using Bootrix.Core.Model;
 
 namespace Bootrix.Core.Profiles;
@@ -22,6 +23,9 @@ public sealed record JobSpec
     public TargetOptions Target { get; init; } = new();
 
     public WindowsSetupOptions Windows { get; init; } = new();
+
+    /// <summary>Which DOS a DOS stick or diskette gets, and whether files of Microsoft may be downloaded for it.</summary>
+    public DosOptions Dos { get; init; } = new();
 
     public VerifyOptions Verify { get; init; } = new();
 

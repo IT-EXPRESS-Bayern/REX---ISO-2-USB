@@ -105,4 +105,10 @@ public enum ErrorCode
     BrokerStartFailed = 8102,
     BrokerDisconnected = 8103,
     BrokerProtocol = 8104,
+
+    // DOS and diskette media
+    DosMbrNotBootable = 2081,
+    MsDosImageInvalid = 3081,
+    MsDosNotDownloaded = 5081,
+    MsDosFilesUntrusted = 5082,
 }

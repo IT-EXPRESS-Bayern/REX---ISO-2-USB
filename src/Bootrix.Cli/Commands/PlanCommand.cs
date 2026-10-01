@@ -13,22 +13,34 @@ internal static class PlanCommand
 {
     public static Command Create(MediaPlanService planner, Lazy<IDiskService> disks)
     {
-        var image = new Argument<FileInfo>("image") { Description = "Image to plan." };
+        var image = new Argument<FileInfo>("image") { Description = "Image to plan; leave out for a DOS stick or a plain format.", Arity = ArgumentArity.ZeroOrOne };
+        var medium = new Option<string>("--medium") { Description = "image (default), dos or format.", DefaultValueFactory = _ => "image" };
         var disk = new Option<string>("--disk", "-d") { Description = "Target disk: number, name or serial number." };
         var size = new Option<double?>("--size-gb") { Description = "Plan for a drive of this size instead of a real one (a dry run without hardware)." };
         var sector = new Option<int>("--sector-size") { Description = "Logical sector size of the pretend drive (512 or 4096).", DefaultValueFactory = _ => 512 };
         var spec = SpecOptions.Create();
         var json = new Option<bool>("--json") { Description = "Machine readable output." };
 
-        var command = new Command("plan", "Show what 'write' would do for this image and drive, without touching anything.") { image, disk, size, sector, json };
+        var command = new Command("plan", "Show what 'write' would do for this image and drive, without touching anything.") { image, medium, disk, size, sector, json };
         spec.AddTo(command);
         command.SetAction(async (parse, cancellationToken) =>
         {
             var writer = new ConsoleWriter(parse.GetValue(json));
             try
             {
-                var file = parse.GetValue(image)!;
-                if (!file.Exists)
+                var source = parse.GetValue(medium)?.ToLowerInvariant() switch
+                {
+                    "dos" => Core.Engine.WriteSource.Dos,
+                    "format" => Core.Engine.WriteSource.Format,
+                    _ => Core.Engine.WriteSource.Image,
+                };
+                var file = parse.GetValue(image);
+                if (source == Core.Engine.WriteSource.Image && file is null)
+                {
+                    throw new BootrixException(ErrorCode.InvalidSpec, "no image") { Arguments = ["Give an image, or --medium dos / --medium format."] };
+                }
+
+                if (file is { Exists: false })
                 {
                     throw new BootrixException(ErrorCode.ImageUnreadable, file.FullName) { Arguments = [file.FullName] };
                 }
@@ -50,7 +62,9 @@ internal static class PlanCommand
                         : throw new BootrixException(ErrorCode.InvalidSpec, "no target") { Arguments = ["Give --disk or --size-gb."] };
 
                 var jobSpec = spec.Build(parse, verify: true);
-                var preview = await planner.PlanAsync(file.FullName, jobSpec.Target, device, cancellationToken).ConfigureAwait(false);
+                var preview = source == Core.Engine.WriteSource.Image
+                    ? await planner.PlanAsync(file!.FullName, jobSpec.Target, device, cancellationToken).ConfigureAwait(false)
+                    : MediaPlanService.Plan(MediaPlanService.InspectionFor(source), jobSpec.Target, device);
                 var summary = PlanSummary.From(preview, Localizer.Default);
 
                 if (writer.Json)

@@ -4,6 +4,19 @@ using Bootrix.Core.Writing.Raw;
 
 namespace Bootrix.Core.Engine;
 
+/// <summary>What goes onto the drive.</summary>
+public enum WriteSource
+{
+    /// <summary>The image at <see cref="WriteImageJobRequest.ImagePath"/>.</summary>
+    Image,
+
+    /// <summary>A bootable DOS system (FreeDOS, or MS-DOS from Microsoft's own download); nothing is copied from an image.</summary>
+    Dos,
+
+    /// <summary>Only partition and format; the drive is left empty.</summary>
+    Format,
+}
+
 /// <summary>
 /// Writes an image to one or several disks the way the plan for that image decides: byte for byte,
 /// or partitioned, formatted and filled with the files of the image. Replaces the raw request for
@@ -11,7 +24,10 @@ namespace Bootrix.Core.Engine;
 /// </summary>
 public sealed record WriteImageJobRequest : EngineJobRequest
 {
-    public required string ImagePath { get; init; }
+    /// <summary>The image to write; empty for <see cref="WriteSource.Dos"/> and <see cref="WriteSource.Format"/>, which have none.</summary>
+    public string? ImagePath { get; init; }
+
+    public WriteSource Source { get; init; } = WriteSource.Image;
 
     public required IReadOnlyList<EngineTarget> Targets { get; init; }
 

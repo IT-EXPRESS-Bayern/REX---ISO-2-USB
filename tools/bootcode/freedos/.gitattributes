@@ -1,0 +1,2 @@
+# Upstream files stay byte-identical on every platform; the hashes in SHA256SUMS depend on it.
+* -text

@@ -182,4 +182,29 @@ public sealed class WriteImageJobFactoryTests : IDisposable
         Assert.True(writer.CanWrite(plan, new ImageProfile()));
         Assert.False(writer.CanWrite(plan with { WriteMethod = WriteMethod.ExtractFiles }, new ImageProfile()));
     }
+
+    [Theory]
+    [InlineData(WriteSource.Dos, ImageKind.Dos)]
+    [InlineData(WriteSource.Format, ImageKind.Unknown)]
+    public async Task ADosStickAndAPlainFormatNeedNoImage(WriteSource source, ImageKind expectedKind)
+    {
+        var device = Stick();
+        var writer = new FakeWriter(plan => plan.WriteMethod == WriteMethod.FormatOnly);
+        var request = new WriteImageJobRequest { Source = source, Targets = [new EngineTarget(device.DevicePath, DiskIdentity.From(device))] };
+
+        var job = await Factory(new FakeDisks(device), writer).CreateAsync(request, CancellationToken.None);
+
+        Assert.Equal(expectedKind, writer.Seen!.Image.Kind);
+        Assert.Equal("", writer.Seen.ImagePath);
+        Assert.Equal(source.ToString(), job.Title);
+    }
+
+    [Fact]
+    public async Task AnImageSourceWithoutAPathIsAProgrammingError()
+    {
+        var device = Stick();
+        var request = new WriteImageJobRequest { Targets = [new EngineTarget(device.DevicePath, DiskIdentity.From(device))] };
+
+        await Assert.ThrowsAsync<ArgumentException>(() => Factory(new FakeDisks(device), new FakeWriter(_ => true)).CreateAsync(request, CancellationToken.None));
+    }
 }

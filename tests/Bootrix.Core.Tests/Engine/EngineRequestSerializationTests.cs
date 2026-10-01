@@ -106,4 +106,37 @@ public class EngineRequestSerializationTests
     {
         Assert.Null(EngineJobResult.From(new JobResult(JobOutcome.Succeeded, TimeSpan.Zero)).ToException());
     }
+
+    [Fact]
+    public void WriteImageRequestKeepsItsSourceAndSpec()
+    {
+        var identity = new DiskIdentity { DevicePath = @"\\?\usbstor#disk", SizeBytes = 1 };
+        var request = new WriteImageJobRequest
+        {
+            Source = WriteSource.Dos,
+            Targets = [new EngineTarget(identity.DevicePath, identity)],
+            Spec = new JobSpec { Target = new TargetOptions { LegacyBiosFixes = true, Label = "DOS" } },
+        };
+
+        var copy = RoundTrip(request);
+
+        Assert.Equal(WriteSource.Dos, copy.Source);
+        Assert.Null(copy.ImagePath);
+        Assert.True(copy.Spec.Target.LegacyBiosFixes);
+        Assert.Equal("DOS", copy.Spec.Target.Label);
+    }
+
+    [Theory]
+    [InlineData(WriteSource.Image, null, false)]
+    [InlineData(WriteSource.Image, @"C:\iso\a.iso", true)]
+    [InlineData(WriteSource.Dos, null, true)]
+    [InlineData(WriteSource.Format, null, true)]
+    [InlineData(WriteSource.Dos, @"C:\iso\a.iso", false)]
+    public void TheValidatorOnlyWantsAnImagePathForImages(WriteSource source, string? path, bool valid)
+    {
+        var identity = new DiskIdentity { DevicePath = @"\\?\usbstor#disk&ven_x#1#{53f56307-b6bf-11d0-94f2-00a0c91efb8b}", SizeBytes = 1 };
+        var request = new WriteImageJobRequest { Source = source, ImagePath = path, Targets = [new EngineTarget(identity.DevicePath, identity)] };
+
+        Assert.Equal(valid, EngineRequestValidator.Validate(request).Count == 0);
+    }
 }

@@ -63,9 +63,14 @@ public static class EngineRequestValidator
 
     private static void ValidateWriteImage(WriteImageJobRequest request, List<string> problems)
     {
-        if (!EnginePathRules.IsAbsoluteFilePath(request.ImagePath))
+        if (request.Source == WriteSource.Image && !EnginePathRules.IsAbsoluteFilePath(request.ImagePath))
         {
             problems.Add("image path is not an absolute file path");
+        }
+
+        if (request.Source != WriteSource.Image && !string.IsNullOrEmpty(request.ImagePath))
+        {
+            problems.Add("an image path was given for a medium that has no image");
         }
 
         ValidateTargets(request.Targets, problems);

@@ -48,3 +48,11 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] UEFI-PC mit Secure Boot und Distributions-Shim (Ubuntu, Debian, Fedora, openSUSE): der kopierte `EFI\BOOT\BOOTX64.EFI` startet, die Hinweise zur Secure-Boot-Prüfung im Protokoll stimmen mit dem Ergebnis überein (gesperrter Loader → Hinweis, Start nur mit abgeschaltetem Secure Boot)
 - [ ] ESXi-Installer im ISO-Modus: `-p 1` in `boot.cfg` und `efi/boot/boot.cfg`, Installer findet seine Dateien auf dem Stick
 - [ ] Fedora/RHEL-ISO im ISO-Modus: Start ohne Persistenz; eine Persistenz-Anfrage endet mit einer Warnung statt mit einem Boot-Parameter; das Label in `inst.stage2=hd:LABEL=…` bzw. `root=live:LABEL=…` stimmt nach dem Umschreiben mit dem Datenträger-Label überein
+## DOS, Disketten und Formatieren
+
+- [ ] FreeDOS-Stick (FAT16, FAT32, mit und ohne Alt-BIOS-Anpassungen) auf einem alten PC mit USB-Boot; Standard-MBR und `mbr_f` (erzwingt Laufwerk 80h)
+- [ ] MS-DOS-8.0-Stick (FAT16): hängt vom CHS-Geometrie-Eintrag im BPB ab; mit USB-HDD-, USB-ZIP- und USB-FDD-Modus des BIOS probieren
+- [ ] MS-DOS-Download: Prüfung von Größe, SHA-256 und Signatur von `diskcopy.dll` auf einem Rechner mit Windows, danach Boot des Sticks
+- [ ] 1,44-MB-Diskette mit FreeDOS und mit MS-DOS in einem echten Diskettenlaufwerk (intern und USB), Rücklesen nach dem Schreiben
+- [ ] Stick ohne Partitionstabelle (Superfloppy): nur zu prüfen, wo das BIOS ihn als Diskette startet; als Festplatte (DL=80h) stoppt der FreeDOS-Kernel
+- [ ] Datenträger formatieren (FAT, FAT32 bis 32 GB, exFAT, NTFS) über „Laufwerk formatieren“ auf Stick, SD-Karte und Diskette

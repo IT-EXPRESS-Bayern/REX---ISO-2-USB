@@ -34,10 +34,11 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 | CD/DVD/BD brennen, löschen, auslesen | umgesetzt (echte Brenner noch ungeprüft) |
 | Zielgeräte-Check, Kunden-PC-Erfassung | umgesetzt |
 | Windows-Setup-Medien (Dateien kopieren, Split-WIM, BIOS-/UEFI-Start) | in Arbeit |
-| Antwortdatei, Treiber, Bypässe, Secure-Boot-Zertifikat 2023 | in Arbeit |
-| Linux-ISO-Modus, Syslinux/GRUB, Persistenz | in Arbeit |
-| FreeDOS, MS-DOS, Disketten | in Arbeit |
-| Backup/Restore, sichere Löschung, Windows To Go, Multiboot | geplant |
+| Antwortdatei, Treiber, Bypässe, Secure-Boot-Zertifikat 2023 | umgesetzt (Dateien und DISM-Pfad nur auf Windows prüfbar) |
+| Linux-ISO-Modus, Syslinux/GRUB, Persistenz | umgesetzt, unter QEMU (BIOS und UEFI) geprüft |
+| FreeDOS, MS-DOS, Disketten, Laufwerk formatieren | umgesetzt, FreeDOS unter QEMU geprüft |
+| Laufwerk wiederherstellen, Medium prüfen, komprimierte Images, bmap, Persistenz bei DD | umgesetzt |
+| Backup/Restore von Datenträgern, sichere Löschung, Windows To Go, Multiboot | geplant |
 
 ## Kommandozeile
 
@@ -46,6 +47,10 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 ```
 bootrix-cli disks [--all] [--usb-hdd] [--json]
 bootrix-cli write <image> -d <disk> [-d <disk> ...] [--confirm <seriennummer>] [--no-verify]
+bootrix-cli write <image> -d <disk> [--mode extract] [--scheme gpt] [--fs ntfs] [--persistence 4096] [--bypass-tpm] ...
+bootrix-cli format -d <disk> [--fs fat32] [--label NAME]       bootrix-cli dos -d <disk> [--system freedos|msdos]
+bootrix-cli plan <image> --size-gb 16 [--json]                 bootrix-cli inspect <image> [--json]
+bootrix-cli disc drives|burn|rip|erase|eject
 bootrix-cli hash <datei> [-a sha256]
 bootrix-cli catalog products [-f windows|linux|bsd|dos|rescue|utility]
 bootrix-cli catalog variants <produkt>
