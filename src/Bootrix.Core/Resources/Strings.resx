@@ -88,6 +88,11 @@
   <data name="Error.CopyProtected.Cause" xml:space="preserve"><value>Die Disc ist kopiergeschützt.</value></data>
   <data name="Error.CopyProtected.Action" xml:space="preserve"><value>Kopiergeschützte Medien werden nicht kopiert.</value></data>
 
+  <data name="Error.EfiBinaryInvalid.Cause" xml:space="preserve"><value>Die Datei ist keine gültige EFI-Anwendung: {0}</value></data>
+  <data name="Error.EfiBinaryInvalid.Action" xml:space="preserve"><value>Prüfen Sie, ob die Datei vollständig kopiert wurde, und erstellen Sie das Medium bei Bedarf neu.</value></data>
+  <data name="Error.RevocationDataInvalid.Cause" xml:space="preserve"><value>Die Sperrliste für Secure Boot ist ungültig oder beschädigt: {0}</value></data>
+  <data name="Error.RevocationDataInvalid.Action" xml:space="preserve"><value>Verwenden Sie die eingebettete Sperrliste oder laden Sie die Daten erneut herunter.</value></data>
+
   <data name="Error.Unknown.Cause" xml:space="preserve"><value>Ein unerwarteter Fehler ist aufgetreten.</value></data>
   <data name="Error.Unknown.Action" xml:space="preserve"><value>Exportieren Sie das Diagnosepaket und senden Sie es an den Support.</value></data>
 </root>

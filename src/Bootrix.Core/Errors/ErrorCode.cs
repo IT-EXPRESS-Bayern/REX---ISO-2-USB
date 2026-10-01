@@ -59,4 +59,8 @@ public enum ErrorCode
     BurnFailed = 7003,
     ReadError = 7004,
     CopyProtected = 7005,
+
+    // 8xxx: Secure Boot / EFI analysis
+    EfiBinaryInvalid = 8001,
+    RevocationDataInvalid = 8002,
 }
