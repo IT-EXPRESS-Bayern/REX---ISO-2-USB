@@ -20,9 +20,16 @@ namespace Bootrix.Core.Catalog.Microsoft;
 /// Addresses are valid for 24 hours and are bound to the session that asked, so every
 /// <see cref="DownloadRequest"/> carries a <see cref="DownloadRequest.LinkResolver"/> that repeats the whole
 /// exchange. The API gives no size, so <see cref="DownloadRequest.ExpectedSize"/> stays empty and the downloader
-/// takes it from the server. The page prints a SHA-256 for every ISO in a table; it is passed on when exactly one
-/// row fits the language and word size, and left out otherwise. (Checked on 2026-10-01 for the German 64-bit ISO
-/// of Windows 11: the file's digest equals the table's value.)
+/// takes it from the server.
+/// <para>
+/// <see cref="DownloadRequest.ExpectedHashes"/> stays empty as well. Each page prints a SHA-256 per language, but
+/// Microsoft replaces the ISO files and edits the pages separately, and the table cannot be told to be current.
+/// Checked against the real files on 2026-10-01: the values for Windows 11 x64 (de-DE), Windows 10 x86 and x64
+/// (de-DE) were right; the Arm64 page still printed BBF9F228… while the file of build 26300.9457 hashes to
+/// 10CB224A… (8 545 961 984 bytes, complete). A table value as a hard requirement would discard a good 8 GB
+/// download, so it is only offered as advice through <see cref="GetPublishedHashAsync"/>. Transport integrity
+/// rests on TLS to Microsoft's download host.
+/// </para>
 /// </remarks>
 public sealed class MicrosoftIsoProvider : ICatalogProvider
 {
@@ -99,24 +106,32 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
         var content = await FetchPageAsync(route.Page, cancellationToken).ConfigureAwait(false);
         var endpoints = MicrosoftEndpoints.For(route.Page, content);
 
-        var (links, sku) = await RequestLinksAsync(route, endpoints, cancellationToken).ConfigureAwait(false);
-        var link = Pick(links, arch, route.Page);
+        var links = await RequestLinksAsync(route, endpoints, cancellationToken).ConfigureAwait(false);
 
-        var hash = content.FindHash([sku.Language, sku.LocalizedLanguage], arch == "x86" ? 32 : 64);
-        if (hash is null)
+        return new DownloadRequest(Pick(links, arch, route.Page).Url)
         {
-            _logger.LogWarning("The page lists no unique SHA-256 for {Language} {Arch}; the download is not checked against Microsoft's table", sku.Language, arch);
-        }
-
-        return new DownloadRequest(link.Url)
-        {
-            ExpectedHashes = hash is null ? [] : [hash],
             LinkResolver = async token =>
             {
-                var (fresh, _) = await RequestLinksAsync(route, endpoints, token).ConfigureAwait(false);
+                var fresh = await RequestLinksAsync(route, endpoints, token).ConfigureAwait(false);
                 return Pick(fresh, arch, route.Page).Url;
             },
         };
+    }
+
+    /// <summary>
+    /// The SHA-256 that the download page prints for this file, or null if the table has no single row for the
+    /// language and word size. Advice only: the table lags behind the files at times (see the remarks of the class),
+    /// so a difference from the downloaded file's digest is a reason to look, not proof of damage.
+    /// </summary>
+    public async Task<FileHash?> GetPublishedHashAsync(CatalogVariant variant, string? architecture, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(variant);
+
+        var arch = ArchitectureChoice.Choose(variant, architecture);
+        var route = Route.From(variant, arch);
+        var content = await FetchPageAsync(route.Page, cancellationToken).ConfigureAwait(false);
+
+        return content.FindHash([route.Language, route.LocalizedLanguage], arch == "x86" ? 32 : 64);
     }
 
     private static LinkEntry Pick(IReadOnlyList<LinkEntry> links, string architecture, MicrosoftPage page)
@@ -157,7 +172,7 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
             {
                 foreach (var architecture in offer.Page.Architectures)
                 {
-                    properties.TryAdd(Route.Key(architecture), Route.Encode(offer.Page, offer.Edition.Id, offer.Sku.Language));
+                    properties.TryAdd(Route.Key(architecture), Route.Encode(offer.Page, offer.Edition.Id, offer.Sku.Language, offer.Sku.LocalizedLanguage));
                 }
             }
 
@@ -253,7 +268,7 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
     /// Runs the exchange for one language and returns the addresses. If Microsoft refuses the first time, one more
     /// attempt is made in a fresh session that also registers the profiling tag; a second refusal is final.
     /// </summary>
-    private async Task<(IReadOnlyList<LinkEntry> Links, SkuEntry Sku)> RequestLinksAsync(Route route, MicrosoftEndpoints endpoints, CancellationToken cancellationToken)
+    private async Task<IReadOnlyList<LinkEntry>> RequestLinksAsync(Route route, MicrosoftEndpoints endpoints, CancellationToken cancellationToken)
     {
         for (var attempt = 0; ; attempt++)
         {
@@ -281,7 +296,7 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
                 }
 
                 _logger.LogInformation("Got {Count} address(es) for {Language}, valid until {Expires}", links.Links.Count, sku.Language, links.Expires?.ToString("u", CultureInfo.InvariantCulture) ?? "unknown");
-                return (links.Links, sku);
+                return links.Links;
             }
             catch (MicrosoftDownloadBlockedException ex) when (attempt == 0)
             {
@@ -311,25 +326,26 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
     private sealed record Offer(MicrosoftPage Page, PageEdition Edition, SkuEntry Sku, bool SingleEdition);
 
     /// <summary>Where a variant's file comes from: a page, an edition on it, and a language. Stored in the variant's properties.</summary>
-    private sealed record Route(MicrosoftPage Page, int EditionId, string Language)
+    private sealed record Route(MicrosoftPage Page, int EditionId, string Language, string LocalizedLanguage)
     {
         public static string Key(string architecture) => $"route.{architecture}";
 
-        // The language travels with the route because the pages of one variant may spell it differently.
-        public static string Encode(MicrosoftPage page, int editionId, string language) =>
-            $"{page.Path}|{editionId.ToString(CultureInfo.InvariantCulture)}|{language}";
+        // The language travels with the route because the pages of one variant may spell it differently; the
+        // localized name is the one the page's digest table uses.
+        public static string Encode(MicrosoftPage page, int editionId, string language, string localized) =>
+            $"{page.Path}|{editionId.ToString(CultureInfo.InvariantCulture)}|{language}|{localized}";
 
         public static Route From(CatalogVariant variant, string architecture)
         {
             if (!variant.Properties.TryGetValue(Key(architecture), out var route)
-                || route.Split('|', 3) is not [var path, var edition, var language]
+                || route.Split('|', 4) is not [var path, var edition, var language, var localized]
                 || MicrosoftProducts.FindPage(path) is not { } page
                 || !int.TryParse(edition, NumberStyles.None, CultureInfo.InvariantCulture, out var editionId))
             {
                 throw new ArgumentException($"'{variant.Name}' was not produced by this provider.", nameof(variant));
             }
 
-            return new Route(page, editionId, language);
+            return new Route(page, editionId, language, localized);
         }
     }
 }

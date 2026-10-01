@@ -50,8 +50,8 @@ public class MicrosoftIsoProviderListingTests
         Assert.Null(german.ManualUrl);
         Assert.Equal("iso", german.Properties["format"]);
         Assert.Equal("German", german.Properties["language"]);
-        Assert.Equal("windows11|3813|German", german.Properties["route.x64"]);
-        Assert.Equal("windows11arm64|3816|German", german.Properties["route.arm64"]);
+        Assert.Equal("windows11|3813|German|German", german.Properties["route.x64"]);
+        Assert.Equal("windows11arm64|3816|German|German", german.Properties["route.arm64"]);
     }
 
     [Fact]
@@ -76,8 +76,8 @@ public class MicrosoftIsoProviderListingTests
         Assert.Equal(["x64", "x86"], german.Architectures);
         Assert.Equal("22H2", german.Version);
         Assert.Equal(new DateOnly(2025, 10, 14), german.EndOfSupport);
-        Assert.Equal("windows10ISO|2618|German", german.Properties["route.x64"]);
-        Assert.Equal("windows10ISO|2618|German", german.Properties["route.x86"]);
+        Assert.Equal("windows10ISO|2618|German|German", german.Properties["route.x64"]);
+        Assert.Equal("windows10ISO|2618|German|German", german.Properties["route.x86"]);
 
         // Windows 10 calls it "English International", Windows 11 "English (United Kingdom)"; both are en-GB.
         Assert.Equal("English International", Assert.Single(variants, v => v.Id == "en-GB").Name);

@@ -41,12 +41,14 @@ public class MicrosoftLiveTests(ITestOutputHelper output)
 
         Assert.Equal("software.download.prss.microsoft.com", request.Url.Host);
         Assert.EndsWith(".iso", request.Url.AbsolutePath, StringComparison.OrdinalIgnoreCase);
-        Assert.Single(request.ExpectedHashes);
+        Assert.Empty(request.ExpectedHashes);
+        var published = await provider.GetPublishedHashAsync(german, "x64", CancellationToken.None);
+        Assert.NotNull(published);
 
         var (status, total) = await ProbeAsync(request.Url);
         Assert.Equal(HttpStatusCode.PartialContent, status);
         Assert.True(total > 3L * 1024 * 1024 * 1024, $"ISO of {total} bytes");
-        output.WriteLine($"Resolved {request.Url.AbsolutePath} ({total} bytes), published SHA-256 {request.ExpectedHashes[0].Hex}");
+        output.WriteLine($"Resolved {request.Url.AbsolutePath} ({total} bytes), published SHA-256 {published.Hex}");
 
         var fresh = await request.LinkResolver!(CancellationToken.None);
         Assert.NotEqual(request.Url, fresh);

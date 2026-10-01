@@ -13,8 +13,6 @@ namespace Bootrix.Core.Tests.Catalog.Microsoft;
 
 public class MicrosoftIsoProviderResolveTests
 {
-    private const string GermanWindows11X64Sha256 = "193bbde65ec84e298a1c798959489c8375ed501cf973c6d37fa52bb22ee8d43b";
-
     [Fact]
     public async Task Resolve_GermanWindows11X64_RunsTheHandshakeBeforeAskingForLinks()
     {
@@ -28,7 +26,7 @@ public class MicrosoftIsoProviderResolveTests
         Assert.Equal(
             "https://software.download.prss.microsoft.com/dbazure/Windows11_Client_x64_de-de_26300_9457.iso?t=00000001-0000-0000-0000-000000000000&P1=1790924835&P2=602&P3=2&P4=SIGNATURE-PLACEHOLDER",
             request.Url.AbsoluteUri);
-        Assert.Equal([new FileHash(HashKind.Sha256, GermanWindows11X64Sha256)], request.ExpectedHashes);
+        Assert.Empty(request.ExpectedHashes);
         Assert.Null(request.ExpectedSize);
         Assert.NotNull(request.LinkResolver);
         request.Validate();
@@ -98,7 +96,7 @@ public class MicrosoftIsoProviderResolveTests
     }
 
     [Fact]
-    public async Task Resolve_Arm64_TakesTheLinkAndTheDigestOfTheArm64Page()
+    public async Task Resolve_Arm64_TakesTheLinkFromTheArm64Page()
     {
         var server = new FakeMicrosoftServer();
         var provider = Provider(server);
@@ -107,7 +105,6 @@ public class MicrosoftIsoProviderResolveTests
         var request = await provider.ResolveAsync(variant, "arm64", CancellationToken.None);
 
         Assert.Contains("Windows11_Client_arm64_de-de_26300_9457.iso", request.Url.AbsoluteUri, StringComparison.Ordinal);
-        Assert.Equal("bbf9f2284fe7559ea8bdf960851a80231eada3aa7e740958948b79ab01d23478", request.ExpectedHashes.Single().Hex);
         Assert.Equal("3816", FakeMicrosoftServer.Query(server.Api("getskuinformationbyproductedition").Last(), "ProductEditionId"));
     }
 
@@ -123,9 +120,9 @@ public class MicrosoftIsoProviderResolveTests
     }
 
     [Theory]
-    [InlineData("x86", "Win10_22H2_German_x32v1.iso", "b0bfc1b9b176df0303ed3a91e7332cd1a8b57b07f25752cec9493e1333f88075")]
-    [InlineData("x64", "Win10_22H2_German_x64v1.iso", "d1a41a09e9ae09631a087edf95d7f4eecab622f88b3c824d856cfea47fcc0b4c")]
-    public async Task Resolve_Windows10_PicksTheLinkAndDigestOfTheWordSize(string architecture, string file, string sha256)
+    [InlineData("x86", "Win10_22H2_German_x32v1.iso")]
+    [InlineData("x64", "Win10_22H2_German_x64v1.iso")]
+    public async Task Resolve_Windows10_PicksTheLinkOfTheWordSize(string architecture, string file)
     {
         var provider = Provider(new FakeMicrosoftServer());
         var variant = await German(provider, "windows10");
@@ -133,7 +130,21 @@ public class MicrosoftIsoProviderResolveTests
         var request = await provider.ResolveAsync(variant, architecture, CancellationToken.None);
 
         Assert.Contains("/" + file + "?", request.Url.AbsoluteUri, StringComparison.Ordinal);
-        Assert.Equal(sha256, request.ExpectedHashes.Single().Hex);
+    }
+
+    [Fact]
+    public async Task Resolve_NeverDemandsTheDigestOfThePage_BecauseTheTableCanLagBehindTheFile()
+    {
+        // On 2026-10-01 the Arm64 page printed a value that the current ISO does not have; a hard requirement
+        // would have thrown away a good download of 8 GB.
+        var provider = Provider(new FakeMicrosoftServer());
+
+        foreach (var (product, architecture) in new[] { ("windows11", "x64"), ("windows11", "arm64"), ("windows10", "x86"), ("windows10", "x64") })
+        {
+            var request = await provider.ResolveAsync(await German(provider, product), architecture, CancellationToken.None);
+
+            Assert.Empty(request.ExpectedHashes);
+        }
     }
 
     [Fact]
@@ -265,7 +276,7 @@ public class MicrosoftIsoProviderResolveTests
             Provider = variant.Provider,
             Name = "Klingon",
             Architectures = ["x64"],
-            Properties = new Dictionary<string, string> { ["route.x64"] = "windows11|3813|Klingon", ["language"] = "Klingon" },
+            Properties = new Dictionary<string, string> { ["route.x64"] = "windows11|3813|Klingon|Klingon", ["language"] = "Klingon" },
         };
 
         var error = await Assert.ThrowsAsync<BootrixException>(() => provider.ResolveAsync(stale, "x64", CancellationToken.None));
@@ -308,8 +319,35 @@ public class MicrosoftIsoProviderResolveTests
         Assert.Contains("no longer has the expected shape", error.Detail, StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData("windows11", "x64", "193bbde65ec84e298a1c798959489c8375ed501cf973c6d37fa52bb22ee8d43b")]
+    [InlineData("windows11", "arm64", "bbf9f2284fe7559ea8bdf960851a80231eada3aa7e740958948b79ab01d23478")]
+    [InlineData("windows10", "x86", "b0bfc1b9b176df0303ed3a91e7332cd1a8b57b07f25752cec9493e1333f88075")]
+    [InlineData("windows10", "x64", "d1a41a09e9ae09631a087edf95d7f4eecab622f88b3c824d856cfea47fcc0b4c")]
+    public async Task GetPublishedHash_GivesTheValueOfThePagesTableForTheWordSize(string product, string architecture, string sha256)
+    {
+        var provider = Provider(new FakeMicrosoftServer());
+        var variant = await German(provider, product);
+
+        var hash = await provider.GetPublishedHashAsync(variant, architecture, CancellationToken.None);
+
+        Assert.Equal(new FileHash(HashKind.Sha256, sha256), hash);
+    }
+
     [Fact]
-    public async Task Resolve_PageWithoutHashTable_StillResolvesButWithoutExpectedHash()
+    public async Task GetPublishedHash_LanguageThatTheTableNamesDifferently_IsFoundThroughTheLocalizedName()
+    {
+        var provider = Provider(new FakeMicrosoftServer());
+        var british = Assert.Single(await provider.ListVariantsAsync("windows11", CancellationToken.None), v => v.Language == "en-GB");
+
+        var hash = await provider.GetPublishedHashAsync(british, "x64", CancellationToken.None);
+
+        // The API says "English (United Kingdom)", the table "English International".
+        Assert.Equal("7e3f373bd3c2321b5d5125dfcf718dfbf1a0abc50a267118669951890df98a5d", hash!.Hex);
+    }
+
+    [Fact]
+    public async Task GetPublishedHash_PageWithoutTable_IsNull()
     {
         var server = new FakeMicrosoftServer
         {
@@ -320,10 +358,19 @@ public class MicrosoftIsoProviderResolveTests
         var provider = Provider(new FakeMicrosoftServer());
         var variant = await German(provider);
 
-        var request = await Provider(server).ResolveAsync(variant, "x64", CancellationToken.None);
+        Assert.Null(await Provider(server).GetPublishedHashAsync(variant, "x64", CancellationToken.None));
+    }
 
-        Assert.Empty(request.ExpectedHashes);
-        Assert.StartsWith("https://software.download.prss.microsoft.com/", request.Url.AbsoluteUri, StringComparison.Ordinal);
+    [Fact]
+    public async Task GetPublishedHash_PageLayoutChanged_IsCatalogUnavailable()
+    {
+        var server = new FakeMicrosoftServer { Override = r => r.RequestUri!.AbsolutePath.EndsWith("/windows11", StringComparison.Ordinal) ? FakeMicrosoftServer.Html("<html>new design</html>") : null };
+        var provider = Provider(new FakeMicrosoftServer());
+        var variant = await German(provider);
+
+        var error = await Assert.ThrowsAsync<BootrixException>(() => Provider(server).GetPublishedHashAsync(variant, "x64", CancellationToken.None));
+
+        Assert.Equal(ErrorCode.CatalogUnavailable, error.Code);
     }
 
     [Fact]
