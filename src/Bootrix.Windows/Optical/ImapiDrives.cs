@@ -51,19 +51,54 @@ internal static unsafe class ImapiDrives
         return recorder;
     }
 
+    /// <summary>
+    /// What the recorder can write, from two sources: IMAPI's own list of media types (it is the one that decides whether a burn is
+    /// accepted, and it also works for old drives) and the MMC feature profiles, which know a little more about newer drives.
+    /// </summary>
+    private static OpticalCapabilities ReadCapabilities(ComScope com, IDiscRecorder2 recorder)
+    {
+        var capabilities = OpticalCapabilities.None;
+        try
+        {
+            capabilities |= OpticalCapabilitiesExtensions.FromMmcProfiles(SafeArrays.ReadInts(recorder.SupportedProfiles));
+        }
+        catch (COMException)
+        {
+            // Drives without GET CONFIGURATION cannot list their profiles.
+        }
+
+        try
+        {
+            var format = com.Add((IDiscFormat2Data)new MsftDiscFormat2Data());
+            VARIANT_BOOL supported;
+            format.IsRecorderSupported(recorder, &supported);
+            if (supported)
+            {
+                format.Recorder = recorder;
+                foreach (var type in SafeArrays.ReadInts(format.SupportedMediaTypes))
+                {
+                    capabilities |= OpticalCapabilitiesExtensions.FromMediaType((OpticalMediaType)type);
+                }
+            }
+            else
+            {
+                // A drive IMAPI does not accept as a recorder cannot burn, whatever its profile list says.
+                capabilities = OpticalCapabilities.None;
+            }
+        }
+        catch (COMException)
+        {
+            // The profile list alone has to do.
+        }
+
+        return capabilities;
+    }
+
     private static OpticalDrive Describe(ComScope com, string uniqueId)
     {
         var recorder = CreateRecorder(com, uniqueId);
 
-        var capabilities = OpticalCapabilities.None;
-        try
-        {
-            capabilities = OpticalCapabilitiesExtensions.FromMmcProfiles(SafeArrays.ReadInts(recorder.SupportedProfiles));
-        }
-        catch (COMException)
-        {
-            // Old drives cannot be asked for their feature list; they are listed as readers.
-        }
+        var capabilities = ReadCapabilities(com, recorder);
 
         var letter = SafeArrays.ReadStrings(recorder.VolumePathNames)
             .FirstOrDefault(path => path.Length >= 2 && path[1] == ':');

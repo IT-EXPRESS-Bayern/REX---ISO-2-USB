@@ -6,8 +6,9 @@ namespace Bootrix.Windows.Optical;
 
 /// <summary>
 /// Raises <see cref="Changed"/> when IMAPI reports that a recorder was added or removed (DDiscMaster2Events).
-/// The disc master lives on a thread of its own for as long as the watcher does; events arrive on IMAPI's
-/// threads, and plugging in a drive sends several, so they are coalesced.
+/// The disc master lives on a thread of its own for as long as the watcher does and is set up in the background,
+/// so creating the watcher never makes the caller wait. Events arrive on IMAPI's threads, and plugging in a
+/// drive sends several, so they are coalesced.
 /// </summary>
 internal sealed class ImapiDriveWatcher : IDisposable
 {
@@ -20,7 +21,6 @@ internal sealed class ImapiDriveWatcher : IDisposable
     private readonly ILogger _logger;
     private readonly Timer _timer;
     private readonly ManualResetEventSlim _stop = new(false);
-    private readonly TaskCompletionSource _ready = new(TaskCreationOptions.RunContinuationsAsynchronously);
     private readonly Task _worker;
 
     public ImapiDriveWatcher(ILogger logger)
@@ -29,7 +29,6 @@ internal sealed class ImapiDriveWatcher : IDisposable
         _timer = new Timer(_ => Changed?.Invoke(this, EventArgs.Empty), null, Timeout.Infinite, Timeout.Infinite);
 
         _worker = MtaWorker.RunAsync(Watch, "IMAPI drive watcher");
-        _ready.Task.Wait(TimeSpan.FromSeconds(10));
     }
 
     public event EventHandler? Changed;
@@ -61,17 +60,12 @@ internal sealed class ImapiDriveWatcher : IDisposable
             using var events = new ComEvents(master, typeof(DDiscMaster2Events).GUID);
             events.On(DeviceAddedDispatchId, new DeviceHandler((_, _) => Schedule()));
             events.On(DeviceRemovedDispatchId, new DeviceHandler((_, _) => Schedule()));
-            _ready.TrySetResult();
             _stop.Wait();
         }
         catch (Exception ex)
         {
             // Without events the drive list is simply refreshed by hand; a failing watcher must not break burning.
             _logger.LogWarning(ex, "The IMAPI drive notifications could not be started");
-        }
-        finally
-        {
-            _ready.TrySetResult();
         }
     }
 

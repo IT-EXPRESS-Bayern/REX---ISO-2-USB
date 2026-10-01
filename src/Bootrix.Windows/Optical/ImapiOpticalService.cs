@@ -200,7 +200,11 @@ public sealed class ImapiOpticalService : IOpticalService, IDisposable
     /// <summary>Runs COM work on an MTA thread and turns IMAPI failures into Bootrix errors.</summary>
     private static Task<T> Run<T>(string name, Func<T> work, CancellationToken cancellationToken)
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        if (cancellationToken.IsCancellationRequested)
+        {
+            return Task.FromCanceled<T>(cancellationToken);
+        }
+
         return MtaWorker.RunAsync(
             () =>
             {

@@ -45,25 +45,27 @@ public static class OpticalCapabilitiesExtensions
     public static OpticalCapabilities FromMmcProfiles(IEnumerable<int> profiles) =>
         profiles.Aggregate(OpticalCapabilities.None, (all, profile) => all | FromMmcProfile(profile));
 
+    /// <summary>The capability needed to write a disc of this type; none for ROM media and types IMAPI cannot burn.</summary>
+    public static OpticalCapabilities FromMediaType(OpticalMediaType type) => type switch
+    {
+        OpticalMediaType.CdR => OpticalCapabilities.CdR,
+        OpticalMediaType.CdRw => OpticalCapabilities.CdRw,
+        OpticalMediaType.DvdRam => OpticalCapabilities.DvdRam,
+        OpticalMediaType.DvdPlusR => OpticalCapabilities.DvdPlusR,
+        OpticalMediaType.DvdPlusRw => OpticalCapabilities.DvdPlusRw,
+        OpticalMediaType.DvdPlusRDualLayer => OpticalCapabilities.DvdPlusRDualLayer,
+        OpticalMediaType.DvdPlusRwDualLayer => OpticalCapabilities.DvdPlusRwDualLayer,
+        OpticalMediaType.DvdMinusR => OpticalCapabilities.DvdMinusR,
+        OpticalMediaType.DvdMinusRw => OpticalCapabilities.DvdMinusRw,
+        OpticalMediaType.DvdMinusRDualLayer => OpticalCapabilities.DvdMinusRDualLayer,
+        OpticalMediaType.BdR => OpticalCapabilities.BdR,
+        OpticalMediaType.BdRe => OpticalCapabilities.BdRe,
+        _ => OpticalCapabilities.None,
+    };
+
     public static bool CanWrite(this OpticalCapabilities capabilities, OpticalMediaType type)
     {
-        var needed = type switch
-        {
-            OpticalMediaType.CdR => OpticalCapabilities.CdR,
-            OpticalMediaType.CdRw => OpticalCapabilities.CdRw,
-            OpticalMediaType.DvdRam => OpticalCapabilities.DvdRam,
-            OpticalMediaType.DvdPlusR => OpticalCapabilities.DvdPlusR,
-            OpticalMediaType.DvdPlusRw => OpticalCapabilities.DvdPlusRw,
-            OpticalMediaType.DvdPlusRDualLayer => OpticalCapabilities.DvdPlusRDualLayer,
-            OpticalMediaType.DvdPlusRwDualLayer => OpticalCapabilities.DvdPlusRwDualLayer,
-            OpticalMediaType.DvdMinusR => OpticalCapabilities.DvdMinusR,
-            OpticalMediaType.DvdMinusRw => OpticalCapabilities.DvdMinusRw,
-            OpticalMediaType.DvdMinusRDualLayer => OpticalCapabilities.DvdMinusRDualLayer,
-            OpticalMediaType.BdR => OpticalCapabilities.BdR,
-            OpticalMediaType.BdRe => OpticalCapabilities.BdRe,
-            _ => OpticalCapabilities.None,
-        };
-
+        var needed = FromMediaType(type);
         return needed != OpticalCapabilities.None && capabilities.HasFlag(needed);
     }
 }

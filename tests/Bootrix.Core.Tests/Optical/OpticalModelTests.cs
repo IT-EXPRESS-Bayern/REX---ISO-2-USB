@@ -106,6 +106,22 @@ public class OpticalModelTests
     }
 
     [Fact]
+    public void EveryWritableMediaTypeHasExactlyOneCapability()
+    {
+        foreach (var type in Enum.GetValues<OpticalMediaType>().Where(t => t.IsWritable()))
+        {
+            var capability = OpticalCapabilitiesExtensions.FromMediaType(type);
+
+            Assert.NotEqual(OpticalCapabilities.None, capability);
+            Assert.Equal(1, System.Numerics.BitOperations.PopCount((uint)capability));
+            Assert.True(capability.CanWrite(type));
+        }
+
+        Assert.Equal(OpticalCapabilities.None, OpticalCapabilitiesExtensions.FromMediaType(OpticalMediaType.BdRom));
+        Assert.Equal(OpticalCapabilities.None, OpticalCapabilitiesExtensions.FromMediaType(OpticalMediaType.HdDvdR));
+    }
+
+    [Fact]
     public void DriveNameCombinesVendorAndProduct()
     {
         var drive = new OpticalDrive { Id = "x", Vendor = "HL-DT-ST ", Product = "DVDRAM GH24NSD1", DriveLetter = "E:" };
