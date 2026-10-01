@@ -37,6 +37,12 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task ArchLinux() => Check(new ArchLinuxProvider(Http), "archlinux", expectSigned: false);
 
     [LiveFact]
+    public Task OpenSuseLeap() => Check(new OpenSuseProvider(Http), "opensuse-leap", expectSigned: true, architecture: "x64");
+
+    [LiveFact]
+    public Task OpenSuseTumbleweed() => Check(new OpenSuseProvider(Http), "opensuse-tumbleweed", expectSigned: true);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
