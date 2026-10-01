@@ -1,6 +1,4 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-using Bootrix.Core;
-
 namespace Bootrix.Core.Tests;
 
 public class AppInfoTests

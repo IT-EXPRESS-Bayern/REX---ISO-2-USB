@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App.Name" xml:space="preserve"><value>Bootrix</value></data>
+
+  <data name="Error.Canceled.Cause" xml:space="preserve"><value>Der Vorgang wurde abgebrochen.</value></data>
+  <data name="Error.Canceled.Action" xml:space="preserve"><value>Starten Sie den Vorgang erneut, wenn Sie ihn fortsetzen möchten.</value></data>
+  <data name="Error.InvalidSpec.Cause" xml:space="preserve"><value>Die Auftragsbeschreibung ist ungültig: {0}</value></data>
+  <data name="Error.InvalidSpec.Action" xml:space="preserve"><value>Prüfen Sie die Einstellungen oder das verwendete Profil.</value></data>
+  <data name="Error.UnsupportedSchemaVersion.Cause" xml:space="preserve"><value>Das Profil stammt aus einer neueren Programmversion (Schema {0}).</value></data>
+  <data name="Error.UnsupportedSchemaVersion.Action" xml:space="preserve"><value>Aktualisieren Sie Bootrix oder exportieren Sie das Profil neu.</value></data>
+  <data name="Error.ProfileLocked.Cause" xml:space="preserve"><value>Die Option „{0}“ ist im übergeordneten Profil gesperrt.</value></data>
+  <data name="Error.ProfileLocked.Action" xml:space="preserve"><value>Entfernen Sie die Änderung oder bitten Sie den Ersteller des Profils um Freigabe.</value></data>
+  <data name="Error.ProfileCycle.Cause" xml:space="preserve"><value>Die Profile verweisen im Kreis aufeinander ({0}).</value></data>
+  <data name="Error.ProfileCycle.Action" xml:space="preserve"><value>Entfernen Sie einen der Verweise „extends“.</value></data>
+  <data name="Error.ProfilePackageCorrupt.Cause" xml:space="preserve"><value>Das Profilpaket ist beschädigt oder wurde verändert: {0}</value></data>
+  <data name="Error.ProfilePackageCorrupt.Action" xml:space="preserve"><value>Laden Sie das Paket erneut von der Quelle herunter.</value></data>
+  <data name="Error.JournalCorrupt.Cause" xml:space="preserve"><value>Das Auftragsprotokoll konnte nicht gelesen werden.</value></data>
+  <data name="Error.JournalCorrupt.Action" xml:space="preserve"><value>Schreiben Sie den Datenträger neu.</value></data>
+
+  <data name="Error.DeviceNotFound.Cause" xml:space="preserve"><value>Der Datenträger wurde nicht gefunden.</value></data>
+  <data name="Error.DeviceNotFound.Action" xml:space="preserve"><value>Stecken Sie das Gerät neu ein und aktualisieren Sie die Liste.</value></data>
+  <data name="Error.DeviceChanged.Cause" xml:space="preserve"><value>Der Datenträger hat sich seit der Auswahl verändert.</value></data>
+  <data name="Error.DeviceChanged.Action" xml:space="preserve"><value>Wählen Sie das Gerät erneut aus und bestätigen Sie es noch einmal.</value></data>
+  <data name="Error.DeviceProtected.Cause" xml:space="preserve"><value>Dieser Datenträger ist geschützt ({0}).</value></data>
+  <data name="Error.DeviceProtected.Action" xml:space="preserve"><value>Wählen Sie einen anderen Datenträger.</value></data>
+  <data name="Error.DeviceBusy.Cause" xml:space="preserve"><value>Der Datenträger wird von einem anderen Programm verwendet ({0}).</value></data>
+  <data name="Error.DeviceBusy.Action" xml:space="preserve"><value>Schließen Sie das Programm oder wiederholen Sie den Vorgang mit „Dismount erzwingen“.</value></data>
+  <data name="Error.DeviceTooSmall.Cause" xml:space="preserve"><value>Der Datenträger ist zu klein. Benötigt werden {0}, vorhanden sind {1}.</value></data>
+  <data name="Error.DeviceTooSmall.Action" xml:space="preserve"><value>Verwenden Sie einen größeren Datenträger.</value></data>
+  <data name="Error.DeviceWriteProtected.Cause" xml:space="preserve"><value>Der Datenträger ist schreibgeschützt.</value></data>
+  <data name="Error.DeviceWriteProtected.Action" xml:space="preserve"><value>Prüfen Sie den Schreibschutzschalter am Stick oder an der Speicherkarte.</value></data>
+  <data name="Error.DeviceRemoved.Cause" xml:space="preserve"><value>Der Datenträger wurde während des Schreibens entfernt.</value></data>
+  <data name="Error.DeviceRemoved.Action" xml:space="preserve"><value>Stecken Sie das Gerät wieder ein und setzen Sie den Vorgang fort oder schreiben Sie neu.</value></data>
+  <data name="Error.LayoutRejected.Cause" xml:space="preserve"><value>Windows hat die Partitionierung nicht übernommen.</value></data>
+  <data name="Error.LayoutRejected.Action" xml:space="preserve"><value>Ziehen Sie den Stick ab, stecken Sie ihn neu ein und versuchen Sie es erneut.</value></data>
+  <data name="Error.VolumeNotMounted.Cause" xml:space="preserve"><value>Das neue Laufwerk wurde von Windows nicht rechtzeitig eingebunden.</value></data>
+  <data name="Error.VolumeNotMounted.Action" xml:space="preserve"><value>Versuchen Sie es erneut oder deaktivieren Sie vorübergehend den Virenschutz.</value></data>
+
+  <data name="Error.ImageUnreadable.Cause" xml:space="preserve"><value>Das Image konnte nicht gelesen werden: {0}</value></data>
+  <data name="Error.ImageUnreadable.Action" xml:space="preserve"><value>Prüfen Sie, ob die Datei vollständig und nicht in Benutzung ist.</value></data>
+  <data name="Error.ImageTruncated.Cause" xml:space="preserve"><value>Das Image ist unvollständig. Erwartet werden {0}, vorhanden sind {1}.</value></data>
+  <data name="Error.ImageTruncated.Action" xml:space="preserve"><value>Laden Sie das Image erneut herunter.</value></data>
+  <data name="Error.ImageUnsupported.Cause" xml:space="preserve"><value>Dieses Imageformat wird nicht unterstützt: {0}</value></data>
+  <data name="Error.ImageUnsupported.Action" xml:space="preserve"><value>Konvertieren Sie das Image in ein unterstütztes Format.</value></data>
+  <data name="Error.ImageEncrypted.Cause" xml:space="preserve"><value>Das Image ist verschlüsselt.</value></data>
+  <data name="Error.ImageEncrypted.Action" xml:space="preserve"><value>Entschlüsseln Sie das Image zuerst mit dem Programm, das es erstellt hat.</value></data>
+  <data name="Error.ImageHashMismatch.Cause" xml:space="preserve"><value>Die Prüfsumme des Images stimmt nicht überein.</value></data>
+  <data name="Error.ImageHashMismatch.Action" xml:space="preserve"><value>Laden Sie das Image erneut von der Originalquelle herunter.</value></data>
+  <data name="Error.ImageTooLarge.Cause" xml:space="preserve"><value>Das Image ({0}) passt nicht auf das Ziel ({1}).</value></data>
+  <data name="Error.ImageTooLarge.Action" xml:space="preserve"><value>Wählen Sie ein größeres Ziel oder ein anderes Dateisystem.</value></data>
+
+  <data name="Error.VerifyMismatch.Cause" xml:space="preserve"><value>Die geschriebenen Daten weichen von der Quelle ab (Offset {0}).</value></data>
+  <data name="Error.VerifyMismatch.Action" xml:space="preserve"><value>Der Datenträger ist möglicherweise defekt. Führen Sie einen Fälschungs- und Fehlertest durch.</value></data>
+
+  <data name="Error.DownloadFailed.Cause" xml:space="preserve"><value>Der Download ist fehlgeschlagen: {0}</value></data>
+  <data name="Error.DownloadFailed.Action" xml:space="preserve"><value>Prüfen Sie die Internetverbindung und versuchen Sie es erneut. Angefangene Downloads werden fortgesetzt.</value></data>
+  <data name="Error.DownloadBlocked.Cause" xml:space="preserve"><value>Microsoft lehnt den Download ab (Code {0}).</value></data>
+  <data name="Error.DownloadBlocked.Action" xml:space="preserve"><value>Bootrix versucht den alternativen Weg. Alternativ laden Sie die ISO im Browser herunter und wählen sie als Datei aus.</value></data>
+  <data name="Error.DownloadHashMismatch.Cause" xml:space="preserve"><value>Die Prüfsumme der heruntergeladenen Datei stimmt nicht.</value></data>
+  <data name="Error.DownloadHashMismatch.Action" xml:space="preserve"><value>Die Datei wurde verworfen. Starten Sie den Download erneut.</value></data>
+  <data name="Error.CatalogUnavailable.Cause" xml:space="preserve"><value>Der Katalog ist nicht erreichbar.</value></data>
+  <data name="Error.CatalogUnavailable.Action" xml:space="preserve"><value>Verwenden Sie den zuletzt gespeicherten Katalog oder geben Sie die Adresse manuell ein.</value></data>
+  <data name="Error.SignatureInvalid.Cause" xml:space="preserve"><value>Die Signatur der Katalogdaten ist ungültig.</value></data>
+  <data name="Error.SignatureInvalid.Action" xml:space="preserve"><value>Die Daten wurden nicht übernommen. Prüfen Sie Ihre Verbindung oder aktualisieren Sie Bootrix.</value></data>
+
+  <data name="Error.ExternalToolFailed.Cause" xml:space="preserve"><value>Das Programm „{0}“ hat mit Fehlercode {1} geendet.</value></data>
+  <data name="Error.ExternalToolFailed.Action" xml:space="preserve"><value>Details finden Sie im Protokoll.</value></data>
+  <data name="Error.ExternalToolUntrusted.Cause" xml:space="preserve"><value>Das Programm „{0}“ ist nicht von Microsoft signiert und wird nicht ausgeführt.</value></data>
+  <data name="Error.ExternalToolUntrusted.Action" xml:space="preserve"><value>Stellen Sie die Systemdateien wieder her (sfc /scannow).</value></data>
+  <data name="Error.InsufficientSpace.Cause" xml:space="preserve"><value>Auf {0} ist nicht genug Platz frei. Benötigt werden {1}.</value></data>
+  <data name="Error.InsufficientSpace.Action" xml:space="preserve"><value>Wählen Sie einen anderen Arbeitsordner oder schaffen Sie Platz.</value></data>
+  <data name="Error.ImageMountFailed.Cause" xml:space="preserve"><value>Das Image konnte nicht eingebunden werden.</value></data>
+  <data name="Error.ImageMountFailed.Action" xml:space="preserve"><value>Starten Sie den Rechner neu, falls ein früherer Vorgang abgebrochen wurde.</value></data>
+
+  <data name="Error.NoRecorder.Cause" xml:space="preserve"><value>Es wurde kein Brenner gefunden.</value></data>
+  <data name="Error.NoRecorder.Action" xml:space="preserve"><value>Schließen Sie einen Brenner an und aktualisieren Sie die Liste.</value></data>
+  <data name="Error.MediaNotSupported.Cause" xml:space="preserve"><value>Der eingelegte Datenträger kann nicht beschrieben werden.</value></data>
+  <data name="Error.MediaNotSupported.Action" xml:space="preserve"><value>Legen Sie einen passenden, leeren Rohling ein.</value></data>
+  <data name="Error.BurnFailed.Cause" xml:space="preserve"><value>Beim Brennen ist ein Fehler aufgetreten: {0}</value></data>
+  <data name="Error.BurnFailed.Action" xml:space="preserve"><value>Versuchen Sie es mit einem anderen Rohling oder einer niedrigeren Geschwindigkeit.</value></data>
+  <data name="Error.ReadError.Cause" xml:space="preserve"><value>Beim Lesen des Datenträgers sind Fehler aufgetreten (ab Sektor {0}).</value></data>
+  <data name="Error.ReadError.Action" xml:space="preserve"><value>Reinigen Sie die Disc oder verwenden Sie ein anderes Laufwerk.</value></data>
+  <data name="Error.CopyProtected.Cause" xml:space="preserve"><value>Die Disc ist kopiergeschützt.</value></data>
+  <data name="Error.CopyProtected.Action" xml:space="preserve"><value>Kopiergeschützte Medien werden nicht kopiert.</value></data>
+
+  <data name="Error.Unknown.Cause" xml:space="preserve"><value>Ein unerwarteter Fehler ist aufgetreten.</value></data>
+  <data name="Error.Unknown.Action" xml:space="preserve"><value>Exportieren Sie das Diagnosepaket und senden Sie es an den Support.</value></data>
+</root>

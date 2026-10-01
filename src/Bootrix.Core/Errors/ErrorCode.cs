@@ -1,0 +1,62 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+namespace Bootrix.Core.Errors;
+
+/// <summary>
+/// Stable error codes. The numeric value is shown to users and used in support requests,
+/// so values must never be reused or renumbered.
+/// </summary>
+public enum ErrorCode
+{
+    Unknown = 0,
+
+    // 1xxx: general / job handling
+    Canceled = 1001,
+    InvalidSpec = 1002,
+    UnsupportedSchemaVersion = 1003,
+    ProfileLocked = 1004,
+    ProfileCycle = 1005,
+    ProfilePackageCorrupt = 1006,
+    JournalCorrupt = 1007,
+
+    // 2xxx: devices and disks
+    DeviceNotFound = 2001,
+    DeviceChanged = 2002,
+    DeviceProtected = 2003,
+    DeviceBusy = 2004,
+    DeviceTooSmall = 2005,
+    DeviceWriteProtected = 2006,
+    DeviceRemoved = 2007,
+    LayoutRejected = 2008,
+    VolumeNotMounted = 2009,
+
+    // 3xxx: images
+    ImageUnreadable = 3001,
+    ImageTruncated = 3002,
+    ImageUnsupported = 3003,
+    ImageEncrypted = 3004,
+    ImageHashMismatch = 3005,
+    ImageTooLarge = 3006,
+
+    // 4xxx: verification
+    VerifyMismatch = 4001,
+
+    // 5xxx: network and catalog
+    DownloadFailed = 5001,
+    DownloadBlocked = 5002,
+    DownloadHashMismatch = 5003,
+    CatalogUnavailable = 5004,
+    SignatureInvalid = 5005,
+
+    // 6xxx: Windows servicing and tools
+    ExternalToolFailed = 6001,
+    ExternalToolUntrusted = 6002,
+    InsufficientSpace = 6003,
+    ImageMountFailed = 6004,
+
+    // 7xxx: optical
+    NoRecorder = 7001,
+    MediaNotSupported = 7002,
+    BurnFailed = 7003,
+    ReadError = 7004,
+    CopyProtected = 7005,
+}
