@@ -67,6 +67,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task Memtest86Plus() => Check(new Memtest86PlusProvider(Http), "memtest86plus", expectSigned: false);
 
     [LiveFact]
+    public Task FreeBsd() => Check(new FreeBsdProvider(Http), "freebsd", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
