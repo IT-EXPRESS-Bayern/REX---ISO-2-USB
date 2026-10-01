@@ -226,7 +226,7 @@ public sealed class CompressedImageStream : Stream
             structure = structure with { UncompressedSize = size };
         }
 
-        return LzmaStream.Create(header[..5].ToArray(), input, inputSize: -1, outputSize: size, leaveOpen: true);
+        return LzmaStream.Create(header[..5].ToArray(), input.Borrow(failAtEnd: true), inputSize: -1, outputSize: size, leaveOpen: true);
     }
 
     private static CompressedImageStream OpenZip(Stream source, bool leaveOpen, string? entryName)
@@ -306,8 +306,12 @@ public sealed class CompressedImageStream : Stream
         return read;
     }
 
+    /// <summary>Decoders throw whatever the damaged data trips over, so this is a list of what counts as "the data is bad".</summary>
     private static bool IsDecoderFailure(Exception ex) =>
-        ex is InvalidDataException or EndOfStreamException or SharpCompressException or ZstdException or NotSupportedException;
+        ex is not ObjectDisposedException
+        && ex is InvalidDataException or EndOfStreamException or SharpCompressException or ZstdException or NotSupportedException
+            or ArgumentException or InvalidOperationException or IndexOutOfRangeException or OverflowException
+            or FormatException or InvalidCastException or NullReferenceException;
 
     public override void Flush()
     {

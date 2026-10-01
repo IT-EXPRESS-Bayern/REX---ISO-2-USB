@@ -56,8 +56,12 @@ internal sealed class SourceStream(Stream inner, bool leaveOpen, int windowSize 
         return one[0];
     }
 
-    /// <summary>A view for components that dispose the stream they are given.</summary>
-    public Stream Borrow() => new Borrowed(this);
+    /// <summary>
+    /// A view for components that dispose the stream they are given. With <paramref name="failAtEnd"/>, a single-byte
+    /// read at the end of the data throws instead of returning -1: the LZMA decoders of SharpCompress take -1 for
+    /// a data byte (0xFF) or a chunk header and then either accept a cut-off file or never finish.
+    /// </summary>
+    public Stream Borrow(bool failAtEnd = false) => new Borrowed(this, failAtEnd);
 
     public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
 
@@ -155,7 +159,7 @@ internal sealed class SourceStream(Stream inner, bool leaveOpen, int windowSize 
         base.Dispose(disposing);
     }
 
-    private sealed class Borrowed(SourceStream owner) : Stream
+    private sealed class Borrowed(SourceStream owner, bool failAtEnd) : Stream
     {
         public override bool CanRead => true;
 
@@ -174,6 +178,12 @@ internal sealed class SourceStream(Stream inner, bool leaveOpen, int windowSize 
         public override int Read(byte[] buffer, int offset, int count) => owner.Read(buffer, offset, count);
 
         public override int Read(Span<byte> buffer) => owner.Read(buffer);
+
+        public override int ReadByte()
+        {
+            var value = owner.ReadByte();
+            return value < 0 && failAtEnd ? throw new EndOfStreamException("The compressed data ends in the middle of a block.") : value;
+        }
 
         public override ValueTask<int> ReadAsync(Memory<byte> buffer, CancellationToken cancellationToken = default) =>
             owner.ReadAsync(buffer, cancellationToken);

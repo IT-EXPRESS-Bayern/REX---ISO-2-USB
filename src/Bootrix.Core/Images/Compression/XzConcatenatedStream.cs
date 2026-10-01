@@ -75,7 +75,7 @@ internal sealed class XzConcatenatedStream(SourceStream source) : Stream
             return false;
         }
 
-        _current = new XZStream(source.Borrow());
+        _current = new XZStream(source.Borrow(failAtEnd: true));
         return true;
     }
 
