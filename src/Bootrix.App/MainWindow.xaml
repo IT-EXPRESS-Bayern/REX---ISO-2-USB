@@ -28,6 +28,11 @@
                         <ui:SymbolIcon Symbol="UsbStick24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="{loc:Loc Nav.Downloads}" TargetPageType="{x:Type views:DownloadsPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="ArrowDownload24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
             </ui:NavigationView.MenuItems>
             <ui:NavigationView.FooterMenuItems>
                 <ui:NavigationViewItem Content="{loc:Loc Nav.Settings}" TargetPageType="{x:Type views:SettingsPage}">

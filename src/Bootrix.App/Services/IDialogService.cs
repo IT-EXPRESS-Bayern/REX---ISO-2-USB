@@ -16,4 +16,10 @@ public interface IDialogService
     /// serial number, so the dialog cannot be dismissed on autopilot.
     /// </summary>
     Task<bool> ConfirmEraseAsync(IReadOnlyList<EraseTarget> targets);
+
+    /// <summary>A plain yes/no question with the given button text for "yes".</summary>
+    Task<bool> ConfirmAsync(string title, string message, string confirmText);
+
+    /// <summary>Opens a web page in the default browser; only https addresses are accepted.</summary>
+    void OpenUrl(string url);
 }

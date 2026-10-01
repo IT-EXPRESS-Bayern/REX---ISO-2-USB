@@ -26,6 +26,29 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public async Task<bool> ConfirmAsync(string title, string message, string confirmText)
+    {
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = new System.Windows.Controls.TextBlock { Text = message, TextWrapping = System.Windows.TextWrapping.Wrap },
+            PrimaryButtonText = confirmText,
+            CloseButtonText = localizer.Get("Write.Confirm.Cancel"),
+            DefaultButton = ContentDialogButton.Close,
+        };
+
+        return await dialogs.ShowAsync(dialog, CancellationToken.None) == ContentDialogResult.Primary;
+    }
+
+    public void OpenUrl(string url)
+    {
+        // The address comes from vendor data; anything but https never reaches the shell.
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri) && uri.Scheme == Uri.UriSchemeHttps)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(uri.AbsoluteUri) { UseShellExecute = true });
+        }
+    }
+
     public async Task<bool> ConfirmEraseAsync(IReadOnlyList<EraseTarget> targets)
     {
         var rows = targets.Select(t => new ConfirmRow(

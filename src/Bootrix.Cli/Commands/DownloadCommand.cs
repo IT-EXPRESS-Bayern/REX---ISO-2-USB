@@ -5,6 +5,7 @@ using Bootrix.Core.Catalog;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Library;
 using Bootrix.Core.Net;
+using Bootrix.Core.Presentation;
 
 namespace Bootrix.Cli.Commands;
 
@@ -37,7 +38,7 @@ internal static class DownloadCommand
                     : await FromCatalogAsync(catalog, target, parse.GetValue(variant), parse.GetValue(arch), parse.GetValue(language), parse.GetValue(segments), cancellationToken).ConfigureAwait(false);
 
                 var folder = parse.GetValue(output)?.FullName ?? Path.Combine(Path.GetTempPath(), "bootrix-downloads");
-                var fileName = FileNameFor(request.Request.Url);
+                var fileName = CatalogView.FileNameFor(request.Request.Url);
                 var destination = Path.Combine(folder, fileName);
 
                 var result = await downloader.DownloadAsync(
@@ -90,7 +91,7 @@ internal static class DownloadCommand
             ExpectedHashes = sha256 is null ? [] : [new FileHash(HashKind.Sha256, sha256)],
             Options = new DownloadOptions { MaxSegments = segments },
         };
-        return new Prepared(request, new LibraryImageInfo { Name = FileNameFor(address) });
+        return new Prepared(request, new LibraryImageInfo { Name = CatalogView.FileNameFor(address) });
     }
 
     private static async Task<Prepared> FromCatalogAsync(
@@ -136,11 +137,5 @@ internal static class DownloadCommand
                 Architecture = chosenArch,
                 Language = chosen.Language,
             });
-    }
-
-    private static string FileNameFor(Uri url)
-    {
-        var name = Path.GetFileName(Uri.UnescapeDataString(url.AbsolutePath));
-        return string.IsNullOrWhiteSpace(name) ? "download.bin" : name;
     }
 }

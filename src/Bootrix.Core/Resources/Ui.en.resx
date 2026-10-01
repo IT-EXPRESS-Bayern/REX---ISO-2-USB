@@ -160,4 +160,40 @@
   <data name="Opt.Windows.DisableBitLocker" xml:space="preserve"><value>Turn off automatic device encryption</value></data>
   <data name="Plan.Error" xml:space="preserve"><value>The preview could not be created.</value></data>
   <data name="Plan.Waiting" xml:space="preserve"><value>Choose an image and a drive to see the preview.</value></data>
+  <data name="Nav.Downloads" xml:space="preserve"><value>Downloads</value></data>
+  <data name="Dl.Title" xml:space="preserve"><value>Download images</value></data>
+  <data name="Dl.Products" xml:space="preserve"><value>Product</value></data>
+  <data name="Dl.Variants" xml:space="preserve"><value>Version and language</value></data>
+  <data name="Dl.Architecture" xml:space="preserve"><value>Architecture</value></data>
+  <data name="Dl.Download" xml:space="preserve"><value>Download</value></data>
+  <data name="Dl.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Dl.Refresh" xml:space="preserve"><value>Refresh catalog</value></data>
+  <data name="Dl.Loading" xml:space="preserve"><value>Loading the catalog …</value></data>
+  <data name="Dl.NoVariants" xml:space="preserve"><value>Nothing was found for this product.</value></data>
+  <data name="Dl.ProviderFailed" xml:space="preserve"><value>Not reachable: {0}</value></data>
+  <data name="Dl.ManualHint" xml:space="preserve"><value>This image cannot be downloaded automatically. Open the vendor's page and choose the file under “Write” afterwards.</value></data>
+  <data name="Dl.OpenPage" xml:space="preserve"><value>Open the page</value></data>
+  <data name="Dl.Blocked" xml:space="preserve"><value>The vendor refused the automatic request. Open the download page in your browser.</value></data>
+  <data name="Dl.Done" xml:space="preserve"><value>Downloaded and verified: {0}</value></data>
+  <data name="Dl.UseForWriting" xml:space="preserve"><value>Use for writing</value></data>
+  <data name="Dl.Library" xml:space="preserve"><value>My images</value></data>
+  <data name="Dl.LibraryEmpty" xml:space="preserve"><value>No images saved yet.</value></data>
+  <data name="Dl.Remove" xml:space="preserve"><value>Remove</value></data>
+  <data name="Dl.RemoveTitle" xml:space="preserve"><value>Remove image?</value></data>
+  <data name="Dl.RemoveBody" xml:space="preserve"><value>The file “{0}” will be deleted.</value></data>
+  <data name="Dl.RemoveOk" xml:space="preserve"><value>Remove</value></data>
+  <data name="Dl.Phase.Connecting" xml:space="preserve"><value>Connecting …</value></data>
+  <data name="Dl.Phase.Downloading" xml:space="preserve"><value>Downloading</value></data>
+  <data name="Dl.Phase.Verifying" xml:space="preserve"><value>Verifying checksum</value></data>
+  <data name="Dl.Connections" xml:space="preserve"><value>{0} connections</value></data>
+  <data name="Cat.Family.Windows" xml:space="preserve"><value>Windows</value></data>
+  <data name="Cat.Family.Linux" xml:space="preserve"><value>Linux</value></data>
+  <data name="Cat.Family.Bsd" xml:space="preserve"><value>BSD</value></data>
+  <data name="Cat.Family.Dos" xml:space="preserve"><value>DOS</value></data>
+  <data name="Cat.Family.Rescue" xml:space="preserve"><value>Rescue media</value></data>
+  <data name="Cat.Family.Utility" xml:space="preserve"><value>Utilities</value></data>
+  <data name="Cat.Recommended" xml:space="preserve"><value>recommended</value></data>
+  <data name="Cat.Manual" xml:space="preserve"><value>manual download</value></data>
+  <data name="Cat.SupportEnded" xml:space="preserve"><value>support ended</value></data>
+  <data name="Cat.SupportEnds" xml:space="preserve"><value>support until {0}</value></data>
 </root>

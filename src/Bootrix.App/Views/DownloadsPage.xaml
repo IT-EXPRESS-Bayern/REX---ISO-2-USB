@@ -1,0 +1,163 @@
+<Page x:Class="Bootrix.App.Views.DownloadsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      Title="{loc:Loc Dl.Title}">
+    <Page.Resources>
+        <CollectionViewSource x:Key="GroupedProducts" Source="{Binding Products}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="FamilyName" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </Page.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,16,32,32" MaxWidth="900" HorizontalAlignment="Stretch">
+            <Grid Margin="0,0,0,12">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Text="{loc:Loc Dl.Title}" FontTypography="Title" />
+                <ui:Button Grid.Column="1" Content="{loc:Loc Dl.Refresh}" Icon="{ui:SymbolIcon ArrowSync24}"
+                           Command="{Binding ReloadCatalogCommand}" />
+            </Grid>
+
+            <ui:TextBlock Text="{Binding StatusText}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,8"
+                          Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="16" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <ui:TextBlock Text="{loc:Loc Dl.Products}" FontTypography="Subtitle" Margin="0,0,0,8" />
+                    <ListBox Height="320" ItemsSource="{Binding Source={StaticResource GroupedProducts}}"
+                             SelectedItem="{Binding SelectedProduct}">
+                        <ListBox.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <ui:TextBlock Text="{Binding Name}" FontTypography="BodyStrong" Margin="4,10,0,4" />
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </ListBox.GroupStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="4,2">
+                                    <ui:TextBlock Text="{Binding Name}" />
+                                    <ui:TextBlock Text="{Binding Description}" Appearance="Secondary" FontTypography="Caption"
+                                                  TextTrimming="CharacterEllipsis" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <StackPanel Grid.Column="2">
+                    <ui:TextBlock Text="{loc:Loc Dl.Variants}" FontTypography="Subtitle" Margin="0,0,0,8" />
+                    <ListBox Height="320" ItemsSource="{Binding Variants}" SelectedItem="{Binding SelectedVariant}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="4,2">
+                                    <ui:TextBlock Text="{Binding Title}" />
+                                    <ui:TextBlock Text="{Binding Details}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+            </Grid>
+
+            <StackPanel Orientation="Horizontal" Margin="0,16,0,16">
+                <ui:TextBlock Text="{loc:Loc Dl.Architecture}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <ComboBox MinWidth="120" ItemsSource="{Binding Architectures}" SelectedItem="{Binding SelectedArchitecture}" Margin="0,0,16,0" />
+                <ui:Button Content="{loc:Loc Dl.Download}" Icon="{ui:SymbolIcon ArrowDownload24}" Appearance="Primary"
+                           Command="{Binding DownloadCommand}" MinWidth="140" />
+                <ui:Button Content="{loc:Loc Dl.Cancel}" Icon="{ui:SymbolIcon Stop24}" Margin="8,0,0,0"
+                           Command="{Binding CancelDownloadCommand}"
+                           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+                <ui:Button Content="{loc:Loc Dl.OpenPage}" Icon="{ui:SymbolIcon Open24}" Margin="8,0,0,0"
+                           Command="{Binding OpenVendorPageCommand}"
+                           Visibility="{Binding IsManual, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+
+            <ui:TextBlock Text="{loc:Loc Dl.ManualHint}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,12"
+                          Visibility="{Binding IsManual, Converter={StaticResource BoolToVisibility}}" />
+
+            <StackPanel Margin="0,0,0,16" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBlock Text="{Binding ProgressTitle}" />
+                    <ui:TextBlock Grid.Column="1" Appearance="Secondary">
+                        <Run Text="{Binding SpeedText, Mode=OneWay}" />
+                        <Run Text="  " />
+                        <Run Text="{Binding RemainingText, Mode=OneWay}" />
+                    </ui:TextBlock>
+                </Grid>
+                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Percent, Mode=OneWay}" Height="6" Margin="0,8,0,0" />
+            </StackPanel>
+
+            <ui:InfoBar IsOpen="{Binding HasResult, Mode=OneWay}" IsClosable="False" Title="{Binding ResultText}"
+                        Severity="{Binding ResultSeverity}" Margin="0,0,0,8" />
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,24">
+                <ui:Button Content="{loc:Loc Dl.UseForWriting}" Icon="{ui:SymbolIcon UsbStick24}" Appearance="Primary"
+                           Command="{Binding UseLastImageCommand}"
+                           Visibility="{Binding HasLastImage, Converter={StaticResource BoolToVisibility}}" />
+                <ui:Button Content="{loc:Loc Dl.OpenPage}" Icon="{ui:SymbolIcon Open24}" Margin="8,0,0,0"
+                           Command="{Binding OpenVendorPageCommand}"
+                           Visibility="{Binding HasManualUrl, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+
+            <ui:TextBlock Text="{loc:Loc Dl.Library}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <ui:TextBlock Text="{loc:Loc Dl.LibraryEmpty}" Appearance="Secondary">
+                <ui:TextBlock.Style>
+                    <Style TargetType="ui:TextBlock">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasLibraryItems}" Value="True">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:TextBlock.Style>
+            </ui:TextBlock>
+            <ItemsControl ItemsSource="{Binding LibraryItems}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="12" Margin="0,0,0,6" CornerRadius="6"
+                                Background="{DynamicResource ControlFillColorDefaultBrush}"
+                                BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <StackPanel>
+                                    <ui:TextBlock Text="{Binding Title}" FontWeight="SemiBold" />
+                                    <ui:TextBlock Text="{Binding Details}" Appearance="Secondary" FontTypography="Caption" />
+                                </StackPanel>
+                                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                    <ui:Button Content="{loc:Loc Dl.UseForWriting}"
+                                               Command="{Binding DataContext.UseLibraryItemCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}" />
+                                    <ui:Button Content="{loc:Loc Dl.Remove}" Margin="8,0,0,0"
+                                               Command="{Binding DataContext.RemoveLibraryItemCommand, RelativeSource={RelativeSource AncestorType=Page}}"
+                                               CommandParameter="{Binding}" />
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
