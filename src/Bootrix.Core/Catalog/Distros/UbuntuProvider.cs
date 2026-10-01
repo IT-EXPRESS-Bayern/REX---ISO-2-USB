@@ -25,11 +25,11 @@ public sealed class UbuntuProvider : ICatalogProvider
 
     private static readonly Flavour[] Flavours =
     [
-        new("ubuntu", "Ubuntu", "ubuntu", "Desktop and server Linux from Canonical", series => $"https://releases.ubuntu.com/{series}/"),
-        new("kubuntu", "Kubuntu", "kubuntu", "Ubuntu with the KDE Plasma desktop", series => CdImage("kubuntu", series)),
-        new("xubuntu", "Xubuntu", "xubuntu", "Ubuntu with the lightweight Xfce desktop", series => CdImage("xubuntu", series)),
-        new("lubuntu", "Lubuntu", "lubuntu", "Ubuntu with the lightweight LXQt desktop", series => CdImage("lubuntu", series)),
-        new("ubuntu-mate", "Ubuntu MATE", "ubuntu-mate", "Ubuntu with the traditional MATE desktop", series => CdImage("ubuntu-mate", series)),
+        new("ubuntu", "Ubuntu", "ubuntu", "Desktop and server Linux from Canonical", "https://ubuntu.com/", series => $"https://releases.ubuntu.com/{series}/"),
+        new("kubuntu", "Kubuntu", "kubuntu", "Ubuntu with the KDE Plasma desktop", "https://kubuntu.org/", series => CdImage("kubuntu", series)),
+        new("xubuntu", "Xubuntu", "xubuntu", "Ubuntu with the lightweight Xfce desktop", "https://xubuntu.org/", series => CdImage("xubuntu", series)),
+        new("lubuntu", "Lubuntu", "lubuntu", "Ubuntu with the lightweight LXQt desktop", "https://lubuntu.me/", series => CdImage("lubuntu", series)),
+        new("ubuntu-mate", "Ubuntu MATE", "ubuntu-mate", "Ubuntu with the traditional MATE desktop", "https://ubuntu-mate.org/", series => CdImage("ubuntu-mate", series)),
     ];
 
     private readonly DistroHttp _http;
@@ -49,7 +49,7 @@ public sealed class UbuntuProvider : ICatalogProvider
             Family = CatalogFamily.Linux,
             Name = f.Name,
             Description = f.Description,
-            Homepage = f.ProductId == "ubuntu" ? "https://ubuntu.com/" : null,
+            Homepage = f.Homepage,
             License = "Open source",
         })]);
 
@@ -67,17 +67,19 @@ public sealed class UbuntuProvider : ICatalogProvider
             .ToList();
         var newestLts = releases.Where(r => r.IsLts).Select(r => r.Version).DefaultIfEmpty().Max();
 
+        var checksums = await Task.WhenAll(releases.Select(r => _http.TryGetBytesAsync(new Uri(flavour.BaseUrl(r.Series) + "SHA256SUMS"), cancellationToken))).ConfigureAwait(false);
+
         var variants = new List<CatalogVariant>();
-        foreach (var release in releases)
+        for (var i = 0; i < releases.Count; i++)
         {
-            var baseUrl = flavour.BaseUrl(release.Series);
-            var sums = await _http.TryGetBytesAsync(new Uri(baseUrl + "SHA256SUMS"), cancellationToken).ConfigureAwait(false);
-            if (sums is null)
+            var release = releases[i];
+            if (checksums[i] is not { } sums)
             {
                 // A flavour that skipped a release has no directory for it.
                 continue;
             }
 
+            var baseUrl = flavour.BaseUrl(release.Series);
             foreach (var image in UbuntuReleases.LatestImages(ChecksumFile.Parse(sums), flavour.FilePrefix))
             {
                 variants.Add(new CatalogVariant
@@ -122,5 +124,5 @@ public sealed class UbuntuProvider : ICatalogProvider
     private static string CdImage(string flavour, string series) =>
         $"https://cdimage.ubuntu.com/{flavour}/releases/{series}/release/";
 
-    private sealed record Flavour(string ProductId, string Name, string FilePrefix, string Description, Func<string, string> BaseUrl);
+    private sealed record Flavour(string ProductId, string Name, string FilePrefix, string Description, string Homepage, Func<string, string> BaseUrl);
 }

@@ -105,8 +105,8 @@ public sealed class FedoraProvider : ICatalogProvider
     }
 
     /// <summary>
-    /// MirrorManager's list of mirrors for exactly this file, or null when it is unusable. A metalink whose digest
-    /// disagrees with the signed one belongs to a different build, so its mirrors are not trusted either.
+    /// MirrorManager's list of mirrors for exactly this file, or null when it is unusable. A metalink that does not
+    /// announce the signed digest belongs to a different build, so its mirrors are not trusted either.
     /// </summary>
     private async Task<MetalinkFile?> MirrorsAsync(Uri link, string file, FileHash signed, CancellationToken cancellationToken)
     {
@@ -115,7 +115,7 @@ public sealed class FedoraProvider : ICatalogProvider
         try
         {
             var entry = MetalinkDocument.Parse(await _http.GetStringAsync(metalink, cancellationToken).ConfigureAwait(false)).Find(file);
-            if (entry is null || entry.Hashes.Any(h => h.Kind == signed.Kind && h.Hex != signed.Hex))
+            if (entry is null || !entry.Hashes.Any(h => h.Kind == signed.Kind && h.Hex == signed.Hex))
             {
                 _logger.LogWarning("Fedora metalink for {File} does not match the signed digest; using the redirector only", file);
                 return null;
@@ -152,7 +152,6 @@ public sealed class FedoraProvider : ICatalogProvider
             }
         }
 
-        var architectures = images.Select(i => i.Architecture).Distinct().Order(StringComparer.Ordinal).ToList();
         var x64 = images.FirstOrDefault(i => i.Architecture == Architectures.X64);
         return new CatalogVariant
         {
@@ -161,7 +160,7 @@ public sealed class FedoraProvider : ICatalogProvider
             Provider = Id,
             Name = Name(edition, first),
             Version = first.Release.ToString(CultureInfo.InvariantCulture),
-            Architectures = [.. architectures.OrderByDescending(a => a == Architectures.X64)],
+            Architectures = [.. images.Select(i => i.Architecture).Distinct().OrderByDescending(a => a == Architectures.X64)],
             SizeBytes = x64?.Size ?? first.Size,
             IsRecommended = IsRecommended(edition, first, newestRelease),
             Properties = VariantProperties.Signed([.. properties]),

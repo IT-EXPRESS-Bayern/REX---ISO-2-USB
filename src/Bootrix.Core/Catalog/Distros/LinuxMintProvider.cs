@@ -57,14 +57,14 @@ public sealed class LinuxMintProvider : ICatalogProvider
         var listing = DirectoryListing.Parse(await _http.GetStringAsync(new Uri(Primary), cancellationToken).ConfigureAwait(false));
         var releases = LinuxMintImages.NewestOfEachSeries(LinuxMintImages.ReleaseDirectories(listing), SeriesOffered);
 
-        var newest = releases.Count > 0 ? releases[0] : null;
+        var checksums = await Task.WhenAll(releases.Select(r => ChecksumSource.UnsignedAsync(_http, new Uri($"{Primary}{r}/sha256sum.txt"), cancellationToken))).ConfigureAwait(false);
+
         var variants = new List<CatalogVariant>();
-        foreach (var release in releases)
+        for (var i = 0; i < releases.Count; i++)
         {
-            var sums = await ChecksumSource.UnsignedAsync(_http, new Uri($"{Primary}{release}/sha256sum.txt"), cancellationToken).ConfigureAwait(false);
-            foreach (var image in LinuxMintImages.Parse(sums).OrderBy(i => i.IsEdge).ThenBy(i => i.Edition, StringComparer.Ordinal))
+            foreach (var image in LinuxMintImages.Parse(checksums[i]).OrderBy(image => image.IsEdge).ThenBy(image => image.Edition, StringComparer.Ordinal))
             {
-                variants.Add(Variant(image, release.Equals(newest) && image is { Edition: "cinnamon", IsEdge: false }));
+                variants.Add(Variant(image, i == 0 && image is { Edition: "cinnamon", IsEdge: false }));
             }
         }
 
