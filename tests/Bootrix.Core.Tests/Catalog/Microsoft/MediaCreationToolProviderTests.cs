@@ -278,6 +278,18 @@ public class MediaCreationToolProviderTests
     }
 
     [Fact]
+    public async Task ListVariants_NoAnswerInTime_BecomesCatalogUnavailableNotCancellation()
+    {
+        // HttpClient reports its own timeout as a cancelled task; the caller did not cancel anything.
+        var provider = Provider(_ => throw new TaskCanceledException("The request was canceled due to the configured timeout."));
+
+        var error = await Assert.ThrowsAsync<BootrixException>(() => provider.ListVariantsAsync("windows11-mct", CancellationToken.None));
+
+        Assert.Equal(ErrorCode.CatalogUnavailable, error.Code);
+        Assert.Contains("did not answer within 30 s", error.Detail, StringComparison.Ordinal);
+    }
+
+    [Fact]
     public async Task ListVariants_Cancellation_IsNotReportedAsUnavailable()
     {
         var provider = Provider(Serve);
