@@ -1,19 +1,20 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.CommandLine;
 using Bootrix.Cli.Output;
+using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
+using Bootrix.Core.Model;
+using Bootrix.Core.Profiles;
 using Bootrix.Core.Storage;
-using Bootrix.Windows.Jobs;
-using Bootrix.Windows.Storage;
 
 namespace Bootrix.Cli.Commands;
 
 internal static class WriteCommand
 {
-    public static Command Create(IDiskService disks, RawWriteJob job, JobRunner runner)
+    public static Command Create(Lazy<IEngine> engine, Lazy<IDiskService> disks)
     {
-        var image = new Argument<FileInfo>("image") { Description = "Disk image or hybrid ISO to write." };
+        var image = new Argument<FileInfo>("image") { Description = "ISO, disk image, or a compressed one (.gz, .xz, .zst, .bz2, .zip, .dmg)." };
         var diskOption = new Option<string[]>("--disk", "-d")
         {
             Description = "Target disk: number (3), name (disk3) or serial number. Repeat for several sticks.",
@@ -25,10 +26,12 @@ internal static class WriteCommand
             Description = "Serial number of each target (or diskN when it has none). Required instead of the interactive question.",
             AllowMultipleArgumentsPerToken = true,
         };
+        var spec = SpecOptions.Create();
         var noVerify = new Option<bool>("--no-verify") { Description = "Skip reading the data back." };
         var json = new Option<bool>("--json") { Description = "Machine readable output (one JSON object per line)." };
 
-        var command = new Command("write", "Write an image to one or more USB drives, byte for byte.") { image, diskOption, confirm, noVerify, json };
+        var command = new Command("write", "Write an image to one or more drives the way its plan decides (see 'plan').") { image, diskOption, confirm, noVerify, json };
+        spec.AddTo(command);
         command.SetAction(async (parse, cancellationToken) =>
         {
             var writer = new ConsoleWriter(parse.GetValue(json));
@@ -55,10 +58,10 @@ internal static class WriteCommand
                     throw new BootrixException(ErrorCode.ImageUnreadable, file.FullName) { Arguments = [file.FullName] };
                 }
 
-                var devices = (parse.GetValue(diskOption) ?? []).Select(spec => DeviceSelector.Resolve(disks, spec)).DistinctBy(d => d.DiskNumber).ToList();
+                var devices = (parse.GetValue(diskOption) ?? []).Select(s => DeviceSelector.Resolve(disks.Value, s)).DistinctBy(d => d.DiskNumber).ToList();
                 var confirmations = parse.GetValue(confirm) ?? [];
 
-                var targets = new List<RawWriteTargetRequest>();
+                var targets = new List<EngineTarget>();
                 foreach (var device in devices)
                 {
                     if (device.IsBlocked)
@@ -72,25 +75,35 @@ internal static class WriteCommand
                         return ExitCodes.Usage;
                     }
 
-                    targets.Add(new RawWriteTargetRequest(device, DiskIdentityReader.Capture(device)));
+                    targets.Add(new EngineTarget(device.DevicePath, await engine.Value.CaptureIdentityAsync(device.DevicePath, soft.Token).ConfigureAwait(false)));
                 }
 
-                var request = new RawWriteRequest { ImagePath = file.FullName, Targets = targets, Verify = !parse.GetValue(noVerify) };
-                var result = await runner.RunAsync(
-                    job.Create(request),
-                    new DelegateProgressSink(writer.WriteProgress),
+                var request = new WriteImageJobRequest
+                {
+                    ImagePath = file.FullName,
+                    Targets = targets,
+                    Spec = spec.Build(parse, verify: !parse.GetValue(noVerify)),
+                    LocalAccountPassword = spec.Password(parse),
+                };
+
+                var result = await engine.Value.RunJobAsync(
+                    request,
+                    new Progress<ProgressReport>(report => writer.WriteProgress(report)),
                     soft.Token,
                     abort.Token).ConfigureAwait(false);
                 writer.EndProgress();
 
                 if (result.Succeeded)
                 {
-                    writer.WriteLine(writer.Json ? string.Empty : $"Done in {result.Duration:hh\\:mm\\:ss}.");
+                    writer.WriteLine(writer.Json
+                        ? string.Empty
+                        : $"Done in {result.Duration:hh\\:mm\\:ss}.{(result.ImageSha256 is { } hash ? $" Image SHA-256 {hash}" : "")}");
                     return ExitCodes.Success;
                 }
 
-                writer.WriteError(result.Error!);
-                return ExitCodes.For(result.Error!);
+                var error = result.ToException()!;
+                writer.WriteError(error);
+                return ExitCodes.For(error);
             }
             catch (Exception ex)
             {

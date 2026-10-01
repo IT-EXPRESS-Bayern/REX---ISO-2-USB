@@ -7,7 +7,7 @@ namespace Bootrix.Cli.Commands;
 
 internal static class DisksCommand
 {
-    public static Command Create(IDiskService disks)
+    public static Command Create(Lazy<IDiskService> disks)
     {
         var all = new Option<bool>("--all") { Description = "Also list internal, virtual and blocked disks." };
         var usbHdd = new Option<bool>("--usb-hdd") { Description = "Also list USB hard disks and SSDs." };
@@ -22,7 +22,7 @@ internal static class DisksCommand
                 var filter = parse.GetValue(all)
                     ? DeviceSelector.ListAll
                     : new DiskFilter { IncludeUsbHardDisks = parse.GetValue(usbHdd), IncludeBlocked = false };
-                var devices = disks.Enumerate(filter);
+                var devices = disks.Value.Enumerate(filter);
 
                 if (writer.Json)
                 {

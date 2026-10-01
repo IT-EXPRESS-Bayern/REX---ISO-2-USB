@@ -14,7 +14,7 @@ namespace Bootrix.Cli.Commands;
 
 internal static class TinyCommand
 {
-    public static Command Create(TinyBuildRunner runner, IInstallImageTools tools, string defaultWorkDirectory)
+    public static Command Create(Lazy<TinyBuildRunner> runner, Lazy<IInstallImageTools> tools, string defaultWorkDirectory)
     {
         var command = new Command("tiny", "Build a slimmed-down Windows medium (Tiny11, Tiny11 Core, Tiny10) from an original ISO.")
         {
@@ -61,7 +61,7 @@ internal static class TinyCommand
         return command;
     }
 
-    private static Command CreateEditions(IInstallImageTools tools)
+    private static Command CreateEditions(Lazy<IInstallImageTools> tools)
     {
         var iso = new Argument<FileInfo>("iso") { Description = "Original Windows ISO." };
         var json = new Option<bool>("--json") { Description = "Machine readable output." };
@@ -72,7 +72,7 @@ internal static class TinyCommand
             try
             {
                 using var mounted = Mount(parse.GetValue(iso)!, cancellationToken);
-                var editions = await tools.GetEditionsAsync(TinyBuildRunner.FindInstallImage(mounted.RootPath!), cancellationToken).ConfigureAwait(false);
+                var editions = await tools.Value.GetEditionsAsync(TinyBuildRunner.FindInstallImage(mounted.RootPath!), cancellationToken).ConfigureAwait(false);
                 foreach (var edition in editions)
                 {
                     if (writer.Json)
@@ -96,7 +96,7 @@ internal static class TinyCommand
         return command;
     }
 
-    private static Command CreateBuild(TinyBuildRunner runner, string defaultWorkDirectory)
+    private static Command CreateBuild(Lazy<TinyBuildRunner> runner, string defaultWorkDirectory)
     {
         var iso = new Argument<FileInfo>("iso") { Description = "Original Windows ISO." };
         var profile = new Option<string>("--profile", "-p") { Description = "tiny11, tiny11core or tiny10.", DefaultValueFactory = _ => "tiny11" };
@@ -143,7 +143,7 @@ internal static class TinyCommand
                     KeepWorkDirectory = parse.GetValue(keepWork),
                 };
 
-                var result = await runner.RunAsync(request, new DelegateProgressSink(writer.WriteProgress), cancellationToken).ConfigureAwait(false);
+                var result = await runner.Value.RunAsync(request, new DelegateProgressSink(writer.WriteProgress), cancellationToken).ConfigureAwait(false);
                 writer.EndProgress();
 
                 if (result.Succeeded)
