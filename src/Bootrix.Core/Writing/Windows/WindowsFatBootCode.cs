@@ -53,8 +53,12 @@ public static class WindowsFatBootCode
 
         var sectors = reservedArea[..((last + 1) * SectorBytes)].ToArray();
 
-        // Bootrix writes its own FSInfo; whatever Windows put there describes a volume that does not exist here.
+        // Bootrix writes its own FSInfo and its own backup of the boot sectors; what Windows put there describes a volume that does not exist here.
         sectors.AsSpan(FsInfoSector * SectorBytes, SectorBytes).Clear();
+        for (var sector = BackupFirst; sector <= BackupLast && sector <= last; sector++)
+        {
+            sectors.AsSpan(sector * SectorBytes, SectorBytes).Clear();
+        }
 
         if (sectors.AsSpan().IndexOf(LoaderName) < 0)
         {
@@ -70,6 +74,44 @@ public static class WindowsFatBootCode
         ArgumentNullException.ThrowIfNull(options);
         ArgumentNullException.ThrowIfNull(code);
         return options with { BootCode = code.Sectors };
+    }
+
+    /// <summary>
+    /// Whether the start of a volume read back from the medium carries the boot code in <paramref name="expected"/>.
+    /// The BPB, FSInfo and the signature are not compared: they are Bootrix's own and depend on the volume.
+    /// </summary>
+    public static bool Matches(ReadOnlySpan<byte> reservedArea, FatBootSectors expected)
+    {
+        ArgumentNullException.ThrowIfNull(expected);
+        if (reservedArea.Length < expected.Sectors.Length)
+        {
+            return false;
+        }
+
+        var wanted = expected.Sectors.AsSpan();
+        if (!reservedArea[Fat32CodeOffset..(SectorBytes - 2)].SequenceEqual(wanted[Fat32CodeOffset..(SectorBytes - 2)]))
+        {
+            return false;
+        }
+
+        for (var sector = 2; sector < expected.SectorCount; sector++)
+        {
+            if (sector is >= BackupFirst and <= BackupLast)
+            {
+                continue;
+            }
+
+            var from = sector * SectorBytes;
+
+            // The 0x55AA marker at the end of sector 2 is set by the formatter whatever the code had there.
+            var length = sector == 2 ? SectorBytes - 2 : SectorBytes;
+            if (!reservedArea.Slice(from, length).SequenceEqual(wanted.Slice(from, length)))
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /// <summary>

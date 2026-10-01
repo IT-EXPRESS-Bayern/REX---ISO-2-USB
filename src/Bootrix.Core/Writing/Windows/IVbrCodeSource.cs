@@ -15,8 +15,9 @@ public sealed record FatBootSectors(byte[] Sectors, int BytesPerSector = 512)
 /// <summary>Where the boot code for the BIOS start of a FAT32 Windows medium comes from.</summary>
 public interface IVbrCodeSource
 {
+    /// <param name="scratchDirectory">A folder the source may use for temporary files; it is deleted by the caller.</param>
     /// <exception cref="Errors.BootrixException">The boot code could not be obtained, or it is not the boot code that loads BOOTMGR.</exception>
-    Task<FatBootSectors> ReadFat32Async(CancellationToken cancellationToken);
+    Task<FatBootSectors> ReadFat32Async(string scratchDirectory, CancellationToken cancellationToken);
 }
 
 /// <summary>Asks the inner source once; the boot code does not change for the lifetime of the process. A failed attempt is not remembered.</summary>
@@ -25,12 +26,12 @@ public sealed class CachingVbrCodeSource(IVbrCodeSource inner) : IVbrCodeSource
     private readonly Lock _gate = new();
     private Task<FatBootSectors>? _pending;
 
-    public async Task<FatBootSectors> ReadFat32Async(CancellationToken cancellationToken)
+    public async Task<FatBootSectors> ReadFat32Async(string scratchDirectory, CancellationToken cancellationToken)
     {
         Task<FatBootSectors> task;
         lock (_gate)
         {
-            task = _pending ??= inner.ReadFat32Async(cancellationToken);
+            task = _pending ??= inner.ReadFat32Async(scratchDirectory, cancellationToken);
         }
 
         try

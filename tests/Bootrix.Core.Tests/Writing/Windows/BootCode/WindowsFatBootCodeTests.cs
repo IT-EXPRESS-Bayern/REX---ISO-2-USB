@@ -140,6 +140,37 @@ public sealed class WindowsFatBootCodeTests : IDisposable
     }
 
     [RequiresToolFact("nasm")]
+    public void Matches_ComparesTheCodeButNotTheBpb()
+    {
+        var code = WindowsFatBootCode.FromReservedArea(ReferenceArea(TestMedium.AssembleTestVbr(_dir)));
+
+        // A volume of another size and position carries the same code in a different BPB.
+        using var stream = new MemoryStream(new byte[300 * TestMedium.Mib]);
+        FatFormatter.Format(stream, WindowsFatBootCode.Apply(new FatFormatOptions { TotalBytes = 300 * TestMedium.Mib, Type = FatType.Fat32, HiddenSectors = 8192, Label = "OTHER" }, code) with { AssumeZeroed = true });
+        var area = stream.ToArray().AsSpan(0, 32 * 512).ToArray();
+
+        Assert.True(WindowsFatBootCode.Matches(area, code));
+    }
+
+    [RequiresToolFact("nasm")]
+    public void Matches_NoticesAChangedByteInAnyCodeSector()
+    {
+        var code = WindowsFatBootCode.FromReservedArea(ReferenceArea(TestMedium.AssembleTestVbr(_dir)));
+        using var stream = new MemoryStream(new byte[300 * TestMedium.Mib]);
+        FatFormatter.Format(stream, WindowsFatBootCode.Apply(new FatFormatOptions { TotalBytes = 300 * TestMedium.Mib, Type = FatType.Fat32 }, code) with { AssumeZeroed = true });
+        var good = stream.ToArray().AsSpan(0, 32 * 512).ToArray();
+
+        foreach (var offset in new[] { 0x5A, 0x100, 2 * 512 + 3, 12 * 512 + 10, (12 * 512) + 511 })
+        {
+            var bad = (byte[])good.Clone();
+            bad[offset] ^= 0x40;
+            Assert.False(WindowsFatBootCode.Matches(bad, code), $"offset {offset}");
+        }
+
+        Assert.False(WindowsFatBootCode.Matches(good.AsSpan(0, 5 * 512), code));
+    }
+
+    [RequiresToolFact("nasm")]
     public void Apply_ChangesOnlyTheBootCodeOfTheOptions()
     {
         var code = WindowsFatBootCode.FromReservedArea(ReferenceArea(TestMedium.AssembleTestVbr(_dir)));
@@ -191,7 +222,7 @@ public sealed class WindowsFatBootCodeTests : IDisposable
 
         public int Calls => _calls;
 
-        public async Task<FatBootSectors> ReadFat32Async(CancellationToken cancellationToken)
+        public async Task<FatBootSectors> ReadFat32Async(string scratchDirectory, CancellationToken cancellationToken)
         {
             var call = Interlocked.Increment(ref _calls);
             await Task.Delay(20, cancellationToken);
@@ -205,11 +236,11 @@ public sealed class WindowsFatBootCodeTests : IDisposable
         var inner = new CountingSource(_ => new FatBootSectors(new byte[1536]));
         var source = new CachingVbrCodeSource(inner);
 
-        var results = await Task.WhenAll(Enumerable.Range(0, 5).Select(_ => source.ReadFat32Async(CancellationToken.None)));
+        var results = await Task.WhenAll(Enumerable.Range(0, 5).Select(_ => source.ReadFat32Async("scratch", CancellationToken.None)));
 
         Assert.Equal(1, inner.Calls);
         Assert.All(results, result => Assert.Same(results[0], result));
-        Assert.Same(results[0], await source.ReadFat32Async(CancellationToken.None));
+        Assert.Same(results[0], await source.ReadFat32Async("scratch", CancellationToken.None));
         Assert.Equal(1, inner.Calls);
     }
 
@@ -219,8 +250,8 @@ public sealed class WindowsFatBootCodeTests : IDisposable
         var inner = new CountingSource(call => call == 1 ? throw new InvalidOperationException("first attempt fails") : new FatBootSectors(new byte[1536]));
         var source = new CachingVbrCodeSource(inner);
 
-        await Assert.ThrowsAsync<InvalidOperationException>(() => source.ReadFat32Async(CancellationToken.None));
-        var second = await source.ReadFat32Async(CancellationToken.None);
+        await Assert.ThrowsAsync<InvalidOperationException>(() => source.ReadFat32Async("scratch", CancellationToken.None));
+        var second = await source.ReadFat32Async("scratch", CancellationToken.None);
 
         Assert.Equal(3, second.SectorCount);
         Assert.Equal(2, inner.Calls);

@@ -21,10 +21,16 @@ public sealed class TargetSequenceProgress
 
     public long TotalBytes => _targets * _bytesPerTarget;
 
-    public long Overall(int targetIndex, long bytesOnTarget)
+    /// <param name="bytesOnTarget">Bytes done on this target.</param>
+    /// <param name="bytesOfTarget">What this target needs altogether, when that is not the common share (another plan, another number of bytes).</param>
+    public long Overall(int targetIndex, long bytesOnTarget, long? bytesOfTarget = null)
     {
         ArgumentOutOfRangeException.ThrowIfNegative(targetIndex);
         ArgumentOutOfRangeException.ThrowIfGreaterThanOrEqual(targetIndex, _targets);
-        return (targetIndex * _bytesPerTarget) + Math.Clamp(bytesOnTarget, 0, _bytesPerTarget);
+
+        var done = bytesOfTarget is { } total && total > 0 && total != _bytesPerTarget
+            ? (long)((double)Math.Clamp(bytesOnTarget, 0, total) / total * _bytesPerTarget)
+            : bytesOnTarget;
+        return (targetIndex * _bytesPerTarget) + Math.Clamp(done, 0, _bytesPerTarget);
     }
 }

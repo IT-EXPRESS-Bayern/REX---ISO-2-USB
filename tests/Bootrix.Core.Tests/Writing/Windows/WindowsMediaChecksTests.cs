@@ -87,6 +87,16 @@ public class WindowsMediaChecksTests
     }
 
     [Fact]
+    public void ATargetWithAnotherSize_FillsExactlyItsShare()
+    {
+        var progress = new TargetSequenceProgress(2, 1000);
+
+        Assert.Equal(1000 + 250, progress.Overall(1, 500, 2000));
+        Assert.Equal(2000, progress.Overall(1, 2000, 2000));
+        Assert.Equal(1000, progress.Overall(0, 40, 40));
+    }
+
+    [Fact]
     public void ATargetCannotLeaveItsShare()
     {
         var progress = new TargetSequenceProgress(2, 1000);
