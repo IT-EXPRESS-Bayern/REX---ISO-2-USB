@@ -64,7 +64,7 @@ jobs:
           Copy-Item LICENSE, README.md dist/${{ matrix.rid }}/
           Copy-Item assets/third-party dist/${{ matrix.rid }}/third-party -Recurse
           Remove-Item dist/${{ matrix.rid }}/*.pdb -ErrorAction SilentlyContinue
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: unsigned
         with:
           name: bootrix-${{ matrix.rid }}-unsigned
@@ -84,7 +84,7 @@ jobs:
         with:
           name: bootrix-${{ matrix.rid }}-unsigned
           path: unsigned
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         id: upload
         with:
           name: bootrix-${{ matrix.rid }}-for-signing
@@ -98,7 +98,7 @@ jobs:
           github-artifact-id: ${{ steps.upload.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: signed
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: bootrix-${{ matrix.rid }}-signed
           path: signed
@@ -150,7 +150,7 @@ jobs:
           files: release/*
       - name: Ablage für manuelle Läufe
         if: github.ref_type != 'tag'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-dry-run
           path: release
