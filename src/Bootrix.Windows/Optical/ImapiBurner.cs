@@ -65,7 +65,7 @@ internal sealed unsafe class ImapiBurner(ILogger logger)
             }
             finally
             {
-                recorder.ReleaseExclusiveAccess();
+                ReleaseExclusive(recorder);
             }
         }
         catch (Exception ex) when (ex is not (BootrixException or OperationCanceledException))
@@ -161,6 +161,19 @@ internal sealed unsafe class ImapiBurner(ILogger logger)
             }
 
             throw ImapiErrors.Translate(ex, context with { LockOwner = owner });
+        }
+    }
+
+    private void ReleaseExclusive(IDiscRecorder2 recorder)
+    {
+        try
+        {
+            recorder.ReleaseExclusiveAccess();
+        }
+        catch (COMException ex)
+        {
+            // A drive that vanished during the burn cannot be unlocked; the driver drops the lock by itself.
+            logger.LogDebug(ex, "Exclusive access could not be released");
         }
     }
 
