@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Engine;
 using Bootrix.Core.Optical;
 using Bootrix.Core.Optical.Jobs;
 using Bootrix.Core.Storage;
@@ -6,13 +7,15 @@ using Bootrix.Core.Tiny;
 using Bootrix.Core.Wim;
 using Bootrix.Core.Workshop;
 using Bootrix.Core.Workshop.Capture;
+using Bootrix.Windows.Broker;
 using Bootrix.Windows.Dism;
+using Bootrix.Windows.Engine;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Optical;
 using Bootrix.Windows.Storage;
 using Bootrix.Windows.Tiny;
-using Bootrix.Windows.Workshop;
 using Bootrix.Windows.Tools;
+using Bootrix.Windows.Workshop;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bootrix.Windows;
@@ -42,6 +45,11 @@ public static class WindowsServiceCollectionExtensions
 
         services.AddSingleton<ITargetPcCollector, TargetPcCollector>();
         services.AddSingleton<ICustomerPcCapture, CustomerPcCaptureService>();
+
+        services.AddSingleton<LocalEngine>();
+        services.AddSingleton<BrokerLauncher>();
+        services.AddSingleton<EngineProvider>();
+        services.AddSingleton(sp => sp.GetRequiredService<EngineProvider>().Engine);
 
         return services;
     }

@@ -289,4 +289,12 @@
   <data name="Workshop.Capture.WlanKeysProtected" xml:space="preserve"><value>For {0} Wi-Fi profiles the key could not be read in clear text (administrator rights needed).</value></data>
   <data name="Workshop.Capture.ProductKeyMayBeGeneric" xml:space="preserve"><value>The Windows key read from the registry can be a generic installation key when the license is digital; it is then not usable on other hardware.</value></data>
   <data name="Workshop.Capture.RecoveryKeyUnavailable" xml:space="preserve"><value>No recovery password could be read for {0} (drive locked, no password protector or missing rights).</value></data>
+  <data name="Error.ElevationDenied.Cause" xml:space="preserve"><value>Administrator permission was not granted.</value></data>
+  <data name="Error.ElevationDenied.Action" xml:space="preserve"><value>Confirm the Windows User Account Control prompt so that disks can be read and written.</value></data>
+  <data name="Error.BrokerStartFailed.Cause" xml:space="preserve"><value>The elevated Bootrix process could not be started ({0}).</value></data>
+  <data name="Error.BrokerStartFailed.Action" xml:space="preserve"><value>Restart Bootrix. If the problem persists, start Bootrix with "Run as administrator".</value></data>
+  <data name="Error.BrokerDisconnected.Cause" xml:space="preserve"><value>The connection to the elevated Bootrix process was lost.</value></data>
+  <data name="Error.BrokerDisconnected.Action" xml:space="preserve"><value>Check the disk before using it: a running write was aborted. Repeat the operation.</value></data>
+  <data name="Error.BrokerProtocol.Cause" xml:space="preserve"><value>Communication with the elevated Bootrix process failed ({0}).</value></data>
+  <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Close all Bootrix windows and start the program again.</value></data>
 </root>

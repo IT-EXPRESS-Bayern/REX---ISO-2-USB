@@ -82,4 +82,10 @@ public enum ErrorCode
     ImageSegmented = 3102,
     ImageLegacyFormat = 3103,
     ImageAppleArchive = 3104,
+
+    // 81xx: elevated broker process
+    ElevationDenied = 8101,
+    BrokerStartFailed = 8102,
+    BrokerDisconnected = 8103,
+    BrokerProtocol = 8104,
 }

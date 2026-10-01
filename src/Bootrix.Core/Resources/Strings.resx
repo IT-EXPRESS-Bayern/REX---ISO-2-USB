@@ -298,4 +298,12 @@
   <data name="Plan.Warning.SuperfloppyBoot" xml:space="preserve"><value>Ohne Partitionstabelle starten nicht alle Rechner; viele BIOS-Versionen und UEFI-Geräte bieten dafür nur Diskettenemulation an.</value></data>
   <data name="Plan.Warning.NonStandardFloppySize" xml:space="preserve"><value>Die Größe {0} entspricht keinem Standard-Diskettenformat; es wird ein FAT12-Dateisystem passender Größe angelegt.</value></data>
   <data name="Plan.Warning.UefiNtfsCa2011" xml:space="preserve"><value>UEFI:NTFS ist mit dem Microsoft UEFI CA 2011 signiert. Geräte, die nur der Zertifizierungsstelle von 2023 vertrauen, starten es eventuell nicht; FAT32 mit geteilter WIM-Datei vermeidet das.</value></data>
+  <data name="Error.ElevationDenied.Cause" xml:space="preserve"><value>Die Administratorberechtigung wurde nicht erteilt.</value></data>
+  <data name="Error.ElevationDenied.Action" xml:space="preserve"><value>Bestätigen Sie die Windows-Abfrage der Benutzerkontensteuerung, um Datenträger lesen und beschreiben zu können.</value></data>
+  <data name="Error.BrokerStartFailed.Cause" xml:space="preserve"><value>Der Administrator-Prozess von Bootrix konnte nicht gestartet werden ({0}).</value></data>
+  <data name="Error.BrokerStartFailed.Action" xml:space="preserve"><value>Starten Sie Bootrix neu. Wenn das Problem bleibt, starten Sie Bootrix über „Als Administrator ausführen“.</value></data>
+  <data name="Error.BrokerDisconnected.Cause" xml:space="preserve"><value>Die Verbindung zum Administrator-Prozess von Bootrix ist abgebrochen.</value></data>
+  <data name="Error.BrokerDisconnected.Action" xml:space="preserve"><value>Prüfen Sie den Datenträger, bevor Sie ihn verwenden: Ein laufender Schreibvorgang wurde abgebrochen. Wiederholen Sie den Vorgang.</value></data>
+  <data name="Error.BrokerProtocol.Cause" xml:space="preserve"><value>Die Kommunikation mit dem Administrator-Prozess von Bootrix ist fehlgeschlagen ({0}).</value></data>
+  <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Beenden Sie alle Bootrix-Fenster und starten Sie das Programm neu.</value></data>
 </root>
