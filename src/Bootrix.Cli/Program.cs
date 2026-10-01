@@ -5,6 +5,7 @@ using Bootrix.Core;
 using Bootrix.Core.Hosting;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Storage;
+using Bootrix.Core.Tiny;
 using Bootrix.Windows;
 using Bootrix.Windows.Jobs;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,11 @@ var root = new RootCommand($"{AppInfo.Name} {AppInfo.Version} - bootable media f
         services.GetRequiredService<IDiskService>(),
         services.GetRequiredService<RawWriteJob>(),
         services.GetRequiredService<JobRunner>()),
+    TinyCommand.Create(
+        services.GetRequiredService<TinyBuilder>(),
+        services.GetRequiredService<IInstallImageTools>(),
+        services.GetRequiredService<JobRunner>(),
+        paths.WorkDirectory),
 };
 
 return await root.Parse(args).InvokeAsync().ConfigureAwait(false);

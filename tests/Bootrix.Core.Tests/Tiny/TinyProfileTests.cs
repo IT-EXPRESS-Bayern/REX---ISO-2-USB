@@ -145,4 +145,36 @@ public class TinyProfileTests
     {
         Assert.Throws<Bootrix.Core.Errors.BootrixException>(() => TinyProfiles.Load("tiny12"));
     }
+
+    [Fact]
+    public void DisabledGroups_StartsWithTheGroupsThatAreOffByDefault()
+    {
+        var profile = TinyProfiles.Load("tiny11");
+
+        var disabled = TinyProfiles.DisabledGroups(profile, [], []);
+
+        Assert.Equal(profile.Groups.Where(g => !g.Default).Select(g => g.Id).Order(StringComparer.Ordinal), disabled.Order(StringComparer.Ordinal));
+        Assert.Contains("tools", disabled);
+    }
+
+    [Fact]
+    public void DisabledGroups_IncludeSwitchesADefaultOffGroupOnAndKeepSwitchesOneOff()
+    {
+        var profile = TinyProfiles.Load("tiny11");
+
+        var disabled = TinyProfiles.DisabledGroups(profile, ["EDGE"], ["tools"]);
+
+        Assert.DoesNotContain("tools", disabled);
+        Assert.Contains("edge", disabled);
+    }
+
+    [Fact]
+    public void DisabledGroups_UnknownNameIsAnErrorInsteadOfASilentTypo()
+    {
+        var profile = TinyProfiles.Load("tiny11");
+
+        var ex = Assert.Throws<Bootrix.Core.Errors.BootrixException>(() => TinyProfiles.DisabledGroups(profile, ["edgee"], []));
+
+        Assert.Equal(Bootrix.Core.Errors.ErrorCode.InvalidSpec, ex.Code);
+    }
 }

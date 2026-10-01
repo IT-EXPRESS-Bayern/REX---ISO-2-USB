@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Core.Errors;
+using Bootrix.Core.Images;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Unattend;
 using Microsoft.Extensions.Logging;
@@ -297,12 +298,22 @@ public sealed class TinyBuilder
         {
             if (options.Unattend is { } unattend)
             {
+                // The exported install image holds exactly one edition, and its architecture is only known after the export.
+                var matched = unattend with { Arch = ArchitectureOf(_architecture), ImageIndex = 1, ImageName = null };
+
                 // The answer file belongs at the root of the media; Setup does not read the copy in Sysprep for new installations.
-                File.WriteAllBytes(Path.Combine(_media, "autounattend.xml"), UnattendBuilder.ToBytes(unattend));
+                File.WriteAllBytes(Path.Combine(_media, "autounattend.xml"), UnattendBuilder.ToBytes(matched));
             }
 
             return Task.CompletedTask;
         }
+
+        private static WindowsArch ArchitectureOf(string architecture) => architecture.ToLowerInvariant() switch
+        {
+            "arm64" => WindowsArch.Arm64,
+            "x86" => WindowsArch.X86,
+            _ => WindowsArch.X64,
+        };
 
         public async Task CreateIsoAsync(JobContext context, CancellationToken cancellationToken)
         {

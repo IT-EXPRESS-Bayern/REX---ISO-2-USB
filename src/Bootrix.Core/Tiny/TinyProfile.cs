@@ -159,6 +159,33 @@ public static class TinyProfiles
         return profile.Extends is { } parent ? Merge(Load(parent), profile) : profile;
     }
 
+    /// <summary>
+    /// Which groups are switched off for a build: the ones that are off by default unless asked for with
+    /// <paramref name="include"/>, plus the ones the user wants to <paramref name="keep"/>. A group name the profile
+    /// does not know is an error, because a typo would otherwise silently remove something the user wanted to keep.
+    /// </summary>
+    public static IReadOnlySet<string> DisabledGroups(TinyProfile profile, IEnumerable<string> keep, IEnumerable<string> include)
+    {
+        var known = profile.Groups.Select(g => g.Id).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var keepList = keep.ToList();
+        var includeList = include.ToList();
+        var unknown = keepList.Concat(includeList).Where(g => !known.Contains(g)).ToList();
+        if (unknown.Count > 0)
+        {
+            throw new BootrixException(ErrorCode.InvalidSpec, "unknown group")
+            {
+                Arguments = [$"Unknown option group '{unknown[0]}' for {profile.Name}. Known groups: {string.Join(", ", profile.Groups.Select(g => g.Id))}."],
+            };
+        }
+
+        var disabled = profile.Groups
+            .Where(g => !g.Default && !includeList.Contains(g.Id, StringComparer.OrdinalIgnoreCase))
+            .Select(g => g.Id)
+            .ToHashSet(StringComparer.OrdinalIgnoreCase);
+        disabled.UnionWith(keepList.Select(k => profile.Groups.First(g => g.Id.Equals(k, StringComparison.OrdinalIgnoreCase)).Id));
+        return disabled;
+    }
+
     /// <summary>Lists that are absent from the JSON arrive as null; later code can rely on empty lists instead.</summary>
     internal static TinyProfile Normalize(TinyProfile profile) => profile with
     {

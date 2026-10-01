@@ -296,6 +296,26 @@ public sealed class TinyBuilderTests : IDisposable
         Assert.Contains("<Name>Kunde</Name>", xml, StringComparison.Ordinal);
     }
 
+    [Theory]
+    [InlineData("amd64", "amd64")]
+    [InlineData("arm64", "arm64")]
+    [InlineData("x86", "x86")]
+    public async Task UnattendFollowsTheArchitectureOfTheExportedImage(string imageArchitecture, string expected)
+    {
+        _fake.Architecture = imageArchitecture;
+        var options = Options() with
+        {
+            Unattend = new UnattendOptions { Arch = WindowsArch.X64, ImageName = "Windows 11 Pro", Windows = new WindowsSetupOptions { BypassTpm = true } },
+        };
+
+        await RunAsync(Builder().CreateJob(options));
+
+        var xml = await File.ReadAllTextAsync(Path.Combine(_work, "media", "autounattend.xml"));
+        Assert.Contains($"processorArchitecture=\"{expected}\"", xml, StringComparison.Ordinal);
+        Assert.Contains("<Value>1</Value>", xml, StringComparison.Ordinal);
+        Assert.DoesNotContain("Windows 11 Pro", xml, StringComparison.Ordinal);
+    }
+
     [Fact]
     public async Task IsoIsCreatedWhenRequested()
     {
