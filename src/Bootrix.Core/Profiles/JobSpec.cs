@@ -65,6 +65,15 @@ public sealed record TargetOptions
     public int PersistenceMegabytes { get; init; }
 
     public bool CheckBadBlocks { get; init; }
+
+    /// <summary>Where the first partition starts when <see cref="LegacyBiosFixes"/> is on.</summary>
+    public LegacyPartitionStart LegacyStart { get; init; } = LegacyPartitionStart.Kib64;
+
+    /// <summary>Put the file system at LBA 0 with no partition table, for floppies and BIOSes that only offer diskette emulation.</summary>
+    public bool Superfloppy { get; init; }
+
+    /// <summary>Install Windows onto the device itself (Windows To Go) instead of creating setup media.</summary>
+    public bool WindowsToGo { get; init; }
 }
 
 public sealed record WindowsSetupOptions
