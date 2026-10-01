@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Boot.Syslinux;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Model;
 using Bootrix.Core.Partitioning;
@@ -20,7 +21,8 @@ public static class WindowsMbr
         return plan.Scheme == PartitionScheme.Mbr && plan.BootMethod.HasFlag(BootMethod.WindowsBootmgrBios);
     }
 
-    public static byte[] Bootstrap() => WindowsBootAssets.SyslinuxMbr();
+    /// <summary>The 440 bytes of Syslinux's mbr.bin (MIT): find the active partition and run its boot sector.</summary>
+    public static byte[] Bootstrap() => SyslinuxMbr.Code(gpt: false);
 
     /// <summary>
     /// Writes the boot code into the first 440 bytes of <paramref name="sector"/> and sets status and type of

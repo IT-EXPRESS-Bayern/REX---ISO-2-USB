@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Core.Errors;
 using Bootrix.Core.FileSystems.Fat;
+using Bootrix.Core.Writing.Linux;
 using DiscUtils;
 using DiscUtils.Fat;
 using DiscUtils.Streams;
@@ -15,7 +16,7 @@ namespace Bootrix.Core.Writing.Windows;
 public static class UefiNtfsImage
 {
     /// <summary>Size of the partition the planner reserves, and of the shipped image.</summary>
-    public const int PartitionBytes = 1024 * 1024;
+    public const int PartitionBytes = UefiNtfsHelper.ImageBytes;
 
     /// <summary>
     /// The bytes for the start of the partition. The shipped image is a FAT volume with 512-byte sectors;
@@ -26,7 +27,7 @@ public static class UefiNtfsImage
     /// <exception cref="BootrixException">The files do not fit into the partition with this sector size.</exception>
     public static byte[] ForSectorSize(int sectorSize)
     {
-        var shipped = WindowsBootAssets.UefiNtfsImage();
+        var shipped = UefiNtfsHelper.Image();
         return sectorSize switch
         {
             512 => shipped,

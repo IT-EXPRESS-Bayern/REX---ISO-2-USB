@@ -45,9 +45,4 @@
     <InternalsVisibleTo Include="Bootrix.Core.Tests" />
   </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="..\..\assets\third-party\syslinux-mbr\mbr.bin" LogicalName="Bootrix.Core.Writing.Windows.mbr.bin" />
-    <EmbeddedResource Include="..\..\assets\third-party\uefi-ntfs\uefi-ntfs.img" LogicalName="Bootrix.Core.Writing.Windows.uefi-ntfs.img" />
-  </ItemGroup>
-
 </Project>
