@@ -34,6 +34,7 @@ public enum ErrorCode
     FileSystemTooSmall = 2013,
     WriteModeUnsupported = 2014,
     PersistenceTooSmall = 2015,
+    MediaWriterUnavailable = 2016,
 
     // 3xxx: images
     ImageUnreadable = 3001,

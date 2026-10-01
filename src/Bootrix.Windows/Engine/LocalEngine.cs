@@ -6,6 +6,7 @@ using Bootrix.Core.Jobs;
 using Bootrix.Core.Storage;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -24,9 +25,12 @@ public sealed class LocalEngine : IEngine
     private readonly ILogger _logger;
     private readonly Dictionary<Type, JobKind> _kinds;
 
-    public LocalEngine(IDiskService disks, JobRunner runner, RawWriteJob rawWrite, ILogger<LocalEngine>? logger = null)
+    public LocalEngine(IDiskService disks, JobRunner runner, RawWriteJob rawWrite, WriteImageJobFactory writeImage, ILogger<LocalEngine>? logger = null)
         : this(disks, runner, rawWrite.Create, DiskIdentityReader.Capture, logger)
     {
+        _kinds[typeof(WriteImageJobRequest)] = new(
+            (request, ct) => writeImage.CreateAsync((WriteImageJobRequest)request, ct),
+            SummarizeRawWrite);
     }
 
     internal LocalEngine(

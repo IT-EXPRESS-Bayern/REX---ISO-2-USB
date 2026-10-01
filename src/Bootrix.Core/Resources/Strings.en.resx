@@ -297,4 +297,6 @@
   <data name="Error.BrokerDisconnected.Action" xml:space="preserve"><value>Check the disk before using it: a running write was aborted. Repeat the operation.</value></data>
   <data name="Error.BrokerProtocol.Cause" xml:space="preserve"><value>Communication with the elevated Bootrix process failed ({0}).</value></data>
   <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Close all Bootrix windows and start the program again.</value></data>
+  <data name="Error.MediaWriterUnavailable.Cause" xml:space="preserve"><value>This version of Bootrix has no way to write this image ({0}) yet ({1}).</value></data>
+  <data name="Error.MediaWriterUnavailable.Action" xml:space="preserve"><value>Try the "Write image byte for byte (DD)" mode if the image is suited for it.</value></data>
 </root>

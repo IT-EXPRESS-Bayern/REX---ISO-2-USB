@@ -16,6 +16,7 @@ public static class EngineRequestValidator
     private static readonly Dictionary<Type, Action<EngineJobRequest, List<string>>> Validators = new()
     {
         [typeof(RawWriteJobRequest)] = (request, problems) => ValidateRawWrite((RawWriteJobRequest)request, problems),
+        [typeof(WriteImageJobRequest)] = (request, problems) => ValidateWriteImage((WriteImageJobRequest)request, problems),
     };
 
     public static IReadOnlyList<string> Validate(EngineJobRequest? request)
@@ -55,6 +56,37 @@ public static class EngineRequestValidator
         }
 
         ValidateTargets(request.Targets, problems);
+    }
+
+    private static void ValidateWriteImage(WriteImageJobRequest request, List<string> problems)
+    {
+        if (!EnginePathRules.IsAbsoluteFilePath(request.ImagePath))
+        {
+            problems.Add("image path is not an absolute file path");
+        }
+
+        ValidateTargets(request.Targets, problems);
+
+        if (request.Spec is null)
+        {
+            problems.Add("job options are missing");
+            return;
+        }
+
+        if (request.Spec.Windows?.DriverFolders?.Any(folder => !EnginePathRules.IsAbsoluteFilePath(folder)) == true)
+        {
+            problems.Add("a driver folder is not an absolute path");
+        }
+
+        if (request.Spec.Target?.Label is { Length: > 32 })
+        {
+            problems.Add("volume label is longer than 32 characters");
+        }
+
+        if (request.LocalAccountPassword is { Length: > 127 })
+        {
+            problems.Add("local account password is too long");
+        }
     }
 
     private static void ValidateTargets(IReadOnlyList<EngineTarget>? targets, List<string> problems)

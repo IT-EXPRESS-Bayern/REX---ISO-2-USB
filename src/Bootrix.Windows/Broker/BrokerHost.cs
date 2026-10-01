@@ -3,14 +3,17 @@ using System.Diagnostics;
 using Bootrix.Core;
 using Bootrix.Core.Engine;
 using Bootrix.Core.Hosting;
+using Bootrix.Core.Images;
 using Bootrix.Core.Ipc;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Logging;
+using Bootrix.Core.Writing;
 using Bootrix.Windows.Engine;
 using Bootrix.Windows.Interop;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Platform;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 
 namespace Bootrix.Windows.Broker;
@@ -125,8 +128,17 @@ internal static class BrokerHost
         var images = new ImpersonatingImageStreamProvider(
             new FileImageStreamProvider(),
             new PipeClientImpersonator(() => listener.CurrentPipe));
-        var rawWrite = new RawWriteJob(disks, images, new JobJournal(paths.JournalDirectory), loggers.CreateLogger<RawWriteJob>());
-        return new LocalEngine(disks, new JobRunner(loggers.CreateLogger<JobRunner>()), rawWrite, loggers.CreateLogger<LocalEngine>());
+        var journal = new JobJournal(paths.JournalDirectory);
+        var rawWrite = new RawWriteJob(disks, images, journal, loggers.CreateLogger<RawWriteJob>());
+        var services = new WriteServices(disks, new DiskPreparer(loggers.CreateLogger<DiskPreparer>()), journal, loggers);
+        var writeImage = new WriteImageJobFactory(
+            disks,
+            new MediaPlanService(new ImageInspector()),
+            images,
+            MediaWriters.CreateDefault(services, images, rawWrite),
+            paths,
+            loggers.CreateLogger<WriteImageJobFactory>());
+        return new LocalEngine(disks, new JobRunner(loggers.CreateLogger<JobRunner>()), rawWrite, writeImage, loggers.CreateLogger<LocalEngine>());
     }
 
     /// <summary>

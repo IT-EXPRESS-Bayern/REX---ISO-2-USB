@@ -306,4 +306,6 @@
   <data name="Error.BrokerDisconnected.Action" xml:space="preserve"><value>Prüfen Sie den Datenträger, bevor Sie ihn verwenden: Ein laufender Schreibvorgang wurde abgebrochen. Wiederholen Sie den Vorgang.</value></data>
   <data name="Error.BrokerProtocol.Cause" xml:space="preserve"><value>Die Kommunikation mit dem Administrator-Prozess von Bootrix ist fehlgeschlagen ({0}).</value></data>
   <data name="Error.BrokerProtocol.Action" xml:space="preserve"><value>Beenden Sie alle Bootrix-Fenster und starten Sie das Programm neu.</value></data>
+  <data name="Error.MediaWriterUnavailable.Cause" xml:space="preserve"><value>Für dieses Image ({0}) gibt es in dieser Version von Bootrix noch keinen Schreibweg ({1}).</value></data>
+  <data name="Error.MediaWriterUnavailable.Action" xml:space="preserve"><value>Versuchen Sie den Modus „Abbild 1:1 schreiben (DD)“, falls das Image dafür geeignet ist.</value></data>
 </root>

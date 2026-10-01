@@ -12,6 +12,7 @@ namespace Bootrix.Core.Engine;
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
 [JsonDerivedType(typeof(RawWriteJobRequest), "raw-write")]
 [JsonDerivedType(typeof(TinyBuildJobRequest), "tiny-build")]
+[JsonDerivedType(typeof(WriteImageJobRequest), "write-image")]
 public abstract record EngineJobRequest;
 
 /// <summary>A disk the user confirmed, together with the fingerprint taken at that moment.</summary>
