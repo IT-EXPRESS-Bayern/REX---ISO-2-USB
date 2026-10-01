@@ -41,7 +41,7 @@ public static class ImageSourceOpener
             return OpenApple(path, options, logger);
         }
 
-        var file = OpenFile(path, FileShare.Read, FileOptions.SequentialScan | FileOptions.Asynchronous);
+        var file = OpenFile(path, FileShare.Read, FileOptions.SequentialScan | FileOptions.Asynchronous, 1024 * 1024);
         return WithBlockMap(new ImageSource(file, file.Length, ImageSourceKind.File), path, options);
     }
 
@@ -67,7 +67,7 @@ public static class ImageSourceOpener
         }
 
         // The inspector reads images that are still being downloaded, so the file may be open for writing elsewhere.
-        var file = OpenFile(path, FileShare.ReadWrite | FileShare.Delete, FileOptions.RandomAccess);
+        var file = OpenFile(path, FileShare.ReadWrite | FileShare.Delete, FileOptions.RandomAccess, bufferSize: 1);
         return new ImageSource(file, file.Length, format == CompressionFormat.None ? ImageSourceKind.File : ImageSourceKind.Compressed)
         {
             Compression = format,
@@ -131,11 +131,11 @@ public static class ImageSourceOpener
         return signature is ContainerSignature.Udif or ContainerSignature.SparseImage;
     }
 
-    private static FileStream OpenFile(string path, FileShare share, FileOptions options)
+    private static FileStream OpenFile(string path, FileShare share, FileOptions options, int bufferSize)
     {
         try
         {
-            return new FileStream(path, FileMode.Open, FileAccess.Read, share, 1024 * 1024, options);
+            return new FileStream(path, FileMode.Open, FileAccess.Read, share, bufferSize, options);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
         {

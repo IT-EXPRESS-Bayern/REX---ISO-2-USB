@@ -3,6 +3,7 @@ using Bootrix.Core.Images;
 using Bootrix.Core.Planning;
 using Bootrix.Core.Profiles;
 using Bootrix.Core.Storage;
+using Bootrix.Core.Writing.Raw;
 using Bootrix.Windows.Storage;
 
 namespace Bootrix.Windows.Writing;
@@ -37,6 +38,12 @@ public sealed class MediaWriteContext
     public required string WorkDirectory { get; init; }
 
     public string? LocalAccountPassword { get; init; }
+
+    /// <summary>The file inside a zip archive that holds the image; null lets the archive's image be chosen.</summary>
+    public string? ArchiveEntry { get; init; }
+
+    /// <summary>What a raw write does with a .bmap file next to the image.</summary>
+    public BlockMapUse BlockMap { get; init; } = BlockMapUse.Auto;
 
     public ImageProfile Image => Inspection.Profile;
 

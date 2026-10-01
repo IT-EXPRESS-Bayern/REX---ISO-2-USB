@@ -64,6 +64,8 @@
   <data name="Step.Raw.Write" xml:space="preserve"><value>Writing image</value></data>
   <data name="Step.Raw.Finish" xml:space="preserve"><value>Finishing</value></data>
   <data name="Step.Raw.Write.Verify" xml:space="preserve"><value>Verifying written data</value></data>
+  <data name="Step.Raw.Persistence" xml:space="preserve"><value>Create persistence partition</value></data>
+  <data name="Step.Raw.RelocateGpt" xml:space="preserve"><value>Move backup GPT to the end of the disk</value></data>
   <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Preparing work folder</value></data>
   <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Copying installation media</value></data>
   <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Extracting edition</value></data>

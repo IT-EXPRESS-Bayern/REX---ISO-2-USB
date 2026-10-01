@@ -131,7 +131,14 @@ public sealed class LocalEngine : IEngine
             targets.Add(new RawWriteTargetRequest(device, target.Identity));
         }
 
-        return create(new RawWriteRequest { ImagePath = request.ImagePath, Targets = targets, Verify = request.Verify });
+        return create(new RawWriteRequest
+        {
+            ImagePath = request.ImagePath,
+            Targets = targets,
+            Verify = request.Verify,
+            ArchiveEntry = request.ArchiveEntry,
+            BlockMap = request.BlockMap,
+        });
     }
 
     private sealed record JobKind(Func<EngineJobRequest, CancellationToken, Task<IJob>> CreateAsync, Func<JobResult, EngineJobResult> Summarize);

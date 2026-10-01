@@ -7,6 +7,7 @@ using Bootrix.Core.Jobs;
 using Bootrix.Core.Planning;
 using Bootrix.Core.Storage;
 using Bootrix.Core.Writing;
+using Bootrix.Core.Writing.Raw;
 using Bootrix.Windows.Jobs;
 using Microsoft.Extensions.Logging;
 
@@ -35,12 +36,22 @@ public sealed class WriteImageJobFactory(
         }
 
         // Opened through the image provider so that the broker looks at the file with the rights of the user who asked for it.
-        ImageInspection inspection;
-        await using (var opened = await images.OpenAsync(request.ImagePath, cancellationToken).ConfigureAwait(false))
+        // Compressed files are looked at as they are, Apple containers by the volume they hold.
+        AppleRefinement refined;
+        await using (var opened = await images.OpenForInspectionAsync(
+            request.ImagePath,
+            new ImageOpenOptions { ArchiveEntry = request.ArchiveEntry, BlockMap = request.BlockMap },
+            cancellationToken).ConfigureAwait(false))
         {
-            inspection = await planner.InspectAsync(opened.Stream, Path.GetFileName(request.ImagePath), cancellationToken).ConfigureAwait(false);
+            var found = await planner.InspectAsync(
+                opened.Stream,
+                Path.GetFileName(request.ImagePath),
+                new ImageInspectOptions { ArchiveEntry = request.ArchiveEntry },
+                cancellationToken).ConfigureAwait(false);
+            refined = AppleImagePlanning.Refine(found, opened.Stream, opened.Source?.Kind == ImageSourceKind.AppleContainer);
         }
 
+        var inspection = refined.Inspection;
         if (inspection.HasErrors)
         {
             throw new BootrixException(ErrorCode.ImageUnsupported, request.ImagePath) { Arguments = [request.ImagePath] };
@@ -57,7 +68,7 @@ public sealed class WriteImageJobFactory(
                 throw new BootrixException(ErrorCode.DeviceProtected, device.DevicePath) { Arguments = [device.Protection.ToString()] };
             }
 
-            var plan = MediaPlanService.Plan(inspection, request.Spec.Target, device).Plan;
+            var plan = refined.Apply(MediaPlanService.Plan(inspection, request.Spec.Target, device).Plan);
             targets.Add(new MediaWriteTarget { Device = device, Identity = target.Identity, Plan = plan });
         }
 
@@ -80,6 +91,8 @@ public sealed class WriteImageJobFactory(
             Targets = targets,
             WorkDirectory = Path.Combine(paths.WorkDirectory, jobId),
             LocalAccountPassword = request.LocalAccountPassword,
+            ArchiveEntry = request.ArchiveEntry,
+            BlockMap = request.BlockMap,
         };
 
         return new Job(jobId, Path.GetFileName(request.ImagePath), writer.CreateSteps(context));

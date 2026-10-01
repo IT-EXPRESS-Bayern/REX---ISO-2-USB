@@ -28,7 +28,8 @@ public static class WindowsServiceCollectionExtensions
     public static IServiceCollection AddBootrixWindows(this IServiceCollection services)
     {
         services.AddSingleton<IDiskService, DiskEnumerator>();
-        services.AddSingleton<IImageStreamProvider, FileImageStreamProvider>();
+        // Whoever runs this process reads the image with the rights they have, so sparse bundles are fine; the elevated broker builds its own provider without them.
+        services.AddSingleton<IImageStreamProvider>(_ => new FileImageStreamProvider(allowSparseBundles: true));
         services.AddSingleton<RawWriteJob>();
         services.AddSingleton<DiskPreparer>();
 

@@ -56,6 +56,7 @@ public static class EngineRequestValidator
         }
 
         ValidateTargets(request.Targets, problems);
+        ValidateArchiveEntry(request.ArchiveEntry, problems);
     }
 
     private static void ValidateWriteImage(WriteImageJobRequest request, List<string> problems)
@@ -66,6 +67,7 @@ public static class EngineRequestValidator
         }
 
         ValidateTargets(request.Targets, problems);
+        ValidateArchiveEntry(request.ArchiveEntry, problems);
 
         if (request.Spec is null)
         {
@@ -86,6 +88,14 @@ public static class EngineRequestValidator
         if (request.LocalAccountPassword is { Length: > 127 })
         {
             problems.Add("local account password is too long");
+        }
+    }
+
+    private static void ValidateArchiveEntry(string? entry, List<string> problems)
+    {
+        if (entry is { Length: > 512 } || entry?.Any(char.IsControl) == true)
+        {
+            problems.Add("archive entry name is not usable");
         }
     }
 

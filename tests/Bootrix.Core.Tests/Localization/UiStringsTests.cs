@@ -56,6 +56,7 @@ public class UiStringsTests
         string[] steps =
         [
             "Raw.CheckTargets", "Raw.Prepare", "Raw.Write", "Raw.Finish",
+            "Raw.Persistence", "Raw.RelocateGpt",
             "Tiny.Prepare", "Tiny.CopyMedia", "Tiny.ExportEdition", "Tiny.Mount", "Tiny.RemoveApps", "Tiny.RemoveComponents",
             "Tiny.RemoveFiles", "Tiny.Registry", "Tiny.CleanupStore", "Tiny.Unmount", "Tiny.Compress", "Tiny.PatchBootImage",
             "Tiny.Unattend", "Tiny.CreateIso",

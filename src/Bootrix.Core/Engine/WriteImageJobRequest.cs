@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Core.Profiles;
+using Bootrix.Core.Writing.Raw;
 
 namespace Bootrix.Core.Engine;
 
@@ -16,6 +17,12 @@ public sealed record WriteImageJobRequest : EngineJobRequest
 
     /// <summary>Layout, boot, setup and verification options; <see cref="JobSpec.Source"/> is not used, the image path is given above.</summary>
     public JobSpec Spec { get; init; } = new();
+
+    /// <summary>The file inside a zip archive that holds the image; the archive's image when null.</summary>
+    public string? ArchiveEntry { get; init; }
+
+    /// <summary>Raw writes only: what to do with a .bmap file next to the image.</summary>
+    public BlockMapUse BlockMap { get; init; } = BlockMapUse.Auto;
 
     /// <summary>Clear-text password for the local account of the answer file. Never part of a profile or a log.</summary>
     public string? LocalAccountPassword { get; init; }
