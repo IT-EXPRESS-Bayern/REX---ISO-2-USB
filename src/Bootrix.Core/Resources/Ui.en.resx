@@ -214,4 +214,13 @@
   <data name="Step.Dos.CopyFiles" xml:space="preserve"><value>Copying system files</value></data>
   <data name="Step.Dos.WriteMbr" xml:space="preserve"><value>Writing boot code to the MBR</value></data>
   <data name="Step.Dos.Superfloppy" xml:space="preserve"><value>Writing a volume without partition table</value></data>
+  <data name="Src.Heading" xml:space="preserve"><value>Source</value></data>
+  <data name="Src.Image" xml:space="preserve"><value>Image (ISO, IMG …)</value></data>
+  <data name="Src.Dos" xml:space="preserve"><value>DOS stick (FreeDOS, MS-DOS)</value></data>
+  <data name="Src.Format" xml:space="preserve"><value>Format only</value></data>
+  <data name="Src.Dos.System" xml:space="preserve"><value>DOS system</value></data>
+  <data name="Src.Dos.FreeDos" xml:space="preserve"><value>FreeDOS</value></data>
+  <data name="Src.Dos.MsDos" xml:space="preserve"><value>MS-DOS (download from Microsoft)</value></data>
+  <data name="Src.Dos.Accept" xml:space="preserve"><value>I allow downloading the MS-DOS files from Microsoft (their terms apply).</value></data>
+  <data name="Plan.Kind.Format" xml:space="preserve"><value>Empty drive</value></data>
 </root>

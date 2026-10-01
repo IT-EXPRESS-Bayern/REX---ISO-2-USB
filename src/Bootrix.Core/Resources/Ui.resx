@@ -214,4 +214,13 @@
   <data name="Step.Dos.CopyFiles" xml:space="preserve"><value>Systemdateien kopieren</value></data>
   <data name="Step.Dos.WriteMbr" xml:space="preserve"><value>Startcode in den MBR schreiben</value></data>
   <data name="Step.Dos.Superfloppy" xml:space="preserve"><value>Datenträger ohne Partitionstabelle schreiben</value></data>
+  <data name="Src.Heading" xml:space="preserve"><value>Quelle</value></data>
+  <data name="Src.Image" xml:space="preserve"><value>Abbild (ISO, IMG …)</value></data>
+  <data name="Src.Dos" xml:space="preserve"><value>DOS-Stick (FreeDOS, MS-DOS)</value></data>
+  <data name="Src.Format" xml:space="preserve"><value>Nur formatieren</value></data>
+  <data name="Src.Dos.System" xml:space="preserve"><value>DOS-System</value></data>
+  <data name="Src.Dos.FreeDos" xml:space="preserve"><value>FreeDOS</value></data>
+  <data name="Src.Dos.MsDos" xml:space="preserve"><value>MS-DOS (Download von Microsoft)</value></data>
+  <data name="Src.Dos.Accept" xml:space="preserve"><value>Ich erlaube den Download der MS-DOS-Dateien von Microsoft (es gelten deren Bedingungen).</value></data>
+  <data name="Plan.Kind.Format" xml:space="preserve"><value>Leeres Laufwerk</value></data>
 </root>

@@ -11,6 +11,13 @@
         <StackPanel Margin="32,16,32,32" MaxWidth="900" HorizontalAlignment="Stretch">
             <ui:TextBlock Text="{loc:Loc Write.Title}" FontTypography="Title" Margin="0,0,0,20" />
 
+            <!-- Source -->
+            <ui:TextBlock Text="{loc:Loc Src.Heading}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <ComboBox Margin="0,0,0,16" MinWidth="320" HorizontalAlignment="Left"
+                      DataContext="{Binding Options}"
+                      ItemsSource="{Binding Sources}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding Source}" />
+
+            <StackPanel Visibility="{Binding Options.IsImageSource, Converter={StaticResource BoolToVisibility}}">
             <!-- Image -->
             <ui:TextBlock Text="{loc:Loc Write.Image}" FontTypography="Subtitle" Margin="0,0,0,8" />
             <Border Padding="16" CornerRadius="6" Margin="0,0,0,24"
@@ -44,6 +51,16 @@
                                Command="{Binding BrowseCommand}" Margin="16,0,0,0" />
                 </Grid>
             </Border>
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,24" Visibility="{Binding Options.IsDosSource, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel DataContext="{Binding Options}">
+                    <ui:TextBlock Text="{loc:Loc Src.Dos.System}" FontTypography="Subtitle" Margin="0,0,0,8" />
+                    <ComboBox MinWidth="320" HorizontalAlignment="Left" Margin="0,0,0,8"
+                              ItemsSource="{Binding DosFlavors}" DisplayMemberPath="Display" SelectedValuePath="Value" SelectedValue="{Binding DosFlavor}" />
+                    <CheckBox Content="{loc:Loc Src.Dos.Accept}" IsChecked="{Binding AcceptMicrosoftDownload}" />
+                </StackPanel>
+            </StackPanel>
 
             <!-- Drives -->
             <Grid Margin="0,0,0,8">

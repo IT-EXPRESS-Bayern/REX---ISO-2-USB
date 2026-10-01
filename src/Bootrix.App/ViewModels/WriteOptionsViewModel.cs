@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Boot.Dos;
+using Bootrix.Core.Engine;
 using Bootrix.Core.Localization;
 using Bootrix.Core.Model;
 using Bootrix.Core.Profiles;
@@ -29,6 +31,23 @@ public sealed partial class WriteOptionsViewModel : ObservableObject
 
     [ObservableProperty]
     private IReadOnlyList<OptionItem<FileSystemKind>> _fileSystems = [];
+
+    [ObservableProperty]
+    private IReadOnlyList<OptionItem<WriteSource>> _sources = [];
+
+    [ObservableProperty]
+    private IReadOnlyList<OptionItem<DosFlavor>> _dosFlavors = [];
+
+    [ObservableProperty]
+    [NotifyPropertyChangedFor(nameof(IsImageSource))]
+    [NotifyPropertyChangedFor(nameof(IsDosSource))]
+    private WriteSource _source = WriteSource.Image;
+
+    [ObservableProperty]
+    private DosFlavor _dosFlavor = DosFlavor.FreeDos;
+
+    [ObservableProperty]
+    private bool _acceptMicrosoftDownload;
 
     [ObservableProperty]
     private WriteMode _mode = WriteMode.Auto;
@@ -79,8 +98,13 @@ public sealed partial class WriteOptionsViewModel : ObservableObject
     [ObservableProperty]
     private bool _isWindowsImage;
 
+    public bool IsImageSource => Source == WriteSource.Image;
+
+    public bool IsDosSource => Source == WriteSource.Dos;
+
     public JobSpec ToSpec(bool verify) => new()
     {
+        Dos = new DosOptions { Flavor = DosFlavor, AcceptMicrosoftDownload = AcceptMicrosoftDownload },
         Kind = JobKind.WriteImage,
         Target = new TargetOptions
         {
@@ -110,6 +134,17 @@ public sealed partial class WriteOptionsViewModel : ObservableObject
     {
         string T(string key) => _localizer.Get(key);
 
+        Sources =
+        [
+            new(WriteSource.Image, T("Src.Image")),
+            new(WriteSource.Dos, T("Src.Dos")),
+            new(WriteSource.Format, T("Src.Format")),
+        ];
+        DosFlavors =
+        [
+            new(DosFlavor.FreeDos, T("Src.Dos.FreeDos")),
+            new(DosFlavor.MsDos, T("Src.Dos.MsDos")),
+        ];
         Modes =
         [
             new(WriteMode.Auto, T("Opt.Mode.Auto")),

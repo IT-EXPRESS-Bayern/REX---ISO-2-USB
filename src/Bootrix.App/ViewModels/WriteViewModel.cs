@@ -65,6 +65,11 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
 
         options.PropertyChanged += (_, e) =>
         {
+            if (e.PropertyName == nameof(WriteOptionsViewModel.Source))
+            {
+                StartCommand.NotifyCanExecuteChanged();
+            }
+
             if (e.PropertyName != nameof(WriteOptionsViewModel.IsWindowsImage))
             {
                 SchedulePreview();
@@ -239,15 +244,18 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
     {
         HasResult = false;
         var targets = Devices.Where(d => d.IsSelected).ToList();
+        var source = Options.Source;
 
-        var problem = WriteChecks.FirstProblem(ImagePath, RawImageSize(ImagePath), [.. targets.Select(t => t.Device)], _localizer);
+        var problem = source == WriteSource.Image
+            ? WriteChecks.FirstProblem(ImagePath, RawImageSize(ImagePath), [.. targets.Select(t => t.Device)], _localizer)
+            : WriteChecks.FirstProblem("-", null, [.. targets.Select(t => t.Device)], _localizer);
         if (problem is not null)
         {
             ShowResult(InfoBarSeverity.Warning, problem, "");
             return;
         }
 
-        if (!File.Exists(ImagePath))
+        if (source == WriteSource.Image && !File.Exists(ImagePath))
         {
             ShowError(new BootrixException(ErrorCode.ImageUnreadable, ImagePath) { Arguments = [ImagePath!] });
             return;
@@ -278,7 +286,13 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
                 identified.Add(new EngineTarget(target.Device.DevicePath, identity));
             }
 
-            var request = new WriteImageJobRequest { ImagePath = ImagePath!, Targets = identified, Spec = Options.ToSpec(Verify) };
+            var request = new WriteImageJobRequest
+            {
+                ImagePath = source == WriteSource.Image ? ImagePath : null,
+                Source = source,
+                Targets = identified,
+                Spec = Options.ToSpec(Verify),
+            };
             var result = await _engine.RunJobAsync(request, new Progress<ProgressReport>(OnProgress), soft.Token, abort.Token);
             ShowOutcome(result);
         }
@@ -313,7 +327,7 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
         CancelText = _localizer.Get("Write.CancelNow");
     }
 
-    private bool CanStart() => !IsBusy && !string.IsNullOrWhiteSpace(ImagePath) && Devices.Any(d => d.IsSelected) && !PreviewBlocksWriting;
+    private bool CanStart() => !IsBusy && (Options.Source != WriteSource.Image || !string.IsNullOrWhiteSpace(ImagePath)) && Devices.Any(d => d.IsSelected) && !PreviewBlocksWriting;
 
     private void OnItemChanged(object? sender, PropertyChangedEventArgs e)
     {
@@ -361,25 +375,36 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
     private async Task RefreshPreviewAsync(CancellationToken cancellationToken)
     {
         var device = Devices.FirstOrDefault(d => d.IsSelected)?.Device;
-        if (string.IsNullOrWhiteSpace(ImagePath) || !File.Exists(ImagePath) || device is null)
+        var source = Options.Source;
+        if (device is null || (source == WriteSource.Image && (string.IsNullOrWhiteSpace(ImagePath) || !File.Exists(ImagePath))))
         {
             ShowPreviewMessage(_localizer.Get("Plan.Waiting"), blocks: false);
             return;
         }
 
-        if (_inspection is null || !string.Equals(_inspectedPath, ImagePath, StringComparison.OrdinalIgnoreCase))
+        ImageInspection inspection;
+        if (source == WriteSource.Image)
         {
-            _inspection = null;
-            _inspection = await _planner.InspectAsync(ImagePath, cancellationToken);
-            _inspectedPath = ImagePath;
+            if (_inspection is null || !string.Equals(_inspectedPath, ImagePath, StringComparison.OrdinalIgnoreCase))
+            {
+                _inspection = null;
+                _inspection = await _planner.InspectAsync(ImagePath!, cancellationToken);
+                _inspectedPath = ImagePath;
+            }
+
+            inspection = _inspection;
+        }
+        else
+        {
+            inspection = MediaPlanService.InspectionFor(source);
         }
 
-        Options.IsWindowsImage = _inspection.Profile.Kind is ImageKind.WindowsSetup or ImageKind.WindowsPe;
+        Options.IsWindowsImage = inspection.Profile.Kind is ImageKind.WindowsSetup or ImageKind.WindowsPe;
 
         try
         {
-            var preview = MediaPlanService.Plan(_inspection, Options.ToSpec(Verify).Target, device);
-            var summary = PlanSummary.From(preview, _localizer);
+            var preview = MediaPlanService.Plan(inspection, Options.ToSpec(Verify).Target, device);
+            var summary = PlanSummary.From(preview, _localizer, source);
 
             PreviewLines.Clear();
             foreach (var line in summary.Lines)

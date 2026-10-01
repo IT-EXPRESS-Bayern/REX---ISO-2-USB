@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
+using Bootrix.Core.Engine;
 using Bootrix.Core.Images;
 using Bootrix.Core.Localization;
 using Bootrix.Core.Model;
@@ -17,7 +18,7 @@ public sealed record PlanSummary(IReadOnlyList<SummaryLine> Lines, IReadOnlyList
 {
     public bool HasErrors => Warnings.Any(w => w.Severity == WarningSeverity.Error);
 
-    public static PlanSummary From(WritePreview preview, Localizer localizer)
+    public static PlanSummary From(WritePreview preview, Localizer localizer, WriteSource source = WriteSource.Image)
     {
         ArgumentNullException.ThrowIfNull(preview);
         ArgumentNullException.ThrowIfNull(localizer);
@@ -27,7 +28,7 @@ public sealed record PlanSummary(IReadOnlyList<SummaryLine> Lines, IReadOnlyList
 
         var lines = new List<SummaryLine>
         {
-            new(localizer.Get("Plan.Label.Image"), DescribeImage(preview, localizer)),
+            new(localizer.Get("Plan.Label.Image"), source == WriteSource.Format ? localizer.Get("Plan.Kind.Format") : DescribeImage(preview, localizer)),
             new(localizer.Get("Plan.Label.Method"), localizer.Get("Plan.Method." + plan.WriteMethod)),
             new(localizer.Get("Plan.Label.Scheme"), plan.Superfloppy
                 ? localizer.Get("Plan.Scheme.NoTable")
