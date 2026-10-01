@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Content Include="Boot\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+    <EmbeddedResource Include="Images\Udif\Fixtures\*.bin" />
   </ItemGroup>
 
   <ItemGroup>

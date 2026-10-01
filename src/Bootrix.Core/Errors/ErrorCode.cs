@@ -63,4 +63,10 @@ public enum ErrorCode
     // 8xxx: Secure Boot / EFI analysis
     EfiBinaryInvalid = 8001,
     RevocationDataInvalid = 8002,
+
+    // 31xx: Apple disk images
+    ImageCorrupt = 3101,
+    ImageSegmented = 3102,
+    ImageLegacyFormat = 3103,
+    ImageAppleArchive = 3104,
 }

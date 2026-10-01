@@ -24,6 +24,8 @@
     <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.12" />
     <PackageVersion Include="WPF-UI" Version="4.3.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+    <PackageVersion Include="LzfseSharp" Version="2.0.0" />
+    <PackageVersion Include="SharpCompress" Version="0.50.4" />
   </ItemGroup>
 
 </Project>
