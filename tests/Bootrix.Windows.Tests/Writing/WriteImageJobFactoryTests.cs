@@ -153,12 +153,15 @@ public sealed class WriteImageJobFactoryTests : IDisposable
     }
 
     [Fact]
-    public async Task AnUnreadableImageSurfacesAsAnIoError()
+    public async Task AnUnreadableImageIsReportedAsUnreadable()
     {
         var device = Stick();
 
-        await Assert.ThrowsAnyAsync<IOException>(() =>
+        var ex = await Assert.ThrowsAsync<BootrixException>(() =>
             Factory(new FakeDisks(device), new FakeWriter(_ => true)).CreateAsync(Request(Path.Combine(_directory, "missing.iso"), device), CancellationToken.None));
+
+        Assert.Equal(ErrorCode.ImageUnreadable, ex.Code);
+        Assert.IsType<FileNotFoundException>(ex.InnerException);
     }
 
     [Fact]

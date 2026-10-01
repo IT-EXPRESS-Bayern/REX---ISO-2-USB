@@ -4,6 +4,8 @@ using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Storage;
+using Bootrix.Core.Writing;
+using Bootrix.Core.Writing.Restore;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
 using Bootrix.Windows.Writing;
@@ -25,12 +27,25 @@ public sealed class LocalEngine : IEngine
     private readonly ILogger _logger;
     private readonly Dictionary<Type, JobKind> _kinds;
 
-    public LocalEngine(IDiskService disks, JobRunner runner, RawWriteJob rawWrite, WriteImageJobFactory writeImage, ILogger<LocalEngine>? logger = null)
+    public LocalEngine(
+        IDiskService disks,
+        JobRunner runner,
+        RawWriteJob rawWrite,
+        WriteImageJobFactory writeImage,
+        RestoreDriveJob restore,
+        VerifyMediaJob verify,
+        ILogger<LocalEngine>? logger = null)
         : this(disks, runner, rawWrite.Create, DiskIdentityReader.Capture, logger)
     {
         _kinds[typeof(WriteImageJobRequest)] = new(
             (request, ct) => writeImage.CreateAsync((WriteImageJobRequest)request, ct),
             SummarizeRawWrite);
+        _kinds[typeof(RestoreDriveJobRequest)] = new(
+            (request, ct) => CreateRestoreAsync((RestoreDriveJobRequest)request, restore, ct),
+            EngineJobResult.From);
+        _kinds[typeof(VerifyJobRequest)] = new(
+            (request, ct) => CreateVerifyAsync((VerifyJobRequest)request, verify, ct),
+            SummarizeVerify);
     }
 
     internal LocalEngine(
@@ -115,6 +130,12 @@ public sealed class LocalEngine : IEngine
         return summary;
     }
 
+    internal static EngineJobResult SummarizeVerify(JobResult result)
+    {
+        var summary = EngineJobResult.From(result);
+        return result.Values.TryGetValue(VerifyMediaJob.BytesKey, out var value) && value is long bytes ? summary with { ImageBytes = bytes } : summary;
+    }
+
     private static EngineJobResult Failed(long started, BootrixException error) =>
         EngineJobResult.From(new JobResult(JobOutcome.Failed, Stopwatch.GetElapsedTime(started), error));
 
@@ -131,7 +152,50 @@ public sealed class LocalEngine : IEngine
             targets.Add(new RawWriteTargetRequest(device, target.Identity));
         }
 
-        return create(new RawWriteRequest { ImagePath = request.ImagePath, Targets = targets, Verify = request.Verify });
+        return create(new RawWriteRequest
+        {
+            ImagePath = request.ImagePath,
+            Targets = targets,
+            Verify = request.Verify,
+            ArchiveEntry = request.ArchiveEntry,
+            BlockMap = request.BlockMap,
+        });
+    }
+
+    private async Task<IJob> CreateRestoreAsync(RestoreDriveJobRequest request, RestoreDriveJob restore, CancellationToken cancellationToken)
+    {
+        var options = request.ToOptions();
+        var targets = new List<RestoreTargetRequest>(request.Targets.Count);
+        foreach (var target in request.Targets)
+        {
+            var device = await FindAsync(target.DevicePath, cancellationToken).ConfigureAwait(false);
+            if (device.IsBlocked)
+            {
+                throw new BootrixException(ErrorCode.DeviceProtected, device.DevicePath) { Arguments = [device.Protection.ToString()] };
+            }
+
+            targets.Add(new RestoreTargetRequest(device, target.Identity, RestorePlanner.Plan(options, MediaPlanService.CapsOf(device))));
+        }
+
+        return restore.Create(targets);
+    }
+
+    private async Task<IJob> CreateVerifyAsync(VerifyJobRequest request, VerifyMediaJob verify, CancellationToken cancellationToken)
+    {
+        var targets = new List<VerifyTargetRequest>(request.Targets.Count);
+        foreach (var target in request.Targets)
+        {
+            targets.Add(new VerifyTargetRequest(await FindAsync(target.DevicePath, cancellationToken).ConfigureAwait(false), target.Identity));
+        }
+
+        return verify.Create(new VerifyMediaRequest
+        {
+            ImagePath = request.ImagePath,
+            Targets = targets,
+            Mode = request.Mode,
+            ArchiveEntry = request.ArchiveEntry,
+            BlockMap = request.BlockMap,
+        });
     }
 
     private sealed record JobKind(Func<EngineJobRequest, CancellationToken, Task<IJob>> CreateAsync, Func<JobResult, EngineJobResult> Summarize);

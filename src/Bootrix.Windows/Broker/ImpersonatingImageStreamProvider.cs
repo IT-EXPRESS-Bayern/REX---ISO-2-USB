@@ -23,4 +23,10 @@ public sealed class ImpersonatingImageStreamProvider(IImageStreamProvider inner,
 {
     public Task<OpenedImage> OpenAsync(string path, CancellationToken cancellationToken) =>
         impersonator.RunAsClientAsync(() => inner.OpenAsync(path, cancellationToken));
+
+    public Task<OpenedImage> OpenAsync(string path, ImageOpenOptions options, CancellationToken cancellationToken) =>
+        impersonator.RunAsClientAsync(() => inner.OpenAsync(path, options, cancellationToken));
+
+    public Task<OpenedImage> OpenForInspectionAsync(string path, ImageOpenOptions options, CancellationToken cancellationToken) =>
+        impersonator.RunAsClientAsync(() => inner.OpenForInspectionAsync(path, options, cancellationToken));
 }

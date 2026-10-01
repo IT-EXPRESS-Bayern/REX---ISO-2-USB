@@ -19,3 +19,16 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] `$WinPEDriver$` mit Intel-RST/VMD-Treiber: Setup findet auf einem PC der 11. bis 14. Generation die Datenträger, der Treiber ist danach im installierten System vorhanden (`pnputil /enum-drivers`)
 - [ ] Treiberordner im Broker: wird mit einem anderen Administratorkonto bestätigt, liest Bootrix den Ordner nur, wenn der angemeldete Benutzer ihn lesen darf
 - [ ] Windows UEFI CA 2023: Stick aus einem 25H2-Image bootet auf einem PC, dessen db nur die 2023-Zertifikate enthält; wimlib öffnet dazu `\\?\Volume{...}\sources\boot.wim` direkt
+
+## Rohschreiben: komprimierte Images, Persistenz, Apple, Wiederherstellen, Prüfen
+
+- [ ] Debian-/Kali-Live-ISO im DD-Modus mit Persistenz (MBR-Hybrid): Stick bootet, Persistenz-Eintrag im Bootmenü, Änderungen bleiben nach Neustart erhalten (`persistence.conf` mit `/ union`)
+- [ ] Ubuntu-ISO (MBR + GPT) im DD-Modus mit Persistenz: Partition „writable“ wird von casper mit `persistent` gefunden
+- [ ] Persistenz auf einem Stick mit 4096-Byte-Sektoren (USB-SATA-Adapter): muss mit `PersistenceLayoutUnsupported` abgelehnt werden, nichts darf geschrieben werden
+- [ ] Windows liest die neue Tabelle nach dem Schreiben (UPDATE_PROPERTIES) ohne den Stick zu ziehen; kein „Laufwerk formatieren“-Dialog für die ext-Partition
+- [ ] `.img.xz`, `.img.gz`, `.img.zst`, `.zip` (Raspberry Pi OS, ChromeOS Flex): direkt schreiben ohne vorheriges Entpacken, bei gzip/bzip2 (unbekannte Länge) mit zu kleinem Stick: Abbruch mit „Image passt nicht auf das Ziel“, keine Dauerschleife
+- [ ] `.bmap` neben dem Image (Raspberry Pi OS): nur belegte Blöcke werden geschrieben, Stick bootet; mit „Lücken mit Nullen füllen“ ebenfalls
+- [ ] Mac-`.dmg` (UDZO/ULFO) als Quelle: Stick bootet am Intel-Mac (Option beim Einschalten), am T2-Mac erst nach Freigabe im Startsicherheitsdienstprogramm
+- [ ] Backup-GPT eines Mac-GPT-Abbilds liegt nach dem Schreiben am Ende des Sticks (macOS Festplattendienstprogramm meldet keine Tabellenwarnung)
+- [ ] „Stick wiederherstellen“ nach einem Hybrid-ISO: Windows zeigt eine Partition über die volle Größe, keine alten Partitionen tauchen nach dem Neustecken wieder auf (alte Backup-GPT hinter dem Image)
+- [ ] „Stick gegen ISO prüfen“: DD-Stick (Rohvergleich) und ISO-Modus-Stick (Dateivergleich) bestehen; ein absichtlich veränderter Block bzw. eine veränderte Datei wird mit Offset bzw. Dateinamen gemeldet

@@ -64,6 +64,14 @@
   <data name="Step.Raw.Write" xml:space="preserve"><value>Writing image</value></data>
   <data name="Step.Raw.Finish" xml:space="preserve"><value>Finishing</value></data>
   <data name="Step.Raw.Write.Verify" xml:space="preserve"><value>Verifying written data</value></data>
+  <data name="Step.Raw.Persistence" xml:space="preserve"><value>Create persistence partition</value></data>
+  <data name="Step.Raw.RelocateGpt" xml:space="preserve"><value>Move backup GPT to the end of the disk</value></data>
+  <data name="Step.Restore.Check" xml:space="preserve"><value>Checking the drive</value></data>
+  <data name="Step.Restore.Wipe" xml:space="preserve"><value>Erasing old tables and data</value></data>
+  <data name="Step.Restore.Format" xml:space="preserve"><value>Partitioning and formatting</value></data>
+  <data name="Step.Restore.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Step.Verify.Check" xml:space="preserve"><value>Checking the target</value></data>
+  <data name="Step.Verify.Compare" xml:space="preserve"><value>Comparing the medium with the image</value></data>
   <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Preparing work folder</value></data>
   <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Copying installation media</value></data>
   <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Extracting edition</value></data>

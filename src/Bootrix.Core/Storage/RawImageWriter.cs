@@ -2,6 +2,7 @@
 using System.Security.Cryptography;
 using System.Threading.Channels;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Images;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 
@@ -54,14 +55,17 @@ public sealed class RawImageWriter(ILogger<RawImageWriter>? logger = null)
         var writers = states.Select(s => Task.Run(() => RunWriter(s), CancellationToken.None)).ToList();
 
         long imageBytes = 0;
+        long skipped = 0;
         try
         {
             var headLength = 0;
             if (headBuffer is not null)
             {
                 headLength = await ReadFullAsync(source, headBuffer.Memory[..headSize], cancellationToken).ConfigureAwait(false);
+                options.SourceObserver?.Invoke(0, headBuffer.GetSpan()[..headLength]);
                 sha.AppendData(headBuffer.GetSpan()[..headLength]);
                 imageBytes += headLength;
+                EnsureNotLongerThanDeclared(sourceLength, imageBytes);
             }
 
             var offset = (long)headSize;
@@ -78,26 +82,47 @@ public sealed class RawImageWriter(ILogger<RawImageWriter>? logger = null)
                 }
 
                 finished = read < chunkSize;
+                options.SourceObserver?.Invoke(offset, buffer.GetSpan()[..read]);
                 sha.AppendData(buffer.GetSpan()[..read]);
                 imageBytes += read;
+                EnsureNotLongerThanDeclared(sourceLength, imageBytes);
 
                 var padded = RoundUp(read, sectorLcm);
                 buffer.GetSpan()[read..padded].Clear();
-                records.Add(new ChunkRecord(offset, read, ChunkHash.Compute(buffer.GetSpan()[..read])));
-                Dispatch(states, new Chunk(buffer, offset, padded, read, pool));
+
+                // A stream of unknown length (gzip, bzip2) can be far larger than any disk: stop as soon as no target can take more.
+                FailTargetsBelow(states, offset + padded, imageBytes);
+                if (states.All(s => s.Error is not null))
+                {
+                    pool.Return(buffer);
+                    break;
+                }
+
+                var segments = Plan(options.Sparse, buffer.GetSpan(), offset, read, padded, sectorLcm, records, ref skipped);
+                if (segments is { Count: 0 })
+                {
+                    pool.Return(buffer);
+                }
+                else
+                {
+                    Dispatch(states, new Chunk(buffer, offset, padded, read, pool, segments));
+                }
 
                 offset += padded;
                 progress?.Report(new RawWriteProgress(RawWritePhase.Writing, imageBytes, Math.Max(sourceLength ?? 0, imageBytes)));
             }
 
-            if (headBuffer is not null && headLength > 0)
+            if (headBuffer is not null && headLength > 0 && states.Any(s => s.Error is null))
             {
                 var padded = RoundUp(headLength, sectorLcm);
                 headBuffer.GetSpan()[headLength..padded].Clear();
-                records.Add(new ChunkRecord(0, headLength, ChunkHash.Compute(headBuffer.GetSpan()[..headLength])));
-                var head = new Chunk(headBuffer, 0, padded, headLength, null);
-                Dispatch(states, head);
-                await head.WaitUntilReleasedAsync().ConfigureAwait(false);
+                var segments = Plan(options.Sparse, headBuffer.GetSpan(), 0, headLength, padded, sectorLcm, records, ref skipped);
+                if (segments is not { Count: 0 })
+                {
+                    var head = new Chunk(headBuffer, 0, padded, headLength, null, segments);
+                    Dispatch(states, head);
+                    await head.WaitUntilReleasedAsync().ConfigureAwait(false);
+                }
             }
         }
         finally
@@ -112,8 +137,13 @@ public sealed class RawImageWriter(ILogger<RawImageWriter>? logger = null)
 
         cancellationToken.ThrowIfCancellationRequested();
 
+        if (sourceLength is { } declared && imageBytes < declared)
+        {
+            throw ImageFailures.Truncated(declared, imageBytes);
+        }
+
         var hash = Convert.ToHexStringLower(sha.GetHashAndReset());
-        _log.LogInformation("Wrote {Bytes} bytes to {Count} target(s), SHA-256 {Hash}", imageBytes, states.Count, hash);
+        _log.LogInformation("Wrote {Bytes} bytes ({Skipped} skipped) to {Count} target(s), SHA-256 {Hash}", imageBytes, skipped, states.Count, hash);
 
         if (options.Verify)
         {
@@ -127,7 +157,66 @@ public sealed class RawImageWriter(ILogger<RawImageWriter>? logger = null)
         return new RawWriteReport(
             imageBytes,
             hash,
-            [.. states.Select(s => new RawTargetResult(s.Device, s.Error is null, s.Error, s.BytesWritten, s.Verified))]);
+            [.. states.Select(s => new RawTargetResult(s.Device, s.Error is null, s.Error, s.BytesWritten, s.Verified))])
+        {
+            SkippedBytes = skipped,
+        };
+    }
+
+    /// <summary>
+    /// Decides which parts of a chunk are written and remembers what they must read back as. Null means the whole
+    /// padded chunk, an empty list that nothing of it is needed.
+    /// </summary>
+    private static List<ChunkSegment>? Plan(
+        SparseWriteMap? sparse, Span<byte> buffer, long offset, int read, int padded, int sector, List<ChunkRecord> records, ref long skipped)
+    {
+        if (sparse is null || sparse.FillGaps)
+        {
+            sparse?.ClearGaps(offset, buffer[..read]);
+            records.Add(new ChunkRecord(offset, read, ChunkHash.Compute(buffer[..read])));
+            return null;
+        }
+
+        var segments = new List<ChunkSegment>();
+        long written = 0;
+        foreach (var piece in sparse.Select(offset, padded, sector))
+        {
+            var bufferOffset = (int)(piece.Start - offset);
+            var data = Math.Min((int)piece.Length, read - bufferOffset);
+            if (data <= 0)
+            {
+                continue;
+            }
+
+            records.Add(new ChunkRecord(piece.Start, data, ChunkHash.Compute(buffer.Slice(bufferOffset, data))));
+            segments.Add(new ChunkSegment(bufferOffset, piece.Start, (int)piece.Length));
+            written += data;
+        }
+
+        skipped += read - written;
+        return segments;
+    }
+
+    private static void FailTargetsBelow(List<TargetState> states, long endOffset, long imageBytes)
+    {
+        foreach (var state in states.Where(s => s.Error is null && endOffset > s.Device.Length))
+        {
+            state.Fail(new BootrixException(ErrorCode.ImageTooLarge, state.Device.Name)
+            {
+                Arguments = ["> " + FormatSize(imageBytes), FormatSize(state.Device.Length)],
+            });
+        }
+    }
+
+    private static void EnsureNotLongerThanDeclared(long? declared, long imageBytes)
+    {
+        if (declared is { } expected && imageBytes > expected)
+        {
+            throw new BootrixException(ErrorCode.ImageCorrupt, $"the data is longer than its {expected} declared bytes")
+            {
+                Arguments = ["the data is longer than the size its container declares"],
+            };
+        }
     }
 
     private static void Dispatch(List<TargetState> states, Chunk chunk)
@@ -153,8 +242,11 @@ public sealed class RawImageWriter(ILogger<RawImageWriter>? logger = null)
                 {
                     if (state.Error is null)
                     {
-                        state.Device.Write(chunk.Offset, chunk.Buffer.GetSpan()[..chunk.PaddedLength]);
-                        state.BytesWritten += chunk.PaddedLength;
+                        foreach (var segment in chunk.Segments)
+                        {
+                            state.Device.Write(segment.DeviceOffset, chunk.Buffer.GetSpan().Slice(segment.BufferOffset, segment.Length));
+                            state.BytesWritten += segment.Length;
+                        }
                     }
                 }
                 catch (Exception ex)
