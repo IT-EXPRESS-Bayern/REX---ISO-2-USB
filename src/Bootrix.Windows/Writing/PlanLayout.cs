@@ -66,9 +66,12 @@ public static class PlanLayout
         return payloads;
     }
 
-    /// <summary>Partitions that carry a file system and therefore get a volume that Windows mounts.</summary>
+    /// <summary>
+    /// Partitions that carry a file system Windows can mount and therefore get a volume. An ext partition (the
+    /// persistence store of a live stick) never gets one, so waiting for its volume would only run into the timeout.
+    /// </summary>
     public static IReadOnlySet<int> MountedPartitions(MediaPlan plan) =>
-        plan.Partitions.Select((p, i) => (p, i)).Where(x => x.p.FileSystem is not null).Select(x => x.i).ToHashSet();
+        plan.Partitions.Select((p, i) => (p, i)).Where(x => x.p.FileSystem is not null and not FileSystemKind.Ext3).Select(x => x.i).ToHashSet();
 
     /// <summary>File systems that only Windows can create, after the volume exists.</summary>
     public static bool NeedsWindowsFormat(PlannedPartition partition) =>

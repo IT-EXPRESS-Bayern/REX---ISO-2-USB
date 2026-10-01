@@ -23,8 +23,6 @@ public static class LinuxNoticeKeys
     /// <summary>Arguments: version found in the image.</summary>
     public const string GrubInsteadOfSyslinuxVersion = Prefix + "GrubInsteadOfSyslinuxVersion";
 
-    public const string GrubConfigGenerated = Prefix + "GrubConfigGenerated";
-
     public const string GrubMenuRelocated = Prefix + "GrubMenuRelocated";
 
     public const string BiosNeeds512ByteSectors = Prefix + "BiosNeeds512ByteSectors";

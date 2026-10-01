@@ -86,6 +86,12 @@
   <data name="Step.Tiny.PatchBootImage" xml:space="preserve"><value>Patching setup image</value></data>
   <data name="Step.Tiny.Unattend" xml:space="preserve"><value>Writing answer file</value></data>
   <data name="Step.Tiny.CreateIso" xml:space="preserve"><value>Creating ISO</value></data>
+  <data name="Step.Write.CheckTargets" xml:space="preserve"><value>Checking targets</value></data>
+  <data name="Step.Write.Prepare" xml:space="preserve"><value>Preparing the drive</value></data>
+  <data name="Step.Write.Linux.Copy" xml:space="preserve"><value>Copying files</value></data>
+  <data name="Step.Write.Linux.Bootloader" xml:space="preserve"><value>Setting up the boot loader</value></data>
+  <data name="Step.Write.Linux.Verify" xml:space="preserve"><value>Verifying the copied files</value></data>
+  <data name="Step.Write.Finish" xml:space="preserve"><value>Finishing</value></data>
   <data name="Notice.AuthorizedUseOnly" xml:space="preserve"><value>Use only on devices and accounts you own or have the owner's explicit permission to service. Bypassing the sign-in protection of someone else's device can be a criminal offence.</value></data>
   <data name="Hint.Rescue.OldImage" xml:space="preserve"><value>Older image with an old Linux kernel: newer hardware such as NVMe drives may not be recognised, and UEFI-only computers cannot start it.</value></data>
   <data name="Hint.Rescue.ResetBreaksEfs" xml:space="preserve"><value>Resetting the password of an account makes its EFS-encrypted files unreadable. Works for local accounts only.</value></data>

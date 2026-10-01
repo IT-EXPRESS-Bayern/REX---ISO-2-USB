@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Windows.Jobs;
+using Bootrix.Windows.Writing.Linux;
 
 namespace Bootrix.Windows.Writing;
 
@@ -12,5 +13,6 @@ public static class MediaWriters
     public static IReadOnlyList<IMediaWriter> CreateDefault(WriteServices services, IImageStreamProvider images, RawWriteJob rawWrite) =>
     [
         new RawCopyWriter(rawWrite),
+        new LinuxIsoWriter(services, images),
     ];
 }

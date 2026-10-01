@@ -38,6 +38,43 @@ public static class LinuxBootCodeInstaller
         }
     }
 
+    /// <summary>Checks what <see cref="Install"/> wrote without changing anything; null when it is in place, otherwise what is wrong.</summary>
+    public static string? Verify(Stream disk, MediaPlan plan, BiosBootDecision decision)
+    {
+        ArgumentNullException.ThrowIfNull(disk);
+        ArgumentNullException.ThrowIfNull(plan);
+        ArgumentNullException.ThrowIfNull(decision);
+
+        switch (decision.Loader)
+        {
+            case BiosLoader.Syslinux:
+                var main = plan.Partitions.First(p => p.Role == PartitionRole.Main);
+                using (var volume = new StreamSlice(disk, main.StartBytes, main.LengthBytes))
+                {
+                    if (SyslinuxInstaller.Verify(volume) is { } problem)
+                    {
+                        return "Syslinux: " + problem;
+                    }
+                }
+
+                var sector = new byte[SyslinuxMbr.CodeLength];
+                disk.Position = 0;
+                disk.ReadExactly(sector);
+                return sector.AsSpan().SequenceEqual(SyslinuxMbr.Code(plan.Scheme == PartitionScheme.Gpt, plan.LegacyBios))
+                    ? null
+                    : "Syslinux: the boot code in the first sector is not Syslinux's";
+            case BiosLoader.Grub:
+                return GrubBiosInstaller.Verify(
+                    disk,
+                    GrubBundle.Default,
+                    new GrubInstallRequest(plan.Scheme, decision.GrubEmbedStartSector, decision.GrubEmbedSectors)) is { } grub
+                    ? "GRUB: " + grub
+                    : null;
+            default:
+                return null;
+        }
+    }
+
     private static void InstallSyslinux(Stream disk, MediaPlan plan, BiosBootDecision decision)
     {
         var main = plan.Partitions.FirstOrDefault(p => p.Role == PartitionRole.Main)

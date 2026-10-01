@@ -344,4 +344,21 @@
   <data name="Error.BootloaderInstallFailed.Action" xml:space="preserve"><value>Schreiben Sie den Datenträger erneut. Bleibt der Fehler bestehen, wählen Sie den Modus „Abbild 1:1 schreiben (DD)“, falls das Image dafür geeignet ist.</value></data>
   <data name="Error.FileCopyFailed.Cause" xml:space="preserve"><value>Die Datei „{0}“ konnte nicht auf das Medium kopiert werden: {1}</value></data>
   <data name="Error.FileCopyFailed.Action" xml:space="preserve"><value>Prüfen Sie, ob der Datenträger noch angeschlossen und nicht schreibgeschützt ist, und wiederholen Sie den Vorgang.</value></data>
+  <data name="Linux.Notice.SyslinuxInstalled" xml:space="preserve"><value>Syslinux {0} wurde eingerichtet; es passt zur Version {1} im Image.</value></data>
+  <data name="Linux.Notice.SyslinuxVersionDiffers" xml:space="preserve"><value>Das Image verwendet Syslinux {0}; eingerichtet wird {1}. Startet der Stick damit nicht, hilft der Modus „Abbild 1:1 schreiben (DD)“, falls das Image dafür geeignet ist.</value></data>
+  <data name="Linux.Notice.SyslinuxModulesReplaced" xml:space="preserve"><value>Die Syslinux-Module des Images stammen aus einer anderen Generation; {0} Dateien wurden durch die passende Version ersetzt oder ergänzt.</value></data>
+  <data name="Linux.Notice.GrubInstalled" xml:space="preserve"><value>GRUB {0} wurde als BIOS-Bootloader eingerichtet; er liest das Menü des Images.</value></data>
+  <data name="Linux.Notice.GrubInsteadOfSyslinuxFileSystem" xml:space="preserve"><value>Syslinux kann von {0} nicht starten; stattdessen wurde GRUB eingerichtet.</value></data>
+  <data name="Linux.Notice.GrubInsteadOfSyslinuxVersion" xml:space="preserve"><value>Das Image enthält Syslinux {0}, wofür Bootrix keine passende Version mitbringt; stattdessen wurde GRUB eingerichtet, das das Menü des Images liest.</value></data>
+  <data name="Linux.Notice.GrubMenuRelocated" xml:space="preserve"><value>Das GRUB-Menü des Images liegt in boot/grub2; in boot/grub/grub.cfg wurde eine Weiterleitung angelegt.</value></data>
+  <data name="Linux.Notice.BiosNeeds512ByteSectors" xml:space="preserve"><value>Datenträger mit 4096-Byte-Sektoren können im BIOS-Modus nicht von Syslinux oder GRUB gestartet werden; der Stick startet nur im UEFI-Modus.</value></data>
+  <data name="Linux.Notice.NoBiosLoader" xml:space="preserve"><value>Für den BIOS-Start war kein Bootloader möglich (Dateisystem {0}, kein passendes Menü im Image); der Stick startet nur im UEFI-Modus.</value></data>
+  <data name="Linux.Notice.LabelRewritten" xml:space="preserve"><value>Das Label „{0}“ wurde in der Startkonfiguration durch „{1}“ ersetzt ({2} Zeilen).</value></data>
+  <data name="Linux.Notice.PersistenceParameterAdded" xml:space="preserve"><value>Der Kernel-Parameter „{0}“ wurde in {1} Startzeilen ergänzt.</value></data>
+  <data name="Linux.Notice.PersistenceNotPatched" xml:space="preserve"><value>Für „{0}“ kennt Bootrix den Persistenz-Parameter nicht. Die Partition ist angelegt, die Startzeilen blieben unverändert; der Parameter muss beim Start von Hand angegeben werden.</value></data>
+  <data name="Linux.Notice.PersistenceNoBootLine" xml:space="preserve"><value>In der Startkonfiguration wurde keine Zeile gefunden, in die der Parameter „{0}“ gehört; Persistenz muss beim Start von Hand angegeben werden.</value></data>
+  <data name="Linux.Notice.EsxiPartitionAdded" xml:space="preserve"><value>Für ESXi wurde „-p 1“ in die Startzeilen eingetragen.</value></data>
+  <data name="Linux.Notice.FileSkipped" xml:space="preserve"><value>Die Datei „{0}“ wurde nicht übernommen: {1}</value></data>
+  <data name="Linux.Notice.EfiLoadersFromBootImage" xml:space="preserve"><value>Die EFI-Startdateien fehlten im Dateibaum und wurden aus dem EFI-Abbild des Images übernommen.</value></data>
+  <data name="Linux.Notice.ChecksumsUpdated" xml:space="preserve"><value>{0} Zeilen der Prüfsummenliste (md5sum.txt) wurden an geänderte Dateien angepasst.</value></data>
 </root>
