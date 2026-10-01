@@ -76,6 +76,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task ZorinOs() => Check(new ZorinOsProvider(Http), "zorin", expectSigned: false);
 
     [LiveFact]
+    public Task ElementaryOs() => Check(new ElementaryOsProvider(Http), "elementary", expectSigned: false, architecture: "x64");
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
