@@ -1,0 +1,623 @@
+[
+ {
+  "version": "45 Beta",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/KDE/aarch64/images/Fedora-KDE-Desktop-Disk-45_Beta-1.3.aarch64.raw.xz",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "3216908cf40d3b1eb25f9b689092056fd13140980f33f34b4be9c0abb75955ab",
+  "size": "3807332792"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/KDE/aarch64/iso/Fedora-KDE-Desktop-Live-45_Beta-1.3.aarch64.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "3599fdeb3aa934db2730ef4e2d07f9b7259d47d83e4ceb106f7b2e8e1599a85c",
+  "size": "3416629248"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/test/45_Beta/KDE/ppc64le/iso/Fedora-KDE-Desktop-Live-45_Beta-1.3.ppc64le.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "21674388ccf65bcd28353217944993fe1cca3ca591ae4547b7fecf0ab2b51486",
+  "size": "3255631872"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/KDE/x86_64/iso/Fedora-KDE-Desktop-Live-45_Beta-1.3.x86_64.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "cd2321a8537667e0017efc3371bac191d7747f834da8fc8c30c88f00a480811e",
+  "size": "3584274432"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/Workstation/aarch64/images/Fedora-Workstation-Disk-45_Beta-1.3.aarch64.raw.xz",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "6765fb63866b21b1bc77c47fa7ccff0f717dc60060a78aea4d944c049decb1c6",
+  "size": "3197744116"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/Workstation/aarch64/iso/Fedora-Workstation-Live-45_Beta-1.3.aarch64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "fffb36568eb9a519aea2290a959570ad6df4acb87ada5e48cb86834ca047e5f8",
+  "size": "2900705280"
+ },
+ {
+  "version": "45 Beta",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/test/45_Beta/Workstation/x86_64/iso/Fedora-Workstation-Live-45_Beta-1.3.x86_64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "71367760b4cfda9cb5a1dbe9875a2c5fd89ef8333e6fac7508c366e650207905",
+  "size": "2981865472"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-AmazonEC2-44-1.7.x86_64.raw.xz",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "7e4fb73907abdc761d226ddaf3263bdfca62a0b0bfb5f0798545a9981fdd1953",
+  "size": "585701904"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Azure-44-1.7.x86_64.vhdfixed.xz",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "daa212a316a94d7a4584a704cad89dfd0bac45e70ee83c4212c095b3b8d55ce5",
+  "size": "647007512"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-GCE-44-1.7.x86_64.tar.gz",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "aa8a42604416e16e15195df06b7b848ae23e87431de47ea39eb7ab2c7e3b5521",
+  "size": "579517084"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Generic-44-1.7.x86_64.qcow2",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "28680fe5b371a5a82ebf43a31926e086a168e59949d03969c5093e7071f90b7f",
+  "size": "583729152"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-UEFI-UKI-44-1.7.x86_64.qcow2",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base_UKI",
+  "sha256": "2b0af3e6bf4add3695e52df5db3b2eb48d081ab38963ae48c35fca45d5c31b64",
+  "size": "630784000"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Vagrant-VirtualBox-44-1.7.x86_64.vagrant.virtualbox.box",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "7fb67d4224541a548f4d9622695b245f007a5bdfe608e291860da0d8597ec4b1",
+  "size": "815758567"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Cloud/x86_64/images/Fedora-Cloud-Base-Vagrant-libvirt-44-1.7.x86_64.vagrant.libvirt.box",
+  "variant": "Cloud",
+  "subvariant": "Cloud_Base",
+  "sha256": "4695d5ef2bfcc882649b98de0c545d04671d2064f6609e7e68e606718c8333dc",
+  "size": "835411851"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Container/x86_64/images/Fedora-Container-Base-Generic-44-1.7.x86_64.oci.tar.xz",
+  "variant": "Container",
+  "subvariant": "Container_Base",
+  "sha256": "75200f5752a74a21a616ca9a75e25beb594e2e117a0195c54f87c0b3e3974d1b",
+  "size": "70170200"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Container/x86_64/images/Fedora-Container-Base-Generic-Minimal-44-1.7.x86_64.oci.tar.xz",
+  "variant": "Container",
+  "subvariant": "Container_Minimal_Base",
+  "sha256": "2e405ab2b84155c32887f07ed1b259b342acda7547272607c1d18eb7cd1af961",
+  "size": "54983896"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Container/x86_64/images/Fedora-Container-Toolbox-44-1.7.x86_64.oci.tar.xz",
+  "variant": "Container",
+  "subvariant": "Container_Toolbox",
+  "sha256": "214a6735d8dbd73d2bd708e103eabf4aa5ee7f3b4a6b2ca0f05061374be82b02",
+  "size": "323108132"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Container/x86_64/images/Fedora-FEX-RootFS-44-1.7.x86_64.erofs.xz",
+  "variant": "Container",
+  "subvariant": "FEX_RootFS",
+  "sha256": "0458cb2ba8aa1931254be65b6368d7b6e4397433712f4c013ad13c9fab6201e5",
+  "size": "978146572"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Container/x86_64/images/Fedora-WSL-Base-44-1.7.x86_64.wsl",
+  "variant": "Container",
+  "subvariant": "WSL_Base",
+  "sha256": "2e5b153ba4b639952bf546be577fc19b832fe8944caa7de342b32f10da7d319a",
+  "size": "162846319"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Everything/aarch64/iso/Fedora-Everything-netinst-aarch64-44-1.7.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "814801fbdda7492d9ee24dab8426c72b29f1635fe98d4ba675ede7e81189d57e",
+  "size": "1247682560"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Everything/ppc64le/iso/Fedora-Everything-netinst-ppc64le-44-1.7.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "95e63afad3ea52af38940603a173ac4ea229db717549bcf607c5b7f3ced284ce",
+  "size": "1148528640"
+ },
+ {
+  "version": "44",
+  "arch": "s390x",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Everything/s390x/iso/Fedora-Everything-netinst-s390x-44-1.7.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "62b00a71b8222494f4e347ca18be76ad7ce599ee49e0b5a3f33906110133b2ab",
+  "size": "577001472"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-44-1.7.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "bd285201494dd0ba09b54d05ac707de1401668b8512a573edb5922dcf9d7067e",
+  "size": "1217329152"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/KDE/aarch64/images/Fedora-KDE-Desktop-Disk-44-1.7.aarch64.raw.xz",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "40679131987ec43477c7a473a3f4308d26201390f47e27a90af582b306af4975",
+  "size": "3650564156"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/KDE/aarch64/iso/Fedora-KDE-Desktop-Live-44-1.7.aarch64.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "61b39df9bb19aff38b7b7c81d7b2a647aa43948b6683c8467091e0edce833a94",
+  "size": "3119904768"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/KDE/ppc64le/iso/Fedora-KDE-Desktop-Live-44-1.7.ppc64le.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "22468ad32c329db7c95a3b90e681043ffac0e3ae472418a39493ecac4b566e16",
+  "size": "3033858048"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/KDE/x86_64/iso/Fedora-KDE-Desktop-Live-44-1.7.x86_64.iso",
+  "variant": "KDE",
+  "subvariant": "KDE",
+  "sha256": "c8295961d4c41adbf785a31a17c21a971d3b7415fda72dcad0c11c49577bf03a",
+  "size": "3368683520"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/aarch64/images/Fedora-Server-Guest-Generic-44-1.7.aarch64.qcow2",
+  "variant": "Server",
+  "subvariant": "Server_KVM",
+  "sha256": "c2320b52a25bd961b277361b74edbeb49e8a5b45b5a1df8481865457fb577935",
+  "size": "938147840"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/aarch64/images/Fedora-Server-Host-Generic-44-1.7.aarch64.raw.xz",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "84f969356823fea78f68a6b3a275f16b3c24699d7848cfdb4c3abff197e7e3d9",
+  "size": "1259256468"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/aarch64/iso/Fedora-Server-dvd-aarch64-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "ba8372682294d0d76f79427cae1273d36891b192ac9bf0f0f9de4e97a7cbe218",
+  "size": "3662544896"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/aarch64/iso/Fedora-Server-netinst-aarch64-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "a93ebd0322cda5a439039710b727ac1899a06e1c11876cfdf7f27c25b8262cc3",
+  "size": "1257783296"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Server/ppc64le/images/Fedora-Server-Guest-Generic-44-1.7.ppc64le.qcow2",
+  "variant": "Server",
+  "subvariant": "Server_KVM",
+  "sha256": "384afd15e77d54e2fa1a25478d83214e73bf408e8abe0f1daa7b64e66fbb6697",
+  "size": "865337344"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Server/ppc64le/iso/Fedora-Server-dvd-ppc64le-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "d0d11c768e2933a421e81db2606eafd512f9d75a15e0d591277837d2c97c908b",
+  "size": "3013869568"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Server/ppc64le/iso/Fedora-Server-netinst-ppc64le-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "db84e9e9e2ca979f322c877a96584633226d0c4d8052b97ec5cdcdfcc4c7c17f",
+  "size": "1160095744"
+ },
+ {
+  "version": "44",
+  "arch": "s390x",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Server/s390x/iso/Fedora-Server-dvd-s390x-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "1012057fa848d8479848cba6365ab8b6c3799d4f3d78f94a2074e2859110ae18",
+  "size": "2351562752"
+ },
+ {
+  "version": "44",
+  "arch": "s390x",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Server/s390x/iso/Fedora-Server-netinst-s390x-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "313ea37cdd9fbacb4ff501a0233adebb3b55c623651e98ad784a60a49126b4c9",
+  "size": "588064768"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/x86_64/images/Fedora-Server-Guest-Generic-44-1.7.x86_64.qcow2",
+  "variant": "Server",
+  "subvariant": "Server_KVM",
+  "sha256": "446c01f71e3c6cd3889af66fec927b8d1160b8e0744243d7861c2b8b2ddd3f0e",
+  "size": "952762368"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/x86_64/iso/Fedora-Server-dvd-x86_64-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "85837793bfa36db6bc709b4cecd2ec116951b87d9c53c3d95eb2fac8dcf7cf1f",
+  "size": "3913023488"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Server/x86_64/iso/Fedora-Server-netinst-x86_64-44-1.7.iso",
+  "variant": "Server",
+  "subvariant": "Server",
+  "sha256": "ae20c06bea746913cadea7d80463e13f4bf55bee4df2918111c921c674b70283",
+  "size": "1228384256"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Silverblue/x86_64/images/Fedora-Silverblue-x86_64-44.1.7.ociarchive",
+  "variant": "Silverblue",
+  "subvariant": "Silverblue",
+  "sha256": "30868b098d7b5199c6cab240341742f3b36975f02efafb762d579eae335c6a1b",
+  "size": "2580114432"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Silverblue/x86_64/iso/Fedora-Silverblue-ostree-x86_64-44-1.7.iso",
+  "variant": "Silverblue",
+  "subvariant": "Silverblue",
+  "sha256": "9ccec9b075a0a4358a7209b2667156aaeeec3a6a3c8d71cada45b57fca9b4682",
+  "size": "3331284992"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/images/Fedora-KDE-Mobile-Disk-44-1.7.aarch64.raw.xz",
+  "variant": "Spins",
+  "subvariant": "KDE_Mobile",
+  "sha256": "e09f24daa40d2e0e1331dddd28e6af4e97784fea87005fb74759523dce6a475a",
+  "size": "2799988792"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/images/Fedora-SoaS-Disk-44-1.7.aarch64.raw.xz",
+  "variant": "Spins",
+  "subvariant": "SoaS",
+  "sha256": "3b1a0f3ffcf1ef3151ac6fcb5a1ef4bd2d62c8adc7f4681e38fb294ea638c5f4",
+  "size": "2230031084"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/images/Fedora-Xfce-Disk-44-1.7.aarch64.raw.xz",
+  "variant": "Spins",
+  "subvariant": "Xfce",
+  "sha256": "c469f7441192150761c0fb239a2f8e3aec5ae0bcebed0f48177b604d332c94bb",
+  "size": "2871557668"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/iso/Fedora-KDE-Mobile-Live-44-1.7.aarch64.iso",
+  "variant": "Spins",
+  "subvariant": "KDE_Mobile",
+  "sha256": "fd9ca9fd11a70992a0b44a2940bfe71698765f501162c01b0ce491b09a59b1da",
+  "size": "2426441728"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/iso/Fedora-SoaS-Live-44-1.7.aarch64.iso",
+  "variant": "Spins",
+  "subvariant": "SoaS",
+  "sha256": "e8f01946f8ce371cf80f2a346672f8621b973b3228895c2aa1277d65ecdcfd55",
+  "size": "2064898048"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/aarch64/iso/Fedora-Xfce-Live-44-1.7.aarch64.iso",
+  "variant": "Spins",
+  "subvariant": "Xfce",
+  "sha256": "c707af264df01b70fdf7abfd4fea44ee2942a6080d4353f4e61b23fe951c049e",
+  "size": "2666934272"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/x86_64/iso/Fedora-Cinnamon-Live-44-1.7.x86_64.iso",
+  "variant": "Spins",
+  "subvariant": "Cinnamon",
+  "sha256": "fa2dc8d20357d0bd4443b724617498802d3ed772e2f154d3d3690e711595a74b",
+  "size": "3263983616"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/x86_64/iso/Fedora-KDE-Mobile-Live-44-1.7.x86_64.iso",
+  "variant": "Spins",
+  "subvariant": "KDE_Mobile",
+  "sha256": "7df24a9e8e9cd82ecd8ca0cbd0ca4cf3bd58fb796430f9ed97216bba8ddfc949",
+  "size": "2648334336"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/x86_64/iso/Fedora-MATE_Compiz-Live-44-1.7.x86_64.iso",
+  "variant": "Spins",
+  "subvariant": "Mate",
+  "sha256": "fe868ae4e85494c9d6c1be0dca69fb4d8b8b4fce657563731ecea21c6ff909bf",
+  "size": "3252639744"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/x86_64/iso/Fedora-SoaS-Live-44-1.7.x86_64.iso",
+  "variant": "Spins",
+  "subvariant": "SoaS",
+  "sha256": "9d622e01331e992c7819d43c934a642f8e3f8a2e8dc00864d32e5de1b8cc75a7",
+  "size": "2331164672"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Spins/x86_64/iso/Fedora-Xfce-Live-44-1.7.x86_64.iso",
+  "variant": "Spins",
+  "subvariant": "Xfce",
+  "sha256": "55ea8cb52ac16e62f436e37f9fdb4e978d7b9f75814a9d42e8b69d05e3b496ad",
+  "size": "2928986112"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/aarch64/images/Fedora-Workstation-Disk-44-1.7.aarch64.raw.xz",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "0361c13141e6f57e24d6ee5227066c33a45f7f92a95f41d0bbd343e4fd05da18",
+  "size": "2930596248"
+ },
+ {
+  "version": "44",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/aarch64/iso/Fedora-Workstation-Live-44-1.7.aarch64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "162ba3c552a2d241c7c63ec26777af0255ee1b5a135adc0be986ceed999933ef",
+  "size": "2689781760"
+ },
+ {
+  "version": "44",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/44/Workstation/ppc64le/iso/Fedora-Workstation-Live-44-1.7.ppc64le.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "461587a61e75f6012118d3e62f0f2439022e8b9c09071a73a7e57b580ec16e36",
+  "size": "2488926208"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "1620295f6a00c27c3208f0c00b8ece4eab1ec69b9002152d97488bf26a426ddf",
+  "size": "2851612672"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/alt/iot/44/IoT/x86_64/images/Fedora-IoT-bootc-x86_64-44.20260427.0.ociarchive",
+  "variant": "IoT",
+  "subvariant": "IoT",
+  "sha256": "8a179633cb8f1bc9f4c5d8f83d6b20c0e2056ff5795489d97be07a10e2979ebe",
+  "size": "863561216"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/alt/iot/44/IoT/x86_64/images/Fedora-IoT-raw-44-20260427.0.x86_64.raw.xz",
+  "variant": "IoT",
+  "subvariant": "IoT",
+  "sha256": "73194befb7aefc4f2f11c431fc165ab54d147ecdbadf614cdb1a5aa3858b0915",
+  "size": "969952740"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/alt/iot/44/IoT/x86_64/images/Fedora-base-bootc-x86_64-44.20260427.0.ociarchive",
+  "variant": "IoT",
+  "subvariant": "base",
+  "sha256": "71b814ad0facf1e8ad267da2eacf98f0bc59b9bcc9f3adcdc20a60a498f6bd4f",
+  "size": "1059322880"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/alt/iot/44/IoT/x86_64/iso/Fedora-IoT-ostree-44-20260427.0.x86_64.iso",
+  "variant": "IoT",
+  "subvariant": "IoT",
+  "sha256": "7e11fbee94fa1533a0fae66bf291fb7e7af398bfa249d19218a06ad888e9c0da",
+  "size": "2397593600"
+ },
+ {
+  "version": "44",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/alt/iot/44/IoT/x86_64/iso/Fedora-IoT-provisioner-44-20260427.0.x86_64.iso",
+  "variant": "IoT",
+  "subvariant": "IoT_Simplified_Provisioner",
+  "sha256": "874889a4702c27d474836b4fa960277f19b86227fcd2d582a6bfba7e5fabc8cc",
+  "size": "1292009472"
+ },
+ {
+  "version": "43",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Everything/aarch64/iso/Fedora-Everything-netinst-aarch64-43-1.6.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "169aa239a72029cf640bbbb3782673ba5ddfed002de4d84a0ab878feb1bdba9e",
+  "size": "1188573184"
+ },
+ {
+  "version": "43",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/43/Everything/ppc64le/iso/Fedora-Everything-netinst-ppc64le-43-1.6.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "e2080f1bd227e41b3aa186a86c891c7e7a4c535167289affa47f28dbd982ed5c",
+  "size": "1119477760"
+ },
+ {
+  "version": "43",
+  "arch": "s390x",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/43/Everything/s390x/iso/Fedora-Everything-netinst-s390x-43-1.6.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "c2c4aa409e5ca4ddca07fc4d1f7efa030e73ace705e4464c55b4cf8fd287af24",
+  "size": "567277568"
+ },
+ {
+  "version": "43",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Everything/x86_64/iso/Fedora-Everything-netinst-x86_64-43-1.6.iso",
+  "variant": "Everything",
+  "subvariant": "Everything",
+  "sha256": "f4d06a40ce4fb4a84705e1a1f01ca1328f95a2120d422ba5f719af5df62d0099",
+  "size": "1172207616"
+ },
+ {
+  "version": "43",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Workstation/aarch64/images/Fedora-Workstation-Disk-43-1.6.aarch64.raw.xz",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "5a1c07e6852b8c8ed2a94db006c5568cb8d7f805e9b3146faadfc7974fb95a3a",
+  "size": "2996817112"
+ },
+ {
+  "version": "43",
+  "arch": "aarch64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Workstation/aarch64/iso/Fedora-Workstation-Live-43-1.6.aarch64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "73e91eb64022b59ed0b19fb706dc2053034dc0abbaec03f59fc7754a29777cfb",
+  "size": "2566119424"
+ },
+ {
+  "version": "43",
+  "arch": "ppc64le",
+  "link": "https://download.fedoraproject.org/pub/fedora-secondary/releases/43/Workstation/ppc64le/iso/Fedora-Workstation-Live-43-1.6.ppc64le.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "4d1b60222d24878f2963e6db282731bd6db9d18d4f442d63d2efdb069e087b54",
+  "size": "2423586816"
+ },
+ {
+  "version": "43",
+  "arch": "x86_64",
+  "link": "https://download.fedoraproject.org/pub/fedora/linux/releases/43/Workstation/x86_64/iso/Fedora-Workstation-Live-43-1.6.x86_64.iso",
+  "variant": "Workstation",
+  "subvariant": "Workstation",
+  "sha256": "2a4a16c009244eb5ab2198700eb04103793b62407e8596f30a3e0cc8ac294d77",
+  "size": "2742190080"
+ }
+]

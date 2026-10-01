@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metalink version="3.0" xmlns="http://www.metalinker.org/" type="dynamic" pubdate="Thu, 01 Oct 2026 07:35:02 GMT" generator="mirrormanager" xmlns:mm0="http://fedorahosted.org/mirrormanager">
+ <files>
+  <file name="Fedora-Workstation-Live-44-1.7.x86_64.iso">
+   <mm0:timestamp>1777026694</mm0:timestamp>
+   <size>2851612672</size>
+   <verification>
+    <hash type="sha256">1620295f6a00c27c3208f0c00b8ece4eab1ec69b9002152d97488bf26a426ddf</hash>
+   </verification>
+   <resources maxconnections="1">
+    <url protocol="http" type="http" location="US" preference="100">http://southfront.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="100">https://southfront.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="99">https://cfhcable.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="http" type="http" location="US" preference="99">http://cfhcable.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="98">https://ftp-osl.osuosl.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="http" type="http" location="US" preference="98">http://ftp-osl.osuosl.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="http" type="http" location="US" preference="97">http://cofractal-sea.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="97">https://cofractal-sea.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="http" type="http" location="US" preference="96">http://mirror.cs.princeton.edu/pub/mirrors/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="http" type="http" location="US" preference="95">http://download-ib01.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="95">https://download-ib01.fedoraproject.org/pub/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+    <url protocol="https" type="https" location="US" preference="94">https://gigsouth.mm.fcix.net/fedora/linux/releases/44/Workstation/x86_64/iso/Fedora-Workstation-Live-44-1.7.x86_64.iso</url>
+   </resources>
+  </file>
+ </files>
+</metalink>

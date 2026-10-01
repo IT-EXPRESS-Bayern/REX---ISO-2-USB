@@ -28,6 +28,12 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task LinuxMint() => Check(new LinuxMintProvider(Http), "linuxmint", expectSigned: true);
 
     [LiveFact]
+    public Task FedoraWorkstation() => Check(new FedoraProvider(Http), "fedora-workstation", expectSigned: true);
+
+    [LiveFact]
+    public Task FedoraServer() => Check(new FedoraProvider(Http), "fedora-server", expectSigned: true, architecture: "x64");
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
