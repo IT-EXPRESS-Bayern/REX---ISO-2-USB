@@ -137,7 +137,9 @@ internal static class BrokerHost
             MediaWriters.CreateDefault(services, images, rawWrite),
             paths,
             loggers.CreateLogger<WriteImageJobFactory>());
-        return new LocalEngine(disks, new JobRunner(loggers.CreateLogger<JobRunner>()), rawWrite, writeImage, loggers.CreateLogger<LocalEngine>());
+        var restore = new RestoreDriveJob(disks, services.Preparer, journal, loggers.CreateLogger<RestoreDriveJob>());
+        var verify = new VerifyMediaJob(disks, images, loggers.CreateLogger<VerifyMediaJob>());
+        return new LocalEngine(disks, new JobRunner(loggers.CreateLogger<JobRunner>()), rawWrite, writeImage, restore, verify, loggers.CreateLogger<LocalEngine>());
     }
 
     /// <summary>

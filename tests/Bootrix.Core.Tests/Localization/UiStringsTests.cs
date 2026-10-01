@@ -57,6 +57,7 @@ public class UiStringsTests
         [
             "Raw.CheckTargets", "Raw.Prepare", "Raw.Write", "Raw.Finish",
             "Raw.Persistence", "Raw.RelocateGpt",
+            "Restore.Check", "Restore.Wipe", "Restore.Format", "Restore.Finish", "Verify.Check", "Verify.Compare",
             "Tiny.Prepare", "Tiny.CopyMedia", "Tiny.ExportEdition", "Tiny.Mount", "Tiny.RemoveApps", "Tiny.RemoveComponents",
             "Tiny.RemoveFiles", "Tiny.Registry", "Tiny.CleanupStore", "Tiny.Unmount", "Tiny.Compress", "Tiny.PatchBootImage",
             "Tiny.Unattend", "Tiny.CreateIso",

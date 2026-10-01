@@ -66,6 +66,12 @@
   <data name="Step.Raw.Write.Verify" xml:space="preserve"><value>Geschriebene Daten prüfen</value></data>
   <data name="Step.Raw.Persistence" xml:space="preserve"><value>Persistenz-Partition anlegen</value></data>
   <data name="Step.Raw.RelocateGpt" xml:space="preserve"><value>Sicherungs-GPT ans Ende verschieben</value></data>
+  <data name="Step.Restore.Check" xml:space="preserve"><value>Laufwerk prüfen</value></data>
+  <data name="Step.Restore.Wipe" xml:space="preserve"><value>Alte Tabellen und Daten löschen</value></data>
+  <data name="Step.Restore.Format" xml:space="preserve"><value>Partitionieren und formatieren</value></data>
+  <data name="Step.Restore.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Step.Verify.Check" xml:space="preserve"><value>Ziel prüfen</value></data>
+  <data name="Step.Verify.Compare" xml:space="preserve"><value>Medium mit dem Abbild vergleichen</value></data>
   <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Arbeitsordner vorbereiten</value></data>
   <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Installationsmedium kopieren</value></data>
   <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Edition extrahieren</value></data>
