@@ -55,7 +55,7 @@ internal static class DosSteps
         }
     }
 
-    private static Task WriteMbrCode(MediaWriteContext write, CancellationToken cancellationToken)
+    private static void WriteMbrCode(MediaWriteContext write, CancellationToken cancellationToken)
     {
         foreach (var target in write.Targets)
         {
@@ -80,8 +80,6 @@ internal static class DosSteps
             _ = DosMbr.Install(sector, forceBootDrive: target.Plan.LegacyBios);
             DeviceIo.TryControl(disk.Handle, Ioctl.DiskUpdateProperties);
         }
-
-        return Task.CompletedTask;
     }
 
     private static void ReadSectorZero(PhysicalDisk disk, Span<byte> sector)
