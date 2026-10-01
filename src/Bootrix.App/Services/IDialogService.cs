@@ -29,6 +29,15 @@ public interface IDialogService
     /// <summary>Lets the user choose where a ZIP file is saved; null when dismissed.</summary>
     string? PickSaveZip(string suggestedName);
 
+    /// <summary>Asks for a password (the input is not shown); null when the dialog is dismissed.</summary>
+    Task<string?> PromptPasswordAsync(string title, string message, string confirmText);
+
+    /// <summary>Lets the user choose where a customer sheet is saved; null when dismissed.</summary>
+    string? PickSaveSheet(string suggestedName);
+
+    /// <summary>Lets the user pick a customer sheet; null when dismissed.</summary>
+    string? PickOpenSheet();
+
     /// <summary>Asks for a line of text; null when the dialog is dismissed.</summary>
     Task<string?> PromptAsync(string title, string message, string initialText, string confirmText);
 

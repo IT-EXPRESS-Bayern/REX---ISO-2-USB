@@ -9,6 +9,7 @@ using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
 using Bootrix.Windows.Tiny;
 using Bootrix.Windows.Tools;
+using Bootrix.Windows.Workshop;
 using Microsoft.Extensions.Logging;
 
 namespace Bootrix.Windows.Broker;
@@ -40,6 +41,7 @@ internal static class BrokerHandlers
 
         return
         [
+            new CaptureCustomerPcHandler(new CustomerPcCaptureService(context.Loggers.CreateLogger<CustomerPcCaptureService>()), context.Paths),
             new CollectLogsHandler(context.Paths, userFiles),
             new StickTestHandler(context.Disks, context.Jobs, new StickTestJob(context.Disks, context.Loggers.CreateLogger<StickTestJob>())),
             new TinyBuildHandler(tiny),

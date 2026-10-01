@@ -19,13 +19,16 @@ public sealed partial class WorkshopViewModel : ObservableObject
     private TargetPcInfo? _info;
     private TargetPcAssessment? _assessment;
 
-    public WorkshopViewModel(ITargetPcCollector collector, Localizer localizer, ILogger<WorkshopViewModel> logger)
+    public WorkshopViewModel(ITargetPcCollector collector, Localizer localizer, CustomerSheetViewModel sheet, ILogger<WorkshopViewModel> logger)
     {
+        Sheet = sheet;
         _collector = collector;
         _localizer = localizer;
         _logger = logger;
         localizer.CultureChanged += (_, _) => Render();
     }
+
+    public CustomerSheetViewModel Sheet { get; }
 
     public ObservableCollection<SummaryLine> Hardware { get; } = [];
 

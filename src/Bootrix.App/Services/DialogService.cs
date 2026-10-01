@@ -95,6 +95,46 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public string? PickSaveSheet(string suggestedName)
+    {
+        var dialog = new SaveFileDialog
+        {
+            Title = localizer.Get("Sheet.Heading"),
+            Filter = localizer.Get("Sheet.Filter"),
+            FileName = suggestedName,
+            DefaultExt = ".bootrixsheet",
+            AddExtension = true,
+            OverwritePrompt = true,
+        };
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
+    public string? PickOpenSheet()
+    {
+        var dialog = new OpenFileDialog { Title = localizer.Get("Sheet.Heading"), Filter = localizer.Get("Sheet.Filter"), CheckFileExists = true };
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
+    public async Task<string?> PromptPasswordAsync(string title, string message, string confirmText)
+    {
+        var input = new System.Windows.Controls.PasswordBox { MaxLength = 128, MinWidth = 320, Margin = new System.Windows.Thickness(0, 8, 0, 0) };
+        var content = new System.Windows.Controls.StackPanel();
+        content.Children.Add(new System.Windows.Controls.TextBlock { Text = message, TextWrapping = System.Windows.TextWrapping.Wrap });
+        content.Children.Add(input);
+
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = content,
+            PrimaryButtonText = confirmText,
+            CloseButtonText = localizer.Get("Write.Confirm.Cancel"),
+            DefaultButton = ContentDialogButton.Primary,
+        };
+
+        return await dialogs.ShowAsync(dialog, CancellationToken.None) == ContentDialogResult.Primary ? input.Password : null;
+    }
+
     public async Task<string?> PromptAsync(string title, string message, string initialText, string confirmText)
     {
         var input = new System.Windows.Controls.TextBox { Text = initialText, MaxLength = 64, MinWidth = 320, Margin = new System.Windows.Thickness(0, 8, 0, 0) };

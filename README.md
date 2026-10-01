@@ -32,7 +32,7 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 | Downloader, Katalog (Windows, 18 Linux-/BSD-Anbieter, Rettungsmedien), Image-Bibliothek | umgesetzt |
 | Tiny11 / Tiny11 Core / Tiny10 | umgesetzt (DISM-Pfad nur auf Windows prüfbar) |
 | CD/DVD/BD brennen, löschen, auslesen | umgesetzt (echte Brenner noch ungeprüft) |
-| Zielgeräte-Check, Kunden-PC-Erfassung | umgesetzt |
+| Zielgeräte-Check, Kunden-PC-Erfassung (verschlüsseltes Kundenblatt) | umgesetzt |
 | Windows-Setup-Medien (Dateien kopieren, Split-WIM, BIOS-/UEFI-Start, Rücklesen) | umgesetzt (Startcode unter QEMU geprüft, echte Hardware offen) |
 | Antwortdatei, Treiber, Bypässe, Secure-Boot-Zertifikat 2023 | umgesetzt (Dateien und DISM-Pfad nur auf Windows prüfbar) |
 | Linux-ISO-Modus, Syslinux/GRUB, Persistenz | umgesetzt, unter QEMU (BIOS und UEFI) geprüft |
@@ -60,6 +60,8 @@ bootrix-cli catalog products [-f windows|linux|bsd|dos|rescue|utility]
 bootrix-cli catalog variants <produkt>
 bootrix-cli download <produkt|url> [-v <variante>] [-a x64] [-l de-de] [-o <ordner>]
 bootrix-cli library list [suche]        bootrix-cli library cleanup [--max-size-gb N] [--apply]
+bootrix-cli customer capture -o kunde.bootrixsheet [--wlan-keys] [--bitlocker-keys] [--product-key] [--password-env VAR]
+bootrix-cli customer show kunde.bootrixsheet [--password-env VAR]
 bootrix-cli tiny profiles
 bootrix-cli tiny editions <iso>
 bootrix-cli tiny build <iso> -p tiny11 -e Pro -o tiny11.iso [--keep edge] [--local-account Name]

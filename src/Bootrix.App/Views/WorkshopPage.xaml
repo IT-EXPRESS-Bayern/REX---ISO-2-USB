@@ -130,6 +130,29 @@
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </StackPanel>
+
+            <!-- Customer data -->
+            <ui:TextBlock Text="{loc:Loc Sheet.Heading}" FontTypography="Subtitle" Margin="0,32,0,8" />
+            <ui:TextBlock Text="{loc:Loc Sheet.Intro}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,12" />
+            <StackPanel DataContext="{Binding Sheet}">
+                <CheckBox Content="{loc:Loc Sheet.Opt.Programs}" IsChecked="{Binding Programs}" />
+                <CheckBox Content="{loc:Loc Sheet.Opt.Drivers}" IsChecked="{Binding Drivers}" />
+                <CheckBox Content="{loc:Loc Sheet.Opt.Wlan}" IsChecked="{Binding Wlan}" />
+                <CheckBox Content="{loc:Loc Sheet.Opt.WlanKeys}" IsChecked="{Binding WlanKeys}" />
+                <CheckBox Content="{loc:Loc Sheet.Opt.BitLocker}" IsChecked="{Binding BitLockerKeys}" />
+                <CheckBox Content="{loc:Loc Sheet.Opt.ProductKey}" IsChecked="{Binding ProductKey}" Margin="0,0,0,12" />
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                    <ui:Button Content="{loc:Loc Sheet.Capture}" Icon="{ui:SymbolIcon Save24}" Appearance="Primary" Command="{Binding CaptureCommand}" />
+                    <ui:Button Content="{loc:Loc Sheet.Open}" Icon="{ui:SymbolIcon FolderOpen24}" Margin="8,0,0,0" Command="{Binding OpenCommand}" />
+                </StackPanel>
+                <ui:TextBlock Text="{Binding Status}" TextWrapping="Wrap" Margin="0,0,0,8"
+                              Visibility="{Binding HasStatus, Converter={StaticResource BoolToVisibility}}" />
+                <StackPanel Visibility="{Binding HasSheet, Converter={StaticResource BoolToVisibility}}">
+                    <ui:Button Content="{loc:Loc Sheet.ClosePreview}" Command="{Binding ClosePreviewCommand}" Margin="0,0,0,8" />
+                    <TextBox Text="{Binding SheetText, Mode=OneWay}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
+                             FontFamily="Consolas" MaxHeight="360" VerticalScrollBarVisibility="Auto" />
+                </StackPanel>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Page>

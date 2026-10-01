@@ -480,4 +480,34 @@
   <data name="Step.Test.Capacity" xml:space="preserve"><value>Checking the capacity</value></data>
   <data name="Step.Test.BadBlocks" xml:space="preserve"><value>Testing for bad blocks</value></data>
   <data name="Step.Test.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Sheet.Title" xml:space="preserve"><value>Customer sheet</value></data>
+  <data name="Sheet.Captured" xml:space="preserve"><value>Captured on</value></data>
+  <data name="Sheet.ProductKey" xml:space="preserve"><value>Windows product key</value></data>
+  <data name="Sheet.BitLocker" xml:space="preserve"><value>BitLocker recovery keys</value></data>
+  <data name="Sheet.Wlan" xml:space="preserve"><value>Wi-Fi networks</value></data>
+  <data name="Sheet.Programs" xml:space="preserve"><value>Installed programs ({0})</value></data>
+  <data name="Sheet.Drivers" xml:space="preserve"><value>Additional drivers ({0})</value></data>
+  <data name="Sheet.Notes" xml:space="preserve"><value>Notes</value></data>
+  <data name="Sheet.None" xml:space="preserve"><value>none</value></data>
+  <data name="Sheet.NotRead" xml:space="preserve"><value>not readable</value></data>
+  <data name="Sheet.Heading" xml:space="preserve"><value>Capture customer data</value></data>
+  <data name="Sheet.Intro" xml:space="preserve"><value>Captures before a reinstall what is on this PC: programs, additional drivers and Wi-Fi networks, and on request Wi-Fi keys, BitLocker recovery keys and the Windows product key. The result is always saved encrypted; nothing leaves the machine.</value></data>
+  <data name="Sheet.Opt.Programs" xml:space="preserve"><value>Installed programs</value></data>
+  <data name="Sheet.Opt.Drivers" xml:space="preserve"><value>Additional drivers</value></data>
+  <data name="Sheet.Opt.Wlan" xml:space="preserve"><value>Names of the Wi-Fi networks</value></data>
+  <data name="Sheet.Opt.WlanKeys" xml:space="preserve"><value>Wi-Fi keys in clear text (needs administrator rights)</value></data>
+  <data name="Sheet.Opt.BitLocker" xml:space="preserve"><value>BitLocker recovery keys (needs administrator rights)</value></data>
+  <data name="Sheet.Opt.ProductKey" xml:space="preserve"><value>Windows product key</value></data>
+  <data name="Sheet.Capture" xml:space="preserve"><value>Capture and save …</value></data>
+  <data name="Sheet.Open" xml:space="preserve"><value>Open a customer sheet …</value></data>
+  <data name="Sheet.ClosePreview" xml:space="preserve"><value>Close the view</value></data>
+  <data name="Sheet.Working" xml:space="preserve"><value>Capturing …</value></data>
+  <data name="Sheet.Password.Title" xml:space="preserve"><value>Password for the customer sheet</value></data>
+  <data name="Sheet.Password.Text" xml:space="preserve"><value>The customer sheet holds confidential data and is encrypted. Choose a password of at least 8 characters; without it the sheet cannot be opened again.</value></data>
+  <data name="Sheet.Password.Again" xml:space="preserve"><value>Repeat the password.</value></data>
+  <data name="Sheet.Password.Mismatch" xml:space="preserve"><value>The two passwords do not match.</value></data>
+  <data name="Sheet.Password.Open" xml:space="preserve"><value>Password to open the customer sheet.</value></data>
+  <data name="Sheet.Password.Button" xml:space="preserve"><value>OK</value></data>
+  <data name="Sheet.Filter" xml:space="preserve"><value>Customer sheet|*.bootrixsheet</value></data>
+  <data name="Sheet.Saved" xml:space="preserve"><value>The customer sheet was saved encrypted: {0}</value></data>
 </root>

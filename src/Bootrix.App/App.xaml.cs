@@ -126,6 +126,7 @@ public partial class App : Application
         services.AddSingleton<DiscViewModel>();
         services.AddSingleton<TinyViewModel>();
         services.AddSingleton<WorkshopViewModel>();
+        services.AddSingleton<CustomerSheetViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddTransient<WritePage>();
         services.AddTransient<DownloadsPage>();

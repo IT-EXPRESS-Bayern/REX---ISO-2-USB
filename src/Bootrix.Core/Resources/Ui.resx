@@ -480,4 +480,34 @@
   <data name="Step.Test.Capacity" xml:space="preserve"><value>Kapazität prüfen</value></data>
   <data name="Step.Test.BadBlocks" xml:space="preserve"><value>Auf fehlerhafte Blöcke prüfen</value></data>
   <data name="Step.Test.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Sheet.Title" xml:space="preserve"><value>Kundenblatt</value></data>
+  <data name="Sheet.Captured" xml:space="preserve"><value>Erfasst am</value></data>
+  <data name="Sheet.ProductKey" xml:space="preserve"><value>Windows-Produktschlüssel</value></data>
+  <data name="Sheet.BitLocker" xml:space="preserve"><value>BitLocker-Wiederherstellungsschlüssel</value></data>
+  <data name="Sheet.Wlan" xml:space="preserve"><value>WLAN-Netzwerke</value></data>
+  <data name="Sheet.Programs" xml:space="preserve"><value>Installierte Programme ({0})</value></data>
+  <data name="Sheet.Drivers" xml:space="preserve"><value>Zusätzliche Treiber ({0})</value></data>
+  <data name="Sheet.Notes" xml:space="preserve"><value>Hinweise</value></data>
+  <data name="Sheet.None" xml:space="preserve"><value>keine</value></data>
+  <data name="Sheet.NotRead" xml:space="preserve"><value>nicht lesbar</value></data>
+  <data name="Sheet.Heading" xml:space="preserve"><value>Kundendaten erfassen</value></data>
+  <data name="Sheet.Intro" xml:space="preserve"><value>Erfasst vor einer Neuinstallation, was auf diesem PC steht: Programme, zusätzliche Treiber und WLAN-Netzwerke. Auf Wunsch auch WLAN-Schlüssel, BitLocker-Wiederherstellungsschlüssel und den Windows-Produktschlüssel. Das Ergebnis wird immer verschlüsselt gespeichert; nichts verlässt den Rechner.</value></data>
+  <data name="Sheet.Opt.Programs" xml:space="preserve"><value>Installierte Programme</value></data>
+  <data name="Sheet.Opt.Drivers" xml:space="preserve"><value>Zusätzliche Treiber</value></data>
+  <data name="Sheet.Opt.Wlan" xml:space="preserve"><value>Namen der WLAN-Netzwerke</value></data>
+  <data name="Sheet.Opt.WlanKeys" xml:space="preserve"><value>WLAN-Schlüssel im Klartext (braucht Administratorrechte)</value></data>
+  <data name="Sheet.Opt.BitLocker" xml:space="preserve"><value>BitLocker-Wiederherstellungsschlüssel (braucht Administratorrechte)</value></data>
+  <data name="Sheet.Opt.ProductKey" xml:space="preserve"><value>Windows-Produktschlüssel</value></data>
+  <data name="Sheet.Capture" xml:space="preserve"><value>Erfassen und speichern …</value></data>
+  <data name="Sheet.Open" xml:space="preserve"><value>Kundenblatt öffnen …</value></data>
+  <data name="Sheet.ClosePreview" xml:space="preserve"><value>Anzeige schließen</value></data>
+  <data name="Sheet.Working" xml:space="preserve"><value>Erfasse …</value></data>
+  <data name="Sheet.Password.Title" xml:space="preserve"><value>Kennwort für das Kundenblatt</value></data>
+  <data name="Sheet.Password.Text" xml:space="preserve"><value>Das Kundenblatt enthält vertrauliche Angaben und wird verschlüsselt. Wählen Sie ein Kennwort mit mindestens 8 Zeichen; ohne Kennwort lässt es sich nicht wieder öffnen.</value></data>
+  <data name="Sheet.Password.Again" xml:space="preserve"><value>Kennwort wiederholen.</value></data>
+  <data name="Sheet.Password.Mismatch" xml:space="preserve"><value>Die beiden Kennwörter stimmen nicht überein.</value></data>
+  <data name="Sheet.Password.Open" xml:space="preserve"><value>Kennwort zum Öffnen des Kundenblatts.</value></data>
+  <data name="Sheet.Password.Button" xml:space="preserve"><value>OK</value></data>
+  <data name="Sheet.Filter" xml:space="preserve"><value>Kundenblatt|*.bootrixsheet</value></data>
+  <data name="Sheet.Saved" xml:space="preserve"><value>Das Kundenblatt wurde verschlüsselt gespeichert: {0}</value></data>
 </root>

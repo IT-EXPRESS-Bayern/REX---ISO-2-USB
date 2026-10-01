@@ -57,6 +57,7 @@ public static class WindowsServiceCollectionExtensions
 
         services.AddSingleton<ITargetPcCollector, TargetPcCollector>();
         services.AddSingleton<ICustomerPcCapture, CustomerPcCaptureService>();
+        services.AddSingleton<IEngineJobHandler, CaptureCustomerPcHandler>();
 
         services.AddSingleton<ImageInspector>();
         services.AddSingleton<MediaPlanService>();

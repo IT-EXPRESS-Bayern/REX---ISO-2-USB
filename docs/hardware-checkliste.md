@@ -89,3 +89,11 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] Alter, abgenutzter Stick oder SD-Karte mit bekannten Defekten: der schnelle Blocktest findet fehlerhafte Bereiche und listet sie; Abbruch während des Tests und danach sauberes Aufräumen
 - [ ] Stick am USB-SATA-Adapter mit 4096-Byte-Sektoren: Test läuft ohne Ausrichtungsfehler
 - [ ] Dauer des gründlichen Tests auf einem 64-GB-Stick notiert
+
+## Kundenblatt (Kunden-PC erfassen)
+
+- [ ] Erfassen auf einem echten Windows-10- und Windows-11-Rechner ohne Administratorrechte: Programme, zusätzliche Treiber und WLAN-Namen erscheinen, das Kundenblatt lässt sich mit dem Kennwort wieder öffnen
+- [ ] Mit Administratorrechten (UAC-Abfrage beim Anhaken von WLAN-Schlüsseln oder BitLocker): die WLAN-Schlüssel im Klartext und die BitLocker-Wiederherstellungskennwörter erscheinen im Kundenblatt; nach dem Vorgang liegt kein Ordner `wlan-*` mehr in `C:\ProgramData\Bootrix\work`
+- [ ] Rechner mit BitLocker auf mehreren Laufwerken, mit TPM-Schutz ohne Wiederherstellungskennwort (wird als „nicht lesbar“ gemeldet) und ohne BitLocker
+- [ ] Produktschlüssel eines OEM-Rechners (generischer Schlüssel im Registrierungseintrag) und eines Rechners mit Einzelhandelsschlüssel: der Hinweis auf einen generischen Schlüssel erscheint nur im ersten Fall
+- [ ] Kundenblatt auf einem anderen Rechner mit Bootrix öffnen (Kennwort falsch, Datei beschädigt: klare Fehlermeldung)
