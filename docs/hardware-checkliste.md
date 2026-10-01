@@ -13,3 +13,9 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] DVD-Brenner (CD-R/RW, DVD+R/-R/RW, DVD+R DL, BD-R)
 - [ ] USB-Floppy
 - [ ] Mac (Intel ohne T2, mit T2) mit macOS-Recovery-Stick
+- [ ] Windows-Setup-Stick mit Antwortdatei: lokales Konto, Computername aus `{serial}`, Zeitzone und Sprache kommen auf dem Kunden-PC an; eine autounattend.xml aus einem Fremd-ISO liegt danach als `autounattend.xml.original` auf dem Stick
+- [ ] Hardware-Prüfung abschalten: Windows 11 Setup startet auf einem PC ohne TPM 2.0 und ohne Secure Boot ohne Hinweis, auch wenn die Antwortdatei des Images behalten wird (`ExistingAnswerFile = Keep`)
+- [ ] DISM auf dem Stick: boot.wim wird in den Arbeitsordner kopiert, gemountet und zurückgeschrieben (FAT32 und NTFS); bei Treibern in install.wim reicht der freie Platz auf dem Stick für eine zweite Kopie des Abbilds
+- [ ] `$WinPEDriver$` mit Intel-RST/VMD-Treiber: Setup findet auf einem PC der 11. bis 14. Generation die Datenträger, der Treiber ist danach im installierten System vorhanden (`pnputil /enum-drivers`)
+- [ ] Treiberordner im Broker: wird mit einem anderen Administratorkonto bestätigt, liest Bootrix den Ordner nur, wenn der angemeldete Benutzer ihn lesen darf
+- [ ] Windows UEFI CA 2023: Stick aus einem 25H2-Image bootet auf einem PC, dessen db nur die 2023-Zertifikate enthält; wimlib öffnet dazu `\\?\Volume{...}\sources\boot.wim` direkt
