@@ -105,6 +105,10 @@ public static class IsoFamilyCases
             ("FDOS/BIN/FORMAT.EXE", "f"), ("KERNEL.SYS", "k"), ("FDCONFIG.SYS", "c"))),
         ["windows-nt5"] = new("windows-nt5", ImageKind.WindowsSetup, "WXPFPP_EN", Files(
             ("I386/TXTSETUP.SIF", "[SetupData]\nSetupSourceDevice = x"), ("I386/NTDETECT.COM", "n"), ("I386/WINNT32.EXE", "w"), ("I386/SETUPLDR.BIN", "l"))),
+        ["windows-nt5-winnt-marker"] = new("windows-nt5", ImageKind.WindowsSetup, "WINNT_SRC", Files(
+            ("$WIN_NT$.~BT/SETUPLDR.BIN", "l"), ("$WIN_NT$.~LS/I386/WINNT32.EXE", "w"))),
+        ["windows-setup-without-image"] = new("windows", ImageKind.WindowsSetup, "CCSA_X64FRE", Files(
+            ("sources/setup.exe", "s"), ("bootmgr", "b"), ("boot/bcd", "b"))),
         ["winpe-xp"] = new("winpe-xp", ImageKind.WindowsPe, "BARTPE", Files(
             ("I386/TXTSETUP.SIF", "[SetupData]\nOsLoadOptions = \"/fastdetect /minint\""), ("I386/NTDETECT.COM", "n"), ("MININT/SYSTEM32/a.dll", "a"))),
         ["winpe-xp-by-txtsetup"] = new("winpe-xp", ImageKind.WindowsPe, "PE", Files(

@@ -6,7 +6,9 @@
     { "family": "winpe-xp", "kind": "WindowsPe", "priority": 99, "all": ["*/ntdetect.com", "*/txtsetup.sif"], "any": ["minint"] },
     { "family": "winpe-xp", "kind": "WindowsPe", "priority": 99, "all": ["*/ntdetect.com"], "text": [{ "path": "i386/txtsetup.sif", "pattern": "^\\s*OsLoadOptions\\s*=.*/minint" }] },
     { "family": "windows-nt5", "kind": "WindowsSetup", "priority": 92, "all": ["*/ntdetect.com", "*/txtsetup.sif"] },
+    { "family": "windows-nt5", "kind": "WindowsSetup", "priority": 92, "any": ["$WIN_NT$.~BT", "$WIN_NT$.~LS"] },
     { "family": "windows", "kind": "WindowsSetup", "priority": 90, "any": ["sources/install.wim", "sources/install.esd", "sources/install.swm", "*/sources/install.wim", "*/sources/install.esd", "*/sources/install.swm"] },
+    { "family": "windows", "kind": "WindowsSetup", "priority": 85, "all": ["sources/setup.exe", "bootmgr"], "none": ["sources/boot.wim"] },
     { "family": "winpe", "kind": "WindowsPe", "priority": 88, "all": ["sources/boot.wim"], "any": ["bootmgr", "bootmgr.efi", "boot/bcd", "efi/microsoft/boot/bcd", "boot/boot.sdi"] },
 
     { "family": "esxi", "kind": "OtherOs", "priority": 100, "all": ["boot.cfg"], "any": ["mboot.c32", "b.b00", "s.v00", "efi/boot/boot.cfg"] },
