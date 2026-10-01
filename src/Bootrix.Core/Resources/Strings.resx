@@ -175,6 +175,14 @@
   <data name="Error.InsufficientSpace.Action" xml:space="preserve"><value>Wählen Sie einen anderen Arbeitsordner oder schaffen Sie Platz.</value></data>
   <data name="Error.ImageMountFailed.Cause" xml:space="preserve"><value>Das Image konnte nicht eingebunden werden.</value></data>
   <data name="Error.ImageMountFailed.Action" xml:space="preserve"><value>Starten Sie den Rechner neu, falls ein früherer Vorgang abgebrochen wurde.</value></data>
+  <data name="Error.WimLibraryMissing.Cause" xml:space="preserve"><value>Zum Teilen der Datei install.wim wird die Bibliothek wimlib benötigt; sie wurde nicht gefunden oder ist nicht vertrauenswürdig.</value></data>
+  <data name="Error.WimLibraryMissing.Action" xml:space="preserve"><value>Installieren Sie Bootrix neu oder wählen Sie NTFS oder exFAT, dann muss die Datei nicht geteilt werden.</value></data>
+  <data name="Error.BootCodeUnavailable.Cause" xml:space="preserve"><value>Der Startsektor, mit dem BIOS-Rechner von diesem FAT32-Medium starten, konnte nicht erzeugt werden: {0}</value></data>
+  <data name="Error.BootCodeUnavailable.Action" xml:space="preserve"><value>Wählen Sie NTFS als Dateisystem oder erstellen Sie das Medium nur für UEFI.</value></data>
+  <data name="Error.MediaFileMismatch.Cause" xml:space="preserve"><value>Die Datei „{0}“ auf dem Datenträger weicht von der Quelle ab.</value></data>
+  <data name="Error.MediaFileMismatch.Action" xml:space="preserve"><value>Der Datenträger ist möglicherweise defekt. Führen Sie einen Fälschungs- und Fehlertest durch und schreiben Sie das Medium neu.</value></data>
+  <data name="Error.SplitSetInvalid.Cause" xml:space="preserve"><value>Die geteilte Installationsdatei auf dem Datenträger ist unvollständig oder beschädigt ({0}).</value></data>
+  <data name="Error.SplitSetInvalid.Action" xml:space="preserve"><value>Schreiben Sie das Medium neu. Tritt der Fehler erneut auf, verwenden Sie einen anderen Datenträger.</value></data>
 
   <data name="Error.NoRecorder.Cause" xml:space="preserve"><value>Es wurde kein Brenner gefunden.</value></data>
   <data name="Error.NoRecorder.Action" xml:space="preserve"><value>Schließen Sie einen Brenner an und aktualisieren Sie die Liste.</value></data>

@@ -2,6 +2,7 @@
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Writing.Linux;
 using Bootrix.Windows.Writing.Dos;
+using Bootrix.Windows.Writing.Windows;
 
 namespace Bootrix.Windows.Writing;
 
@@ -17,5 +18,6 @@ public static class MediaWriters
         new FormatOnlyWriter(services),
         new RawCopyWriter(rawWrite),
         new LinuxIsoWriter(services, images),
+        new WindowsSetupWriter(services, images),
     ];
 }

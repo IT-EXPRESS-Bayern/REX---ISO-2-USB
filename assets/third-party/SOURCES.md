@@ -13,6 +13,10 @@ damit sich jede Datei nachprüfen lässt.
 - SHA-256: `72683fa1250eeea772d3399277b434d4e55ba8dd0dc926e52d817e701fc2eb9e`
 - Die Binärdateien liegen als eigenständige Programme auf einer eigenen Partition des Zielmediums und sind
   keine Bestandteile von Bootrix. Die Quelltexte sind unter den oben genannten Adressen verfügbar.
+- Verwendung: Windows-Setup-Medien auf NTFS/exFAT (`Bootrix.Core/Writing/Windows/UefiNtfsImage`). Das Abbild ist
+  als Ressource in `Bootrix.Core` eingebettet und wird bei 512-Byte-Sektoren unverändert in die Partition
+  geschrieben; bei 4096-Byte-Sektoren werden dieselben Dateien byteweise in ein neues FAT-Volumen gleicher
+  Sektorgröße kopiert (die Signaturen liegen in den Dateien, nicht im Dateisystem). Ein Test vergleicht den Hash.
 
 ## syslinux-mbr/*.bin
 
@@ -20,6 +24,8 @@ damit sich jede Datei nachprüfen lässt.
   `altmbr.bin` aus Syslinux.
 - Herkunft: Debian-Paket `syslinux-common` 6.04~git20190206.bf6db5b4+dfsg1-3ubuntu3, aus dem Syslinux-Quelltext
   (`mbr/*.S`, Lizenz Expat/MIT, siehe `syslinux-mbr/LICENSE`).
+- Verwendung: `mbr.bin` ist der Startcode im MBR von Windows-Setup-Medien für den BIOS-Start
+  (`Bootrix.Core/Writing/Windows/WindowsMbr`); eingebettet als Ressource, ein Test vergleicht den Hash.
 - Die Varianten: `mbr.bin` Standard, `mbr_f.bin` erzwingt Laufwerksnummer 0x80 (für alte BIOS), `mbr_c.bin`
   prüft CHS-Start, `gptmbr.bin` startet GPT-Partitionen mit Legacy-BIOS-Flag.
 

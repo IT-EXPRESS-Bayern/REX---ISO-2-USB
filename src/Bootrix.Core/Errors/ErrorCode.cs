@@ -77,6 +77,12 @@ public enum ErrorCode
     BootloaderInstallFailed = 6201,
     FileCopyFailed = 6202,
 
+    // 63xx: Windows setup media (copying, boot code, read-back)
+    WimLibraryMissing = 6301,
+    BootCodeUnavailable = 6302,
+    MediaFileMismatch = 6303,
+    SplitSetInvalid = 6304,
+
     // 7xxx: optical
     NoRecorder = 7001,
     MediaNotSupported = 7002,

@@ -89,6 +89,14 @@
   <data name="Error.InsufficientSpace.Action" xml:space="preserve"><value>Choose a different work folder or free up space.</value></data>
   <data name="Error.ImageMountFailed.Cause" xml:space="preserve"><value>The image could not be mounted.</value></data>
   <data name="Error.ImageMountFailed.Action" xml:space="preserve"><value>Restart the computer if an earlier operation was interrupted.</value></data>
+  <data name="Error.WimLibraryMissing.Cause" xml:space="preserve"><value>Splitting install.wim needs the wimlib library; it was not found or is not trusted.</value></data>
+  <data name="Error.WimLibraryMissing.Action" xml:space="preserve"><value>Reinstall Bootrix, or choose NTFS or exFAT so the file does not have to be split.</value></data>
+  <data name="Error.BootCodeUnavailable.Cause" xml:space="preserve"><value>The boot sector that lets BIOS computers start from this FAT32 medium could not be created: {0}</value></data>
+  <data name="Error.BootCodeUnavailable.Action" xml:space="preserve"><value>Choose NTFS as the file system or create the medium for UEFI only.</value></data>
+  <data name="Error.MediaFileMismatch.Cause" xml:space="preserve"><value>The file "{0}" on the drive differs from the source.</value></data>
+  <data name="Error.MediaFileMismatch.Action" xml:space="preserve"><value>The drive may be faulty. Run a fake-capacity and error test and write the medium again.</value></data>
+  <data name="Error.SplitSetInvalid.Cause" xml:space="preserve"><value>The split install image on the drive is incomplete or damaged ({0}).</value></data>
+  <data name="Error.SplitSetInvalid.Action" xml:space="preserve"><value>Write the medium again. If the error comes back, use a different drive.</value></data>
   <data name="Error.NoRecorder.Cause" xml:space="preserve"><value>No disc recorder was found.</value></data>
   <data name="Error.NoRecorder.Action" xml:space="preserve"><value>Connect a recorder and refresh the list.</value></data>
   <data name="Error.MediaNotSupported.Cause" xml:space="preserve"><value>The inserted disc cannot be written.</value></data>
