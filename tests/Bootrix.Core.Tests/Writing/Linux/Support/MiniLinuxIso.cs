@@ -42,6 +42,12 @@ internal sealed record MiniIsoOptions
     public string LdlinuxRelease { get; init; } = "6.03";
 
     public bool EfiLoader { get; init; } = true;
+
+    /// <summary>Puts a FAT image with an EFI loader into the El Torito catalog (Solus style); combine with EfiLoader = false.</summary>
+    public bool EfiBootImage { get; init; }
+
+    /// <summary>Files added as they are, by path in the image.</summary>
+    public IReadOnlyDictionary<string, byte[]> ExtraFiles { get; init; } = new Dictionary<string, byte[]>();
 }
 
 /// <summary>
@@ -106,14 +112,49 @@ internal static class MiniLinuxIso
             Put(tree, "EFI/BOOT/BOOTX64.EFI", Encoding.ASCII.GetBytes("MZ not a real EFI program"));
         }
 
+        foreach (var (path, content) in options.ExtraFiles)
+        {
+            Put(tree, path, content);
+        }
+
+        var arguments = new List<string> { "-as", "mkisofs", "-r", "-J", "-V", options.Label };
+        if (options.EfiBootImage)
+        {
+            Put(tree, "boot/efi.img", EfiImage());
+            if (!File.Exists(Path.Combine(tree, "isolinux", "isolinux.bin")))
+            {
+                Put(tree, "isolinux/isolinux.bin", new byte[4096]);
+            }
+
+            arguments.AddRange(["-b", "isolinux/isolinux.bin", "-no-emul-boot", "-boot-load-size", "4", "-eltorito-alt-boot", "-e", "boot/efi.img", "-no-emul-boot"]);
+        }
+
         WriteChecksums(tree);
-        var result = ExternalTools.Run("xorriso", "-as", "mkisofs", "-r", "-J", "-V", options.Label, "-o", isoPath, tree);
+        arguments.AddRange(["-o", isoPath, tree]);
+        var result = ExternalTools.Run("xorriso", [.. arguments]);
         if (result.ExitCode != 0)
         {
             throw new InvalidOperationException("xorriso failed: " + result.Combined);
         }
 
         return isoPath;
+    }
+
+    /// <summary>A 2 MiB FAT volume with the loader at EFI/BOOT/BOOTX64.EFI, written by DiscUtils.</summary>
+    private static byte[] EfiImage()
+    {
+        var volume = new MemoryStream(new byte[2 * 1024 * 1024]);
+        Bootrix.Core.FileSystems.Fat.FatFormatter.Format(volume, new Bootrix.Core.FileSystems.Fat.FatFormatOptions { TotalBytes = volume.Length, Label = "EFIBOOT", AssumeZeroed = true });
+        using (var fs = new DiscUtils.Fat.FatFileSystem(volume, DiscUtils.Streams.Ownership.None))
+        {
+            fs.CreateDirectory("EFI");
+            fs.CreateDirectory("EFI/BOOT");
+            using var loader = fs.OpenFile("EFI/BOOT/BOOTX64.EFI", FileMode.Create);
+            loader.Write(Encoding.ASCII.GetBytes("MZ loader from the El Torito EFI image"));
+            loader.Write(new byte[600]);
+        }
+
+        return volume.ToArray();
     }
 
     private static void Put(string root, string relative, byte[] content)

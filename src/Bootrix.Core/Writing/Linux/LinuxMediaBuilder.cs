@@ -157,6 +157,9 @@ public sealed partial class LinuxMediaBuilder(ILogger<LinuxMediaBuilder>? logger
 
             _volume.SetAttributes(SyslinuxInstaller.LdlinuxFileName, FileAttributes.ReadOnly | FileAttributes.Hidden | FileAttributes.System);
             _taken.Add(SyslinuxInstaller.LdlinuxFileName);
+
+            // Listed without content: the installer rewrites it, so a read-back comparison has nothing to compare with.
+            _written.Add(new WrittenFile(SyslinuxInstaller.LdlinuxFileName, content.Length, WrittenFileSource.Generated));
         }
 
         private void CopyDirectories()
