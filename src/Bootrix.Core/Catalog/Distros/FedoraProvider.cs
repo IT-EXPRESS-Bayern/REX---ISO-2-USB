@@ -15,6 +15,9 @@ namespace Bootrix.Core.Catalog.Distros;
 /// </summary>
 public sealed class FedoraProvider : ICatalogProvider
 {
+    /// <summary>Fedora supports the latest release and the one before it; an older release is moved to the archive.</summary>
+    private const int SupportedReleases = 2;
+
     private static readonly Uri ReleasesJson = new("https://fedoraproject.org/releases.json");
 
     private static readonly Edition[] Editions =
@@ -63,9 +66,11 @@ public sealed class FedoraProvider : ICatalogProvider
         var edition = Editions.FirstOrDefault(e => e.ProductId == productId)
             ?? throw new ArgumentException($"Unknown Fedora product '{productId}'.", nameof(productId));
 
-        var images = FedoraReleases.Parse(await _http.GetStringAsync(ReleasesJson, cancellationToken).ConfigureAwait(false))
-            .Where(i => i.Variant == edition.Variant && DistroKeys.HasFedoraKey(i.Release))
-            .ToList();
+        var all = FedoraReleases.Parse(await _http.GetStringAsync(ReleasesJson, cancellationToken).ConfigureAwait(false));
+
+        // The list also keeps releases that have been retired to the archive; Fedora supports the two newest final ones.
+        var supported = all.Select(i => i.Release).Distinct().OrderDescending().Take(SupportedReleases).ToList();
+        var images = all.Where(i => i.Variant == edition.Variant && supported.Contains(i.Release) && DistroKeys.HasFedoraKey(i.Release)).ToList();
         var newest = images.Count == 0 ? 0 : images.Max(i => i.Release);
 
         return [.. images

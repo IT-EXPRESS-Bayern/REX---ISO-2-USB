@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-using System.Net;
 using Bootrix.Core.Catalog;
 using Bootrix.Core.Catalog.Distros;
 using Bootrix.Core.Errors;
-using Bootrix.Core.Net;
+using Bootrix.Core.Tests.Catalog.Distros.Support;
 using Bootrix.Core.Tests.Net.Support;
 using Xunit.Abstractions;
 
@@ -16,7 +15,7 @@ namespace Bootrix.Core.Tests.Catalog.Distros;
 /// </summary>
 public class LiveDistroTests(ITestOutputHelper output)
 {
-    private static readonly HttpClient Http = new() { Timeout = TimeSpan.FromSeconds(60) };
+    private static HttpClient Http => LiveVendor.Http;
 
     [LiveFact]
     public Task Ubuntu() => Check(new UbuntuProvider(Http), "ubuntu", expectSigned: true);
@@ -110,7 +109,7 @@ public class LiveDistroTests(ITestOutputHelper output)
 
             Assert.NotEmpty(request.ExpectedHashes);
             Assert.All(request.Sources, s => Assert.StartsWith("http", s.Url.Scheme, StringComparison.Ordinal));
-            var length = await ProbeLength(request.Url);
+            var length = await LiveVendor.ProbeLength(request.Url);
             Assert.True(length > 100_000, $"{request.Url} announced only {length} bytes.");
             if (request.ExpectedSize is { } expected)
             {
@@ -119,20 +118,9 @@ public class LiveDistroTests(ITestOutputHelper output)
 
             output.WriteLine($"{provider.Id}/{variant.Id} [{arch}]: {request.Url} {length} bytes, {request.ExpectedHashes[0]}, {request.Sources.Count} source(s), {variants.Count} variant(s)");
         }
-        catch (BootrixException ex) when (ex.Code == ErrorCode.CatalogUnavailable && ex.InnerException is HttpRequestException { StatusCode: null })
+        catch (BootrixException ex) when (LiveVendor.IsOffline(ex))
         {
             // No route to the vendor from here; nothing was learned about the vendor.
         }
-    }
-
-    private static async Task<long> ProbeLength(Uri url)
-    {
-        // A one-byte range request works where HEAD is refused, and Content-Range carries the full size.
-        using var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Range = new System.Net.Http.Headers.RangeHeaderValue(0, 0);
-        using var response = await Http.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-        Assert.True(response.StatusCode is HttpStatusCode.PartialContent or HttpStatusCode.OK, $"{url}: {(int)response.StatusCode}");
-
-        return response.Content.Headers.ContentRange?.Length ?? response.Content.Headers.ContentLength ?? 0;
     }
 }

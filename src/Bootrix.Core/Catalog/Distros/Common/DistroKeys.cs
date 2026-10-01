@@ -38,7 +38,6 @@ internal static class DistroKeys
     /// <summary>Fedora signs each release with its own key; the checksum files of release N are signed by N's key.</summary>
     private static readonly IReadOnlyDictionary<int, string> FedoraReleaseFingerprints = new Dictionary<int, string>
     {
-        [42] = "B0F4950458F69E1150C6C5EDC8AC4916105EF944",
         [43] = "C6E7F081CF80E13146676E88829B606631645531",
         [44] = "36F612DCF27F7D1A48A835E4DBFCF71C6D9F90A6",
         [45] = "4F50A6114CD5C6976A7F1179655A4B02F577861E",

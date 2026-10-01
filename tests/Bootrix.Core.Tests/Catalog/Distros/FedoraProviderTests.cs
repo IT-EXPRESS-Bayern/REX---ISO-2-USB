@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Net;
+using System.Text.Json.Nodes;
 using Bootrix.Core.Catalog;
 using Bootrix.Core.Catalog.Distros;
 using Bootrix.Core.Errors;
@@ -83,6 +84,23 @@ public class FedoraProviderTests
 
         Assert.Equal("Fedora Everything 44 (netinst)", variant.Name);
         Assert.True(variant.IsRecommended);
+    }
+
+    [Fact]
+    public async Task OnlyTheTwoNewestFinalReleasesAreOffered()
+    {
+        // Fedora keeps retired releases in releases.json; a copy of the 43 entries as 42 stands for one of them.
+        var older = JsonNode.Parse(DistroFixtures.Text("fedora/releases.json"))!.AsArray();
+        foreach (var entry in older.Where(e => e!["version"]!.GetValue<string>() == "43").ToList())
+        {
+            var copy = entry!.DeepClone();
+            copy["version"] = "42";
+            older.Add(copy);
+        }
+
+        var variants = await Provider(FedoraSite().Serve(Json, older.ToJsonString())).ListVariantsAsync("fedora-workstation", CancellationToken.None);
+
+        Assert.Equal(["44/Workstation/live", "43/Workstation/live"], variants.Select(v => v.Id));
     }
 
     [Fact]
