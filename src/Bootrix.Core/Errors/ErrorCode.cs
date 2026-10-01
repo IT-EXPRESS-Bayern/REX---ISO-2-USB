@@ -105,6 +105,7 @@ public enum ErrorCode
     BrokerStartFailed = 8102,
     BrokerDisconnected = 8103,
     BrokerProtocol = 8104,
+    WorkspaceUntrusted = 8105,
 
     // DOS and diskette media
     DosMbrNotBootable = 2081,

@@ -2,17 +2,23 @@
 using System.Diagnostics;
 using Bootrix.Core;
 using Bootrix.Core.Engine;
+using Bootrix.Core.Errors;
 using Bootrix.Core.Hosting;
 using Bootrix.Core.Images;
 using Bootrix.Core.Ipc;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Logging;
+using Bootrix.Core.Tiny;
+using Bootrix.Core.Wim;
 using Bootrix.Core.Writing;
+using Bootrix.Windows.Dism;
 using Bootrix.Windows.Engine;
 using Bootrix.Windows.Interop;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Platform;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Tiny;
+using Bootrix.Windows.Tools;
 using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 
@@ -39,6 +45,13 @@ internal static class BrokerHost
 {
     public static async Task<int> RunAsync(BrokerOptions options, BootrixPaths paths, CancellationToken cancellationToken)
     {
+        // Everything the broker writes goes below this folder, so it has to be closed to standard users before the first file is made.
+        var elevated = ProcessElevation.IsElevated();
+        if (elevated && !TryProtectDataFolder(paths))
+        {
+            return BrokerExitCodes.WorkspaceUntrusted;
+        }
+
         using var loggers = LoggerFactory.Create(builder => builder
             .SetMinimumLevel(LogLevel.Information)
             .AddProvider(new FileLoggerProvider(paths.LogDirectory, filePrefix: "broker")));
@@ -47,7 +60,7 @@ internal static class BrokerHost
         try
         {
             logger.LogInformation("Broker {Version} starting for process {ParentProcessId}", AppInfo.Version, options.ParentProcessId);
-            if (!ProcessElevation.IsElevated())
+            if (!elevated)
             {
                 logger.LogError("The broker was not started elevated");
                 return BrokerExitCodes.NotElevated;
@@ -95,6 +108,20 @@ internal static class BrokerHost
         }
     }
 
+    private static bool TryProtectDataFolder(BootrixPaths paths)
+    {
+        try
+        {
+            ProtectedFolder.Ensure(paths.DataDirectory);
+            return true;
+        }
+        catch (Exception ex) when (ex is BootrixException or IOException or UnauthorizedAccessException)
+        {
+            // There is no trustworthy place to write a log to; the exit code is all that is left.
+            return false;
+        }
+    }
+
     /// <summary>The server loop with the host wired to each client. Separate from the Windows setup so it can run on any system.</summary>
     internal static async Task<RpcServerStopReason> ServeAsync(
         IConnectionListener listener,
@@ -139,7 +166,16 @@ internal static class BrokerHost
             loggers.CreateLogger<WriteImageJobFactory>());
         var restore = new RestoreDriveJob(disks, services.Preparer, journal, loggers.CreateLogger<RestoreDriveJob>());
         var verify = new VerifyMediaJob(disks, images, loggers.CreateLogger<VerifyMediaJob>());
-        return new LocalEngine(disks, new JobRunner(loggers.CreateLogger<JobRunner>()), rawWrite, writeImage, restore, verify, loggers.CreateLogger<LocalEngine>());
+        var jobs = new JobRunner(loggers.CreateLogger<JobRunner>());
+        var installTools = new WimInstallImageTools();
+        var tiny = new TinyBuildRunner(
+            new TinyBuilder(new DismImageServicing(), new ImageFileSystem(), installTools, new OscdimgIsoWriter(new OscdimgLocator())),
+            installTools,
+            jobs,
+            paths,
+            loggers.CreateLogger<TinyBuildRunner>(),
+            new ClientUserFiles(client));
+        return new LocalEngine(disks, jobs, rawWrite, writeImage, restore, verify, tiny, loggers.CreateLogger<LocalEngine>());
     }
 
     /// <summary>

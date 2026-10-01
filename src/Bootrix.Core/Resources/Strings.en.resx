@@ -360,4 +360,6 @@
   <data name="Error.MsDosNotDownloaded.Action" xml:space="preserve"><value>Confirm the download of the files from Microsoft (Microsoft's license terms apply) or choose FreeDOS.</value></data>
   <data name="Error.MsDosFilesUntrusted.Cause" xml:space="preserve"><value>The file {0} from Microsoft does not have the expected size, checksum or signature and was discarded.</value></data>
   <data name="Error.MsDosFilesUntrusted.Action" xml:space="preserve"><value>Check the internet connection and try again. If it keeps failing, Microsoft has probably changed the file; choose FreeDOS then.</value></data>
+  <data name="Error.WorkspaceUntrusted.Cause" xml:space="preserve"><value>The work folder "{0}" is not protected against changes by standard users.</value></data>
+  <data name="Error.WorkspaceUntrusted.Action" xml:space="preserve"><value>Delete the folder as an administrator or hand it over to the Administrators account, then start Bootrix again.</value></data>
 </root>

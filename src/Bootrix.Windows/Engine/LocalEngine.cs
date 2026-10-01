@@ -8,6 +8,7 @@ using Bootrix.Core.Writing;
 using Bootrix.Core.Writing.Restore;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Tiny;
 using Bootrix.Windows.Writing;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -26,6 +27,7 @@ public sealed class LocalEngine : IEngine
     private readonly Func<StorageDevice, DiskIdentity> _capture;
     private readonly ILogger _logger;
     private readonly Dictionary<Type, JobKind> _kinds;
+    private readonly Dictionary<Type, Func<EngineJobRequest, IProgress<ProgressReport>, CancellationToken, CancellationToken, Task<EngineJobResult>>> _selfRunning = [];
 
     public LocalEngine(
         IDiskService disks,
@@ -34,9 +36,12 @@ public sealed class LocalEngine : IEngine
         WriteImageJobFactory writeImage,
         RestoreDriveJob restore,
         VerifyMediaJob verify,
+        TinyBuildRunner tiny,
         ILogger<LocalEngine>? logger = null)
         : this(disks, runner, rawWrite.Create, DiskIdentityReader.Capture, logger)
     {
+        _selfRunning[typeof(TinyBuildJobRequest)] = async (request, progress, cancellationToken, abortToken) =>
+            EngineJobResult.From(await tiny.RunAsync((TinyBuildJobRequest)request, new DelegateProgressSink(progress.Report), cancellationToken, abortToken).ConfigureAwait(false));
         _kinds[typeof(WriteImageJobRequest)] = new(
             (request, ct) => writeImage.CreateAsync((WriteImageJobRequest)request, ct),
             SummarizeRawWrite);
@@ -95,6 +100,11 @@ public sealed class LocalEngine : IEngine
         ArgumentNullException.ThrowIfNull(progress);
 
         var started = Stopwatch.GetTimestamp();
+        if (_selfRunning.TryGetValue(request.GetType(), out var run))
+        {
+            return await run(request, progress, cancellationToken, abortToken).ConfigureAwait(false);
+        }
+
         if (!_kinds.TryGetValue(request.GetType(), out var kind))
         {
             return Failed(started, new BootrixException(ErrorCode.InvalidSpec, request.GetType().Name) { Arguments = ["request type is not supported"] });

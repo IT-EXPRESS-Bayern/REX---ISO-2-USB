@@ -13,6 +13,7 @@ internal static class BrokerExitCodes
     public const int BadArguments = 2;
     public const int NotElevated = 3;
     public const int SecretUnavailable = 4;
+    public const int WorkspaceUntrusted = 5;
 }
 
 /// <summary>
@@ -31,7 +32,8 @@ public static class BrokerEntry
             return false;
         }
 
-        paths ??= BootrixPaths.Detect(AppContext.BaseDirectory);
+        // Never the portable folder: users can write to it, and the broker keeps its log, journal and work files there.
+        paths ??= BootrixPaths.ForInstalled();
         exitCode = RunAsync(args, paths).GetAwaiter().GetResult();
         return true;
     }

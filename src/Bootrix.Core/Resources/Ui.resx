@@ -255,4 +255,6 @@
   <data name="Pc.Status.Fail" xml:space="preserve"><value>nicht erfüllt</value></data>
   <data name="Pc.Status.Unknown" xml:space="preserve"><value>unbekannt</value></data>
   <data name="Pc.Status.NotChecked" xml:space="preserve"><value>nicht geprüft</value></data>
+  <data name="Step.Tiny.FetchSource" xml:space="preserve"><value>Quell-ISO in den Arbeitsbereich kopieren</value></data>
+  <data name="Step.Tiny.DeliverImage" xml:space="preserve"><value>Fertige ISO am Zielort ablegen</value></data>
 </root>

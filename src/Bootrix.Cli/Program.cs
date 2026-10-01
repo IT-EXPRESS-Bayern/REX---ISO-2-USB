@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.CommandLine;
 using Bootrix.Cli.Commands;
+using Bootrix.Cli.Output;
 using Bootrix.Core;
 using Bootrix.Core.Hosting;
 using Bootrix.Core.Catalog;
 using Bootrix.Core.Engine;
+using Bootrix.Core.Errors;
 using Bootrix.Core.Images;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Writing;
@@ -16,11 +18,21 @@ using Bootrix.Core.Storage;
 using Bootrix.Core.Tiny;
 using Bootrix.Windows;
 using Bootrix.Windows.Jobs;
+using Bootrix.Windows.Platform;
 using Bootrix.Windows.Tiny;
 using Microsoft.Extensions.DependencyInjection;
 
 var paths = BootrixPaths.Detect(AppContext.BaseDirectory);
-Directory.CreateDirectory(paths.DataDirectory);
+try
+{
+    // The CLI runs elevated and writes its log, journal and work files here, so standard users must not be able to change the folder.
+    ProtectedFolder.Ensure(paths.DataDirectory);
+}
+catch (BootrixException ex)
+{
+    new ConsoleWriter(json: false).WriteError(ex);
+    return ExitCodes.For(ex);
+}
 
 await using var services = new ServiceCollection()
     .AddBootrixCore(paths)

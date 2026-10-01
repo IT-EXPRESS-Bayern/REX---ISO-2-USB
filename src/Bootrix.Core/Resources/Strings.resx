@@ -369,4 +369,6 @@
   <data name="Error.MsDosNotDownloaded.Action" xml:space="preserve"><value>Bestätigen Sie den Download der Dateien von Microsoft (es gelten die Lizenzbedingungen von Microsoft) oder wählen Sie FreeDOS.</value></data>
   <data name="Error.MsDosFilesUntrusted.Cause" xml:space="preserve"><value>Die von Microsoft geladene Datei {0} hat nicht die erwartete Größe, Prüfsumme oder Signatur und wurde verworfen.</value></data>
   <data name="Error.MsDosFilesUntrusted.Action" xml:space="preserve"><value>Prüfen Sie die Internetverbindung und versuchen Sie es erneut. Bleibt der Fehler, hat Microsoft die Datei vermutlich geändert; wählen Sie dann FreeDOS.</value></data>
+  <data name="Error.WorkspaceUntrusted.Cause" xml:space="preserve"><value>Der Arbeitsordner „{0}“ ist nicht gegen Änderungen durch normale Benutzer geschützt.</value></data>
+  <data name="Error.WorkspaceUntrusted.Action" xml:space="preserve"><value>Löschen Sie den Ordner als Administrator oder weisen Sie ihn dem Konto „Administratoren“ zu und starten Sie Bootrix neu.</value></data>
 </root>

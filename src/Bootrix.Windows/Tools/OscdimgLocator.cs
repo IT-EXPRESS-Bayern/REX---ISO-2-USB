@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Runtime.InteropServices;
-using System.Security.AccessControl;
 using System.Security.Cryptography;
-using System.Security.Principal;
 using Bootrix.Core.Errors;
 using Bootrix.Windows.Platform;
 using Microsoft.Win32;
@@ -107,16 +105,5 @@ public sealed class OscdimgLocator(HttpClient? http = null)
     }
 
     /// <summary>Only SYSTEM and administrators may change files in the tool folder; a normal user could otherwise swap the program that runs elevated.</summary>
-    internal static void EnsureProtectedFolder(string path)
-    {
-        var directory = Directory.CreateDirectory(path);
-        var security = new DirectorySecurity();
-        security.SetAccessRuleProtection(isProtected: true, preserveInheritance: false);
-
-        var inherit = InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit;
-        security.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.LocalSystemSid, null), FileSystemRights.FullControl, inherit, PropagationFlags.None, AccessControlType.Allow));
-        security.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null), FileSystemRights.FullControl, inherit, PropagationFlags.None, AccessControlType.Allow));
-        security.AddAccessRule(new FileSystemAccessRule(new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null), FileSystemRights.ReadAndExecute, inherit, PropagationFlags.None, AccessControlType.Allow));
-        directory.SetAccessControl(security);
-    }
+    internal static void EnsureProtectedFolder(string path) => ProtectedFolder.Ensure(path, usersMayRead: true);
 }

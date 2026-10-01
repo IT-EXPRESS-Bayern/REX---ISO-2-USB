@@ -11,6 +11,8 @@ namespace Bootrix.Core.Engine;
 public static class EngineRequestValidator
 {
     private const int MaxTargets = 64;
+    private const int MaxGroups = 32;
+    private const int MaxCommands = 64;
 
     // One entry per kind of request. A request type without an entry is refused.
     private static readonly Dictionary<Type, Action<EngineJobRequest, List<string>>> Validators = new()
@@ -19,6 +21,7 @@ public static class EngineRequestValidator
         [typeof(WriteImageJobRequest)] = (request, problems) => ValidateWriteImage((WriteImageJobRequest)request, problems),
         [typeof(RestoreDriveJobRequest)] = (request, problems) => ValidateRestore((RestoreDriveJobRequest)request, problems),
         [typeof(VerifyJobRequest)] = (request, problems) => ValidateVerify((VerifyJobRequest)request, problems),
+        [typeof(TinyBuildJobRequest)] = (request, problems) => ValidateTinyBuild((TinyBuildJobRequest)request, problems),
     };
 
     public static IReadOnlyList<string> Validate(EngineJobRequest? request)
@@ -131,6 +134,82 @@ public static class EngineRequestValidator
             problems.Add("verification mode is not known");
         }
     }
+
+    private static void ValidateTinyBuild(TinyBuildJobRequest request, List<string> problems)
+    {
+        if (!EnginePathRules.IsAbsoluteFilePath(request.IsoPath) || !request.IsoPath.EndsWith(".iso", StringComparison.OrdinalIgnoreCase))
+        {
+            problems.Add("source image is not an absolute path to an .iso file");
+        }
+
+        if (!EnginePathRules.IsAbsoluteFilePath(request.OutputIsoPath) || !request.OutputIsoPath.EndsWith(".iso", StringComparison.OrdinalIgnoreCase))
+        {
+            problems.Add("output image is not an absolute path to an .iso file");
+        }
+        else if (string.Equals(request.IsoPath, request.OutputIsoPath, StringComparison.OrdinalIgnoreCase))
+        {
+            problems.Add("output image would overwrite the source image");
+        }
+
+        // The engine works in its own protected folder; a location chosen by the caller would be one the caller controls.
+        if (request.WorkDirectory is not null || request.KeepWorkDirectory)
+        {
+            problems.Add("the work folder is chosen by the engine");
+        }
+
+        if (!IsIdentifier(request.ProfileId))
+        {
+            problems.Add("profile id is not usable");
+        }
+
+        if (request.Edition is { Length: > 128 } || request.Edition?.Any(char.IsControl) == true)
+        {
+            problems.Add("edition is not usable");
+        }
+
+        if (request.KeepGroups.Count > MaxGroups || request.IncludeGroups.Count > MaxGroups
+            || request.KeepGroups.Concat(request.IncludeGroups).Any(group => !IsIdentifier(group)))
+        {
+            problems.Add("an option group is not usable");
+        }
+
+        if (request.VolumeLabel is not { Length: > 0 and <= 32 } || request.VolumeLabel.Any(char.IsControl))
+        {
+            problems.Add("volume label is not usable");
+        }
+
+        if (!Enum.IsDefined(request.Compression))
+        {
+            problems.Add("compression is not known");
+        }
+
+        if (request.Unattend is { } unattend)
+        {
+            ValidateUnattend(unattend, problems);
+        }
+    }
+
+    private static void ValidateUnattend(Unattend.UnattendOptions unattend, List<string> problems)
+    {
+        if (unattend.LocalAccountPassword is { Length: > 127 })
+        {
+            problems.Add("local account password is too long");
+        }
+
+        if (unattend.ComputerName is { Length: > 15 } || unattend.ComputerName?.Any(char.IsControl) == true)
+        {
+            problems.Add("computer name is not usable");
+        }
+
+        var commands = unattend.FirstLogonCommands.Concat(unattend.SpecializeCommands).ToList();
+        if (commands.Count > MaxCommands || commands.Any(command => command.Length > 2048 || command.Any(char.IsControl)))
+        {
+            problems.Add("a setup command is not usable");
+        }
+    }
+
+    private static bool IsIdentifier(string? value) =>
+        value is { Length: > 0 and <= 32 } && value.All(c => char.IsAsciiLetterOrDigit(c) || c is '-' or '_');
 
     private static void ValidateArchiveEntry(string? entry, List<string> problems)
     {
