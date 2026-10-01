@@ -28,6 +28,7 @@
     <EmbeddedResource Include="Images\Families\*.json" />
     <EmbeddedResource Include="Images\Policy\*.json" />
     <EmbeddedResource Include="Catalog\Rescue\rescue-catalog.json" LogicalName="Bootrix.Core.Catalog.Rescue.rescue-catalog.json" />
+    <EmbeddedResource Include="Catalog\Distros\Keys\*.asc" LogicalName="Bootrix.Core.Catalog.Distros.Keys.%(Filename)%(Extension)" />
   </ItemGroup>
 
   <ItemGroup>
