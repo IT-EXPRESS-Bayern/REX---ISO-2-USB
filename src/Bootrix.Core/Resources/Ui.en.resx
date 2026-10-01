@@ -86,4 +86,78 @@
   <data name="Hint.Rescue.ThirdPartyCompilation" xml:space="preserve"><value>A compilation of third-party programs; each program is subject to its own licence terms.</value></data>
   <data name="Hint.Rescue.SignaturesOutdated" xml:space="preserve"><value>Virus signatures go out of date quickly. Update the signatures after booting, if a network connection is available.</value></data>
   <data name="Hint.Rescue.UpdatedInPlace" xml:space="preserve"><value>The vendor replaces the file under the same address on a regular basis, so there is no fixed checksum; integrity relies on the encrypted connection (HTTPS) only.</value></data>
+  <data name="Plan.Heading" xml:space="preserve"><value>Preview</value></data>
+  <data name="Plan.Label.Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Plan.Label.Method" xml:space="preserve"><value>Write method</value></data>
+  <data name="Plan.Label.Scheme" xml:space="preserve"><value>Partition table</value></data>
+  <data name="Plan.Label.Partitions" xml:space="preserve"><value>Partitions</value></data>
+  <data name="Plan.Label.Boot" xml:space="preserve"><value>Boots through</value></data>
+  <data name="Plan.Kind.WindowsSetup" xml:space="preserve"><value>Windows installation media</value></data>
+  <data name="Plan.Kind.WindowsPe" xml:space="preserve"><value>Windows PE</value></data>
+  <data name="Plan.Kind.LinuxHybrid" xml:space="preserve"><value>Linux (hybrid image)</value></data>
+  <data name="Plan.Kind.LinuxIsoOnly" xml:space="preserve"><value>Linux (ISO)</value></data>
+  <data name="Plan.Kind.Bsd" xml:space="preserve"><value>BSD</value></data>
+  <data name="Plan.Kind.Dos" xml:space="preserve"><value>DOS</value></data>
+  <data name="Plan.Kind.Apple" xml:space="preserve"><value>Apple image</value></data>
+  <data name="Plan.Kind.RawDisk" xml:space="preserve"><value>Disk image</value></data>
+  <data name="Plan.Kind.Data" xml:space="preserve"><value>Data image</value></data>
+  <data name="Plan.Kind.OtherOs" xml:space="preserve"><value>Other operating system</value></data>
+  <data name="Plan.Kind.Unknown" xml:space="preserve"><value>Unknown image</value></data>
+  <data name="Plan.Method.RawCopy" xml:space="preserve"><value>Write byte for byte (DD)</value></data>
+  <data name="Plan.Method.ExtractFiles" xml:space="preserve"><value>Copy files to a freshly prepared drive</value></data>
+  <data name="Plan.Method.FormatOnly" xml:space="preserve"><value>Partition and format only</value></data>
+  <data name="Plan.Method.ApplyImage" xml:space="preserve"><value>Apply Windows to the drive (Windows To Go)</value></data>
+  <data name="Plan.Scheme.Mbr" xml:space="preserve"><value>MBR</value></data>
+  <data name="Plan.Scheme.Gpt" xml:space="preserve"><value>GPT</value></data>
+  <data name="Plan.Scheme.None" xml:space="preserve"><value>from the image</value></data>
+  <data name="Plan.Scheme.NoTable" xml:space="preserve"><value>none (floppy/superfloppy)</value></data>
+  <data name="Plan.Role.Main" xml:space="preserve"><value>Data</value></data>
+  <data name="Plan.Role.Esp" xml:space="preserve"><value>EFI system partition</value></data>
+  <data name="Plan.Role.Msr" xml:space="preserve"><value>Reserved (MSR)</value></data>
+  <data name="Plan.Role.UefiNtfs" xml:space="preserve"><value>UEFI:NTFS</value></data>
+  <data name="Plan.Role.BiosBoot" xml:space="preserve"><value>BIOS boot (GRUB)</value></data>
+  <data name="Plan.Role.Persistence" xml:space="preserve"><value>Persistence</value></data>
+  <data name="Plan.Boot.WindowsBootmgrBios" xml:space="preserve"><value>BIOS (Windows boot manager)</value></data>
+  <data name="Plan.Boot.UefiNative" xml:space="preserve"><value>UEFI</value></data>
+  <data name="Plan.Boot.UefiNtfs" xml:space="preserve"><value>UEFI (through UEFI:NTFS)</value></data>
+  <data name="Plan.Boot.SyslinuxMbr" xml:space="preserve"><value>BIOS (Syslinux)</value></data>
+  <data name="Plan.Boot.Grub" xml:space="preserve"><value>BIOS (GRUB)</value></data>
+  <data name="Plan.Boot.FreeDos" xml:space="preserve"><value>BIOS (FreeDOS)</value></data>
+  <data name="Plan.Boot.ImageNative" xml:space="preserve"><value>as the image provides</value></data>
+  <data name="Plan.Boot.None" xml:space="preserve"><value>not bootable</value></data>
+  <data name="Plan.SplitWim" xml:space="preserve"><value>install.wim is split into parts for FAT32</value></data>
+  <data name="Plan.NoWriter" xml:space="preserve"><value>There is no way to write this image yet.</value></data>
+  <data name="Opt.Heading" xml:space="preserve"><value>Options</value></data>
+  <data name="Opt.Mode" xml:space="preserve"><value>Write method</value></data>
+  <data name="Opt.Mode.Auto" xml:space="preserve"><value>Automatic (recommended)</value></data>
+  <data name="Opt.Mode.RawCopy" xml:space="preserve"><value>Write byte for byte (DD)</value></data>
+  <data name="Opt.Mode.Extract" xml:space="preserve"><value>Copy files</value></data>
+  <data name="Opt.Scheme" xml:space="preserve"><value>Partition table</value></data>
+  <data name="Opt.Scheme.Auto" xml:space="preserve"><value>Automatic</value></data>
+  <data name="Opt.Scheme.Mbr" xml:space="preserve"><value>MBR</value></data>
+  <data name="Opt.Scheme.Gpt" xml:space="preserve"><value>GPT</value></data>
+  <data name="Opt.Firmware" xml:space="preserve"><value>Boot mode</value></data>
+  <data name="Opt.Firmware.Auto" xml:space="preserve"><value>Automatic</value></data>
+  <data name="Opt.Firmware.Bios" xml:space="preserve"><value>BIOS (legacy)</value></data>
+  <data name="Opt.Firmware.Uefi" xml:space="preserve"><value>UEFI</value></data>
+  <data name="Opt.Firmware.BiosAndUefi" xml:space="preserve"><value>BIOS and UEFI</value></data>
+  <data name="Opt.FileSystem" xml:space="preserve"><value>File system</value></data>
+  <data name="Opt.FileSystem.Auto" xml:space="preserve"><value>Automatic</value></data>
+  <data name="Opt.FileSystem.Fat32" xml:space="preserve"><value>FAT32</value></data>
+  <data name="Opt.FileSystem.ExFat" xml:space="preserve"><value>exFAT</value></data>
+  <data name="Opt.FileSystem.Ntfs" xml:space="preserve"><value>NTFS</value></data>
+  <data name="Opt.Label" xml:space="preserve"><value>Drive label</value></data>
+  <data name="Opt.LegacyBios" xml:space="preserve"><value>Workarounds for old BIOS machines</value></data>
+  <data name="Opt.Persistence" xml:space="preserve"><value>Persistence in MB (Linux only, 0 = off)</value></data>
+  <data name="Opt.Windows.Heading" xml:space="preserve"><value>Windows setup</value></data>
+  <data name="Opt.Windows.BypassTpm" xml:space="preserve"><value>Do not require TPM 2.0</value></data>
+  <data name="Opt.Windows.BypassSecureBoot" xml:space="preserve"><value>Do not require Secure Boot</value></data>
+  <data name="Opt.Windows.BypassRam" xml:space="preserve"><value>Skip the minimum RAM check</value></data>
+  <data name="Opt.Windows.BypassCpu" xml:space="preserve"><value>Skip the CPU check</value></data>
+  <data name="Opt.Windows.BypassStorage" xml:space="preserve"><value>Skip the minimum storage check</value></data>
+  <data name="Opt.Windows.LocalAccount" xml:space="preserve"><value>Create a local account (name)</value></data>
+  <data name="Opt.Windows.SkipPrivacy" xml:space="preserve"><value>Skip the privacy questions</value></data>
+  <data name="Opt.Windows.DisableBitLocker" xml:space="preserve"><value>Turn off automatic device encryption</value></data>
+  <data name="Plan.Error" xml:space="preserve"><value>The preview could not be created.</value></data>
+  <data name="Plan.Waiting" xml:space="preserve"><value>Choose an image and a drive to see the preview.</value></data>
 </root>
