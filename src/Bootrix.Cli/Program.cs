@@ -8,6 +8,7 @@ using Bootrix.Core.Storage;
 using Bootrix.Core.Tiny;
 using Bootrix.Windows;
 using Bootrix.Windows.Jobs;
+using Bootrix.Windows.Tiny;
 using Microsoft.Extensions.DependencyInjection;
 
 var paths = BootrixPaths.Detect(AppContext.BaseDirectory);
@@ -27,9 +28,8 @@ var root = new RootCommand($"{AppInfo.Name} {AppInfo.Version} - bootable media f
         services.GetRequiredService<RawWriteJob>(),
         services.GetRequiredService<JobRunner>()),
     TinyCommand.Create(
-        services.GetRequiredService<TinyBuilder>(),
+        services.GetRequiredService<TinyBuildRunner>(),
         services.GetRequiredService<IInstallImageTools>(),
-        services.GetRequiredService<JobRunner>(),
         paths.WorkDirectory),
 };
 

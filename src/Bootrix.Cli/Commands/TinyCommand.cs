@@ -1,24 +1,26 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.CommandLine;
 using Bootrix.Cli.Output;
+using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Profiles;
 using Bootrix.Core.Tiny;
 using Bootrix.Core.Unattend;
 using Bootrix.Windows.Images;
+using Bootrix.Windows.Tiny;
 
 namespace Bootrix.Cli.Commands;
 
 internal static class TinyCommand
 {
-    public static Command Create(TinyBuilder builder, IInstallImageTools tools, JobRunner runner, string defaultWorkDirectory)
+    public static Command Create(TinyBuildRunner runner, IInstallImageTools tools, string defaultWorkDirectory)
     {
         var command = new Command("tiny", "Build a slimmed-down Windows medium (Tiny11, Tiny11 Core, Tiny10) from an original ISO.")
         {
             CreateProfiles(),
             CreateEditions(tools),
-            CreateBuild(builder, tools, runner, defaultWorkDirectory),
+            CreateBuild(runner, defaultWorkDirectory),
         };
         return command;
     }
@@ -70,7 +72,7 @@ internal static class TinyCommand
             try
             {
                 using var mounted = Mount(parse.GetValue(iso)!, cancellationToken);
-                var editions = await tools.GetEditionsAsync(InstallImageIn(mounted.RootPath!), cancellationToken).ConfigureAwait(false);
+                var editions = await tools.GetEditionsAsync(TinyBuildRunner.FindInstallImage(mounted.RootPath!), cancellationToken).ConfigureAwait(false);
                 foreach (var edition in editions)
                 {
                     if (writer.Json)
@@ -94,7 +96,7 @@ internal static class TinyCommand
         return command;
     }
 
-    private static Command CreateBuild(TinyBuilder builder, IInstallImageTools tools, JobRunner runner, string defaultWorkDirectory)
+    private static Command CreateBuild(TinyBuildRunner runner, string defaultWorkDirectory)
     {
         var iso = new Argument<FileInfo>("iso") { Description = "Original Windows ISO." };
         var profile = new Option<string>("--profile", "-p") { Description = "tiny11, tiny11core or tiny10.", DefaultValueFactory = _ => "tiny11" };
@@ -124,40 +126,29 @@ internal static class TinyCommand
             var writer = new ConsoleWriter(parse.GetValue(json));
             try
             {
-                var source = parse.GetValue(iso)!;
-                using var mounted = Mount(source, cancellationToken);
-                var root = mounted.RootPath!;
-
-                var editions = await tools.GetEditionsAsync(InstallImageIn(root), cancellationToken).ConfigureAwait(false);
-                var index = EditionPicker.Pick(editions, parse.GetValue(edition));
-
-                var tinyProfile = TinyProfiles.Load(parse.GetValue(profile)!.ToLowerInvariant());
-                var unattend = BuildUnattend(parse.GetValue(account), parse.GetValue(language), parse.GetValue(timeZone), parse.GetValue(skipPrivacy));
-                var options = new TinyBuildOptions
+                var request = new TinyBuildJobRequest
                 {
-                    SourceRoot = root,
-                    WorkDirectory = Path.Combine(parse.GetValue(work)!.FullName, "tiny-" + Guid.NewGuid().ToString("N")[..8]),
-                    ImageIndex = index,
-                    ProfileId = tinyProfile.Id,
-                    DisabledGroups = TinyProfiles.DisabledGroups(tinyProfile, parse.GetValue(keep) ?? [], parse.GetValue(include) ?? []),
-                    IsoPath = parse.GetValue(output)!.FullName,
+                    IsoPath = parse.GetValue(iso)!.FullName,
+                    OutputIsoPath = parse.GetValue(output)!.FullName,
+                    ProfileId = parse.GetValue(profile)!,
+                    Edition = parse.GetValue(edition),
+                    KeepGroups = parse.GetValue(keep) ?? [],
+                    IncludeGroups = parse.GetValue(include) ?? [],
+                    WorkDirectory = parse.GetValue(work)?.FullName,
                     VolumeLabel = parse.GetValue(label)!,
                     Compression = parse.GetValue(fat32) ? InstallImageCompression.Maximum : InstallImageCompression.Recovery,
                     BypassHardwareChecks = !parse.GetValue(noBypass),
-                    Unattend = unattend,
+                    Unattend = BuildUnattend(parse.GetValue(account), parse.GetValue(language), parse.GetValue(timeZone), parse.GetValue(skipPrivacy)),
                     AcknowledgeNoServicing = parse.GetValue(acknowledge),
                     KeepWorkDirectory = parse.GetValue(keepWork),
                 };
 
-                var result = await runner.RunAsync(
-                    builder.CreateJob(options),
-                    new DelegateProgressSink(writer.WriteProgress),
-                    cancellationToken).ConfigureAwait(false);
+                var result = await runner.RunAsync(request, new DelegateProgressSink(writer.WriteProgress), cancellationToken).ConfigureAwait(false);
                 writer.EndProgress();
 
                 if (result.Succeeded)
                 {
-                    writer.WriteLine(writer.Json ? string.Empty : $"Done in {result.Duration:hh\\:mm\\:ss}: {options.IsoPath}");
+                    writer.WriteLine(writer.Json ? string.Empty : $"Done in {result.Duration:hh\\:mm\\:ss}: {request.OutputIsoPath}");
                     return ExitCodes.Success;
                 }
 
@@ -189,22 +180,6 @@ internal static class TinyCommand
         }
 
         return mounted;
-    }
-
-    /// <summary>Retail media carry install.wim; media from the Media Creation Tool carry install.esd instead.</summary>
-    private static string InstallImageIn(string root)
-    {
-        var sources = Path.Combine(root, "sources");
-        foreach (var name in new[] { "install.wim", "install.esd" })
-        {
-            var candidate = Path.Combine(sources, name);
-            if (File.Exists(candidate))
-            {
-                return candidate;
-            }
-        }
-
-        throw new BootrixException(ErrorCode.ImageUnsupported, root) { Arguments = [root] };
     }
 
     private static UnattendOptions? BuildUnattend(string? account, string? language, string? timeZone, bool skipPrivacy)

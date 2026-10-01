@@ -5,6 +5,7 @@ using Bootrix.Core.Wim;
 using Bootrix.Windows.Dism;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Tiny;
 using Bootrix.Windows.Tools;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +26,7 @@ public static class WindowsServiceCollectionExtensions
         services.AddSingleton<OscdimgLocator>();
         services.AddSingleton<IIsoWriter, OscdimgIsoWriter>();
         services.AddSingleton<TinyBuilder>();
+        services.AddSingleton<TinyBuildRunner>();
 
         return services;
     }
