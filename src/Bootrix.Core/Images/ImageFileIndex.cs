@@ -1,5 +1,4 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 
 namespace Bootrix.Core.Images;
@@ -11,8 +10,6 @@ namespace Bootrix.Core.Images;
 /// </summary>
 internal sealed partial class ImageFileIndex
 {
-    private static readonly ConcurrentDictionary<string, Regex> GlobCache = new(StringComparer.Ordinal);
-
     private readonly Dictionary<string, FileRecord> _files = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> _directories = new(StringComparer.OrdinalIgnoreCase);
 
@@ -86,22 +83,38 @@ internal sealed partial class ImageFileIndex
     /// <summary>Files and directories whose path matches the glob pattern.</summary>
     public IEnumerable<string> Find(string glob)
     {
-        var regex = GlobCache.GetOrAdd(glob.ToLowerInvariant(), ToRegex);
-        return _files.Keys.Concat(_directories).Where(path => regex.IsMatch(path));
+        var pattern = PathGlob.Get(glob);
+        if (pattern.Exact is { } exact)
+        {
+            return _files.ContainsKey(exact) || _directories.Contains(exact) ? [exact] : [];
+        }
+
+        return _files.Keys.Concat(_directories).Where(pattern.IsMatch);
     }
 
-    public bool Matches(string glob) => Find(glob).Any();
+    public bool Matches(string glob)
+    {
+        var pattern = PathGlob.Get(glob);
+        return pattern.Exact is { } exact
+            ? _files.ContainsKey(exact) || _directories.Contains(exact)
+            : _files.Keys.Any(pattern.IsMatch) || _directories.Any(pattern.IsMatch);
+    }
 
     public bool MatchesFile(string glob)
     {
-        var regex = GlobCache.GetOrAdd(glob.ToLowerInvariant(), ToRegex);
-        return _files.Keys.Any(path => regex.IsMatch(path));
+        var pattern = PathGlob.Get(glob);
+        return pattern.Exact is { } exact ? _files.ContainsKey(exact) : _files.Keys.Any(pattern.IsMatch);
     }
 
     public IEnumerable<string> FindFiles(string glob)
     {
-        var regex = GlobCache.GetOrAdd(glob.ToLowerInvariant(), ToRegex);
-        return _files.Keys.Where(path => regex.IsMatch(path));
+        var pattern = PathGlob.Get(glob);
+        if (pattern.Exact is { } exact)
+        {
+            return _files.ContainsKey(exact) ? [exact] : [];
+        }
+
+        return _files.Keys.Where(pattern.IsMatch);
     }
 
     /// <summary>"\EFI\BOOT\BOOTX64.EFI;1" becomes "EFI/BOOT/BOOTX64.EFI"; ISO 9660 level 1 writes "BOOTMGR." for a name without extension.</summary>
@@ -115,44 +128,6 @@ internal sealed partial class ImageFileIndex
         }
 
         return normalised.TrimEnd('.');
-    }
-
-    private static Regex ToRegex(string glob)
-    {
-        var pattern = new System.Text.StringBuilder("^");
-        for (var i = 0; i < glob.Length; i++)
-        {
-            var c = glob[i];
-            if (c == '*' && i + 1 < glob.Length && glob[i + 1] == '*')
-            {
-                // "**/" also matches no directory at all, "**" at the end matches the rest.
-                if (i + 2 < glob.Length && glob[i + 2] == '/')
-                {
-                    pattern.Append("(?:.*/)?");
-                    i += 2;
-                }
-                else
-                {
-                    pattern.Append(".*");
-                    i++;
-                }
-            }
-            else if (c == '*')
-            {
-                pattern.Append("[^/]*");
-            }
-            else if (c == '?')
-            {
-                pattern.Append("[^/]");
-            }
-            else
-            {
-                pattern.Append(Regex.Escape(c.ToString()));
-            }
-        }
-
-        pattern.Append('$');
-        return new Regex(pattern.ToString(), RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     }
 
     [GeneratedRegex(@"^;\d+$")]
