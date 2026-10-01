@@ -36,6 +36,9 @@ public enum ErrorCode
     PersistenceTooSmall = 2015,
     MediaWriterUnavailable = 2016,
 
+    // 204x: extras of the raw writer
+    PersistenceLayoutUnsupported = 2041,
+
     // 3xxx: images
     ImageUnreadable = 3001,
     ImageTruncated = 3002,
@@ -46,6 +49,7 @@ public enum ErrorCode
 
     // 4xxx: verification
     VerifyMismatch = 4001,
+    VerifyFilesDiffer = 4041,
 
     // 5xxx: network and catalog
     DownloadFailed = 5001,
@@ -90,6 +94,7 @@ public enum ErrorCode
     ImageSegmented = 3102,
     ImageLegacyFormat = 3103,
     ImageAppleArchive = 3104,
+    BlockMapInvalid = 3141,
 
     // 81xx: elevated broker process
     ElevationDenied = 8101,

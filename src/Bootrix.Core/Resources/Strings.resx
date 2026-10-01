@@ -131,6 +131,8 @@
   <data name="Error.WriteModeUnsupported.Action" xml:space="preserve"><value>Wählen Sie den Modus „Automatisch“.</value></data>
   <data name="Error.PersistenceTooSmall.Cause" xml:space="preserve"><value>Für die Persistenz ({0}) ist nicht genug Platz; mindestens {1} sind nötig.</value></data>
   <data name="Error.PersistenceTooSmall.Action" xml:space="preserve"><value>Verkleinern Sie die Persistenz oder verwenden Sie einen größeren Datenträger.</value></data>
+  <data name="Error.PersistenceLayoutUnsupported.Cause" xml:space="preserve"><value>Auf diesem Datenträger lässt sich keine Persistenz-Partition hinzufügen: {0}</value></data>
+  <data name="Error.PersistenceLayoutUnsupported.Action" xml:space="preserve"><value>Verwenden Sie den ISO-Modus für die Persistenz oder schreiben Sie das Image ohne Persistenz.</value></data>
 
   <data name="Error.ImageUnreadable.Cause" xml:space="preserve"><value>Das Image konnte nicht gelesen werden: {0}</value></data>
   <data name="Error.ImageUnreadable.Action" xml:space="preserve"><value>Prüfen Sie, ob die Datei vollständig und nicht in Benutzung ist.</value></data>
@@ -147,6 +149,8 @@
 
   <data name="Error.VerifyMismatch.Cause" xml:space="preserve"><value>Die geschriebenen Daten weichen von der Quelle ab (Offset {0}).</value></data>
   <data name="Error.VerifyMismatch.Action" xml:space="preserve"><value>Der Datenträger ist möglicherweise defekt. Führen Sie einen Fälschungs- und Fehlertest durch.</value></data>
+  <data name="Error.VerifyFilesDiffer.Cause" xml:space="preserve"><value>Auf dem Medium weichen {0} Dateien vom Abbild ab, zuerst: {1}</value></data>
+  <data name="Error.VerifyFilesDiffer.Action" xml:space="preserve"><value>Schreiben Sie das Medium neu. Tritt der Fehler erneut auf, ist der Datenträger möglicherweise defekt.</value></data>
 
   <data name="Error.DownloadFailed.Cause" xml:space="preserve"><value>Der Download ist fehlgeschlagen: {0}</value></data>
   <data name="Error.DownloadFailed.Action" xml:space="preserve"><value>Prüfen Sie die Internetverbindung und versuchen Sie es erneut. Angefangene Downloads werden fortgesetzt.</value></data>
@@ -260,6 +264,8 @@
   <data name="Error.ImageLegacyFormat.Action" xml:space="preserve"><value>Konvertieren Sie das Image auf einem Mac in eine .dmg- oder .cdr-Datei.</value></data>
   <data name="Error.ImageAppleArchive.Cause" xml:space="preserve"><value>Das Image ist ein verschlüsseltes Apple-Archiv (.aea).</value></data>
   <data name="Error.ImageAppleArchive.Action" xml:space="preserve"><value>Das Archiv benötigt Schlüsseldienste von Apple. Entpacken Sie es auf einem Mac.</value></data>
+  <data name="Error.BlockMapInvalid.Cause" xml:space="preserve"><value>Die Block-Map-Datei (.bmap) ist ungültig: {0}</value></data>
+  <data name="Error.BlockMapInvalid.Action" xml:space="preserve"><value>Löschen Sie die .bmap-Datei neben dem Image oder laden Sie sie erneut herunter.</value></data>
 
   <data name="Apple.Hint.MacOnly" xml:space="preserve"><value>Das Abbild enthält nur Mac-Dateisysteme und lässt sich nur an einem Mac verwenden.</value></data>
   <data name="Apple.Hint.BootableMacVolume" xml:space="preserve"><value>Das Abbild enthält ein startfähiges Mac-Volume (Systemordner gesetzt).</value></data>
