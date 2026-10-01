@@ -13,3 +13,6 @@
 
 # signed distribution files must stay byte-identical on every platform
 tests/Bootrix.Core.Tests/Net/Fixtures/** -text
+
+# recorded vendor responses and catalogs are compared byte for byte
+tests/Bootrix.Core.Tests/Catalog/Microsoft/Fixtures/** -text
