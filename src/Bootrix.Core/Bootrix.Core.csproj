@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BouncyCastle.Cryptography" />
     <PackageReference Include="LTRData.DiscUtils.Core" />
     <PackageReference Include="LTRData.DiscUtils.Fat" />
     <PackageReference Include="LTRData.DiscUtils.Iso9660" />
@@ -24,6 +25,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Boot\revocations.json" LogicalName="Bootrix.Core.Boot.revocations.json" />
     <EmbeddedResource Include="Tiny\Profiles\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="Bootrix.Core.Tests" />
   </ItemGroup>
 
   <ItemGroup>

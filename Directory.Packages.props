@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageVersion Include="BouncyCastle.Cryptography" Version="2.7.0" />
     <PackageVersion Include="LTRData.DiscUtils.Core" Version="1.0.89" />
     <PackageVersion Include="LTRData.DiscUtils.Fat" Version="1.0.89" />
     <PackageVersion Include="LTRData.DiscUtils.Iso9660" Version="1.0.89" />

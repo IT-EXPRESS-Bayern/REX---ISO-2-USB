@@ -73,6 +73,10 @@
   <data name="Error.CatalogUnavailable.Action" xml:space="preserve"><value>Use the last saved catalog or enter the address manually.</value></data>
   <data name="Error.SignatureInvalid.Cause" xml:space="preserve"><value>The signature of the catalog data is invalid.</value></data>
   <data name="Error.SignatureInvalid.Action" xml:space="preserve"><value>The data was not applied. Check your connection or update Bootrix.</value></data>
+  <data name="Error.ChecksumFileInvalid.Cause" xml:space="preserve"><value>The checksum file has no unambiguous, valid entry for "{0}".</value></data>
+  <data name="Error.ChecksumFileInvalid.Action" xml:space="preserve"><value>The checksum cannot be verified. Download the file again or choose a different source.</value></data>
+  <data name="Error.MetalinkInvalid.Cause" xml:space="preserve"><value>The metalink file is invalid: {0}</value></data>
+  <data name="Error.MetalinkInvalid.Action" xml:space="preserve"><value>Bootrix uses the direct address instead. Try again later.</value></data>
   <data name="Error.ExternalToolFailed.Cause" xml:space="preserve"><value>The program "{0}" ended with exit code {1}.</value></data>
   <data name="Error.ExternalToolFailed.Action" xml:space="preserve"><value>See the log for details.</value></data>
   <data name="Error.ExternalToolUntrusted.Cause" xml:space="preserve"><value>The program "{0}" is not signed by Microsoft and will not be run.</value></data>

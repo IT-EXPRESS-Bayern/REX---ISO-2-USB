@@ -26,4 +26,9 @@
     <ProjectReference Include="..\..\src\Bootrix.Core\Bootrix.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <None Include="Net\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
 </Project>

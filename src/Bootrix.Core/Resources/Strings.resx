@@ -79,6 +79,10 @@
   <data name="Error.CatalogUnavailable.Action" xml:space="preserve"><value>Verwenden Sie den zuletzt gespeicherten Katalog oder geben Sie die Adresse manuell ein.</value></data>
   <data name="Error.SignatureInvalid.Cause" xml:space="preserve"><value>Die Signatur der Katalogdaten ist ungültig.</value></data>
   <data name="Error.SignatureInvalid.Action" xml:space="preserve"><value>Die Daten wurden nicht übernommen. Prüfen Sie Ihre Verbindung oder aktualisieren Sie Bootrix.</value></data>
+  <data name="Error.ChecksumFileInvalid.Cause" xml:space="preserve"><value>Die Prüfsummendatei enthält keinen eindeutigen, gültigen Eintrag für „{0}“.</value></data>
+  <data name="Error.ChecksumFileInvalid.Action" xml:space="preserve"><value>Die Prüfsumme kann nicht geprüft werden. Laden Sie die Datei neu oder wählen Sie eine andere Quelle.</value></data>
+  <data name="Error.MetalinkInvalid.Cause" xml:space="preserve"><value>Die Metalink-Datei ist ungültig: {0}</value></data>
+  <data name="Error.MetalinkInvalid.Action" xml:space="preserve"><value>Bootrix verwendet stattdessen die direkte Adresse. Versuchen Sie es später erneut.</value></data>
 
   <data name="Error.ExternalToolFailed.Cause" xml:space="preserve"><value>Das Programm „{0}“ hat mit Fehlercode {1} geendet.</value></data>
   <data name="Error.ExternalToolFailed.Action" xml:space="preserve"><value>Details finden Sie im Protokoll.</value></data>
