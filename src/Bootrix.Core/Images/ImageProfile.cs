@@ -21,6 +21,9 @@ public enum WindowsArch
     X86,
     X64,
     Arm64,
+
+    /// <summary>32-bit ARM (Windows RT, early Windows 10 on ARM).</summary>
+    Arm,
 }
 
 /// <summary>
