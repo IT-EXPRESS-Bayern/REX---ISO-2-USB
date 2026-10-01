@@ -261,7 +261,9 @@ internal sealed class FileServer : IAsyncDisposable
             sent += count;
             Interlocked.Add(ref _bytesSent, count);
 
-            if (fault.BytesPerSecond is { } rate)
+            // No pause after the last chunk: the client already has everything and may start the next request,
+            // which the server must not still count as part of this one.
+            if (fault.BytesPerSecond is { } rate && sent < length)
             {
                 try
                 {
