@@ -33,6 +33,11 @@
                         <ui:SymbolIcon Symbol="ArrowDownload24" />
                     </ui:NavigationViewItem.Icon>
                 </ui:NavigationViewItem>
+                <ui:NavigationViewItem Content="{loc:Loc Nav.Tiny}" TargetPageType="{x:Type views:TinyPage}">
+                    <ui:NavigationViewItem.Icon>
+                        <ui:SymbolIcon Symbol="Wrench24" />
+                    </ui:NavigationViewItem.Icon>
+                </ui:NavigationViewItem>
                 <ui:NavigationViewItem Content="{loc:Loc Nav.Workshop}" TargetPageType="{x:Type views:WorkshopPage}">
                     <ui:NavigationViewItem.Icon>
                         <ui:SymbolIcon Symbol="Desktop24" />

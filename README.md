@@ -33,11 +33,13 @@ Bootrix ist der Nachfolger von REX und komplett neu entwickelt (.NET 10, WPF, Wi
 | Tiny11 / Tiny11 Core / Tiny10 | umgesetzt (DISM-Pfad nur auf Windows prüfbar) |
 | CD/DVD/BD brennen, löschen, auslesen | umgesetzt (echte Brenner noch ungeprüft) |
 | Zielgeräte-Check, Kunden-PC-Erfassung | umgesetzt |
-| Windows-Setup-Medien (Dateien kopieren, Split-WIM, BIOS-/UEFI-Start) | in Arbeit |
+| Windows-Setup-Medien (Dateien kopieren, Split-WIM, BIOS-/UEFI-Start, Rücklesen) | umgesetzt (Startcode unter QEMU geprüft, echte Hardware offen) |
 | Antwortdatei, Treiber, Bypässe, Secure-Boot-Zertifikat 2023 | umgesetzt (Dateien und DISM-Pfad nur auf Windows prüfbar) |
 | Linux-ISO-Modus, Syslinux/GRUB, Persistenz | umgesetzt, unter QEMU (BIOS und UEFI) geprüft |
 | FreeDOS, MS-DOS, Disketten, Laufwerk formatieren | umgesetzt, FreeDOS unter QEMU geprüft |
 | Laufwerk wiederherstellen, Medium prüfen, komprimierte Images, bmap, Persistenz bei DD | umgesetzt |
+| Oberfläche: Schreiben, Downloads, Tiny-Builder, Werkstatt (Zielgeräte-Check) | umgesetzt |
+| Oberfläche: Disc, Werkzeuge (Laufwerk wiederherstellen, Medium prüfen) | folgt |
 | Backup/Restore von Datenträgern, sichere Löschung, Windows To Go, Multiboot | geplant |
 
 ## Kommandozeile
@@ -85,6 +87,7 @@ assets/third-party/   eingebundene Drittkomponenten mit Herkunft und Lizenz
 ## Sicherheit und Datenschutz
 
 - Die Oberfläche, der Downloader und alle Datei-Parser laufen ohne Administratorrechte.
+- Der Administrator-Prozess arbeitet nur in `C:\ProgramData\Bootrix`, einem Ordner, den allein Administratoren und SYSTEM ändern dürfen; gehört er jemand anderem, startet der Prozess nicht. Dateien des Benutzers (Quell-ISO, fertige ISO) liest und schreibt er im Namen des Benutzers.
 - Der Broker prüft jede Anfrage und öffnet Abbilder mit den Rechten des Benutzers, nicht mit seinen eigenen.
 - Heruntergeladene Daten werden gegen Prüfsummen und, wo der Hersteller sie anbietet, gegen Signaturen geprüft. Katalogaktualisierungen sind nur mit einem eingebauten Schlüssel zulässig.
 - Passwörter und Schlüssel aus Aufträgen landen in keinem Protokoll.

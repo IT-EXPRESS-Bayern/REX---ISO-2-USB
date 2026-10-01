@@ -1,0 +1,130 @@
+<Page x:Class="Bootrix.App.Views.TinyPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      Title="{loc:Loc Tiny.Title}"
+      AllowDrop="True"
+      DragOver="OnDragOver"
+      Drop="OnDrop">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,16,32,32" MaxWidth="900" HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc Tiny.Title}" FontTypography="Title" Margin="0,0,0,8" />
+            <ui:TextBlock Text="{loc:Loc Tiny.Intro}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,20" />
+
+            <!-- Source -->
+            <ui:TextBlock Text="{loc:Loc Tiny.Source}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <Border Padding="16" CornerRadius="6" Margin="0,0,0,8"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <ui:TextBlock Text="{Binding SourcePath}" TextTrimming="CharacterEllipsis" />
+                        <ui:TextBlock Text="{loc:Loc Tiny.SourceNone}" Appearance="Secondary"
+                                      Visibility="{Binding HasSource, Converter={StaticResource InverseBoolToVisibility}}" />
+                    </StackPanel>
+                    <ui:Button Grid.Column="1" Content="{loc:Loc Tiny.SourcePick}" Icon="{ui:SymbolIcon FolderOpen24}"
+                               Command="{Binding PickSourceCommand}" Margin="16,0,0,0" />
+                </Grid>
+            </Border>
+            <ui:TextBlock Text="{Binding SourceMessage}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,8" />
+
+            <ui:TextBlock Text="{loc:Loc Tiny.Edition}" FontTypography="BodyStrong" Margin="0,8,0,4" />
+            <ComboBox MinWidth="360" HorizontalAlignment="Left" Margin="0,0,0,24"
+                      ItemsSource="{Binding Editions}" DisplayMemberPath="Label" SelectedItem="{Binding SelectedEdition}" />
+
+            <!-- Variant -->
+            <ui:TextBlock Text="{loc:Loc Tiny.Profile}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <ComboBox MinWidth="360" HorizontalAlignment="Left" Margin="0,0,0,4"
+                      ItemsSource="{Binding Profiles}" DisplayMemberPath="Name" SelectedItem="{Binding SelectedProfile}" />
+            <ui:TextBlock Text="{Binding SelectedProfile.Description}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,12" />
+            <CheckBox Content="{loc:Loc Tiny.NoServicing}" IsChecked="{Binding AcknowledgeNoServicing}" Margin="0,0,0,16"
+                      Visibility="{Binding NeedsAcknowledgement, Converter={StaticResource BoolToVisibility}}" />
+
+            <!-- Options -->
+            <ui:TextBlock Text="{loc:Loc Tiny.Options}" FontTypography="Subtitle" Margin="0,8,0,4" />
+            <ui:TextBlock Text="{loc:Loc Tiny.Options.Hint}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <ItemsControl ItemsSource="{Binding Groups}" Margin="0,0,0,16">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Margin="0,0,0,6">
+                            <CheckBox Content="{Binding Title}" IsChecked="{Binding Applied}" />
+                            <ui:TextBlock Text="{Binding Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="28,0,0,0" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <StackPanel Margin="0,0,0,16" Visibility="{Binding OffersHardwareBypass, Converter={StaticResource BoolToVisibility}}">
+                <CheckBox Content="{loc:Loc Tiny.Bypass}" IsChecked="{Binding SkipHardwareChecks}" />
+                <ui:TextBlock Text="{loc:Loc Tiny.Bypass.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="28,0,0,0" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,16">
+                <CheckBox Content="{loc:Loc Tiny.Fat32}" IsChecked="{Binding ForFat32}" />
+                <ui:TextBlock Text="{loc:Loc Tiny.Fat32.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="28,0,0,0" />
+            </StackPanel>
+
+            <ui:TextBlock Text="{loc:Loc Tiny.Account}" FontTypography="BodyStrong" Margin="0,0,0,4" />
+            <ui:TextBox Text="{Binding LocalAccount, UpdateSourceTrigger=PropertyChanged}" MaxLength="20" MaxWidth="320" HorizontalAlignment="Left" Margin="0,0,0,4" />
+            <ui:TextBlock Text="{loc:Loc Tiny.Account.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="0,0,0,16" />
+
+            <ui:TextBlock Text="{loc:Loc Tiny.Label}" FontTypography="BodyStrong" Margin="0,0,0,4" />
+            <ui:TextBox Text="{Binding VolumeLabel, UpdateSourceTrigger=PropertyChanged}" MaxLength="32" MaxWidth="320" HorizontalAlignment="Left" Margin="0,0,0,24" />
+
+            <!-- Output -->
+            <ui:TextBlock Text="{loc:Loc Tiny.Output}" FontTypography="Subtitle" Margin="0,0,0,8" />
+            <Border Padding="16" CornerRadius="6" Margin="0,0,0,16"
+                    Background="{DynamicResource ControlFillColorDefaultBrush}"
+                    BorderBrush="{DynamicResource ControlStrokeColorDefaultBrush}" BorderThickness="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel VerticalAlignment="Center">
+                        <ui:TextBlock Text="{Binding OutputPath}" TextTrimming="CharacterEllipsis" />
+                        <ui:TextBlock Text="{loc:Loc Tiny.OutputNone}" Appearance="Secondary"
+                                      Visibility="{Binding HasOutput, Converter={StaticResource InverseBoolToVisibility}}" />
+                    </StackPanel>
+                    <ui:Button Grid.Column="1" Content="{loc:Loc Tiny.OutputPick}" Icon="{ui:SymbolIcon Save24}"
+                               Command="{Binding PickOutputCommand}" Margin="16,0,0,0" />
+                </Grid>
+            </Border>
+
+            <ui:TextBlock Text="{loc:Loc Tiny.Space}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,16" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                <ui:Button Content="{loc:Loc Tiny.Build}" Icon="{ui:SymbolIcon Play24}" Appearance="Primary"
+                           Command="{Binding BuildCommand}" MinWidth="140" />
+                <ui:Button Content="{Binding CancelText}" Icon="{ui:SymbolIcon Stop24}" Margin="8,0,0,0"
+                           Command="{Binding CancelCommand}"
+                           Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+
+            <StackPanel Margin="0,0,0,16" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <ui:TextBlock Text="{Binding ProgressTitle}" />
+                    <ui:TextBlock Grid.Column="1" Appearance="Secondary">
+                        <Run Text="{Binding SpeedText, Mode=OneWay}" />
+                        <Run Text="  " />
+                        <Run Text="{Binding RemainingText, Mode=OneWay}" />
+                    </ui:TextBlock>
+                </Grid>
+                <ProgressBar Minimum="0" Maximum="100" Value="{Binding Percent, Mode=OneWay}" Height="6" Margin="0,8,0,0" />
+            </StackPanel>
+
+            <ui:InfoBar IsOpen="{Binding HasResult, Mode=OneWay}" IsClosable="False"
+                        Title="{Binding ResultTitle}" Message="{Binding ResultMessage}"
+                        Severity="{Binding ResultSeverity}" />
+        </StackPanel>
+    </ScrollViewer>
+</Page>

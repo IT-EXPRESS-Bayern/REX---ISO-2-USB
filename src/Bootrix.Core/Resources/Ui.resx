@@ -262,4 +262,89 @@
   <data name="Pc.Status.NotChecked" xml:space="preserve"><value>nicht geprüft</value></data>
   <data name="Step.Tiny.FetchSource" xml:space="preserve"><value>Quell-ISO in den Arbeitsbereich kopieren</value></data>
   <data name="Step.Tiny.DeliverImage" xml:space="preserve"><value>Fertige ISO am Zielort ablegen</value></data>
+  <data name="Nav.Tiny" xml:space="preserve"><value>Tiny-Builder</value></data>
+  <data name="Tiny.Title" xml:space="preserve"><value>Tiny-Builder</value></data>
+  <data name="Tiny.Intro" xml:space="preserve"><value>Baut aus einer Original-Windows-ISO ein schlankes Installationsmedium. Die Original-ISO bleibt unverändert; das Ergebnis ist eine neue ISO-Datei, die Sie danach auf der Schreiben-Seite auf einen Stick schreiben.</value></data>
+  <data name="Tiny.Source" xml:space="preserve"><value>Original-ISO</value></data>
+  <data name="Tiny.SourcePick" xml:space="preserve"><value>ISO wählen …</value></data>
+  <data name="Tiny.SourceNone" xml:space="preserve"><value>Noch keine ISO gewählt.</value></data>
+  <data name="Tiny.SourceFilter" xml:space="preserve"><value>Windows-ISO|*.iso|Alle Dateien|*.*</value></data>
+  <data name="Tiny.NoWindows" xml:space="preserve"><value>Diese Datei enthält kein Windows-Installationsabbild.</value></data>
+  <data name="Tiny.Profile" xml:space="preserve"><value>Variante</value></data>
+  <data name="Tiny.Edition" xml:space="preserve"><value>Edition</value></data>
+  <data name="Tiny.Options" xml:space="preserve"><value>Was angepasst wird</value></data>
+  <data name="Tiny.Options.Hint" xml:space="preserve"><value>Ein Haken bedeutet: wird entfernt oder abgeschaltet.</value></data>
+  <data name="Tiny.Output" xml:space="preserve"><value>Zieldatei</value></data>
+  <data name="Tiny.OutputPick" xml:space="preserve"><value>Speichern unter …</value></data>
+  <data name="Tiny.OutputFilter" xml:space="preserve"><value>ISO-Abbild|*.iso</value></data>
+  <data name="Tiny.OutputNone" xml:space="preserve"><value>Noch keine Zieldatei gewählt.</value></data>
+  <data name="Tiny.Label" xml:space="preserve"><value>Datenträgername der ISO</value></data>
+  <data name="Tiny.Bypass" xml:space="preserve"><value>Hardware-Prüfung von Windows 11 überspringen</value></data>
+  <data name="Tiny.Bypass.Hint" xml:space="preserve"><value>TPM 2.0, Secure Boot, Arbeitsspeicher und Prozessor werden bei der Installation nicht geprüft. Microsoft unterstützt solche Installationen nicht.</value></data>
+  <data name="Tiny.Fat32" xml:space="preserve"><value>Für FAT32-Sticks vorbereiten</value></data>
+  <data name="Tiny.Fat32.Hint" xml:space="preserve"><value>Komprimiert so, dass sich das Installationsabbild später teilen lässt. Die ISO wird größer.</value></data>
+  <data name="Tiny.Account" xml:space="preserve"><value>Lokales Konto anlegen</value></data>
+  <data name="Tiny.Account.Hint" xml:space="preserve"><value>Name eines Kontos, das bei der Installation ohne Microsoft-Konto angelegt wird. Leer lassen für die normale Einrichtung.</value></data>
+  <data name="Tiny.NoServicing" xml:space="preserve"><value>Ich verstehe, dass sich dieses Image danach nicht mehr aktualisieren lässt.</value></data>
+  <data name="Tiny.Space" xml:space="preserve"><value>Der Bau braucht auf dem Systemlaufwerk etwa das Dreifache der Größe des Installationsabbilds an freiem Speicher und dauert je nach Rechner 15 bis 45 Minuten.</value></data>
+  <data name="Tiny.Build" xml:space="preserve"><value>ISO bauen</value></data>
+  <data name="Tiny.Done" xml:space="preserve"><value>Fertig nach {0}: {1}</value></data>
+  <data name="Tiny.Profile.tiny11" xml:space="preserve"><value>Tiny11 (Windows 11)</value></data>
+  <data name="Tiny.Profile.tiny11.Desc" xml:space="preserve"><value>Entfernt vorinstallierte Apps, Edge, OneDrive und Telemetrie. Windows Update und Defender bleiben, das Image bleibt wartbar.</value></data>
+  <data name="Tiny.Profile.tiny11core" xml:space="preserve"><value>Tiny11 Core (Windows 11)</value></data>
+  <data name="Tiny.Profile.tiny11core.Desc" xml:space="preserve"><value>Zusätzlich ohne Komponentenspeicher, Wiederherstellungsumgebung, Defender und Sprachfunktionen. Das Image lässt sich danach nicht mehr aktualisieren, Features und Sprachen lassen sich nicht nachinstallieren.</value></data>
+  <data name="Tiny.Profile.tiny10" xml:space="preserve"><value>Tiny10 (Windows 10)</value></data>
+  <data name="Tiny.Profile.tiny10.Desc" xml:space="preserve"><value>Windows 10 22H2 ohne vorinstallierte Apps, OneDrive und Telemetrie. Das Image bleibt wartbar, Edge bleibt standardmäßig installiert.</value></data>
+  <data name="Tiny.Group.consumer" xml:space="preserve"><value>Vorinstallierte Apps</value></data>
+  <data name="Tiny.Group.consumer.Hint" xml:space="preserve"><value>Clipchamp, Wetter, Nachrichten, Karten, Solitaire, Tipps und weitere Store-Apps.</value></data>
+  <data name="Tiny.Group.xbox" xml:space="preserve"><value>Xbox und Spiele</value></data>
+  <data name="Tiny.Group.xbox.Hint" xml:space="preserve"><value>Xbox-Apps, Spieleleiste und Gaming-Dienste.</value></data>
+  <data name="Tiny.Group.office" xml:space="preserve"><value>Office-Verknüpfungen</value></data>
+  <data name="Tiny.Group.office.Hint" xml:space="preserve"><value>Office-Hub, OneNote und Haftnotizen.</value></data>
+  <data name="Tiny.Group.copilot" xml:space="preserve"><value>Copilot</value></data>
+  <data name="Tiny.Group.copilot.Hint" xml:space="preserve"><value>Copilot-App und KI-Funktionen in der Taskleiste.</value></data>
+  <data name="Tiny.Group.teams" xml:space="preserve"><value>Microsoft Teams</value></data>
+  <data name="Tiny.Group.teams.Hint" xml:space="preserve"><value>Teams (privat) und das Chat-Symbol in der Taskleiste.</value></data>
+  <data name="Tiny.Group.outlook" xml:space="preserve"><value>Outlook und Mail</value></data>
+  <data name="Tiny.Group.outlook.Hint" xml:space="preserve"><value>Neues Outlook sowie Mail und Kalender.</value></data>
+  <data name="Tiny.Group.phone" xml:space="preserve"><value>Smartphone-Link</value></data>
+  <data name="Tiny.Group.phone.Hint" xml:space="preserve"><value>Verbindung zum Smartphone und geräteübergreifende Dienste.</value></data>
+  <data name="Tiny.Group.media" xml:space="preserve"><value>Musik- und Video-App</value></data>
+  <data name="Tiny.Group.media.Hint" xml:space="preserve"><value>Die Medien-Apps von Microsoft (Groove, Filme und TV).</value></data>
+  <data name="Tiny.Group.oem" xml:space="preserve"><value>Hersteller-Apps</value></data>
+  <data name="Tiny.Group.oem.Hint" xml:space="preserve"><value>Dolby- und Intel-Zusatzprogramme, die Windows mitliefert.</value></data>
+  <data name="Tiny.Group.tools" xml:space="preserve"><value>Kleine Werkzeuge</value></data>
+  <data name="Tiny.Group.tools.Hint" xml:space="preserve"><value>Paint, Kamera, Sprachrekorder und Schnellhilfe. Ist standardmäßig aus.</value></data>
+  <data name="Tiny.Group.edge" xml:space="preserve"><value>Microsoft Edge</value></data>
+  <data name="Tiny.Group.edge.Hint" xml:space="preserve"><value>Entfernt Edge samt Update-Dienst. Programme, die WebView2 brauchen, laufen dann nicht.</value></data>
+  <data name="Tiny.Group.onedrive" xml:space="preserve"><value>OneDrive</value></data>
+  <data name="Tiny.Group.onedrive.Hint" xml:space="preserve"><value>Entfernt die OneDrive-Einrichtung und schaltet die Synchronisierung ab.</value></data>
+  <data name="Tiny.Group.telemetry" xml:space="preserve"><value>Telemetrie</value></data>
+  <data name="Tiny.Group.telemetry.Hint" xml:space="preserve"><value>Schaltet Diagnosedaten, geplante Telemetrie-Aufgaben und Rückfragen ab.</value></data>
+  <data name="Tiny.Group.sponsored" xml:space="preserve"><value>Vorgeschlagene Apps</value></data>
+  <data name="Tiny.Group.sponsored.Hint" xml:space="preserve"><value>Verhindert, dass Windows Werbe-Apps und Vorschläge nachlädt.</value></data>
+  <data name="Tiny.Group.bitlocker" xml:space="preserve"><value>Automatische Geräteverschlüsselung</value></data>
+  <data name="Tiny.Group.bitlocker.Hint" xml:space="preserve"><value>Verhindert die automatische BitLocker-Verschlüsselung bei der Einrichtung.</value></data>
+  <data name="Tiny.Group.oobe" xml:space="preserve"><value>Einrichtung ohne Microsoft-Konto</value></data>
+  <data name="Tiny.Group.oobe.Hint" xml:space="preserve"><value>Erlaubt die Ersteinrichtung mit einem lokalen Konto.</value></data>
+  <data name="Tiny.Group.reserved-storage" xml:space="preserve"><value>Reservierter Speicher</value></data>
+  <data name="Tiny.Group.reserved-storage.Hint" xml:space="preserve"><value>Gibt die für Updates reservierten rund 7 GB wieder frei.</value></data>
+  <data name="Tiny.Group.legacy-components" xml:space="preserve"><value>Alte Komponenten</value></data>
+  <data name="Tiny.Group.legacy-components.Hint" xml:space="preserve"><value>Internet Explorer, Media Player und weitere optionale Komponenten.</value></data>
+  <data name="Tiny.Group.language-features" xml:space="preserve"><value>Sprachfunktionen</value></data>
+  <data name="Tiny.Group.language-features.Hint" xml:space="preserve"><value>Handschrift, Texterkennung, Spracherkennung und Sprachausgabe.</value></data>
+  <data name="Tiny.Group.defender" xml:space="preserve"><value>Microsoft Defender</value></data>
+  <data name="Tiny.Group.defender.Hint" xml:space="preserve"><value>Entfernt den Virenschutz; der Rechner ist ungeschützt, bis ein anderes Programm installiert wird.</value></data>
+  <data name="Tiny.Group.windows-update" xml:space="preserve"><value>Windows Update</value></data>
+  <data name="Tiny.Group.windows-update.Hint" xml:space="preserve"><value>Schaltet Windows Update nach der Einrichtung ab.</value></data>
+  <data name="Tiny.Group.winsxs" xml:space="preserve"><value>Komponentenspeicher (WinSxS)</value></data>
+  <data name="Tiny.Group.winsxs.Hint" xml:space="preserve"><value>Verkleinert den Komponentenspeicher drastisch; danach gibt es keine Updates und keine nachträglichen Features.</value></data>
+  <data name="Tiny.Group.winre" xml:space="preserve"><value>Wiederherstellungsumgebung</value></data>
+  <data name="Tiny.Group.winre.Hint" xml:space="preserve"><value>Leert winre.wim und spart rund 500 MB; danach gibt es keine Windows-Wiederherstellung.</value></data>
+  <data name="Tiny.Group.search" xml:space="preserve"><value>Websuche im Startmenü</value></data>
+  <data name="Tiny.Group.search.Hint" xml:space="preserve"><value>Schaltet die Bing-Websuche und Cortana ab.</value></data>
+  <data name="Tiny.Group.news-and-interests" xml:space="preserve"><value>Nachrichten und Interessen</value></data>
+  <data name="Tiny.Group.news-and-interests.Hint" xml:space="preserve"><value>Schaltet das Widget in der Taskleiste und „Jetzt besprechen“ ab.</value></data>
+  <data name="Tiny.Group.game-bar" xml:space="preserve"><value>Game Bar und Spielaufnahme</value></data>
+  <data name="Tiny.Group.game-bar.Hint" xml:space="preserve"><value>Schaltet Game Bar und Game DVR ab.</value></data>
 </root>

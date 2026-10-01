@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Security.Principal;
 using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Hosting;
 using Bootrix.Windows.Interop;
 using Bootrix.Windows.Platform;
 using Microsoft.Extensions.Logging;
@@ -97,7 +98,7 @@ public sealed class BrokerLauncher
                 return pipe;
             }
 
-            throw new BootrixException(ErrorCode.BrokerStartFailed, "the broker exited before it connected") { Arguments = ["the process ended"] };
+            throw ExitedEarly(process);
         }
         catch (OperationCanceledException) when (!cancellationToken.IsCancellationRequested)
         {
@@ -114,6 +115,24 @@ public sealed class BrokerLauncher
             await giveUp.CancelAsync().ConfigureAwait(false);
             await Task.WhenAll(connect, exited).ConfigureAwait(ConfigureAwaitOptions.SuppressThrowing);
         }
+    }
+
+    private static BootrixException ExitedEarly(Process? process)
+    {
+        int? exitCode = null;
+        try
+        {
+            exitCode = process?.ExitCode;
+        }
+        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
+        {
+            // The handle of an elevated process may not tell.
+        }
+
+        // The one reason the user can do something about: the data folder of the broker belongs to the wrong account.
+        return exitCode == BrokerExitCodes.WorkspaceUntrusted
+            ? new BootrixException(ErrorCode.WorkspaceUntrusted, "the work folder of the broker cannot be trusted") { Arguments = [BootrixPaths.ForInstalled().DataDirectory] }
+            : new BootrixException(ErrorCode.BrokerStartFailed, "the broker exited before it connected") { Arguments = ["the process ended"] };
     }
 
     /// <summary>

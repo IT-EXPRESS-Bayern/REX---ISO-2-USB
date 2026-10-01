@@ -26,6 +26,43 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public string? PickIso(string? startDirectory)
+    {
+        var dialog = new OpenFileDialog
+        {
+            Title = localizer.Get("Tiny.Source"),
+            Filter = localizer.Get("Tiny.SourceFilter"),
+            CheckFileExists = true,
+        };
+
+        if (!string.IsNullOrEmpty(startDirectory) && Directory.Exists(startDirectory))
+        {
+            dialog.InitialDirectory = startDirectory;
+        }
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
+    public string? PickSaveIso(string? startDirectory, string suggestedName)
+    {
+        var dialog = new SaveFileDialog
+        {
+            Title = localizer.Get("Tiny.Output"),
+            Filter = localizer.Get("Tiny.OutputFilter"),
+            FileName = suggestedName,
+            DefaultExt = ".iso",
+            AddExtension = true,
+            OverwritePrompt = true,
+        };
+
+        if (!string.IsNullOrEmpty(startDirectory) && Directory.Exists(startDirectory))
+        {
+            dialog.InitialDirectory = startDirectory;
+        }
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
     public async Task<bool> ConfirmAsync(string title, string message, string confirmText)
     {
         var dialog = new ContentDialog

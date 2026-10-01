@@ -70,3 +70,14 @@ Diese Pfade lassen sich in der CI nicht prüfen und müssen vor einem Release vo
 - [ ] UEFI:NTFS an einem USB-SATA-Adapter mit 4096-Byte-Sektoren: die neu gepackte Hilfspartition (FAT mit 4096-Byte-Sektoren) wird von der Firmware gelesen, NTFS-Treiber lädt, Setup startet (Secure Boot an, Zertifikate 2011)
 - [ ] Zwei Sticks in einem Auftrag (nacheinander beschrieben): beide booten, der Fortschritt verteilt sich gleichmäßig
 - [ ] Referenz-VHD: Während „Installationsabbild öffnen“ erscheint kurz ein Datenträger ohne Laufwerksbuchstaben, danach (auch nach Abbruch) ist er verschwunden und die Datei im Arbeitsordner gelöscht; kein „Datenträger formatieren“-Dialog
+
+## Administrator-Prozess: Arbeitsordner und Tiny-Builder in der Oberfläche
+
+- [ ] Erster Start des Brokers auf einem frisch installierten Windows: `C:\ProgramData\Bootrix` wird angelegt; `icacls` zeigt nur SYSTEM und Administratoren (Vollzugriff), keine Vererbung von ProgramData, Besitzer „Administratoren“
+- [ ] Der Ordner `C:\ProgramData\Bootrix` wird vorher von einem normalen Benutzer angelegt (Besitzer = Benutzer): der Broker startet nicht, Exit-Code 5, und die Oberfläche meldet BX8105 mit dem Ordnerpfad statt in dem Ordner zu arbeiten. Danach wird derselbe Ordner einem Administrator-Konto zugewiesen und der Start gelingt
+- [ ] Standardbenutzer mit Administrator-Anmeldung über die UAC-Abfrage (anderes Konto): Tiny-Build aus der Oberfläche mit einer ISO und einem Zielordner im Profil des Standardbenutzers; die ISO wird gelesen, das Ergebnis liegt danach im Zielordner mit dem Standardbenutzer als Besitzer
+- [ ] Zieldatei in einem Ordner, in den der Standardbenutzer nicht schreiben darf (zum Beispiel `C:\Windows`): der Tiny-Build endet erst nach dem Bauen mit der Meldung, dass die Datei nicht abgelegt werden konnte (BX6202), es bleibt keine Datei `.bootrix-part` zurück
+- [ ] Quell-ISO, die der Standardbenutzer nicht lesen darf: der Tiny-Build bricht sofort mit BX3001 ab, der Broker liest sie nicht mit eigenen Rechten
+- [ ] Tiny11, Tiny11 Core und Tiny10 jeweils mit einer echten ISO bauen (Windows 11 24H2/25H2, Windows 10 22H2): Dauer, Platzbedarf im Arbeitsbereich (etwa das Dreifache des Installationsabbilds), Abbruch während „Apps entfernen“ und danach sauberes Aufräumen (`dism /get-mountedwiminfo` leer, keine Ordner unter `C:\ProgramData\Bootrix\work`)
+- [ ] Die gebaute ISO in einer virtuellen Maschine (UEFI und BIOS) installieren; mit gesetztem „Hardware-Prüfung überspringen“ auch in einer VM ohne TPM
+- [ ] Beim ersten Start des Tiny-Builders wird oscdimg aus dem Windows ADK oder von Microsoft geladen; der Hash wird geprüft und die Datei liegt unter `C:\ProgramData\Bootrix\tools`, das für Standardbenutzer nur lesbar ist
