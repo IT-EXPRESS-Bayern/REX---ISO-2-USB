@@ -5,14 +5,14 @@
 #
 # Usage: tools/update-revocations.sh [secureboot_objects-tag] [shim-ref]
 # Without arguments the newest v* release tag of secureboot_objects and the shim default branch are used.
-# Needs bash, curl, git, jq, openssl and sha256sum.
+# Needs bash, curl, git, jq, openssl and sha256sum (GNU coreutils; on macOS use coreutils or shasum -a 256).
 set -euo pipefail
 
 SBO_REPO=microsoft/secureboot_objects
 SHIM_REPO=rhboot/shim
 OUT="$(cd "$(dirname "$0")/.." && pwd)/src/Bootrix.Core/Boot/revocations.json"
 
-for tool in curl git jq openssl sha256sum base64; do
+for tool in curl git jq openssl sha256sum; do
   command -v "$tool" >/dev/null || { echo "missing tool: $tool" >&2; exit 1; }
 done
 
@@ -64,7 +64,7 @@ for name in "${cert_files[@]}"; do
     --arg name "$(openssl x509 -inform DER -in "$work/cert.der" -noout -subject -nameopt multiline | sed -n 's/^ *commonName *= *//p')" \
     --arg sha1 "$(openssl x509 -inform DER -in "$work/cert.der" -noout -fingerprint -sha1 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')" \
     --arg sha256 "$(openssl x509 -inform DER -in "$work/cert.der" -noout -fingerprint -sha256 | cut -d= -f2 | tr -d ':' | tr 'A-F' 'a-f')" \
-    --arg der "$(base64 -w0 < "$work/cert.der")" \
+    --arg der "$(openssl base64 -A -in "$work/cert.der")" \
     '{name: $name, sha1: $sha1, sha256: $sha256, der: $der}' >> "$work/certs.ndjson"
 done
 
