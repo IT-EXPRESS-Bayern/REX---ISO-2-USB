@@ -3,6 +3,9 @@ name: Release
 on:
   push:
     tags: ['v*']
+    # Änderungen am Workflow selbst laufen als Probelauf ohne Veröffentlichung.
+    branches: [main]
+    paths: ['.github/workflows/release.yml']
   workflow_dispatch:
 
 permissions:
