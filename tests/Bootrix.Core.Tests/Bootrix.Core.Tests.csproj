@@ -21,6 +21,7 @@
     <Content Include="Boot\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
     <Content Include="Writing\Linux\Fixtures\*.bin" CopyToOutputDirectory="PreserveNewest" />
     <EmbeddedResource Include="Images\Udif\Fixtures\*.bin" />
+    <Content Include="Writing\Windows\BootCode\*.asm" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
