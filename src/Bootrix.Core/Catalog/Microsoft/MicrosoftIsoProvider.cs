@@ -157,7 +157,7 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
             {
                 foreach (var architecture in offer.Page.Architectures)
                 {
-                    properties.TryAdd(Route.Key(architecture), Route.Encode(offer.Page, offer.Edition.Id));
+                    properties.TryAdd(Route.Key(architecture), Route.Encode(offer.Page, offer.Edition.Id, offer.Sku.Language));
                 }
             }
 
@@ -315,13 +315,14 @@ public sealed class MicrosoftIsoProvider : ICatalogProvider
     {
         public static string Key(string architecture) => $"route.{architecture}";
 
-        public static string Encode(MicrosoftPage page, int editionId) => $"{page.Path}|{editionId.ToString(CultureInfo.InvariantCulture)}";
+        // The language travels with the route because the pages of one variant may spell it differently.
+        public static string Encode(MicrosoftPage page, int editionId, string language) =>
+            $"{page.Path}|{editionId.ToString(CultureInfo.InvariantCulture)}|{language}";
 
         public static Route From(CatalogVariant variant, string architecture)
         {
             if (!variant.Properties.TryGetValue(Key(architecture), out var route)
-                || !variant.Properties.TryGetValue("language", out var language)
-                || route.Split('|') is not [var path, var edition]
+                || route.Split('|', 3) is not [var path, var edition, var language]
                 || MicrosoftProducts.FindPage(path) is not { } page
                 || !int.TryParse(edition, NumberStyles.None, CultureInfo.InvariantCulture, out var editionId))
             {

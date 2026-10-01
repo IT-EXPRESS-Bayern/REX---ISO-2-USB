@@ -81,7 +81,18 @@ internal sealed class LzxFrameWriter
 
     public byte[] ToArray() => [.. _bytes];
 
-    private void Bits(uint value, int count)
+    /// <summary>Ends a frame that is made of coded symbols: pads to the next word boundary, never adds a whole word.</summary>
+    public LzxFrameWriter PadToWord()
+    {
+        while (_bitCount != 0)
+        {
+            Bits(0, 1);
+        }
+
+        return this;
+    }
+
+    public void Bits(uint value, int count)
     {
         for (var i = count - 1; i >= 0; i--)
         {

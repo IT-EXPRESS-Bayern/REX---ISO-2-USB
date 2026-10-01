@@ -265,7 +265,7 @@ public class MicrosoftIsoProviderResolveTests
             Provider = variant.Provider,
             Name = "Klingon",
             Architectures = ["x64"],
-            Properties = new Dictionary<string, string> { ["route.x64"] = "windows11|3813", ["language"] = "Klingon" },
+            Properties = new Dictionary<string, string> { ["route.x64"] = "windows11|3813|Klingon", ["language"] = "Klingon" },
         };
 
         var error = await Assert.ThrowsAsync<BootrixException>(() => provider.ResolveAsync(stale, "x64", CancellationToken.None));
