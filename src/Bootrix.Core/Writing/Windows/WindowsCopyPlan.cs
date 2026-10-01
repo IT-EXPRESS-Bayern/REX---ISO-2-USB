@@ -39,6 +39,26 @@ public sealed class WindowsCopyPlan
 
     public bool HasSplit => Items.Any(item => item.Action == CopyAction.SplitInstallImage);
 
+    /// <summary>
+    /// Space the medium takes on a FAT volume with this cluster size: every file in whole clusters, a cluster per
+    /// directory. A split install image counts a little more than the image, as every part has its own tables.
+    /// </summary>
+    public long BytesOnFat(int clusterBytes)
+    {
+        ArgumentOutOfRangeException.ThrowIfLessThan(clusterBytes, 512);
+        long Rounded(long bytes) => (bytes + clusterBytes - 1) / clusterBytes * clusterBytes;
+
+        long total = Directories.Count * (long)clusterBytes;
+        foreach (var item in Items)
+        {
+            total += item.Action == CopyAction.SplitInstallImage
+                ? Rounded(item.Bytes + item.Bytes / 100 + (4L << 20))
+                : Rounded(item.Bytes);
+        }
+
+        return total;
+    }
+
     public static WindowsCopyPlan Create(IWindowsMediaSource source, WindowsCopyOptions options) =>
         Create(source.Files, source.Directories, options);
 
