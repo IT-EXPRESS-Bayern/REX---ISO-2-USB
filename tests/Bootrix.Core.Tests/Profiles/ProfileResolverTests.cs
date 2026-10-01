@@ -115,6 +115,20 @@ public class ProfileResolverTests
     }
 
     [Fact]
+    public void MissingSectionsFallBackToDefaults()
+    {
+        var spec = JobSpecJson.Parse("""{"name":"minimal"}""");
+
+        Assert.NotNull(spec.Target);
+        Assert.NotNull(spec.Windows);
+        Assert.NotNull(spec.Verify);
+        Assert.NotNull(spec.Report);
+        Assert.NotNull(spec.Windows.DriverFolders);
+        Assert.True(spec.Verify.ReadBack);
+        Assert.True(spec.Target.QuickFormat);
+    }
+
+    [Fact]
     public void InvalidEnumValueIsReportedAsInvalidSpec()
     {
         var ex = Assert.Throws<BootrixException>(() => JobSpecJson.Parse("""{"kind":"Nonsense"}"""));

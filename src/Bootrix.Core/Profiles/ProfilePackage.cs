@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text.Json;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Json;
 
 namespace Bootrix.Core.Profiles;
 
@@ -27,7 +28,7 @@ public static class ProfilePackage
         using var zip = new ZipArchive(output, ZipArchiveMode.Create, leaveOpen: true);
         var files = new List<PackageFile>();
 
-        var profileBytes = JsonSerializer.SerializeToUtf8Bytes(profile, SpecJsonContext.Default.ProfileFile);
+        var profileBytes = JsonSerializer.SerializeToUtf8Bytes(profile, CoreJson.Options);
         AddEntry(zip, ProfileEntry, profileBytes, files);
 
         foreach (var (name, content) in assets ?? new Dictionary<string, byte[]>())
@@ -37,7 +38,7 @@ public static class ProfilePackage
         }
 
         var manifest = new PackageManifest(1, files);
-        var manifestBytes = JsonSerializer.SerializeToUtf8Bytes(manifest, SpecJsonContext.Default.PackageManifest);
+        var manifestBytes = JsonSerializer.SerializeToUtf8Bytes(manifest, CoreJson.Options);
         var manifestEntry = zip.CreateEntry(ManifestEntry, CompressionLevel.Optimal);
         using var manifestStream = manifestEntry.Open();
         manifestStream.Write(manifestBytes);
@@ -48,7 +49,7 @@ public static class ProfilePackage
         using var zip = new ZipArchive(input, ZipArchiveMode.Read, leaveOpen: true);
 
         var manifestEntry = zip.GetEntry(ManifestEntry) ?? throw Corrupt("manifest.json is missing");
-        var manifest = JsonSerializer.Deserialize(ReadEntry(manifestEntry, 1024 * 1024), SpecJsonContext.Default.PackageManifest)
+        var manifest = JsonSerializer.Deserialize<PackageManifest>(ReadEntry(manifestEntry, 1024 * 1024), CoreJson.Options)
             ?? throw Corrupt("manifest.json is empty");
 
         long total = 0;
@@ -87,7 +88,7 @@ public static class ProfilePackage
             throw Corrupt("profile.json is missing");
         }
 
-        var profile = JsonSerializer.Deserialize(profileBytes, SpecJsonContext.Default.ProfileFile)
+        var profile = JsonSerializer.Deserialize<ProfileFile>(profileBytes, CoreJson.Options)
             ?? throw Corrupt("profile.json is empty");
 
         var assets = contents

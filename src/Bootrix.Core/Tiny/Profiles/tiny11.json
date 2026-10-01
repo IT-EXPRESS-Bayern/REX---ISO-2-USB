@@ -1,0 +1,877 @@
+{
+  "id": "tiny11",
+  "name": "Tiny11",
+  "windowsFamily": "11",
+  "description": "Entfernt vorinstallierte Apps, Edge, OneDrive und Telemetrie aus Windows 11; Windows Update und Defender bleiben erhalten.",
+  "groups": [
+    {
+      "id": "consumer",
+      "default": true
+    },
+    {
+      "id": "xbox",
+      "default": true
+    },
+    {
+      "id": "office",
+      "default": true
+    },
+    {
+      "id": "copilot",
+      "default": true
+    },
+    {
+      "id": "teams",
+      "default": true
+    },
+    {
+      "id": "outlook",
+      "default": true
+    },
+    {
+      "id": "phone",
+      "default": true
+    },
+    {
+      "id": "media",
+      "default": true
+    },
+    {
+      "id": "oem",
+      "default": true
+    },
+    {
+      "id": "tools",
+      "default": false
+    },
+    {
+      "id": "edge",
+      "default": true
+    },
+    {
+      "id": "onedrive",
+      "default": true
+    },
+    {
+      "id": "telemetry",
+      "default": true
+    },
+    {
+      "id": "sponsored",
+      "default": true
+    },
+    {
+      "id": "bitlocker",
+      "default": true
+    },
+    {
+      "id": "oobe",
+      "default": true
+    },
+    {
+      "id": "reserved-storage",
+      "default": true
+    },
+    {
+      "id": "hardware-bypass",
+      "default": true
+    }
+  ],
+  "appx": [
+    {
+      "name": "AppUp.IntelManagementandSecurityStatus",
+      "group": "oem"
+    },
+    {
+      "name": "Clipchamp.Clipchamp",
+      "group": "consumer"
+    },
+    {
+      "name": "DolbyLaboratories.DolbyAccess",
+      "group": "oem"
+    },
+    {
+      "name": "DolbyLaboratories.DolbyDigitalPlusDecoderOEM",
+      "group": "oem"
+    },
+    {
+      "name": "Microsoft.BingNews",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.BingSearch",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.BingWeather",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Copilot",
+      "group": "copilot"
+    },
+    {
+      "name": "Microsoft.Windows.CrossDevice",
+      "group": "phone"
+    },
+    {
+      "name": "Microsoft.GamingApp",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.GetHelp",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Getstarted",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Microsoft3DViewer",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.MicrosoftOfficeHub",
+      "group": "office"
+    },
+    {
+      "name": "Microsoft.MicrosoftSolitaireCollection",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.MicrosoftStickyNotes",
+      "group": "office"
+    },
+    {
+      "name": "Microsoft.MixedReality.Portal",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.MSPaint",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Office.OneNote",
+      "group": "office"
+    },
+    {
+      "name": "Microsoft.OfficePushNotificationUtility",
+      "group": "office"
+    },
+    {
+      "name": "Microsoft.OutlookForWindows",
+      "group": "outlook"
+    },
+    {
+      "name": "Microsoft.Paint",
+      "group": "tools"
+    },
+    {
+      "name": "Microsoft.People",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.PowerAutomateDesktop",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.SkypeApp",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.StartExperiencesApp",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Todos",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Wallet",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Windows.DevHome",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.Windows.Copilot",
+      "group": "copilot"
+    },
+    {
+      "name": "Microsoft.Windows.Teams",
+      "group": "teams"
+    },
+    {
+      "name": "Microsoft.WindowsAlarms",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.WindowsCamera",
+      "group": "tools"
+    },
+    {
+      "name": "microsoft.windowscommunicationsapps",
+      "group": "outlook"
+    },
+    {
+      "name": "Microsoft.WindowsFeedbackHub",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.WindowsMaps",
+      "group": "consumer"
+    },
+    {
+      "name": "Microsoft.WindowsSoundRecorder",
+      "group": "tools"
+    },
+    {
+      "name": "Microsoft.Xbox.TCUI",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.XboxApp",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.XboxGameOverlay",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.XboxGamingOverlay",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.XboxIdentityProvider",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.XboxSpeechToTextOverlay",
+      "group": "xbox"
+    },
+    {
+      "name": "Microsoft.YourPhone",
+      "group": "phone"
+    },
+    {
+      "name": "Microsoft.ZuneMusic",
+      "group": "media"
+    },
+    {
+      "name": "Microsoft.ZuneVideo",
+      "group": "media"
+    },
+    {
+      "name": "MicrosoftCorporationII.MicrosoftFamily",
+      "group": "consumer"
+    },
+    {
+      "name": "MicrosoftCorporationII.QuickAssist",
+      "group": "tools"
+    },
+    {
+      "name": "MSTeams",
+      "group": "teams"
+    },
+    {
+      "name": "MicrosoftTeams",
+      "group": "teams"
+    },
+    {
+      "name": "Microsoft.549981C3F5F10",
+      "group": "consumer"
+    }
+  ],
+  "files": [
+    {
+      "path": "Program Files (x86)\\Microsoft\\Edge",
+      "group": "edge"
+    },
+    {
+      "path": "Program Files (x86)\\Microsoft\\EdgeUpdate",
+      "group": "edge"
+    },
+    {
+      "path": "Program Files (x86)\\Microsoft\\EdgeCore",
+      "group": "edge"
+    },
+    {
+      "path": "Windows\\System32\\Microsoft-Edge-Webview",
+      "takeOwnership": true,
+      "group": "edge"
+    },
+    {
+      "path": "Windows\\System32\\OneDriveSetup.exe",
+      "takeOwnership": true,
+      "group": "onedrive"
+    }
+  ],
+  "registry": [
+    {
+      "hive": "Default",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV1",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "Default",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV2",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV1",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV2",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassCPUCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassRAMCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassSecureBootCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassStorageCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassTPMCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\MoSetup",
+      "name": "AllowUpgradesWithUnsupportedTPMOrCPU",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "OemPreInstalledAppsEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "PreInstalledAppsEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SilentInstalledAppsEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "ContentDeliveryAllowed",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "FeatureManagementEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "PreInstalledAppsEverEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SoftLandingEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContentEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-310093Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-338388Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-338389Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-338393Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-353694Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SubscribedContent-353696Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+      "name": "SystemPaneSuggestionsEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\Subscriptions",
+      "action": "DeleteKey",
+      "group": "sponsored"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager\\SuggestedApps",
+      "action": "DeleteKey",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\CloudContent",
+      "name": "DisableWindowsConsumerFeatures",
+      "kind": "DWord",
+      "value": "1",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\CloudContent",
+      "name": "DisableConsumerAccountStateContent",
+      "kind": "DWord",
+      "value": "1",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\CloudContent",
+      "name": "DisableCloudOptimizedContent",
+      "kind": "DWord",
+      "value": "1",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\PolicyManager\\current\\device\\Start",
+      "name": "ConfigureStartPins",
+      "kind": "Text",
+      "value": "{\"pinnedList\": [{}]}",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\PushToInstall",
+      "name": "DisablePushToInstall",
+      "kind": "DWord",
+      "value": "1",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\MRT",
+      "name": "DontOfferThroughWUAU",
+      "kind": "DWord",
+      "value": "1",
+      "group": "sponsored"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\OOBE",
+      "name": "BypassNRO",
+      "kind": "DWord",
+      "value": "1",
+      "group": "oobe"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\ReserveManager",
+      "name": "ShippedWithReserves",
+      "kind": "DWord",
+      "value": "0",
+      "group": "reserved-storage"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Control\\BitLocker",
+      "name": "PreventDeviceEncryption",
+      "kind": "DWord",
+      "value": "1",
+      "group": "bitlocker"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\Windows Chat",
+      "name": "ChatIcon",
+      "kind": "DWord",
+      "value": "3",
+      "group": "teams"
+    },
+    {
+      "hive": "NtUser",
+      "key": "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+      "name": "TaskbarMn",
+      "kind": "DWord",
+      "value": "0",
+      "group": "teams"
+    },
+    {
+      "hive": "Software",
+      "key": "WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft Edge",
+      "action": "DeleteKey",
+      "group": "edge"
+    },
+    {
+      "hive": "Software",
+      "key": "WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Microsoft Edge Update",
+      "action": "DeleteKey",
+      "group": "edge"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\OneDrive",
+      "name": "DisableFileSyncNGSC",
+      "kind": "DWord",
+      "value": "1",
+      "group": "onedrive"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+      "name": "Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+      "name": "TailoredExperiencesWithDiagnosticDataEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\Speech_OneCore\\Settings\\OnlineSpeechPrivacy",
+      "name": "HasAccepted",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\Input\\TIPC",
+      "name": "Enabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\InputPersonalization",
+      "name": "RestrictImplicitInkCollection",
+      "kind": "DWord",
+      "value": "1",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\InputPersonalization",
+      "name": "RestrictImplicitTextCollection",
+      "kind": "DWord",
+      "value": "1",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\InputPersonalization\\TrainedDataStore",
+      "name": "HarvestContacts",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Software\\Microsoft\\Personalization\\Settings",
+      "name": "AcceptedPrivacyPolicy",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\DataCollection",
+      "name": "AllowTelemetry",
+      "kind": "DWord",
+      "value": "0",
+      "group": "telemetry"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\dmwappushservice",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "telemetry"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Orchestrator\\UScheduler_Oobe\\OutlookUpdate",
+      "name": "workCompleted",
+      "kind": "DWord",
+      "value": "1",
+      "group": "outlook"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Orchestrator\\UScheduler\\OutlookUpdate",
+      "name": "workCompleted",
+      "kind": "DWord",
+      "value": "1",
+      "group": "outlook"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\WindowsUpdate\\Orchestrator\\UScheduler\\DevHomeUpdate",
+      "name": "workCompleted",
+      "kind": "DWord",
+      "value": "1",
+      "group": "consumer"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\WindowsUpdate\\Orchestrator\\UScheduler_Oobe\\OutlookUpdate",
+      "action": "DeleteKey",
+      "group": "outlook"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\WindowsUpdate\\Orchestrator\\UScheduler_Oobe\\DevHomeUpdate",
+      "action": "DeleteKey",
+      "group": "consumer"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsCopilot",
+      "name": "TurnOffWindowsCopilot",
+      "kind": "DWord",
+      "value": "1",
+      "group": "copilot"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Edge",
+      "name": "HubsSidebarEnabled",
+      "kind": "DWord",
+      "value": "0",
+      "group": "copilot"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\Explorer",
+      "name": "DisableSearchBoxSuggestions",
+      "kind": "DWord",
+      "value": "1",
+      "group": "copilot"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Teams",
+      "name": "DisableInstallation",
+      "kind": "DWord",
+      "value": "1",
+      "group": "teams"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\Windows Mail",
+      "name": "PreventRun",
+      "kind": "DWord",
+      "value": "1",
+      "group": "outlook"
+    }
+  ],
+  "bootWimRegistry": [
+    {
+      "hive": "Default",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV1",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "Default",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV2",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV1",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "NtUser",
+      "key": "Control Panel\\UnsupportedHardwareNotificationCache",
+      "name": "SV2",
+      "kind": "DWord",
+      "value": "0",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassCPUCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassRAMCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassSecureBootCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassStorageCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\LabConfig",
+      "name": "BypassTPMCheck",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    },
+    {
+      "hive": "System",
+      "key": "Setup\\MoSetup",
+      "name": "AllowUpgradesWithUnsupportedTPMOrCPU",
+      "kind": "DWord",
+      "value": "1",
+      "group": "hardware-bypass"
+    }
+  ],
+  "scheduledTasks": [
+    "Microsoft\\Windows\\Application Experience\\Microsoft Compatibility Appraiser",
+    "Microsoft\\Windows\\Customer Experience Improvement Program",
+    "Microsoft\\Windows\\Application Experience\\ProgramDataUpdater",
+    "Microsoft\\Windows\\Chkdsk\\Proxy",
+    "Microsoft\\Windows\\Windows Error Reporting\\QueueReporting"
+  ]
+}

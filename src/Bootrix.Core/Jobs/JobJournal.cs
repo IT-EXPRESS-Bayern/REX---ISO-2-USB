@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using Bootrix.Core.Json;
 using Bootrix.Core.Errors;
 
 namespace Bootrix.Core.Jobs;
@@ -36,11 +36,6 @@ public sealed record JournalEntry
     public DateTimeOffset UpdatedUtc { get; init; }
 }
 
-[JsonSourceGenerationOptions(WriteIndented = true, PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    Converters = [typeof(JsonStringEnumConverter<JournalState>)])]
-[JsonSerializable(typeof(JournalEntry))]
-internal sealed partial class JournalJsonContext : JsonSerializerContext;
-
 /// <summary>
 /// One small JSON file per job. It is rewritten atomically so that a power cut leaves either the
 /// old or the new version on disk, never a half-written file.
@@ -62,7 +57,7 @@ public sealed class JobJournal(string directory, TimeProvider? timeProvider = nu
 
         await using (var stream = new FileStream(temp, FileMode.Create, FileAccess.Write, FileShare.None, 4096, FileOptions.WriteThrough))
         {
-            await JsonSerializer.SerializeAsync(stream, updated, JournalJsonContext.Default.JournalEntry, cancellationToken).ConfigureAwait(false);
+            await JsonSerializer.SerializeAsync(stream, updated, CoreJson.Options, cancellationToken).ConfigureAwait(false);
             await stream.FlushAsync(cancellationToken).ConfigureAwait(false);
             stream.Flush(flushToDisk: true);
         }
@@ -81,7 +76,7 @@ public sealed class JobJournal(string directory, TimeProvider? timeProvider = nu
         try
         {
             await using var stream = File.OpenRead(path);
-            return await JsonSerializer.DeserializeAsync(stream, JournalJsonContext.Default.JournalEntry, cancellationToken).ConfigureAwait(false);
+            return await JsonSerializer.DeserializeAsync<JournalEntry>(stream, CoreJson.Options, cancellationToken).ConfigureAwait(false);
         }
         catch (JsonException ex)
         {

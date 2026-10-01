@@ -1,31 +1,19 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Text.Json;
 using System.Text.Json.Nodes;
-using System.Text.Json.Serialization;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Json;
 using Bootrix.Core.Model;
 
 namespace Bootrix.Core.Profiles;
 
-[JsonSourceGenerationOptions(
-    WriteIndented = true,
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-    UseStringEnumConverter = true,
-    ReadCommentHandling = JsonCommentHandling.Skip,
-    AllowTrailingCommas = true)]
-[JsonSerializable(typeof(JobSpec))]
-[JsonSerializable(typeof(ProfileFile))]
-[JsonSerializable(typeof(PackageManifest))]
-internal sealed partial class SpecJsonContext : JsonSerializerContext;
-
 public static class JobSpecJson
 {
     public static string Serialize(JobSpec spec) =>
-        JsonSerializer.Serialize(spec, SpecJsonContext.Default.JobSpec);
+        JsonSerializer.Serialize(spec, CoreJson.Options);
 
     public static JsonObject ToNode(JobSpec spec) =>
-        JsonSerializer.SerializeToNode(spec, SpecJsonContext.Default.JobSpec)!.AsObject();
+        JsonSerializer.SerializeToNode(spec, CoreJson.Options)!.AsObject();
 
     public static JobSpec FromNode(JsonNode node)
     {
@@ -42,7 +30,7 @@ public static class JobSpecJson
 
         try
         {
-            return node.Deserialize(SpecJsonContext.Default.JobSpec)
+            return node.Deserialize<JobSpec>(CoreJson.Options)
                 ?? throw new BootrixException(ErrorCode.InvalidSpec, "empty document");
         }
         catch (JsonException ex)

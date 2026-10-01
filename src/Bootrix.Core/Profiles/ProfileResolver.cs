@@ -2,6 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Json;
 
 namespace Bootrix.Core.Profiles;
 
@@ -26,7 +27,7 @@ public sealed class DirectoryProfileSource(string directory) : IProfileSource
 
         try
         {
-            return JsonSerializer.Deserialize(File.ReadAllText(path), SpecJsonContext.Default.ProfileFile);
+            return JsonSerializer.Deserialize<ProfileFile>(File.ReadAllText(path), CoreJson.Options);
         }
         catch (JsonException ex)
         {

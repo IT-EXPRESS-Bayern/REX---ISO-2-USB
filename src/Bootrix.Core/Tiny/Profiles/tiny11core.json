@@ -1,0 +1,331 @@
+{
+  "id": "tiny11core",
+  "name": "Tiny11 Core",
+  "windowsFamily": "11",
+  "extends": "tiny11",
+  "breaksServicing": true,
+  "description": "Wie Tiny11, zusätzlich ohne Komponentenspeicher, Wiederherstellungsumgebung, Defender, Internet Explorer, WordPad und Sprachfunktionen. Das Image lässt sich danach nicht mehr aktualisieren und keine Features oder Sprachen nachinstallieren.",
+  "groups": [
+    {
+      "id": "legacy-components",
+      "default": true
+    },
+    {
+      "id": "language-features",
+      "default": true
+    },
+    {
+      "id": "defender",
+      "default": true
+    },
+    {
+      "id": "windows-update",
+      "default": true
+    },
+    {
+      "id": "winsxs",
+      "default": true
+    },
+    {
+      "id": "winre",
+      "default": true
+    }
+  ],
+  "packages": [
+    {
+      "pattern": "Microsoft-Windows-InternetExplorer-Optional-Package~31bf3856ad364e35",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Microsoft-Windows-Kernel-LA57-FoD-Package~31bf3856ad364e35~amd64",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Microsoft-Windows-LanguageFeatures-Handwriting-{lang}-Package~31bf3856ad364e35",
+      "group": "language-features"
+    },
+    {
+      "pattern": "Microsoft-Windows-LanguageFeatures-OCR-{lang}-Package~31bf3856ad364e35",
+      "group": "language-features"
+    },
+    {
+      "pattern": "Microsoft-Windows-LanguageFeatures-Speech-{lang}-Package~31bf3856ad364e35",
+      "group": "language-features"
+    },
+    {
+      "pattern": "Microsoft-Windows-LanguageFeatures-TextToSpeech-{lang}-Package~31bf3856ad364e35",
+      "group": "language-features"
+    },
+    {
+      "pattern": "Microsoft-Windows-MediaPlayer-Package~31bf3856ad364e35",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Microsoft-Windows-Wallpaper-Content-Extended-FoD-Package~31bf3856ad364e35",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Windows-Defender-Client-Package~31bf3856ad364e35~",
+      "group": "defender"
+    },
+    {
+      "pattern": "Microsoft-Windows-WordPad-FoD-Package~",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Microsoft-Windows-TabletPCMath-Package~",
+      "group": "legacy-components"
+    },
+    {
+      "pattern": "Microsoft-Windows-StepsRecorder-Package~",
+      "group": "legacy-components"
+    }
+  ],
+  "registry": [
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "name": "StopWUPostOOBE1",
+      "kind": "Text",
+      "value": "net stop wuauserv",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "name": "StopWUPostOOBE2",
+      "kind": "Text",
+      "value": "sc stop wuauserv",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "name": "StopWUPostOOBE3",
+      "kind": "Text",
+      "value": "sc config wuauserv start= disabled",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "name": "DisableWUPostOOBE1",
+      "kind": "Text",
+      "value": "reg add HKLM\\SYSTEM\\CurrentControlSet\\Services\\wuauserv /v Start /t REG_DWORD /d 4 /f",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\RunOnce",
+      "name": "DisableWUPostOOBE2",
+      "kind": "Text",
+      "value": "reg add HKLM\\SYSTEM\\ControlSet001\\Services\\wuauserv /v Start /t REG_DWORD /d 4 /f",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\OOBE",
+      "name": "DisableOnline",
+      "kind": "DWord",
+      "value": "1",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate",
+      "name": "DoNotConnectToWindowsUpdateInternetLocations",
+      "kind": "DWord",
+      "value": "1",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate",
+      "name": "DisableWindowsUpdateAccess",
+      "kind": "DWord",
+      "value": "1",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate",
+      "name": "WUServer",
+      "kind": "Text",
+      "value": "localhost",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate",
+      "name": "WUStatusServer",
+      "kind": "Text",
+      "value": "localhost",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate",
+      "name": "UpdateServiceUrlAlternate",
+      "kind": "Text",
+      "value": "localhost",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+      "name": "UseWUServer",
+      "kind": "DWord",
+      "value": "1",
+      "group": "windows-update"
+    },
+    {
+      "hive": "Software",
+      "key": "Policies\\Microsoft\\Windows\\WindowsUpdate\\AU",
+      "name": "NoAutoUpdate",
+      "kind": "DWord",
+      "value": "1",
+      "group": "windows-update"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\wuauserv",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "windows-update"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\WaaSMedicSVC",
+      "action": "DeleteKey",
+      "group": "windows-update"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\UsoSvc",
+      "action": "DeleteKey",
+      "group": "windows-update"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\WinDefend",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "defender"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\WdNisSvc",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "defender"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\WdNisDrv",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "defender"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\WdFilter",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "defender"
+    },
+    {
+      "hive": "System",
+      "key": "ControlSet001\\Services\\Sense",
+      "name": "Start",
+      "kind": "DWord",
+      "value": "4",
+      "group": "defender"
+    },
+    {
+      "hive": "Software",
+      "key": "Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+      "name": "SettingsPageVisibility",
+      "kind": "Text",
+      "value": "hide:virus;windowsupdate",
+      "group": "defender"
+    }
+  ],
+  "winSxs": {
+    "keepByArchitecture": {
+      "amd64": [
+        "x86_microsoft.windows.common-controls_6595b64144ccf1df_*",
+        "x86_microsoft.windows.gdiplus_6595b64144ccf1df_*",
+        "x86_microsoft.windows.i..utomation.proxystub_6595b64144ccf1df_*",
+        "x86_microsoft.windows.isolationautomation_6595b64144ccf1df_*",
+        "x86_microsoft-windows-s..ngstack-onecorebase_31bf3856ad364e35_*",
+        "x86_microsoft-windows-s..stack-termsrv-extra_31bf3856ad364e35_*",
+        "x86_microsoft-windows-servicingstack_31bf3856ad364e35_*",
+        "x86_microsoft-windows-servicingstack-inetsrv_*",
+        "x86_microsoft-windows-servicingstack-onecore_*",
+        "amd64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_*",
+        "amd64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_*",
+        "amd64_microsoft.windows.c..-controls.resources_6595b64144ccf1df_*",
+        "amd64_microsoft.windows.common-controls_6595b64144ccf1df_*",
+        "amd64_microsoft.windows.gdiplus_6595b64144ccf1df_*",
+        "amd64_microsoft.windows.i..utomation.proxystub_6595b64144ccf1df_*",
+        "amd64_microsoft.windows.isolationautomation_6595b64144ccf1df_*",
+        "amd64_microsoft-windows-s..stack-inetsrv-extra_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-s..stack-msg.resources_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-s..stack-termsrv-extra_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-servicingstack_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-servicingstack-inetsrv_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-servicingstack-msg_31bf3856ad364e35_*",
+        "amd64_microsoft-windows-servicingstack-onecore_31bf3856ad364e35_*",
+        "Catalogs",
+        "FileMaps",
+        "Fusion",
+        "InstallTemp",
+        "Manifests",
+        "x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_*",
+        "x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_*",
+        "x86_microsoft.windows.c..-controls.resources_6595b64144ccf1df_*"
+      ],
+      "arm64": [
+        "arm64_microsoft-windows-servicingstack-onecore_31bf3856ad364e35_*",
+        "Catalogs",
+        "FileMaps",
+        "Fusion",
+        "InstallTemp",
+        "Manifests",
+        "SettingsManifests",
+        "Temp",
+        "x86_microsoft.vc80.crt_1fc8b3b9a1e18e3b_*",
+        "x86_microsoft.vc90.crt_1fc8b3b9a1e18e3b_*",
+        "x86_microsoft.windows.c..-controls.resources_6595b64144ccf1df_*",
+        "x86_microsoft.windows.common-controls_6595b64144ccf1df_*",
+        "x86_microsoft.windows.gdiplus_6595b64144ccf1df_*",
+        "x86_microsoft.windows.i..utomation.proxystub_6595b64144ccf1df_*",
+        "x86_microsoft.windows.isolationautomation_6595b64144ccf1df_*",
+        "arm_microsoft.windows.c..-controls.resources_6595b64144ccf1df_*",
+        "arm_microsoft.windows.common-controls_6595b64144ccf1df_*",
+        "arm_microsoft.windows.gdiplus_6595b64144ccf1df_*",
+        "arm_microsoft.windows.i..utomation.proxystub_6595b64144ccf1df_*",
+        "arm_microsoft.windows.isolationautomation_6595b64144ccf1df_*",
+        "arm64_microsoft.vc80.crt_1fc8b3b9a1e18e3b_*",
+        "arm64_microsoft.vc90.crt_1fc8b3b9a1e18e3b_*",
+        "arm64_microsoft.windows.c..-controls.resources_6595b64144ccf1df_*",
+        "arm64_microsoft.windows.common-controls_6595b64144ccf1df_*",
+        "arm64_microsoft.windows.gdiplus_6595b64144ccf1df_*",
+        "arm64_microsoft.windows.i..utomation.proxystub_6595b64144ccf1df_*",
+        "arm64_microsoft.windows.isolationautomation_6595b64144ccf1df_*",
+        "arm64_microsoft-windows-servicing-adm_31bf3856ad364e35_*",
+        "arm64_microsoft-windows-servicingcommon_31bf3856ad364e35_*",
+        "arm64_microsoft-windows-servicing-onecore-uapi_31bf3856ad364e35_*",
+        "arm64_microsoft-windows-servicingstack_31bf3856ad364e35_*",
+        "arm64_microsoft-windows-servicingstack-inetsrv_31bf3856ad364e35_*",
+        "arm64_microsoft-windows-servicingstack-msg_31bf3856ad364e35_*"
+      ]
+    }
+  },
+  "emptyWinRe": true
+}
