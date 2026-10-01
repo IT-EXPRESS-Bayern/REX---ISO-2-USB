@@ -73,6 +73,10 @@ public enum ErrorCode
     BootManager2023Unavailable = 6104,
     BootManager2023Unverified = 6105,
 
+    // 62xx: Linux and other file-copy media
+    BootloaderInstallFailed = 6201,
+    FileCopyFailed = 6202,
+
     // 7xxx: optical
     NoRecorder = 7001,
     MediaNotSupported = 7002,

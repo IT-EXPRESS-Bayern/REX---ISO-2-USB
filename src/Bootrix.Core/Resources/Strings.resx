@@ -340,4 +340,8 @@
   <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>Auf dem Medium fehlt \EFI\BOOT\{0}.</value></data>
   <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} ist keine gültige EFI-Datei.</value></data>
   <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>Die Startdateien konnten nicht aus boot.wim gelesen werden: {0}</value></data>
+  <data name="Error.BootloaderInstallFailed.Cause" xml:space="preserve"><value>Der Bootloader ({0}) konnte nicht auf dem Medium eingerichtet werden: {1}</value></data>
+  <data name="Error.BootloaderInstallFailed.Action" xml:space="preserve"><value>Schreiben Sie den Datenträger erneut. Bleibt der Fehler bestehen, wählen Sie den Modus „Abbild 1:1 schreiben (DD)“, falls das Image dafür geeignet ist.</value></data>
+  <data name="Error.FileCopyFailed.Cause" xml:space="preserve"><value>Die Datei „{0}“ konnte nicht auf das Medium kopiert werden: {1}</value></data>
+  <data name="Error.FileCopyFailed.Action" xml:space="preserve"><value>Prüfen Sie, ob der Datenträger noch angeschlossen und nicht schreibgeschützt ist, und wiederholen Sie den Vorgang.</value></data>
 </root>

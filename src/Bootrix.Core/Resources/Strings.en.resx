@@ -331,4 +331,8 @@
   <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>The medium has no \EFI\BOOT\{0}.</value></data>
   <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} is not a valid EFI file.</value></data>
   <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>The boot files could not be read from boot.wim: {0}</value></data>
+  <data name="Error.BootloaderInstallFailed.Cause" xml:space="preserve"><value>The boot loader ({0}) could not be set up on the medium: {1}</value></data>
+  <data name="Error.BootloaderInstallFailed.Action" xml:space="preserve"><value>Write the drive again. If the error persists, choose the "Write image byte for byte (DD)" mode if the image is suited for it.</value></data>
+  <data name="Error.FileCopyFailed.Cause" xml:space="preserve"><value>The file "{0}" could not be copied to the medium: {1}</value></data>
+  <data name="Error.FileCopyFailed.Action" xml:space="preserve"><value>Check that the drive is still connected and not write-protected, then try again.</value></data>
 </root>
