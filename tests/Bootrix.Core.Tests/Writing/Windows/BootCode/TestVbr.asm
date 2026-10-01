@@ -40,6 +40,7 @@ print:
 .done:
         ret
 failed: db 'VBR READ FAILED', 0
+loader: db 'BOOTMGR    '            ; the name NT 6 boot code looks for in the root directory
 dap:    db 0x10, 0
         dw 1
         dw 0x8000, 0
