@@ -90,4 +90,13 @@
 
   <data name="Error.Unknown.Cause" xml:space="preserve"><value>Ein unerwarteter Fehler ist aufgetreten.</value></data>
   <data name="Error.Unknown.Action" xml:space="preserve"><value>Exportieren Sie das Diagnosepaket und senden Sie es an den Support.</value></data>
+
+  <data name="Error.ImageCorrupt.Cause" xml:space="preserve"><value>Das Image ist beschädigt: {0}</value></data>
+  <data name="Error.ImageCorrupt.Action" xml:space="preserve"><value>Laden Sie das Image erneut herunter oder erstellen Sie es neu.</value></data>
+  <data name="Error.ImageSegmented.Cause" xml:space="preserve"><value>Das Image ist auf mehrere Dateien (Segmente) verteilt.</value></data>
+  <data name="Error.ImageSegmented.Action" xml:space="preserve"><value>Fügen Sie die Segmente auf einem Mac mit „hdiutil convert“ zu einer einzelnen .dmg-Datei zusammen.</value></data>
+  <data name="Error.ImageLegacyFormat.Cause" xml:space="preserve"><value>Das Image stammt aus Mac OS 9 oder älter und wird nicht unterstützt: {0}</value></data>
+  <data name="Error.ImageLegacyFormat.Action" xml:space="preserve"><value>Konvertieren Sie das Image auf einem Mac in eine .dmg- oder .cdr-Datei.</value></data>
+  <data name="Error.ImageAppleArchive.Cause" xml:space="preserve"><value>Das Image ist ein verschlüsseltes Apple-Archiv (.aea).</value></data>
+  <data name="Error.ImageAppleArchive.Action" xml:space="preserve"><value>Das Archiv benötigt Schlüsseldienste von Apple. Entpacken Sie es auf einem Mac.</value></data>
 </root>

@@ -59,4 +59,10 @@ public enum ErrorCode
     BurnFailed = 7003,
     ReadError = 7004,
     CopyProtected = 7005,
+
+    // 31xx: Apple disk images
+    ImageCorrupt = 3101,
+    ImageSegmented = 3102,
+    ImageLegacyFormat = 3103,
+    ImageAppleArchive = 3104,
 }
