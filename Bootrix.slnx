@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Bootrix.App/Bootrix.App.csproj" />
+    <Project Path="src/Bootrix.Cli/Bootrix.Cli.csproj" />
+    <Project Path="src/Bootrix.Core/Bootrix.Core.csproj" />
+    <Project Path="src/Bootrix.Windows/Bootrix.Windows.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Bootrix.Core.Tests/Bootrix.Core.Tests.csproj" />
+    <Project Path="tests/Bootrix.Windows.Tests/Bootrix.Windows.Tests.csproj" />
+  </Folder>
+</Solution>

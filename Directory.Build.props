@@ -1,0 +1,24 @@
+<Project>
+
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <Deterministic>true</Deterministic>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <Authors>IT-EXPRESS Bayern</Authors>
+    <Company>IT-EXPRESS Bayern</Company>
+    <Product>Bootrix</Product>
+    <Copyright>Copyright (C) IT-EXPRESS Bayern</Copyright>
+    <RepositoryUrl>https://github.com/IT-EXPRESS-Bayern/REX---ISO-2-USB</RepositoryUrl>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <Import Project="build/version.props" />
+
+</Project>

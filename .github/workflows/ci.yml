@@ -1,0 +1,40 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    name: Build und Core-Tests (Linux)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet build Bootrix.slnx -c Release
+      - run: dotnet test tests/Bootrix.Core.Tests -c Release --no-build
+
+  windows:
+    name: Build, Tests und Publish (Windows)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - run: dotnet build Bootrix.slnx -c Release
+      - run: dotnet test Bootrix.slnx -c Release --no-build
+      - name: Publish (x64)
+        run: |
+          dotnet publish src/Bootrix.App -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o artifacts/win-x64
+          dotnet publish src/Bootrix.Cli -c Release -r win-x64 --self-contained -p:PublishSingleFile=true -o artifacts/win-x64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bootrix-win-x64
+          path: artifacts/win-x64
