@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Prüfwerkzeuge für die Formattests
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends dosfstools mtools e2fsprogs gdisk fdisk xorriso nasm qemu-system-x86 ovmf p7zip-full udftools parted xz-utils zstd bzip2 gzip
       - uses: actions/setup-dotnet@v4
         with:
           global-json-file: global.json

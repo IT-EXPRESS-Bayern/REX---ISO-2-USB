@@ -291,6 +291,7 @@ public sealed partial class RpcConnection : IAsyncDisposable
     private async Task HeartbeatLoopAsync(TimeSpan interval)
     {
         using var timer = new PeriodicTimer(interval, _time);
+        Task? pingInFlight = null;
         try
         {
             while (await timer.WaitForNextTickAsync(_lifetime.Token).ConfigureAwait(false))
@@ -301,12 +302,29 @@ public sealed partial class RpcConnection : IAsyncDisposable
                     return;
                 }
 
-                await SendControlAsync(RpcMethods.Ping).ConfigureAwait(false);
+                // A peer that stopped reading can make a write block for good (unbuffered pipes on Windows).
+                // The ping must not hold up the next silence check, which is what ends such a connection.
+                if (pingInFlight is null || pingInFlight.IsCompleted)
+                {
+                    pingInFlight = SendPingAsync();
+                }
             }
         }
         catch (OperationCanceledException)
         {
             // Closed.
+        }
+    }
+
+    private async Task SendPingAsync()
+    {
+        try
+        {
+            await SendControlAsync(RpcMethods.Ping).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            await CloseAsync(ex).ConfigureAwait(false);
         }
     }
 

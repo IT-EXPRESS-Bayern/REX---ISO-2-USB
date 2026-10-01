@@ -49,7 +49,7 @@ public class FatFormatterToolTests
         { "4k-64gib-fat32", 64 * Gib, 4096, 0, 0 },
     };
 
-    [RequiresToolTheory("fsck.vfat", "mcopy", "mdir")]
+    [RequiresToolTheory("fsck.vfat", "mcopy", "mdir", "mlabel")]
     [MemberData(nameof(SizeMatrix))]
     public void Format_Creates_Volume_That_Fsck_And_Mtools_Accept(string name, long bytes, int bytesPerSector, int type, int sectorsPerCluster)
     {
@@ -249,7 +249,7 @@ public class FatFormatterToolTests
         }
     }
 
-    [RequiresToolFact("fsck.vfat")]
+    [RequiresToolFact("fsck.vfat", "minfo", "mlabel")]
     public void Format_WithoutLabel_StoresNoNameAndNoDirectoryEntry()
     {
         using var image = new TempImage(32 * Mib);
@@ -336,7 +336,7 @@ public class FatFormatterToolTests
         FatVerifier.Fsck(image.Path);
     }
 
-    [RequiresToolTheory("fsck.vfat")]
+    [RequiresToolTheory("fsck.vfat", "mcopy", "mdir")]
     [InlineData(16, 512, 512)]
     [InlineData(32, 512, 512)]
     [InlineData(32, 512, 1536)]

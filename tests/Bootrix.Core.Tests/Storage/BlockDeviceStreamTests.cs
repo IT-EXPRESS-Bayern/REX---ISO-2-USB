@@ -29,7 +29,13 @@ public sealed class BlockDeviceStreamTests : IDisposable
         }
 
         // Bytes outside the written range stay untouched (read-modify-write of the boundary sectors).
-        var raw = File.ReadAllBytes(_path);
+        byte[] raw;
+        using (var file = new FileStream(_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+        {
+            raw = new byte[file.Length];
+            file.ReadExactly(raw);
+        }
+
         Assert.Equal(data, raw.AsSpan(4096 * 10 + 1234, data.Length).ToArray());
         Assert.All(raw.AsSpan(0, 4096 * 10).ToArray(), b => Assert.Equal(0, b));
     }

@@ -25,6 +25,15 @@ public sealed class RawImageWriterTests : IDisposable
     private FileBlockDevice Device(string name, long length, int sector = 512) =>
         new(Path.Combine(_dir, name), length, sector);
 
+    /// <summary>Windows refuses a plain read of a file the device still holds open for writing; sharing the file is enough.</summary>
+    private static byte[] ReadWhileOpen(string path)
+    {
+        using var stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        var data = new byte[stream.Length];
+        stream.ReadExactly(data);
+        return data;
+    }
+
     private static RawWriteOptions SmallChunks() => new() { ChunkSize = 64 * 1024, HoldBackBytes = 128 * 1024, BufferCount = 3 };
 
     [Fact]
@@ -70,7 +79,7 @@ public sealed class RawImageWriterTests : IDisposable
         var report = await new RawImageWriter().WriteAsync(new MemoryStream(image), image.Length, [a, b, c], SmallChunks());
 
         Assert.All(report.Targets, t => Assert.True(t.Succeeded && t.Verified));
-        var files = TargetNames.Select(n => File.ReadAllBytes(Path.Combine(_dir, n))).ToList();
+        var files = TargetNames.Select(n => ReadWhileOpen(Path.Combine(_dir, n))).ToList();
         Assert.Equal(files[0], files[1]);
         Assert.Equal(files[0], files[2]);
     }

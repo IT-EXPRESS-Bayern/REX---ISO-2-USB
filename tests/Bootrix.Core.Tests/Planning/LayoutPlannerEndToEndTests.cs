@@ -35,7 +35,7 @@ public class LayoutPlannerEndToEndTests
 
     private static MediaPlan Plan(ImageProfile image, TargetOptions target, DeviceCaps device) => LayoutPlanner.Plan(image, target, device);
 
-    [RequiresToolFact("sgdisk", "sfdisk", "mdir", "minfo")]
+    [RequiresToolFact("sgdisk", "sfdisk", "mdir", "minfo", "mcopy")]
     public void WindowsUefiOnGpt_IsValidAndItsFat32VolumeKnowsWhereItLives()
     {
         var plan = Plan(WindowsIso(), new TargetOptions { Firmware = TargetFirmware.Uefi }, Stick(8 * Gib));
@@ -184,7 +184,7 @@ public class LayoutPlannerEndToEndTests
         Assert.True(result.ExitCode == 0, result.Combined);
     }
 
-    [RequiresToolFact("fsck.vfat", "mdir")]
+    [RequiresToolFact("fsck.vfat", "mdir", "mcopy", "minfo")]
     public void SuperfloppyStick_IsOneFat32VolumeWithoutPartitionTable()
     {
         var plan = Plan(Data(), new TargetOptions { Superfloppy = true }, Stick(600 * Mib));
