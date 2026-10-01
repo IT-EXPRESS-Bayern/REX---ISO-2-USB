@@ -267,6 +267,14 @@ public class ExtFormatterTests
             ExtFormatter.Format(stream, Options() with { LazyInitialization = false }, cancellation.Token));
     }
 
+    [Fact]
+    public void Format_AcceptsLabelOfExactlySixteenBytes()
+    {
+        using var image = Format(16 * MiB, Options() with { Label = "persistence-0123" });
+
+        Assert.Equal("persistence-0123", System.Text.Encoding.ASCII.GetString(image.ReadAt(1024 + 0x78, 16)));
+    }
+
     [Theory]
     [InlineData("abcdefghijklmnopq")]
     [InlineData("zwölf-Üüüüüü")]
