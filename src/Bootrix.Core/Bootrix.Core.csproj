@@ -25,6 +25,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Boot\revocations.json" LogicalName="Bootrix.Core.Boot.revocations.json" />
     <EmbeddedResource Include="Tiny\Profiles\*.json" />
+    <EmbeddedResource Include="Catalog\Rescue\rescue-catalog.json" LogicalName="Bootrix.Core.Catalog.Rescue.rescue-catalog.json" />
   </ItemGroup>
 
   <ItemGroup>

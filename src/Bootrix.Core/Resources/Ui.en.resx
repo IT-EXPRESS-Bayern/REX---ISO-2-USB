@@ -78,4 +78,12 @@
   <data name="Step.Tiny.PatchBootImage" xml:space="preserve"><value>Patching setup image</value></data>
   <data name="Step.Tiny.Unattend" xml:space="preserve"><value>Writing answer file</value></data>
   <data name="Step.Tiny.CreateIso" xml:space="preserve"><value>Creating ISO</value></data>
+  <data name="Notice.AuthorizedUseOnly" xml:space="preserve"><value>Use only on devices and accounts you own or have the owner's explicit permission to service. Bypassing the sign-in protection of someone else's device can be a criminal offence.</value></data>
+  <data name="Hint.Rescue.OldImage" xml:space="preserve"><value>Older image with an old Linux kernel: newer hardware such as NVMe drives may not be recognised, and UEFI-only computers cannot start it.</value></data>
+  <data name="Hint.Rescue.ResetBreaksEfs" xml:space="preserve"><value>Resetting the password of an account makes its EFS-encrypted files unreadable. Works for local accounts only.</value></data>
+  <data name="Hint.Rescue.WindowsPeTerms" xml:space="preserve"><value>According to Microsoft, Windows PE may only be used for deployment and recovery, and it restarts after 72 hours of continuous use.</value></data>
+  <data name="Hint.Rescue.SecureBootMayRefuse" xml:space="preserve"><value>The boot loader is not suitable for Secure Boot or is rejected by current revocation lists. Secure Boot may have to be switched off temporarily to use it.</value></data>
+  <data name="Hint.Rescue.ThirdPartyCompilation" xml:space="preserve"><value>A compilation of third-party programs; each program is subject to its own licence terms.</value></data>
+  <data name="Hint.Rescue.SignaturesOutdated" xml:space="preserve"><value>Virus signatures go out of date quickly. Update the signatures after booting, if a network connection is available.</value></data>
+  <data name="Hint.Rescue.UpdatedInPlace" xml:space="preserve"><value>The vendor replaces the file under the same address on a regular basis, so there is no fixed checksum; integrity relies on the encrypted connection (HTTPS) only.</value></data>
 </root>
