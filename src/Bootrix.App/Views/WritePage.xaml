@@ -187,6 +187,27 @@
                 </StackPanel>
             </Border>
 
+            <!-- Profile -->
+            <Grid Margin="0,0,0,8">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <ui:TextBlock Text="{loc:Loc Profile.Title}" VerticalAlignment="Center" Margin="0,0,12,0" />
+                <ComboBox Grid.Column="1" MinWidth="260" HorizontalAlignment="Left"
+                          DataContext="{Binding Profiles}"
+                          ItemsSource="{Binding Items}" DisplayMemberPath="Display" SelectedItem="{Binding Selected}" />
+                <StackPanel Grid.Column="2" Orientation="Horizontal" DataContext="{Binding Profiles}">
+                    <ui:Button Content="{loc:Loc Profile.Save}" Icon="{ui:SymbolIcon Save24}" Command="{Binding SaveCommand}" />
+                    <ui:Button Content="{loc:Loc Profile.Delete}" Icon="{ui:SymbolIcon Delete24}" Margin="8,0,0,0" Command="{Binding DeleteCommand}" />
+                    <ui:Button Content="{loc:Loc Profile.CopyCli}" Icon="{ui:SymbolIcon Copy24}" Margin="8,0,0,0"
+                               Command="{Binding DataContext.CopyCommandLineCommand, RelativeSource={RelativeSource AncestorType=Page}}" />
+                </StackPanel>
+            </Grid>
+            <ui:TextBlock Text="{Binding Profiles.Info}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" Margin="0,0,0,8"
+                          Visibility="{Binding Profiles.HasInfo, Converter={StaticResource BoolToVisibility}}" />
+
             <!-- Options -->
             <Expander Header="{loc:Loc Opt.Heading}" Margin="0,0,0,16">
                 <StackPanel Margin="0,8,0,0" DataContext="{Binding Options}">

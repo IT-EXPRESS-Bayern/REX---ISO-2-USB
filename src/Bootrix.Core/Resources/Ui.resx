@@ -425,4 +425,20 @@
   <data name="Tools.Start.Verify" xml:space="preserve"><value>Prüfen</value></data>
   <data name="Tools.Start.Restore" xml:space="preserve"><value>Wiederherstellen</value></data>
   <data name="Job.Done" xml:space="preserve"><value>Fertig nach {0}.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Profil</value></data>
+  <data name="Profile.None" xml:space="preserve"><value>(ohne Profil)</value></data>
+  <data name="Profile.Team" xml:space="preserve"><value>Team</value></data>
+  <data name="Profile.Save" xml:space="preserve"><value>Speichern …</value></data>
+  <data name="Profile.Delete" xml:space="preserve"><value>Löschen</value></data>
+  <data name="Profile.CopyCli" xml:space="preserve"><value>Als Befehl kopieren</value></data>
+  <data name="Profile.Copied" xml:space="preserve"><value>Der Befehl für die Kommandozeile wurde in die Zwischenablage kopiert.</value></data>
+  <data name="Profile.Prompt.Title" xml:space="preserve"><value>Profil speichern</value></data>
+  <data name="Profile.Prompt.Text" xml:space="preserve"><value>Name des Profils. Gleicht er einem vorhandenen eigenen Profil, wird dieses ersetzt.</value></data>
+  <data name="Profile.Prompt.Button" xml:space="preserve"><value>Speichern</value></data>
+  <data name="Profile.Locks" xml:space="preserve"><value>Das Profil sperrt {0} Einstellung(en); sie werden beim Schreiben aus dem Profil übernommen.</value></data>
+  <data name="Profile.TeamNoDelete" xml:space="preserve"><value>Team-Profile lassen sich hier nicht löschen.</value></data>
+  <data name="Settings.TeamProfiles" xml:space="preserve"><value>Team-Profilordner</value></data>
+  <data name="Settings.TeamProfiles.Hint" xml:space="preserve"><value>Gemeinsamer Ordner mit Profilen des Teams, zum Beispiel ein Netzlaufwerk. Die Profile erscheinen auf der Schreiben-Seite.</value></data>
+  <data name="Settings.Browse" xml:space="preserve"><value>Ordner wählen …</value></data>
+  <data name="Settings.Clear" xml:space="preserve"><value>Entfernen</value></data>
 </root>

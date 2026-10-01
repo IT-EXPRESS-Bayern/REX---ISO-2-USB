@@ -46,10 +46,14 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
         Localizer localizer,
         MediaPlanService planner,
         WriteOptionsViewModel options,
+        ProfilesViewModel profiles,
         ILogger<WriteViewModel> logger)
     {
         _planner = planner;
         Options = options;
+        Profiles = profiles;
+        profiles.Verify = () => Verify;
+        profiles.Applied += (_, spec) => Verify = spec.Verify.ReadBack;
         _engine = engine;
         _dialogs = dialogs;
         _settings = settings;
@@ -79,6 +83,8 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
     }
 
     public WriteOptionsViewModel Options { get; }
+
+    public ProfilesViewModel Profiles { get; }
 
     public void Dispose()
     {
@@ -307,6 +313,14 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
             IsBusy = false;
             await RefreshAsync();
         }
+    }
+
+    [RelayCommand]
+    private void CopyCommandLine()
+    {
+        var disks = Devices.Where(d => d.IsSelected).Select(d => string.IsNullOrWhiteSpace(d.Device.Serial) ? $"disk{d.Device.DiskNumber}" : d.Device.Serial);
+        Clipboard.SetText(CliCommandBuilder.Write(Options.ToSpec(Verify), Options.Source == WriteSource.Image ? ImagePath : null, disks));
+        ShowResult(InfoBarSeverity.Informational, _localizer.Get("Profile.Copied"), "");
     }
 
     [RelayCommand]

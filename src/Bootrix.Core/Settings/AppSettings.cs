@@ -28,4 +28,7 @@ public sealed record AppSettings
     public string? LastImageDirectory { get; init; }
 
     public string? LastDownloadDirectory { get; init; }
+
+    /// <summary>Shared folder with the team's profiles; empty when there is none.</summary>
+    public string? TeamProfileDirectory { get; init; }
 }

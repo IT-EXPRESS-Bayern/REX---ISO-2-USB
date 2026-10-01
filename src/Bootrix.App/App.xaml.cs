@@ -8,6 +8,7 @@ using Bootrix.App.Views;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Hosting;
 using Bootrix.Core.Localization;
+using Bootrix.Core.Profiles;
 using Bootrix.Core.Settings;
 using Bootrix.Windows;
 using Microsoft.Extensions.DependencyInjection;
@@ -105,6 +106,9 @@ public partial class App : Application
         services.AddSingleton(provider => new SettingsStore(
             Path.Combine(paths.DataDirectory, "settings.json"),
             provider.GetRequiredService<ILogger<SettingsStore>>()));
+        services.AddSingleton(provider => new ProfileStore(
+            paths.ProfileDirectory,
+            () => provider.GetRequiredService<SettingsStore>().Current.TeamProfileDirectory));
         services.AddSingleton<IContentDialogService, ContentDialogService>();
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<ThemeSwitcher>();
@@ -112,6 +116,7 @@ public partial class App : Application
 
         services.AddSingleton<MainWindow>();
         services.AddSingleton<WriteOptionsViewModel>();
+        services.AddSingleton<ProfilesViewModel>();
         services.AddSingleton<WriteViewModel>();
         services.AddSingleton<DownloadsViewModel>();
         services.AddTransient<DeviceListViewModel>();

@@ -102,7 +102,38 @@ public sealed partial class WriteOptionsViewModel : ObservableObject
 
     public bool IsDosSource => Source == WriteSource.Dos;
 
-    public JobSpec ToSpec(bool verify) => new()
+    /// <summary>The profile whose locked settings overrule the form; null when none is chosen or it locks nothing.</summary>
+    public ResolvedProfile? ActiveProfile { get; set; }
+
+    public JobSpec ToSpec(bool verify)
+    {
+        var spec = BuildSpec(verify);
+        return ActiveProfile is { LockedPaths.Count: > 0 } locked ? ProfileLocks.Enforce(spec, locked) : spec;
+    }
+
+    /// <summary>Takes over the settings of a profile into the form.</summary>
+    public void ApplySpec(JobSpec spec)
+    {
+        Mode = spec.Target.Mode;
+        Scheme = spec.Target.Scheme;
+        Firmware = spec.Target.Firmware;
+        FileSystem = spec.Target.FileSystem;
+        Label = spec.Target.Label ?? "";
+        LegacyBios = spec.Target.LegacyBiosFixes;
+        PersistenceMegabytes = spec.Target.PersistenceMegabytes;
+        BypassTpm = spec.Windows.BypassTpm;
+        BypassSecureBoot = spec.Windows.BypassSecureBoot;
+        BypassRam = spec.Windows.BypassRam;
+        BypassCpu = spec.Windows.BypassCpu;
+        BypassStorage = spec.Windows.BypassStorage;
+        LocalAccountName = spec.Windows.LocalAccountName ?? "";
+        SkipPrivacyQuestions = spec.Windows.SkipPrivacyQuestions;
+        DisableBitLocker = spec.Windows.DisableBitLocker;
+        DosFlavor = spec.Dos.Flavor;
+        AcceptMicrosoftDownload = spec.Dos.AcceptMicrosoftDownload;
+    }
+
+    private JobSpec BuildSpec(bool verify) => new()
     {
         Dos = new DosOptions { Flavor = DosFlavor, AcceptMicrosoftDownload = AcceptMicrosoftDownload },
         Kind = JobKind.WriteImage,

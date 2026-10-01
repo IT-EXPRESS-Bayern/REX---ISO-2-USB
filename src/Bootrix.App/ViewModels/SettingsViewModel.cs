@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Core.Localization;
 using Bootrix.Core.Settings;
+using Bootrix.App.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Bootrix.App.ViewModels;
 
@@ -9,12 +11,14 @@ public sealed partial class SettingsViewModel : ObservableObject
 {
     private readonly SettingsStore _store;
     private readonly Localizer _localizer;
+    private readonly IDialogService _dialogs;
     private bool _loading;
 
-    public SettingsViewModel(SettingsStore store, Localizer localizer)
+    public SettingsViewModel(SettingsStore store, Localizer localizer, IDialogService dialogs)
     {
         _store = store;
         _localizer = localizer;
+        _dialogs = dialogs;
 
         Load(store.Current);
         localizer.CultureChanged += (_, _) => BuildOptions();
@@ -44,6 +48,29 @@ public sealed partial class SettingsViewModel : ObservableObject
     [ObservableProperty]
     private bool _playSoundWhenDone;
 
+    [ObservableProperty]
+    private string _teamProfileDirectory = "";
+
+    public bool HasTeamProfileDirectory => TeamProfileDirectory.Length > 0;
+
+    partial void OnTeamProfileDirectoryChanged(string value)
+    {
+        OnPropertyChanged(nameof(HasTeamProfileDirectory));
+        Save(s => s with { TeamProfileDirectory = value.Length == 0 ? null : value });
+    }
+
+    [RelayCommand]
+    private void PickTeamProfileDirectory()
+    {
+        if (_dialogs.PickFolder(string.IsNullOrEmpty(TeamProfileDirectory) ? null : TeamProfileDirectory) is { } folder)
+        {
+            TeamProfileDirectory = folder;
+        }
+    }
+
+    [RelayCommand]
+    private void ClearTeamProfileDirectory() => TeamProfileDirectory = "";
+
     partial void OnLanguageChanged(string value)
     {
         if (Save(s => s with { Language = value }))
@@ -72,6 +99,7 @@ public sealed partial class SettingsViewModel : ObservableObject
         ServiceMode = settings.ServiceMode;
         VerifyAfterWrite = settings.VerifyAfterWrite;
         PlaySoundWhenDone = settings.PlaySoundWhenDone;
+        TeamProfileDirectory = settings.TeamProfileDirectory ?? "";
         _loading = false;
     }
 

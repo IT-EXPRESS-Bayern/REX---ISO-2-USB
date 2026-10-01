@@ -80,6 +80,36 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public async Task<string?> PromptAsync(string title, string message, string initialText, string confirmText)
+    {
+        var input = new System.Windows.Controls.TextBox { Text = initialText, MaxLength = 64, MinWidth = 320, Margin = new System.Windows.Thickness(0, 8, 0, 0) };
+        var content = new System.Windows.Controls.StackPanel();
+        content.Children.Add(new System.Windows.Controls.TextBlock { Text = message, TextWrapping = System.Windows.TextWrapping.Wrap });
+        content.Children.Add(input);
+
+        var dialog = new ContentDialog
+        {
+            Title = title,
+            Content = content,
+            PrimaryButtonText = confirmText,
+            CloseButtonText = localizer.Get("Write.Confirm.Cancel"),
+            DefaultButton = ContentDialogButton.Primary,
+        };
+
+        return await dialogs.ShowAsync(dialog, CancellationToken.None) == ContentDialogResult.Primary ? input.Text : null;
+    }
+
+    public string? PickFolder(string? startDirectory)
+    {
+        var dialog = new OpenFolderDialog { Title = localizer.Get("Settings.TeamProfiles") };
+        if (!string.IsNullOrEmpty(startDirectory) && Directory.Exists(startDirectory))
+        {
+            dialog.InitialDirectory = startDirectory;
+        }
+
+        return dialog.ShowDialog() == true ? dialog.FolderName : null;
+    }
+
     public async Task<bool> ConfirmAsync(string title, string message, string confirmText)
     {
         var dialog = new ContentDialog

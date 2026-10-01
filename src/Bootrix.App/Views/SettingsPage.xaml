@@ -63,6 +63,22 @@
                 </ui:CardControl.Header>
                 <ui:ToggleSwitch IsChecked="{Binding PlaySoundWhenDone}" />
             </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock Text="{loc:Loc Settings.TeamProfiles}" />
+                        <ui:TextBlock Text="{loc:Loc Settings.TeamProfiles.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                        <ui:TextBlock Text="{Binding TeamProfileDirectory}" FontTypography="Caption" TextTrimming="CharacterEllipsis" Margin="0,4,0,0"
+                                      Visibility="{Binding HasTeamProfileDirectory, Converter={StaticResource BoolToVisibility}}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button Content="{loc:Loc Settings.Browse}" Icon="{ui:SymbolIcon FolderOpen24}" Command="{Binding PickTeamProfileDirectoryCommand}" />
+                    <ui:Button Content="{loc:Loc Settings.Clear}" Margin="8,0,0,0" Command="{Binding ClearTeamProfileDirectoryCommand}"
+                               Visibility="{Binding HasTeamProfileDirectory, Converter={StaticResource BoolToVisibility}}" />
+                </StackPanel>
+            </ui:CardControl>
         </StackPanel>
     </ScrollViewer>
 </Page>

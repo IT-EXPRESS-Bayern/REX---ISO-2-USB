@@ -26,6 +26,12 @@ public interface IDialogService
     /// </summary>
     Task<bool> ConfirmEraseAsync(IReadOnlyList<EraseTarget> targets);
 
+    /// <summary>Asks for a line of text; null when the dialog is dismissed.</summary>
+    Task<string?> PromptAsync(string title, string message, string initialText, string confirmText);
+
+    /// <summary>Lets the user pick a folder; null when the dialog is dismissed.</summary>
+    string? PickFolder(string? startDirectory);
+
     /// <summary>A plain yes/no question with the given button text for "yes".</summary>
     Task<bool> ConfirmAsync(string title, string message, string confirmText);
 

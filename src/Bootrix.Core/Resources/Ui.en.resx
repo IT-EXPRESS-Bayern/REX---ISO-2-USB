@@ -425,4 +425,20 @@
   <data name="Tools.Start.Verify" xml:space="preserve"><value>Check</value></data>
   <data name="Tools.Start.Restore" xml:space="preserve"><value>Restore</value></data>
   <data name="Job.Done" xml:space="preserve"><value>Done after {0}.</value></data>
+  <data name="Profile.Title" xml:space="preserve"><value>Profile</value></data>
+  <data name="Profile.None" xml:space="preserve"><value>(no profile)</value></data>
+  <data name="Profile.Team" xml:space="preserve"><value>team</value></data>
+  <data name="Profile.Save" xml:space="preserve"><value>Save …</value></data>
+  <data name="Profile.Delete" xml:space="preserve"><value>Delete</value></data>
+  <data name="Profile.CopyCli" xml:space="preserve"><value>Copy as command</value></data>
+  <data name="Profile.Copied" xml:space="preserve"><value>The command line was copied to the clipboard.</value></data>
+  <data name="Profile.Prompt.Title" xml:space="preserve"><value>Save profile</value></data>
+  <data name="Profile.Prompt.Text" xml:space="preserve"><value>Name of the profile. If it matches one of your own profiles, that one is replaced.</value></data>
+  <data name="Profile.Prompt.Button" xml:space="preserve"><value>Save</value></data>
+  <data name="Profile.Locks" xml:space="preserve"><value>The profile locks {0} setting(s); they are taken from the profile when writing.</value></data>
+  <data name="Profile.TeamNoDelete" xml:space="preserve"><value>Team profiles cannot be deleted here.</value></data>
+  <data name="Settings.TeamProfiles" xml:space="preserve"><value>Team profile folder</value></data>
+  <data name="Settings.TeamProfiles.Hint" xml:space="preserve"><value>Shared folder with the team's profiles, for example a network drive. The profiles appear on the Write page.</value></data>
+  <data name="Settings.Browse" xml:space="preserve"><value>Choose folder …</value></data>
+  <data name="Settings.Clear" xml:space="preserve"><value>Remove</value></data>
 </root>
