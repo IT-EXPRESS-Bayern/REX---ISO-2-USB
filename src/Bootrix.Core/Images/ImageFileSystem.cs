@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Text;
+using Bootrix.Core.Errors;
 using DiscUtils;
 using DiscUtils.Fat;
 using DiscUtils.Iso9660;
@@ -25,6 +26,8 @@ internal enum ImageFileSystemKind
 internal sealed class ImageFileSystem : IDisposable
 {
     private const int MaxTextBytes = 16 * 1024;
+    private const int MaxDirectories = 50_000;
+    private const int MaxDepth = 40;
 
     private readonly DiscFileSystem _fileSystem;
 
@@ -116,28 +119,45 @@ internal sealed class ImageFileSystem : IDisposable
         }
     }
 
-    /// <summary>Third-party readers signal damaged images with a variety of exception types.</summary>
+    /// <summary>
+    /// Third-party readers signal damaged images with whatever the failing line happens to throw (casts, unimplemented
+    /// allocation types, bad array sizes), so everything but cancellation and our own errors counts as a damaged image.
+    /// </summary>
     internal static bool IsParserFailure(Exception ex) =>
-        ex is IOException or InvalidDataException or InvalidFileSystemException or ArgumentException
-            or InvalidOperationException or NotSupportedException or IndexOutOfRangeException or OverflowException
-            or NullReferenceException or KeyNotFoundException;
+        ex is not (OperationCanceledException or BootrixException or AccessViolationException or StackOverflowException);
 
     private static ImageFileIndex BuildIndex(DiscFileSystem fileSystem, int limit, CancellationToken cancellationToken)
     {
         var index = new ImageFileIndex();
-        var pending = new Stack<DiscDirectoryInfo>();
-        pending.Push(fileSystem.Root);
+        var pending = new Stack<(DiscDirectoryInfo Directory, int Depth)>();
+        pending.Push((fileSystem.Root, 0));
+        var visited = 0;
 
         while (pending.Count > 0)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var directory = pending.Pop();
+            var (directory, depth) = pending.Pop();
+
+            // A damaged FAT or ISO can make a directory contain one of its own ancestors; depth and visit caps end that loop.
+            if (++visited > MaxDirectories)
+            {
+                index.Incomplete = true;
+                return index;
+            }
+
             try
             {
                 foreach (var child in directory.GetDirectories())
                 {
                     index.AddDirectory(child.FullName);
-                    pending.Push(child);
+                    if (depth + 1 < MaxDepth)
+                    {
+                        pending.Push((child, depth + 1));
+                    }
+                    else
+                    {
+                        index.Incomplete = true;
+                    }
                 }
 
                 foreach (var file in directory.GetFiles())
