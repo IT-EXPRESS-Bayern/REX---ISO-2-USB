@@ -1,0 +1,46 @@
+{
+  "trains": {
+    "TrueNAS-SCALE-Angelfish": {
+      "description": "TrueNAS SCALE Angelfish 22.02 Legacy [release], now end of life"
+    },
+    "TrueNAS-SCALE-Bluefin": {
+      "description": "TrueNAS SCALE Bluefin 22.12 Legacy [release], now end of life"
+    },
+    "TrueNAS-SCALE-Cobia": {
+      "description": "TrueNAS SCALE Cobia 23.10 Legacy [release], now end of life"
+    },
+    "TrueNAS-SCALE-Dragonfish": {
+      "description": "TrueNAS SCALE Dragonfish 24.04 [release]"
+    },
+     "TrueNAS-SCALE-ElectricEel": {
+      "description": "TrueNAS SCALE ElectricEel 24.10 [release]"
+    },
+    "TrueNAS-SCALE-Fangtooth": {
+      "description": "TrueNAS SCALE Fangtooth 25.04 [release]"
+    },
+    "TrueNAS-SCALE-Goldeye-BETA": {
+      "description": "TrueNAS SCALE Goldeye 25.10 BETA"
+    },
+    "TrueNAS-SCALE-Goldeye-RC": {
+      "description": "TrueNAS SCALE Goldeye 25.10 RC"
+    },
+    "TrueNAS-SCALE-Goldeye": {
+      "description": "TrueNAS SCALE Goldeye 25.10"
+    }
+  },
+  "trains_redirection": {
+    "TrueNAS-SCALE-Cobia-BETA": "TrueNAS-SCALE-Cobia",
+    "TrueNAS-SCALE-Cobia-RC": "TrueNAS-SCALE-Cobia",
+    "TrueNAS-SCALE-Dragonfish-BETA": "TrueNAS-SCALE-Dragonfish",
+    "TrueNAS-SCALE-Dragonfish-RC": "TrueNAS-SCALE-Dragonfish",
+    "TrueNAS-SCALE-ElectricEel-BETA": "TrueNAS-SCALE-ElectricEel",
+    "TrueNAS-ElectricEel-RC": "TrueNAS-SCALE-ElectricEel",
+    "TrueNAS-SCALE-Fangtooth-BETA": "TrueNAS-SCALE-Fangtooth",
+    "TrueNAS-SCALE-Fangtooth-RC": "TrueNAS-SCALE-Fangtooth",
+    "TrueNAS-Fangtooth-RC": "TrueNAS-SCALE-Fangtooth",
+    "TrueNAS-Fangtooth": "TrueNAS-SCALE-Fangtooth",
+    "TrueNAS-SCALE-Goldeye-BETA": "TrueNAS-SCALE-Goldeye",
+    "TrueNAS-SCALE-Goldeye-RC": "TrueNAS-SCALE-Goldeye"
+  }
+}
+

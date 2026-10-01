@@ -55,6 +55,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task ProxmoxVe() => Check(new ProxmoxProvider(Http), "proxmox-ve", expectSigned: false, architecture: "x64");
 
     [LiveFact]
+    public Task TrueNas() => Check(new TrueNasProvider(Http), "truenas", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
