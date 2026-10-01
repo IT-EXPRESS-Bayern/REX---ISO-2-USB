@@ -37,7 +37,16 @@ public static partial class Md5SumFile
         });
     }
 
-    private static string Normalize(string path) => path.Replace('\\', '/').TrimStart('.').TrimStart('/');
+    private static string Normalize(string path)
+    {
+        var normalized = path.Replace('\\', '/');
+        while (normalized.StartsWith("./", StringComparison.Ordinal))
+        {
+            normalized = normalized[2..];
+        }
+
+        return normalized.TrimStart('/');
+    }
 
     // "<32 hex digits>  ./path" in text mode, "<32 hex digits> *./path" in binary mode.
     [GeneratedRegex(@"^(?<sum>[0-9A-Fa-f]{32})(?<separator>[ \t]+\*?)(?<path>[^\r\n]+)", RegexOptions.Multiline | RegexOptions.CultureInvariant)]
