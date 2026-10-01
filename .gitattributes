@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
 * text=auto
+*.cs text eol=lf diff=csharp
+*.xaml text eol=lf
+*.resx text eol=lf
+*.json text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.sh text eol=lf
+*.bin binary
+*.img binary
+*.iso binary
+*.efi binary

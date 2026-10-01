@@ -1,8 +1,18 @@
-﻿################################################################################
-# Diese .gitignore-Datei wurde von Microsoft(R) Visual Studio automatisch erstellt.
-################################################################################
+# build output
+bin/
+obj/
+artifacts/
+publish/
+TestResults/
+*.binlog
 
-/REX.slnx
-/.vs
-/.vs
-/bin
+# IDE
+.vs/
+.idea/
+*.user
+*.suo
+*.swp
+
+# runtime files
+*.btxdl
+*.log
