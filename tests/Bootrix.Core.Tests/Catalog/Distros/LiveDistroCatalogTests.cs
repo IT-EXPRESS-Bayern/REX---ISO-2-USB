@@ -123,7 +123,7 @@ public class LiveDistroCatalogTests(ITestOutputHelper output)
                     continue;
                 }
 
-                var length = await LiveVendor.ProbeLength(request.Url);
+                var length = await LiveVendor.ProbeFirstWorking(request);
                 if (length < 100_000 || (request.ExpectedSize is { } expected && expected != length))
                 {
                     failures.Add($"{variant.Id} [{arch}]: {request.Url} has {length} bytes, expected {request.ExpectedSize}");

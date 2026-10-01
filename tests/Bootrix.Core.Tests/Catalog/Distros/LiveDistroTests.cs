@@ -109,7 +109,7 @@ public class LiveDistroTests(ITestOutputHelper output)
 
             Assert.NotEmpty(request.ExpectedHashes);
             Assert.All(request.Sources, s => Assert.StartsWith("http", s.Url.Scheme, StringComparison.Ordinal));
-            var length = await LiveVendor.ProbeLength(request.Url);
+            var length = await LiveVendor.ProbeFirstWorking(request);
             Assert.True(length > 100_000, $"{request.Url} announced only {length} bytes.");
             if (request.ExpectedSize is { } expected)
             {

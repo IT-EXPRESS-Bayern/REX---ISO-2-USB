@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Http.Headers;
 using Bootrix.Core.Errors;
+using Bootrix.Core.Net;
 
 namespace Bootrix.Core.Tests.Catalog.Distros.Support;
 
@@ -13,6 +14,28 @@ internal static class LiveVendor
     /// <summary>No route to the vendor from here (offline, blocked); an answer from the vendor, even an error, is not this.</summary>
     public static bool IsOffline(Exception error) =>
         error is BootrixException { Code: ErrorCode.CatalogUnavailable, InnerException: HttpRequestException { StatusCode: null } };
+
+    /// <summary>
+    /// The size of the file at the first source that answers. A mirror that refuses or lags is normal and the downloader
+    /// skips it; only a file that no source serves is a problem.
+    /// </summary>
+    public static async Task<long> ProbeFirstWorking(DownloadRequest request)
+    {
+        var failures = new List<string>();
+        foreach (var source in request.Sources)
+        {
+            try
+            {
+                return await ProbeLength(source.Url);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException or Xunit.Sdk.XunitException)
+            {
+                failures.Add(ex.Message);
+            }
+        }
+
+        throw new Xunit.Sdk.XunitException("No source serves the file: " + string.Join("; ", failures));
+    }
 
     /// <summary>A one-byte range request works where HEAD is refused, and Content-Range carries the full size.</summary>
     public static async Task<long> ProbeLength(Uri url)
