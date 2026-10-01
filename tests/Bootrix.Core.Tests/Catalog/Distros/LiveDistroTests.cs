@@ -58,6 +58,12 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task TrueNas() => Check(new TrueNasProvider(Http), "truenas", expectSigned: false);
 
     [LiveFact]
+    public Task Clonezilla() => Check(new ClonezillaProvider(Http), "clonezilla", expectSigned: true);
+
+    [LiveFact]
+    public Task GPartedLive() => Check(new GPartedLiveProvider(Http), "gparted-live", expectSigned: true);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
