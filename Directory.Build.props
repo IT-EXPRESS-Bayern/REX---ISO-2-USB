@@ -11,6 +11,8 @@
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
     <Authors>IT-EXPRESS Bayern</Authors>
     <Company>IT-EXPRESS Bayern</Company>
     <Product>Bootrix</Product>

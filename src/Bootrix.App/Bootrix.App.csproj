@@ -9,12 +9,17 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <RuntimeIdentifiers>win-x64;win-arm64</RuntimeIdentifiers>
     <StartupObject>Bootrix.App.Program</StartupObject>
+    <ApplicationIcon>..\..\assets\branding\bootrix.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <!-- Program.Main starts the app itself so the same executable can run as the elevated broker. -->
     <ApplicationDefinition Remove="App.xaml" />
     <Page Include="App.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="..\..\assets\branding\bootrix.png" Link="Assets\bootrix.png" />
   </ItemGroup>
 
   <ItemGroup>

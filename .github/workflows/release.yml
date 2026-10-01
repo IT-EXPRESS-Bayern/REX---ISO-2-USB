@@ -1,0 +1,153 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_NOLOGO: '1'
+
+jobs:
+  build:
+    name: Bauen (${{ matrix.rid }})
+    runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        rid: [win-x64, win-arm64]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Version bestimmen
+        id: version
+        shell: pwsh
+        run: |
+          if ($env:GITHUB_REF_TYPE -eq 'tag') {
+            $version = $env:GITHUB_REF_NAME.TrimStart('v')
+          } else {
+            $version = '0.0.0-dev.' + $env:GITHUB_RUN_NUMBER
+          }
+          "value=$version" >> $env:GITHUB_OUTPUT
+      - name: Publish
+        shell: pwsh
+        run: |
+          $common = @('-c', 'Release', '-r', '${{ matrix.rid }}', '--self-contained', '-p:PublishSingleFile=true', '-p:EnableCompressionInSingleFile=true', '-p:PublishReadyToRun=true', '-p:DebugType=none', '-p:Version=${{ steps.version.outputs.value }}', '-o', 'dist/${{ matrix.rid }}')
+          dotnet publish src/Bootrix.App @common
+          dotnet publish src/Bootrix.Cli @common
+      - name: Rauchtest (nur x64 läuft auf dem Runner)
+        if: matrix.rid == 'win-x64'
+        shell: pwsh
+        run: |
+          $process = Start-Process dist/win-x64/Bootrix.exe -ArgumentList '--smoke-test' -PassThru
+          if (-not $process.WaitForExit(120000)) {
+            $process.Kill()
+            throw 'The GUI smoke test timed out.'
+          }
+          if ($process.ExitCode -ne 0) {
+            Get-Content dist/win-x64/smoke-test-error.txt -ErrorAction SilentlyContinue
+            throw "The GUI smoke test failed with exit code $($process.ExitCode)."
+          }
+          dist/win-x64/bootrix-cli.exe tiny profiles
+      - name: Lizenzen und Quellenangaben beilegen
+        shell: pwsh
+        run: |
+          Copy-Item LICENSE, README.md dist/${{ matrix.rid }}/
+          Copy-Item assets/third-party dist/${{ matrix.rid }}/third-party -Recurse
+          Remove-Item dist/${{ matrix.rid }}/*.pdb -ErrorAction SilentlyContinue
+      - uses: actions/upload-artifact@v4
+        id: unsigned
+        with:
+          name: bootrix-${{ matrix.rid }}-unsigned
+          path: dist/${{ matrix.rid }}
+
+  sign:
+    name: Signieren (${{ matrix.rid }})
+    needs: build
+    # Läuft nur, wenn ein SignPath-Konto eingerichtet ist (Variable und Secret im Repository, siehe docs/release.md).
+    if: vars.SIGNPATH_ORGANIZATION_ID != ''
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        rid: [win-x64, win-arm64]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: bootrix-${{ matrix.rid }}-unsigned
+          path: unsigned
+      - uses: actions/upload-artifact@v4
+        id: upload
+        with:
+          name: bootrix-${{ matrix.rid }}-for-signing
+          path: unsigned
+      - uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: bootrix
+          signing-policy-slug: release-signing
+          github-artifact-id: ${{ steps.upload.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+      - uses: actions/upload-artifact@v4
+        with:
+          name: bootrix-${{ matrix.rid }}-signed
+          path: signed
+
+  publish:
+    name: Veröffentlichen
+    needs: [build, sign]
+    # Auch ohne Signierung weitermachen (dann bleibt es bei den unsignierten Dateien).
+    if: always() && needs.build.result == 'success' && (needs.sign.result == 'success' || needs.sign.result == 'skipped')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+      - name: Artefakte holen
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      - name: Archive packen
+        run: |
+          mkdir release
+          for rid in win-x64 win-arm64; do
+            if [ -d "artifacts/bootrix-$rid-signed" ]; then source="artifacts/bootrix-$rid-signed"; else source="artifacts/bootrix-$rid-unsigned"; fi
+            (cd "$source" && zip -qr "$GITHUB_WORKSPACE/release/Bootrix-$rid.zip" .)
+          done
+          (cd release && sha256sum *.zip > SHA256SUMS.txt)
+      - name: Stückliste (SBOM)
+        run: |
+          dotnet tool install --global CycloneDX
+          dotnet-CycloneDX src/Bootrix.App/Bootrix.App.csproj -o release -fn Bootrix-App.cdx.json -F Json
+          dotnet-CycloneDX src/Bootrix.Cli/Bootrix.Cli.csproj -o release -fn Bootrix-Cli.cdx.json -F Json
+      - name: Herkunftsnachweis
+        # In privaten Repositories ohne Enterprise-Plan nicht verfügbar; das Release soll daran nicht scheitern.
+        continue-on-error: true
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: release/*.zip
+      - name: Als Entwurf veröffentlichen
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          files: release/*
+      - name: Ablage für manuelle Läufe
+        if: github.ref_type != 'tag'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-dry-run
+          path: release
