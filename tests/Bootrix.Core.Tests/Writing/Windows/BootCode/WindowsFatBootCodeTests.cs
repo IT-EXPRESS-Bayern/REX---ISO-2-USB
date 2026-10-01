@@ -212,6 +212,14 @@ public sealed class WindowsFatBootCodeTests : IDisposable
         }
 
         Tests.FileSystems.Fat.FatVerifier.Fsck(volume);
+
+        // The BPB is the plan's, not the reference volume's: position, geometry, label and drive number of this medium.
+        var fields = Tests.FileSystems.Fat.FatVerifier.Minfo(volume);
+        Assert.Equal("2048", fields["hidden sectors"]);
+        Assert.Equal("255", fields["heads"]);
+        Assert.Equal("63", fields["sectors per track"]);
+        Assert.Equal("0x80", fields["physical drive id"]);
+        Assert.Equal("FAT32", fields["disk type"]);
     }
 
     // --- caching ------------------------------------------------------------------------------------------

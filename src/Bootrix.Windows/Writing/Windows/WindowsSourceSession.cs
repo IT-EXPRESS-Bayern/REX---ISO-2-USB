@@ -32,6 +32,12 @@ internal static class WindowsSourceSession
             throw new BootrixException(ErrorCode.ImageUnsupported, $"{inspection.Container} is not an optical disc image") { Arguments = [inspection.Container.ToString()] };
         }
 
+        // Only the start of a compressed image was analysed; its file tree is not known.
+        if (inspection.IsPartial)
+        {
+            throw new BootrixException(ErrorCode.ImageUnsupported, "the file tree of a compressed image is not known") { Arguments = ["compressed ISO"] };
+        }
+
         // The stream proves that the user may read the file (the broker opens it with the user's rights), and as long
         // as it stays open nobody can swap the file for another one between this check and the mount below.
         var opened = await images.OpenAsync(imagePath, cancellationToken).ConfigureAwait(false);
@@ -44,6 +50,11 @@ internal static class WindowsSourceSession
             {
                 return mounted;
             }
+        }
+
+        if (!opened.Stream.CanSeek)
+        {
+            throw new BootrixException(ErrorCode.ImageUnsupported, "the image can only be read from start to end") { Arguments = ["streamed ISO"] };
         }
 
         log.LogInformation("Reading the files straight from the image");

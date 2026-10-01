@@ -341,6 +341,17 @@ public sealed class WindowsSetupRunTests : IDisposable
     }
 
     [RequiresXorrisoFact]
+    public async Task ACompressedImageWhoseTreeIsUnknown_IsRefused()
+    {
+        var a = await ArrangeAsync(inspect: inspection => inspection with { IsPartial = true });
+
+        var (result, _) = await WindowsWriteKit.RunAsync(Steps(a));
+
+        Assert.Equal(JobOutcome.Failed, result.Outcome);
+        Assert.Equal(ErrorCode.ImageUnsupported, Assert.IsType<BootrixException>(result.Error).Code);
+    }
+
+    [RequiresXorrisoFact]
     public async Task Customizers_RunAfterTheReadBack_OnceForEveryTarget_WithTheirOwnFolders()
     {
         var first = new FakeCustomizer("first");
