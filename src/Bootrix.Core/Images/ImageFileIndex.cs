@@ -86,10 +86,21 @@ internal sealed partial class ImageFileIndex
         var pattern = PathGlob.Get(glob);
         if (pattern.Exact is { } exact)
         {
-            return _files.ContainsKey(exact) || _directories.Contains(exact) ? [exact] : [];
+            return StoredPath(exact) is { } stored ? [stored] : [];
         }
 
         return _files.Keys.Concat(_directories).Where(pattern.IsMatch);
+    }
+
+    /// <summary>The path as stored (original casing) for a file or directory looked up by its normalised path.</summary>
+    private string? StoredPath(string exact)
+    {
+        if (_files.TryGetValue(exact, out var record))
+        {
+            return record.Path;
+        }
+
+        return _directories.TryGetValue(exact, out var directory) ? directory : null;
     }
 
     public bool Matches(string glob)
@@ -111,7 +122,7 @@ internal sealed partial class ImageFileIndex
         var pattern = PathGlob.Get(glob);
         if (pattern.Exact is { } exact)
         {
-            return _files.ContainsKey(exact) ? [exact] : [];
+            return _files.TryGetValue(exact, out var record) ? [record.Path] : [];
         }
 
         return _files.Keys.Where(pattern.IsMatch);
