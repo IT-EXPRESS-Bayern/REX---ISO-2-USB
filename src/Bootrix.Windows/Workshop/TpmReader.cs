@@ -11,12 +11,17 @@ internal static class TpmReader
 
     /// <summary>
     /// Tbsi_GetDeviceInfo answers whether Windows sees a TPM and of which version, without any privilege. Whether it is enabled and
-    /// activated comes from Win32_Tpm, which only an administrator may query; without it those two stay unknown.
+    /// activated comes from Win32_Tpm, which only an administrator may query; without that those two stay unknown, and an empty
+    /// answer is not taken for "no TPM" because it can just as well be a refused query.
     /// </summary>
-    public static TpmInfo Read(IssueLog issues)
+    public static TpmInfo Read(IssueLog issues, bool elevated)
     {
         var (present, version) = ReadBaseServices(issues);
         var tpm = new TpmInfo { Present = present, SpecVersion = version };
+        if (!elevated)
+        {
+            return tpm;
+        }
 
         try
         {

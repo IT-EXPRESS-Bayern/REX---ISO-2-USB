@@ -30,12 +30,13 @@ public sealed class TargetPcCollector(IDiskService diskService, ILogger<TargetPc
         var smbios = Run(() => issues.Guard("smbios", SmbiosReader.Read, cancellationToken), cancellationToken);
         var firmwareType = Run(() => FirmwareTypeOrUnknown(issues, cancellationToken), cancellationToken);
         var certificates = Run(() => issues.Guard("secure-boot-certificates", FirmwareReader.ReadCertificates, cancellationToken), cancellationToken);
-        var tpm = Run(() => issues.Guard("tpm", () => TpmReader.Read(issues), cancellationToken), cancellationToken);
+        var tpm = Run(() => issues.Guard("tpm", () => TpmReader.Read(issues, elevated), cancellationToken), cancellationToken);
         var memory = Run(() => issues.Guard("memory", MemoryReader.Read, cancellationToken), cancellationToken);
         var disks = Run(() => issues.Guard("disks", () => DiskReader.Read(diskService, issues), cancellationToken), cancellationToken);
         var devices = Run(() => issues.Guard("devices", () => PnpDeviceReader.Read(issues), cancellationToken), cancellationToken);
         var oem = Run(() => issues.Guard("oem-license", () => OemKeyReader.Read(issues), cancellationToken), cancellationToken);
-        var bitLocker = Run(() => issues.Guard("bitlocker", BitLockerReader.Read, cancellationToken), cancellationToken);
+        // The BitLocker provider is for administrators; a standard user may get an empty list instead of an error, which would read as "no BitLocker".
+        var bitLocker = Run(() => elevated ? issues.Guard("bitlocker", BitLockerReader.Read, cancellationToken) : null, cancellationToken);
         var running = Run(() => issues.Guard("running-system", RunningSystemReader.Read, cancellationToken), cancellationToken);
 
         await Task.WhenAll(cpu, smbios, firmwareType, certificates, tpm, memory, disks, devices, oem, bitLocker, running).ConfigureAwait(false);

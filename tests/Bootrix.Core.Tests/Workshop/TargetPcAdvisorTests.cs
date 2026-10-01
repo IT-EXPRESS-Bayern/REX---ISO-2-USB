@@ -613,6 +613,40 @@ public class TargetPcAdvisorTests
     }
 
     [Fact]
+    public void NoInternalDisk_IsReportedAsAPossibleMissingStorageDriver()
+    {
+        var assessment = TargetPcAdvisor.Evaluate(TargetPcProfiles.ModernLaptop() with { Disks = [] });
+
+        Assert.Contains(assessment.Messages, m => m.Key == StorageNoDisk);
+        Assert.Equal(CheckStatus.Unknown, assessment.Windows11Checks.Single(c => c.Requirement == Windows11Requirement.Storage).Status);
+    }
+
+    [Fact]
+    public void Arm32Device_GetsNoMediumAndAClearStatement()
+    {
+        var info = TargetPcProfiles.ModernLaptop() with
+        {
+            Cpu = new CpuInfo { Architecture = CpuArchitecture.Arm, Is64BitCapable = false, PhysicalCores = 4, LogicalProcessors = 4, MaxClockMhz = 1200 },
+        };
+
+        var assessment = TargetPcAdvisor.Evaluate(info);
+
+        Assert.Equal(Windows11Verdict.NotPossible, assessment.Windows11);
+        Assert.Null(assessment.Image);
+        Assert.Null(assessment.SuggestedProfile.Source);
+        Assert.Contains(assessment.Messages, m => m.Key == CpuArm32 && m.Severity == AdvisorSeverity.Critical);
+    }
+
+    [Fact]
+    public void LegacyBootDecision_DoesNotDependOnTheMedium()
+    {
+        // Even when no medium fits, the boot recommendation still describes how this firmware starts.
+        var info = TargetPcProfiles.All["AtomNetbook32Bit"];
+
+        Assert.Equal(TargetFirmware.Bios, TargetPcAdvisor.Evaluate(info).Boot.Firmware);
+    }
+
+    [Fact]
     public void Edition_FromServerRunningSystem_IsNeverSuggested()
     {
         var info = TargetPcProfiles.All["XeonServerWithPerc"];
