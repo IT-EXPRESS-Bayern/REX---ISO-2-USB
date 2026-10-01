@@ -88,6 +88,22 @@ public sealed class PersistenceInstallerTests : IDisposable
         Assert.Equal("/ union\n", ExtTools.Debugfs(HybridImages.Extract(_dir, stick, result.StartBytes, result.LengthBytes, "conf-fs"), "cat /persistence.conf"));
     }
 
+    [ToolFact("xorriso", "blkid")]
+    public void Blkid_SeesAnExtVolumeWithTheLabelAtTheNewPartition()
+    {
+        var iso = HybridImages.BuildIso(_dir, HybridStyle.DebianMbr);
+        var image = File.ReadAllBytes(iso);
+        var stick = Stick(image, rest: 0xFF);
+
+        var result = Install(stick, Request(image.Length));
+
+        var probe = ReferenceTool.Run("blkid", ["-p", "-o", "export", "-O", result.StartBytes.ToString(System.Globalization.CultureInfo.InvariantCulture), stick], null, null, null).StandardOutput;
+
+        // With uninit_bg, which the formatter sets for fast formatting, libblkid reports the ext4 driver as the one to mount it.
+        Assert.Matches("TYPE=ext[34]", probe);
+        Assert.Contains("LABEL=persistence", probe, StringComparison.Ordinal);
+    }
+
     [ToolFact("xorriso", "sfdisk")]
     public void Install_ChangesOnlyTheTableEntry_NotTheImage()
     {
