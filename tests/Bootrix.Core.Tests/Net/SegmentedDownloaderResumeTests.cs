@@ -38,7 +38,7 @@ public class SegmentedDownloaderResumeTests
 
     private static bool IsProbe(RequestRecord request) => request is { RangeStart: 0, RangeEnd: 0 };
 
-    private static void Throttled(FileServer server) => server.Script = _ => Fault.Throttle(2_000_000);
+    private static void Throttled(FileServer server) => server.Script = _ => Fault.Throttle(1_000_000);
 
     [Fact]
     public async Task CancelledDownloadResumesWithoutFetchingFinishedRangesAgain()
@@ -77,7 +77,9 @@ public class SegmentedDownloaderResumeTests
         var content = RandomBytes(6 * MiB);
         using var dir = new TempDirectory();
         await using var server = await FileServer.StartAsync(content);
-        Throttled(server);
+
+        // Slow enough that a busy machine cannot finish the whole file before the cancellation arrives; with nothing left to fetch there would be no request to look at.
+        server.Script = _ => Fault.Throttle(500_000);
         var path = dir.File("a.bin");
         await InterruptAsync(server, path, 2 * MiB);
 
