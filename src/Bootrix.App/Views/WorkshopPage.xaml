@@ -1,0 +1,135 @@
+<Page x:Class="Bootrix.App.Views.WorkshopPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:loc="clr-namespace:Bootrix.App.Localization"
+      Title="{loc:Loc Pc.Title}">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="32,16,32,32" MaxWidth="900" HorizontalAlignment="Stretch">
+            <ui:TextBlock Text="{loc:Loc Pc.Title}" FontTypography="Title" Margin="0,0,0,8" />
+            <ui:TextBlock Text="{loc:Loc Pc.Intro}" Appearance="Secondary" TextWrapping="Wrap" Margin="0,0,0,16" />
+
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,16">
+                <ui:Button Content="{loc:Loc Pc.Analyze}" Icon="{ui:SymbolIcon Desktop24}" Appearance="Primary"
+                           Command="{Binding AnalyzeCommand}" />
+                <ui:ProgressRing IsIndeterminate="True" Width="24" Height="24" Margin="12,0,0,0"
+                                 Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+                <ui:TextBlock Text="{loc:Loc Pc.Running}" Appearance="Secondary" VerticalAlignment="Center" Margin="8,0,0,0"
+                              Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+            </StackPanel>
+
+            <ui:TextBlock Text="{Binding ErrorText}" TextWrapping="Wrap" Margin="0,0,0,16"
+                          Foreground="{DynamicResource SystemFillColorCriticalBrush}">
+                <ui:TextBlock.Style>
+                    <Style TargetType="ui:TextBlock">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ErrorText}" Value="">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ui:TextBlock.Style>
+            </ui:TextBlock>
+
+            <StackPanel Visibility="{Binding HasResult, Converter={StaticResource BoolToVisibility}}">
+                <ui:TextBlock Text="{Binding Verdict}" FontTypography="Subtitle" Margin="0,0,0,12">
+                    <ui:TextBlock.Style>
+                        <Style TargetType="ui:TextBlock">
+                            <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding VerdictKind}" Value="LikelySupported">
+                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding VerdictKind}" Value="NotPossible">
+                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ui:TextBlock.Style>
+                </ui:TextBlock>
+
+                <ItemsControl ItemsSource="{Binding Hardware}" Margin="0,0,0,16">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Text="{Binding Label}" Appearance="Secondary" />
+                                <ui:TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding Requirements}" Margin="0,0,0,16">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Text="{Binding Text}" TextWrapping="Wrap" />
+                                <ui:TextBlock Grid.Column="1" Text="{Binding StatusText}" Margin="16,0,0,0">
+                                    <ui:TextBlock.Style>
+                                        <Style TargetType="ui:TextBlock">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="Pass">
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorSuccessBrush}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="Fail">
+                                                    <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ui:TextBlock.Style>
+                                </ui:TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding Recommendation}" Margin="0,0,0,16">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,2">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="180" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ui:TextBlock Text="{Binding Label}" Appearance="Secondary" />
+                                <ui:TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <ItemsControl ItemsSource="{Binding Notes}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <ui:TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0,0,0,6" FontTypography="Caption">
+                                <ui:TextBlock.Style>
+                                    <Style TargetType="ui:TextBlock">
+                                        <Setter Property="Foreground" Value="{DynamicResource TextFillColorSecondaryBrush}" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Severity}" Value="Warning">
+                                                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCautionBrush}" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Severity}" Value="Error">
+                                                <Setter Property="Foreground" Value="{DynamicResource SystemFillColorCriticalBrush}" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ui:TextBlock.Style>
+                            </ui:TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Page>

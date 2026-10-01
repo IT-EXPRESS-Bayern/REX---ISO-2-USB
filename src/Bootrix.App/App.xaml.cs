@@ -53,6 +53,8 @@ public partial class App : Application
             await Task.Delay(1500);
             window.Navigation.Navigate(typeof(DownloadsPage));
             await Task.Delay(1500);
+            window.Navigation.Navigate(typeof(WorkshopPage));
+            await Task.Delay(500);
             window.Navigation.Navigate(typeof(SettingsPage));
             await Task.Delay(500);
             window.Navigation.Navigate(typeof(WritePage));
@@ -106,9 +108,11 @@ public partial class App : Application
         services.AddSingleton<WriteOptionsViewModel>();
         services.AddSingleton<WriteViewModel>();
         services.AddSingleton<DownloadsViewModel>();
+        services.AddSingleton<WorkshopViewModel>();
         services.AddSingleton<SettingsViewModel>();
         services.AddTransient<WritePage>();
         services.AddTransient<DownloadsPage>();
+        services.AddTransient<WorkshopPage>();
         services.AddTransient<SettingsPage>();
 
         return services.BuildServiceProvider();

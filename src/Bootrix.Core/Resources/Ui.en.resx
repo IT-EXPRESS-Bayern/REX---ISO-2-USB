@@ -223,4 +223,36 @@
   <data name="Src.Dos.MsDos" xml:space="preserve"><value>MS-DOS (download from Microsoft)</value></data>
   <data name="Src.Dos.Accept" xml:space="preserve"><value>I allow downloading the MS-DOS files from Microsoft (their terms apply).</value></data>
   <data name="Plan.Kind.Format" xml:space="preserve"><value>Empty drive</value></data>
+  <data name="Nav.Workshop" xml:space="preserve"><value>Workshop</value></data>
+  <data name="Pc.Title" xml:space="preserve"><value>Analyze this PC</value></data>
+  <data name="Pc.Intro" xml:space="preserve"><value>Checks hardware, firmware and Windows 11 requirements and suggests settings for the media. Nothing is sent or changed.</value></data>
+  <data name="Pc.Analyze" xml:space="preserve"><value>Analyze PC</value></data>
+  <data name="Pc.Running" xml:space="preserve"><value>Analyzing …</value></data>
+  <data name="Pc.Label.Machine" xml:space="preserve"><value>Machine</value></data>
+  <data name="Pc.Label.Cpu" xml:space="preserve"><value>Processor</value></data>
+  <data name="Pc.Label.Memory" xml:space="preserve"><value>Memory</value></data>
+  <data name="Pc.Label.Firmware" xml:space="preserve"><value>Firmware</value></data>
+  <data name="Pc.Label.SecureBoot" xml:space="preserve"><value>Secure Boot</value></data>
+  <data name="Pc.Label.Tpm" xml:space="preserve"><value>TPM</value></data>
+  <data name="Pc.Label.Disks" xml:space="preserve"><value>Drives</value></data>
+  <data name="Pc.Label.System" xml:space="preserve"><value>Installed Windows</value></data>
+  <data name="Pc.Label.Recommendation" xml:space="preserve"><value>Recommended medium</value></data>
+  <data name="Pc.Label.Boot" xml:space="preserve"><value>Recommended boot setup</value></data>
+  <data name="Pc.Unknown" xml:space="preserve"><value>unknown</value></data>
+  <data name="Pc.Firmware.Uefi" xml:space="preserve"><value>UEFI</value></data>
+  <data name="Pc.Firmware.Bios" xml:space="preserve"><value>BIOS (legacy)</value></data>
+  <data name="Pc.SecureBoot.On" xml:space="preserve"><value>on</value></data>
+  <data name="Pc.SecureBoot.Off" xml:space="preserve"><value>off</value></data>
+  <data name="Pc.Tpm.None" xml:space="preserve"><value>not present</value></data>
+  <data name="Pc.Tpm.Disabled" xml:space="preserve"><value>present but turned off</value></data>
+  <data name="Pc.Tpm.Version" xml:space="preserve"><value>version {0}</value></data>
+  <data name="Pc.Cores" xml:space="preserve"><value>{0} cores</value></data>
+  <data name="Pc.Verdict.Unknown" xml:space="preserve"><value>Cannot be judged reliably</value></data>
+  <data name="Pc.Verdict.LikelySupported" xml:space="preserve"><value>Windows 11 should run</value></data>
+  <data name="Pc.Verdict.NeedsBypass" xml:space="preserve"><value>Windows 11 only with bypassed checks</value></data>
+  <data name="Pc.Verdict.NotPossible" xml:space="preserve"><value>Windows 11 is not possible</value></data>
+  <data name="Pc.Status.Pass" xml:space="preserve"><value>met</value></data>
+  <data name="Pc.Status.Fail" xml:space="preserve"><value>not met</value></data>
+  <data name="Pc.Status.Unknown" xml:space="preserve"><value>unknown</value></data>
+  <data name="Pc.Status.NotChecked" xml:space="preserve"><value>not checked</value></data>
 </root>
