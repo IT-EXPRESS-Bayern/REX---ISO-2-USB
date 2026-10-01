@@ -138,4 +138,27 @@ public class DosVolumeTests
         Assert.Equal(["A.TXT", "B.TXT"], fat.GetFiles("\\LOCALE").Select(Path.GetFileName).Order());
         Assert.Equal(["LOCALE"], fat.GetDirectories("\\").Select(Path.GetFileName));
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void MbrAndBpb_DescribeTheSameGeometry_SoCylinderHeadSectorValuesAgree(bool legacy)
+    {
+        var plan = DosImageBuilder.PlanStick(64 * Mib, FileSystemKind.Fat16, legacy);
+        using var disk = DosImageBuilder.BuildStick(plan, FreeDosSystem.Create());
+        var main = plan.Partitions.Single();
+
+        using var stream = disk.Open();
+        var sector = new byte[512];
+        stream.ReadExactly(sector);
+        var entry = Bootrix.Core.Partitioning.Mbr.Parse(sector).Entries[0];
+        stream.Position = main.StartBytes;
+        stream.ReadExactly(sector);
+        var geometry = new Bootrix.Core.Partitioning.ChsGeometry(BitConverter.ToUInt16(sector, 0x1A), BitConverter.ToUInt16(sector, 0x18));
+
+        Assert.Equal(main.StartLba(512), entry.StartLba);
+        Assert.Equal(entry.StartLba, BitConverter.ToUInt32(sector, 0x1C));
+        Assert.Equal(geometry.FromLba(entry.StartLba), entry.FirstChs);
+        Assert.Equal(legacy ? 128u : 2048u, entry.StartLba);
+    }
 }
