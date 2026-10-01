@@ -70,6 +70,12 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task FreeBsd() => Check(new FreeBsdProvider(Http), "freebsd", expectSigned: false, architecture: "x64");
 
     [LiveFact]
+    public Task Rescuezilla() => Check(new RescuezillaProvider(Http), "rescuezilla", expectSigned: false);
+
+    [LiveFact]
+    public Task ZorinOs() => Check(new ZorinOsProvider(Http), "zorin", expectSigned: false);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
