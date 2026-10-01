@@ -174,6 +174,98 @@ public sealed class ImageInspectorIsoTests : IDisposable
         Assert.DoesNotContain(result.Warnings, warning => warning.Severity == WarningSeverity.Error);
     }
 
+    private string PlainIso(string name) => IsoBuilder.Build(_dir, name, new Dictionary<string, byte[]>
+    {
+        ["data.bin"] = new byte[3_000_000],
+        ["a.txt"] = Bytes("a"),
+    });
+
+    /// <summary>Writes the table into the first sectors of an ISO the way a hybrid-making tool (isohybrid, xorriso) would.</summary>
+    [ToolFact("xorriso", "sfdisk")]
+    public async Task Inspect_PlainIsoWithAnSfdiskTableInItsHead_IsHybrid()
+    {
+        var iso = PlainIso("sfdisk-head");
+        var script = _dir.Write("table.sfdisk", Bytes("label: dos\nstart=64, size=4000, type=83, bootable\nstart=4100, size=1000, type=ef\n"));
+        ReferenceTool.Run("sfdisk", ["--wipe", "never", "--quiet", iso], null, script, null);
+
+        var result = await new ImageInspector().InspectAsync(iso);
+        var layout = result.Layout!;
+
+        Assert.True(result.Profile.IsHybrid);
+        Assert.Equal(ImageContainer.Iso9660, result.Container);
+        Assert.False(layout.HasGpt);
+        Assert.False(layout.HasProtectiveMbr);
+        Assert.True(layout.HasEfiSystemPartition);
+        Assert.Collection(
+            layout.MbrPartitions,
+            first =>
+            {
+                Assert.Equal((0x83, 64L, 4000L, true), (first.Type, first.StartSector, first.SectorCount, first.Active));
+            },
+            second =>
+            {
+                Assert.Equal((0xEF, 4100L, 1000L, false), (second.Type, second.StartSector, second.SectorCount, second.Active));
+            });
+        Assert.False(result.HasErrors);
+    }
+
+    [ToolFact("xorriso", "sgdisk")]
+    public async Task Inspect_PlainIsoWithAnSgdiskGptInItsHead_IsHybridWithAValidGpt()
+    {
+        var iso = PlainIso("sgdisk-head");
+
+        // The backup GPT goes to the very end of the file, so room is made after the ISO volume.
+        using (var file = new FileStream(iso, FileMode.Append, FileAccess.Write))
+        {
+            file.Write(new byte[1024 * 1024]);
+        }
+
+        ReferenceTool.Run("sgdisk", "-n", "1:64:4063", "-t", "1:ef00", "-c", "1:Installer", "-n", "2:4096:6000", "-t", "2:8300", "-c", "2:Data", iso);
+
+        var result = await new ImageInspector().InspectAsync(iso);
+        var layout = result.Layout!;
+
+        Assert.True(result.Profile.IsHybrid);
+        Assert.Equal(ImageContainer.Iso9660, result.Container);
+        Assert.True(layout.HasGpt);
+        Assert.True(layout.GptHeaderValid);
+        Assert.True(layout.HasProtectiveMbr);
+        Assert.Equal(512, layout.GptSectorSize);
+        Assert.Equal(new FileInfo(iso).Length / 512 - 1, layout.GptBackupSector);
+        Assert.Equal(["Installer", "Data"], layout.GptPartitions.Select(p => p.Name));
+
+        // sgdisk aligns the start to 1 MiB, so the reference is what it reports back.
+        var reference = ReferenceTool.Run("sgdisk", "-i", "1", iso).StandardOutput;
+        Assert.Contains($"First sector: {layout.GptPartitions[0].FirstSector} ", reference, StringComparison.Ordinal);
+        Assert.Contains($"Last sector: {layout.GptPartitions[0].LastSector} ", reference, StringComparison.Ordinal);
+        Assert.Contains("Partition name: 'Installer'", reference, StringComparison.Ordinal);
+        Assert.True(layout.HasEfiSystemPartition);
+        Assert.False(result.HasErrors);
+    }
+
+    [ToolFact("xorriso", "sgdisk")]
+    public async Task Inspect_IsoWithAGptButWithoutItsBackupAtTheEnd_ReportsTheMissingBackup()
+    {
+        var iso = PlainIso("sgdisk-nobackup");
+        using (var file = new FileStream(iso, FileMode.Append, FileAccess.Write))
+        {
+            file.Write(new byte[1024 * 1024]);
+        }
+
+        ReferenceTool.Run("sgdisk", "-n", "1:64:4063", "-t", "1:ef00", iso);
+
+        // A download cut short, or an image trimmed to the ISO volume, loses the backup header.
+        using (var file = new FileStream(iso, FileMode.Open, FileAccess.Write))
+        {
+            file.SetLength(file.Length - 512 * 1024);
+        }
+
+        var result = await new ImageInspector().InspectAsync(iso);
+
+        Assert.True(result.Layout!.HasGpt);
+        Assert.Contains(result.Warnings, warning => warning.Key == ImageWarningKeys.GptBackupMissing);
+    }
+
     [ToolFact("xorriso")]
     public async Task Inspect_IsoWithMbrSignatureButNoPartitionEntries_IsNotHybrid()
     {
