@@ -30,3 +30,15 @@ damit sich jede Datei nachprüfen lässt.
 | `syslinux-mbr/mbr.bin` | `4746f74bc9b9d3d579c41988a4a29bb7ac932ad1c70470ea779ea161eb799b64` |
 | `syslinux-mbr/mbr_c.bin` | `66a1c4f8c67cff93326d4290a6991ff798fd304ac70c3e10cb192473cf5560f3` |
 | `syslinux-mbr/mbr_f.bin` | `045aa462391c89e05375d7c45f3052fe3ab0472b5b97100e04fc1812621985e2` |
+
+## wimlib/win-x64/libwim-15.dll, wimlib/win-arm64/libwim-15.dll
+
+- Inhalt: wimlib 1.14.5 (Windows-Build der Bibliothek) zum Teilen, Exportieren und Konvertieren von WIM/ESD-Dateien.
+- Herkunft: https://wimlib.net/downloads/wimlib-1.14.5-windows-x86_64-bin.zip und
+  https://wimlib.net/downloads/wimlib-1.14.5-windows-aarch64-bin.zip
+- Lizenz: wimlib steht wahlweise unter GPLv3+ oder (für die Bibliothek libwim) unter LGPLv2.1+. Die Windows-Builds
+  verwenden kein ntfs-3g, daher gilt die LGPL-Option. Lizenztexte: `wimlib/COPYING*.txt`.
+- Quelltext: https://wimlib.net/downloads/wimlib-1.14.5.tar.gz
+- SHA-256 x64: `ba853ee1e3fc5f5798581f02e8e066ba07a0a2375f0bf444fe981431fd508495`
+- SHA-256 arm64: `b34549c6eff728a2f2fe68903a9fde28d8ac717f1b521e7f38b1e4106320c992`
+- Die DLL liegt neben der Programmdatei und wird nicht in die Einzeldatei eingebettet; vor dem Laden wird der Hash geprüft.

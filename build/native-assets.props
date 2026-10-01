@@ -1,0 +1,16 @@
+<Project>
+
+  <!-- wimlib is loaded from the folder of the executable, so it is copied there by build and publish. -->
+  <PropertyGroup>
+    <BootrixNativeRid Condition="'$(RuntimeIdentifier)' == 'win-arm64'">win-arm64</BootrixNativeRid>
+    <BootrixNativeRid Condition="'$(BootrixNativeRid)' == ''">win-x64</BootrixNativeRid>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)..\assets\third-party\wimlib\$(BootrixNativeRid)\libwim-15.dll"
+          Link="libwim-15.dll"
+          CopyToOutputDirectory="PreserveNewest"
+          CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
+
+</Project>
