@@ -11,13 +11,13 @@ internal static partial class CatalogRules
     /// The shape of an SPDX expression without parentheses. "proprietary" and "proprietary-freeware" fit it too, and
     /// not knowing the SPDX list means a new licence in the data needs no code change.
     /// </summary>
-    [GeneratedRegex(@"^[A-Za-z0-9][A-Za-z0-9.+-]*(?: (?:AND|OR|WITH) [A-Za-z0-9][A-Za-z0-9.+-]*)*$")]
+    [GeneratedRegex(@"\A[A-Za-z0-9][A-Za-z0-9.+-]*(?: (?:AND|OR|WITH) [A-Za-z0-9][A-Za-z0-9.+-]*)*\z")]
     private static partial Regex LicensePattern();
 
-    [GeneratedRegex(@"^[a-z0-9]+(?:-[a-z0-9]+)*$")]
+    [GeneratedRegex(@"\A[a-z0-9]+(?:-[a-z0-9]+)*\z")]
     private static partial Regex SlugPattern();
 
-    [GeneratedRegex(@"^[A-Za-z0-9][A-Za-z0-9._-]*$")]
+    [GeneratedRegex(@"\A[A-Za-z0-9][A-Za-z0-9._-]*\z")]
     private static partial Regex VariantIdPattern();
 
     public static BootrixException Invalid(string detail, Exception? inner = null) =>
