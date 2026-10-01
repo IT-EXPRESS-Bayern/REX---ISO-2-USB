@@ -1,0 +1,16 @@
+{
+  "format": 1,
+  "channel": "catalog",
+  "version": 17,
+  "issuedUtc": "2026-10-01T12:00:00Z",
+  "expiresUtc": "2026-10-15T12:00:00Z",
+  "payload": { "distributions": ["ubuntu", "debian"], "minimumAppVersion": "4.0.0" },
+  "artifacts": [
+    {
+      "name": "linux.json",
+      "url": "https://catalog.example.org/linux.json",
+      "size": 48211,
+      "sha256": "3a4c9877b483ab46d7c3fbe165a0db275e1ae3cfe56a5657e5a47c2f99a99d1e"
+    }
+  ]
+}
