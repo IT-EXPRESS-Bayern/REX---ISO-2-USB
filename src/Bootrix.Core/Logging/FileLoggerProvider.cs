@@ -10,15 +10,18 @@ public sealed class FileLoggerProvider : ILoggerProvider
     private readonly string _directory;
     private readonly LogLevel _minimum;
     private readonly TimeProvider _time;
+    private readonly string _prefix;
     private readonly Lock _gate = new();
     private StreamWriter? _writer;
     private DateOnly _currentDay;
 
-    public FileLoggerProvider(string directory, LogLevel minimum = LogLevel.Information, int retainDays = 30, TimeProvider? time = null)
+    /// <param name="filePrefix">Start of the file name. The elevated broker writes its own files, so it never has to append to one that a process with fewer rights created.</param>
+    public FileLoggerProvider(string directory, LogLevel minimum = LogLevel.Information, int retainDays = 30, TimeProvider? time = null, string filePrefix = "bootrix")
     {
         _directory = directory;
         _minimum = minimum;
         _time = time ?? TimeProvider.System;
+        _prefix = filePrefix;
         Directory.CreateDirectory(directory);
         DeleteOldFiles(retainDays);
     }
@@ -37,7 +40,7 @@ public sealed class FileLoggerProvider : ILoggerProvider
     private void DeleteOldFiles(int retainDays)
     {
         var limit = _time.GetUtcNow().UtcDateTime.AddDays(-retainDays);
-        foreach (var file in Directory.EnumerateFiles(_directory, "bootrix-*.log"))
+        foreach (var file in Directory.EnumerateFiles(_directory, $"{_prefix}-*.log"))
         {
             try
             {
@@ -72,7 +75,7 @@ public sealed class FileLoggerProvider : ILoggerProvider
             if (_writer is null || day != _currentDay)
             {
                 _writer?.Dispose();
-                var path = Path.Combine(_directory, $"bootrix-{day:yyyyMMdd}.log");
+                var path = Path.Combine(_directory, $"{_prefix}-{day:yyyyMMdd}.log");
                 var stream = new FileStream(path, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
                 _writer = new StreamWriter(stream, new UTF8Encoding(false)) { AutoFlush = true };
                 _currentDay = day;

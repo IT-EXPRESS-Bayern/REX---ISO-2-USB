@@ -59,4 +59,10 @@ public enum ErrorCode
     BurnFailed = 7003,
     ReadError = 7004,
     CopyProtected = 7005,
+
+    // 8xxx: elevated broker process
+    ElevationDenied = 8001,
+    BrokerStartFailed = 8002,
+    BrokerDisconnected = 8003,
+    BrokerProtocol = 8004,
 }
