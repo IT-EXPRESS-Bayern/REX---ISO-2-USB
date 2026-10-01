@@ -25,6 +25,9 @@ public class LiveDistroTests(ITestOutputHelper output)
     public Task Kubuntu() => Check(new UbuntuProvider(Http), "kubuntu", expectSigned: true);
 
     [LiveFact]
+    public Task LinuxMint() => Check(new LinuxMintProvider(Http), "linuxmint", expectSigned: true);
+
+    [LiveFact]
     public Task Debian() => Check(new DebianProvider(Http), "debian", expectSigned: true);
 
     /// <summary>
