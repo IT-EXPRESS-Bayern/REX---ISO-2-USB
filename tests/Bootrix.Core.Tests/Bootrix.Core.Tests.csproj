@@ -29,6 +29,7 @@
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <None Include="Net\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Catalog\Microsoft\Fixtures\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
