@@ -47,6 +47,8 @@ var root = new RootCommand($"{AppInfo.Name} {AppInfo.Version} - bootable media f
     WriteCommand.Create(Lazily<IEngine>(), Lazily<IDiskService>()),
     WriteCommand.CreateFormat(Lazily<IEngine>(), Lazily<IDiskService>()),
     WriteCommand.CreateDos(Lazily<IEngine>(), Lazily<IDiskService>()),
+    ToolsCommands.CreateVerify(Lazily<IEngine>(), Lazily<IDiskService>()),
+    ToolsCommands.CreateRestore(Lazily<IEngine>(), Lazily<IDiskService>()),
     PlanCommand.Create(services.GetRequiredService<MediaPlanService>(), Lazily<IDiskService>()),
     InspectCommand.Create(services.GetRequiredService<ImageInspector>()),
     CatalogCommand.Create(services.GetRequiredService<CatalogService>()),

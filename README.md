@@ -51,6 +51,7 @@ bootrix-cli write <image> -d <disk> [-d <disk> ...] [--confirm <seriennummer>] [
 bootrix-cli write <image> -d <disk> [--mode extract] [--scheme gpt] [--fs ntfs] [--persistence 4096] [--bypass-tpm] ...
 bootrix-cli format -d <disk> [--fs fat32] [--label NAME]       bootrix-cli dos -d <disk> [--system freedos|msdos]
 bootrix-cli plan <image> --size-gb 16 [--json]                 bootrix-cli inspect <image> [--json]
+bootrix-cli verify <image> -d <disk> [--mode auto|raw|files]   bootrix-cli restore-drive -d <disk> [--scheme mbr|gpt] [--fs fat32]
 bootrix-cli disc drives|burn|rip|erase|eject
 bootrix-cli hash <datei> [-a sha256]
 bootrix-cli catalog products [-f windows|linux|bsd|dos|rescue|utility]
