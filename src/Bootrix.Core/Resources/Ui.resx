@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav.Write" xml:space="preserve"><value>Schreiben</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="Write.Title" xml:space="preserve"><value>Abbild schreiben</value></data>
+  <data name="Write.Image" xml:space="preserve"><value>Abbild</value></data>
+  <data name="Write.ImagePlaceholder" xml:space="preserve"><value>ISO- oder Abbild-Datei hierher ziehen oder auswählen</value></data>
+  <data name="Write.Browse" xml:space="preserve"><value>Auswählen…</value></data>
+  <data name="Write.ImageFilter" xml:space="preserve"><value>Abbilder (*.iso;*.img;*.bin;*.raw)|*.iso;*.img;*.bin;*.raw|Alle Dateien (*.*)|*.*</value></data>
+  <data name="Write.Drives" xml:space="preserve"><value>Ziel-Laufwerke</value></data>
+  <data name="Write.NoDrives" xml:space="preserve"><value>Kein Laufwerk gefunden. Stecke einen USB-Stick ein.</value></data>
+  <data name="Write.Refresh" xml:space="preserve"><value>Aktualisieren</value></data>
+  <data name="Write.Verify" xml:space="preserve"><value>Nach dem Schreiben prüfen</value></data>
+  <data name="Write.Start" xml:space="preserve"><value>Schreiben</value></data>
+  <data name="Write.Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="Write.CancelNow" xml:space="preserve"><value>Sofort abbrechen</value></data>
+  <data name="Write.Selected" xml:space="preserve"><value>{0} Laufwerk(e) ausgewählt</value></data>
+  <data name="Write.NoImage" xml:space="preserve"><value>Wähle zuerst ein Abbild.</value></data>
+  <data name="Write.NoTarget" xml:space="preserve"><value>Wähle mindestens ein Laufwerk.</value></data>
+  <data name="Write.TooSmall" xml:space="preserve"><value>Das Abbild ({0}) passt nicht auf dieses Laufwerk ({1}).</value></data>
+  <data name="Write.Confirm.Title" xml:space="preserve"><value>Alle Daten löschen?</value></data>
+  <data name="Write.Confirm.Body" xml:space="preserve"><value>Auf {0} werden alle Daten unwiderruflich gelöscht.</value></data>
+  <data name="Write.Confirm.Type" xml:space="preserve"><value>Tippe zur Bestätigung „{0}“ ein.</value></data>
+  <data name="Write.Confirm.Ok" xml:space="preserve"><value>Löschen und schreiben</value></data>
+  <data name="Write.Confirm.Cancel" xml:space="preserve"><value>Abbrechen</value></data>
+  <data name="Write.Done" xml:space="preserve"><value>Fertig in {0}.</value></data>
+  <data name="Write.DoneHash" xml:space="preserve"><value>SHA-256 des Abbilds: {0}</value></data>
+  <data name="Write.Failed" xml:space="preserve"><value>Fehlgeschlagen</value></data>
+  <data name="Write.Canceled" xml:space="preserve"><value>Abgebrochen. Das Laufwerk kann unvollständig beschrieben sein.</value></data>
+  <data name="Write.ErrorLine" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Write.ElevationHint" xml:space="preserve"><value>Zum Schreiben fragt Windows nach der Administratorfreigabe.</value></data>
+  <data name="Device.Partitions" xml:space="preserve"><value>{0} Partition(en)</value></data>
+  <data name="Device.Letters" xml:space="preserve"><value>Laufwerke {0}</value></data>
+  <data name="Device.Serial" xml:space="preserve"><value>Seriennr. {0}</value></data>
+  <data name="Protect.SystemDisk" xml:space="preserve"><value>Systemlaufwerk</value></data>
+  <data name="Protect.BootDisk" xml:space="preserve"><value>Startlaufwerk</value></data>
+  <data name="Protect.PagefileDisk" xml:space="preserve"><value>Enthält die Auslagerungsdatei</value></data>
+  <data name="Protect.DynamicDisk" xml:space="preserve"><value>Dynamischer Datenträger</value></data>
+  <data name="Protect.StorageSpaces" xml:space="preserve"><value>Speicherplätze-Mitglied</value></data>
+  <data name="Protect.InternalFixedDisk" xml:space="preserve"><value>Interne Festplatte (Servicemodus nötig)</value></data>
+  <data name="Protect.Virtual" xml:space="preserve"><value>Virtueller Datenträger</value></data>
+  <data name="Protect.NoMedia" xml:space="preserve"><value>Kein Medium eingelegt</value></data>
+  <data name="Protect.WriteProtected" xml:space="preserve"><value>Schreibgeschützt</value></data>
+  <data name="Protect.Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="Settings.Title" xml:space="preserve"><value>Einstellungen</value></data>
+  <data name="Settings.Language" xml:space="preserve"><value>Sprache</value></data>
+  <data name="Settings.Language.System" xml:space="preserve"><value>Systemsprache</value></data>
+  <data name="Settings.Theme" xml:space="preserve"><value>Design</value></data>
+  <data name="Settings.Theme.System" xml:space="preserve"><value>Wie Windows</value></data>
+  <data name="Settings.Theme.Light" xml:space="preserve"><value>Hell</value></data>
+  <data name="Settings.Theme.Dark" xml:space="preserve"><value>Dunkel</value></data>
+  <data name="Settings.ShowUsbHdd" xml:space="preserve"><value>USB-Festplatten und -SSDs anzeigen</value></data>
+  <data name="Settings.ShowUsbHdd.Hint" xml:space="preserve"><value>Windows meldet sie als feste Datenträger; sie werden sonst ausgeblendet.</value></data>
+  <data name="Settings.ServiceMode" xml:space="preserve"><value>Servicemodus (interne Datenträger auswählbar)</value></data>
+  <data name="Settings.ServiceMode.Hint" xml:space="preserve"><value>Für Werkstattarbeit. System-, Start- und Auslagerungsdatenträger bleiben immer gesperrt.</value></data>
+  <data name="Settings.Verify" xml:space="preserve"><value>Nach dem Schreiben standardmäßig prüfen</value></data>
+  <data name="Settings.Sound" xml:space="preserve"><value>Ton nach Abschluss</value></data>
+  <data name="Step.Raw.CheckTargets" xml:space="preserve"><value>Ziele prüfen</value></data>
+  <data name="Step.Raw.Prepare" xml:space="preserve"><value>Datenträger vorbereiten</value></data>
+  <data name="Step.Raw.Write" xml:space="preserve"><value>Abbild schreiben</value></data>
+  <data name="Step.Raw.Finish" xml:space="preserve"><value>Abschließen</value></data>
+  <data name="Step.Raw.Write.Verify" xml:space="preserve"><value>Geschriebene Daten prüfen</value></data>
+  <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Arbeitsordner vorbereiten</value></data>
+  <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Installationsmedium kopieren</value></data>
+  <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Edition extrahieren</value></data>
+  <data name="Step.Tiny.Mount" xml:space="preserve"><value>Abbild einbinden</value></data>
+  <data name="Step.Tiny.RemoveApps" xml:space="preserve"><value>Apps entfernen</value></data>
+  <data name="Step.Tiny.RemoveComponents" xml:space="preserve"><value>Komponenten entfernen</value></data>
+  <data name="Step.Tiny.RemoveFiles" xml:space="preserve"><value>Dateien entfernen</value></data>
+  <data name="Step.Tiny.Registry" xml:space="preserve"><value>Registrierung anpassen</value></data>
+  <data name="Step.Tiny.CleanupStore" xml:space="preserve"><value>Komponentenspeicher bereinigen</value></data>
+  <data name="Step.Tiny.Unmount" xml:space="preserve"><value>Änderungen speichern</value></data>
+  <data name="Step.Tiny.Compress" xml:space="preserve"><value>Abbild komprimieren</value></data>
+  <data name="Step.Tiny.PatchBootImage" xml:space="preserve"><value>Setup-Abbild anpassen</value></data>
+  <data name="Step.Tiny.Unattend" xml:space="preserve"><value>Antwortdatei schreiben</value></data>
+  <data name="Step.Tiny.CreateIso" xml:space="preserve"><value>ISO erstellen</value></data>
+</root>

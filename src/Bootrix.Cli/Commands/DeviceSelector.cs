@@ -36,7 +36,4 @@ internal static class DeviceSelector
             _ => throw new BootrixException(ErrorCode.DeviceChanged, $"'{spec}' matches {matches.Count} disks"),
         };
     }
-
-    /// <summary>The text a user has to type to confirm a destructive write: the serial number, or "disk&lt;N&gt;" when the device has none.</summary>
-    public static string ConfirmationText(StorageDevice device) => string.IsNullOrWhiteSpace(device.Serial) ? $"disk{device.DiskNumber}" : device.Serial!;
 }

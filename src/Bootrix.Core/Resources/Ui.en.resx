@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Nav.Write" xml:space="preserve"><value>Write</value></data>
+  <data name="Nav.Settings" xml:space="preserve"><value>Settings</value></data>
+  <data name="Write.Title" xml:space="preserve"><value>Write an image</value></data>
+  <data name="Write.Image" xml:space="preserve"><value>Image</value></data>
+  <data name="Write.ImagePlaceholder" xml:space="preserve"><value>Drop an ISO or image file here or choose one</value></data>
+  <data name="Write.Browse" xml:space="preserve"><value>Browse…</value></data>
+  <data name="Write.ImageFilter" xml:space="preserve"><value>Images (*.iso;*.img;*.bin;*.raw)|*.iso;*.img;*.bin;*.raw|All files (*.*)|*.*</value></data>
+  <data name="Write.Drives" xml:space="preserve"><value>Target drives</value></data>
+  <data name="Write.NoDrives" xml:space="preserve"><value>No drive found. Plug in a USB stick.</value></data>
+  <data name="Write.Refresh" xml:space="preserve"><value>Refresh</value></data>
+  <data name="Write.Verify" xml:space="preserve"><value>Verify after writing</value></data>
+  <data name="Write.Start" xml:space="preserve"><value>Write</value></data>
+  <data name="Write.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Write.CancelNow" xml:space="preserve"><value>Stop immediately</value></data>
+  <data name="Write.Selected" xml:space="preserve"><value>{0} drive(s) selected</value></data>
+  <data name="Write.NoImage" xml:space="preserve"><value>Choose an image first.</value></data>
+  <data name="Write.NoTarget" xml:space="preserve"><value>Choose at least one drive.</value></data>
+  <data name="Write.TooSmall" xml:space="preserve"><value>The image ({0}) does not fit on this drive ({1}).</value></data>
+  <data name="Write.Confirm.Title" xml:space="preserve"><value>Erase all data?</value></data>
+  <data name="Write.Confirm.Body" xml:space="preserve"><value>Everything on {0} will be erased permanently.</value></data>
+  <data name="Write.Confirm.Type" xml:space="preserve"><value>Type "{0}" to confirm.</value></data>
+  <data name="Write.Confirm.Ok" xml:space="preserve"><value>Erase and write</value></data>
+  <data name="Write.Confirm.Cancel" xml:space="preserve"><value>Cancel</value></data>
+  <data name="Write.Done" xml:space="preserve"><value>Finished in {0}.</value></data>
+  <data name="Write.DoneHash" xml:space="preserve"><value>Image SHA-256: {0}</value></data>
+  <data name="Write.Failed" xml:space="preserve"><value>Failed</value></data>
+  <data name="Write.Canceled" xml:space="preserve"><value>Canceled. The drive may be partly written.</value></data>
+  <data name="Write.ErrorLine" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="Write.ElevationHint" xml:space="preserve"><value>Windows asks for administrator approval before writing.</value></data>
+  <data name="Device.Partitions" xml:space="preserve"><value>{0} partition(s)</value></data>
+  <data name="Device.Letters" xml:space="preserve"><value>Drives {0}</value></data>
+  <data name="Device.Serial" xml:space="preserve"><value>Serial {0}</value></data>
+  <data name="Protect.SystemDisk" xml:space="preserve"><value>System disk</value></data>
+  <data name="Protect.BootDisk" xml:space="preserve"><value>Boot disk</value></data>
+  <data name="Protect.PagefileDisk" xml:space="preserve"><value>Holds the page file</value></data>
+  <data name="Protect.DynamicDisk" xml:space="preserve"><value>Dynamic disk</value></data>
+  <data name="Protect.StorageSpaces" xml:space="preserve"><value>Storage Spaces member</value></data>
+  <data name="Protect.InternalFixedDisk" xml:space="preserve"><value>Internal disk (service mode required)</value></data>
+  <data name="Protect.Virtual" xml:space="preserve"><value>Virtual disk</value></data>
+  <data name="Protect.NoMedia" xml:space="preserve"><value>No media inserted</value></data>
+  <data name="Protect.WriteProtected" xml:space="preserve"><value>Write protected</value></data>
+  <data name="Protect.Offline" xml:space="preserve"><value>Offline</value></data>
+  <data name="Settings.Title" xml:space="preserve"><value>Settings</value></data>
+  <data name="Settings.Language" xml:space="preserve"><value>Language</value></data>
+  <data name="Settings.Language.System" xml:space="preserve"><value>System language</value></data>
+  <data name="Settings.Theme" xml:space="preserve"><value>Theme</value></data>
+  <data name="Settings.Theme.System" xml:space="preserve"><value>Like Windows</value></data>
+  <data name="Settings.Theme.Light" xml:space="preserve"><value>Light</value></data>
+  <data name="Settings.Theme.Dark" xml:space="preserve"><value>Dark</value></data>
+  <data name="Settings.ShowUsbHdd" xml:space="preserve"><value>Show USB hard disks and SSDs</value></data>
+  <data name="Settings.ShowUsbHdd.Hint" xml:space="preserve"><value>Windows reports them as fixed disks, so they are hidden by default.</value></data>
+  <data name="Settings.ServiceMode" xml:space="preserve"><value>Service mode (internal disks selectable)</value></data>
+  <data name="Settings.ServiceMode.Hint" xml:space="preserve"><value>For workshop use. System, boot and page file disks always stay blocked.</value></data>
+  <data name="Settings.Verify" xml:space="preserve"><value>Verify after writing by default</value></data>
+  <data name="Settings.Sound" xml:space="preserve"><value>Sound when finished</value></data>
+  <data name="Step.Raw.CheckTargets" xml:space="preserve"><value>Checking targets</value></data>
+  <data name="Step.Raw.Prepare" xml:space="preserve"><value>Preparing disks</value></data>
+  <data name="Step.Raw.Write" xml:space="preserve"><value>Writing image</value></data>
+  <data name="Step.Raw.Finish" xml:space="preserve"><value>Finishing</value></data>
+  <data name="Step.Raw.Write.Verify" xml:space="preserve"><value>Verifying written data</value></data>
+  <data name="Step.Tiny.Prepare" xml:space="preserve"><value>Preparing work folder</value></data>
+  <data name="Step.Tiny.CopyMedia" xml:space="preserve"><value>Copying installation media</value></data>
+  <data name="Step.Tiny.ExportEdition" xml:space="preserve"><value>Extracting edition</value></data>
+  <data name="Step.Tiny.Mount" xml:space="preserve"><value>Mounting image</value></data>
+  <data name="Step.Tiny.RemoveApps" xml:space="preserve"><value>Removing apps</value></data>
+  <data name="Step.Tiny.RemoveComponents" xml:space="preserve"><value>Removing components</value></data>
+  <data name="Step.Tiny.RemoveFiles" xml:space="preserve"><value>Removing files</value></data>
+  <data name="Step.Tiny.Registry" xml:space="preserve"><value>Adjusting registry</value></data>
+  <data name="Step.Tiny.CleanupStore" xml:space="preserve"><value>Cleaning component store</value></data>
+  <data name="Step.Tiny.Unmount" xml:space="preserve"><value>Saving changes</value></data>
+  <data name="Step.Tiny.Compress" xml:space="preserve"><value>Compressing image</value></data>
+  <data name="Step.Tiny.PatchBootImage" xml:space="preserve"><value>Patching setup image</value></data>
+  <data name="Step.Tiny.Unattend" xml:space="preserve"><value>Writing answer file</value></data>
+  <data name="Step.Tiny.CreateIso" xml:space="preserve"><value>Creating ISO</value></data>
+</root>

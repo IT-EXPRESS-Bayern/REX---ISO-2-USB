@@ -105,7 +105,7 @@ internal static class WriteCommand
 
     private static bool Confirmed(StorageDevice device, string[] confirmations, ConsoleWriter writer)
     {
-        var expected = DeviceSelector.ConfirmationText(device);
+        var expected = DeviceConfirmation.TextFor(device);
         if (confirmations.Length > 0)
         {
             return confirmations.Any(c => string.Equals(c, expected, StringComparison.OrdinalIgnoreCase));
