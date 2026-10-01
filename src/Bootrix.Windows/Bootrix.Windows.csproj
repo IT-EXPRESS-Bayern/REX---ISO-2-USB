@@ -11,4 +11,8 @@
     <ProjectReference Include="..\Bootrix.Core\Bootrix.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Bootrix.Windows.Tests" />
+  </ItemGroup>
+
 </Project>
