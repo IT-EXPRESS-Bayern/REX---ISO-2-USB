@@ -41,7 +41,7 @@ public sealed class RescueCatalogProviderTests : IDisposable
 
         var products = await provider.ListProductsAsync(CancellationToken.None);
 
-        Assert.Equal(provider.Catalog.Document.Entries.Count, products.Count);
+        Assert.Equal(provider.Snapshot.Document.Entries.Count, products.Count);
         Assert.All(products, p =>
         {
             Assert.Equal("rescue", p.Provider);

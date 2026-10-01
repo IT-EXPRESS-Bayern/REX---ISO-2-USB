@@ -53,6 +53,13 @@ public partial class EmbeddedRescueCatalogTests
     }
 
     [Fact]
+    public void IdsAreUniqueForEntriesAndWithinEachEntry()
+    {
+        Assert.Equal(Catalog.Entries.Count, Catalog.Entries.Select(e => e.Id).Distinct(StringComparer.Ordinal).Count());
+        Assert.All(Catalog.Entries, e => Assert.Equal(e.Variants.Count, e.Variants.Select(v => v.Id).Distinct(StringComparer.Ordinal).Count()));
+    }
+
+    [Fact]
     public void EveryCategoryIsRepresented()
     {
         var used = Catalog.Entries.Select(e => e.Category).ToHashSet();

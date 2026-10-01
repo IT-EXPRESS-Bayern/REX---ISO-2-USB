@@ -13,8 +13,8 @@ internal static partial class LibraryFiles
     public const string MetadataExtension = ".json";
     public const string TemporaryExtension = ".tmp";
     public const string DefaultImageExtension = "bin";
-    private const string IncomingPrefix = "incoming-";
 
+    private const string IncomingPrefix = "incoming-";
     private const int HashLength = 64;
     private const int MaxExtensionLength = 8;
     private const int MaxTextLength = 256;

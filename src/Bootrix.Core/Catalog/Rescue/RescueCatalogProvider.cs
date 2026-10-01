@@ -31,7 +31,7 @@ public sealed class RescueCatalogProvider : ICatalogProvider
 
     public string Id => ProviderId;
 
-    public RescueCatalogSnapshot Catalog => _store.Current;
+    public RescueCatalogSnapshot Snapshot => _store.Current;
 
     public RescueEntry? FindEntry(string productId)
     {
@@ -41,7 +41,7 @@ public sealed class RescueCatalogProvider : ICatalogProvider
         }
 
         var id = productId[ProductPrefix.Length..];
-        return Catalog.Document.Entries.FirstOrDefault(e => string.Equals(e.Id, id, StringComparison.Ordinal));
+        return Snapshot.Document.Entries.FirstOrDefault(e => string.Equals(e.Id, id, StringComparison.Ordinal));
     }
 
     /// <summary>The catalog's full description of a variant that this provider listed, or null if the catalog changed in the meantime.</summary>
@@ -58,7 +58,7 @@ public sealed class RescueCatalogProvider : ICatalogProvider
 
         IReadOnlyList<CatalogProduct> products =
         [
-            .. Catalog.Document.Entries.Select(e => new CatalogProduct
+            .. Snapshot.Document.Entries.Select(e => new CatalogProduct
             {
                 Id = ProductPrefix + e.Id,
                 Provider = ProviderId,
