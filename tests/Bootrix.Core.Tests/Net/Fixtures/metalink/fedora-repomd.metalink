@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metalink version="3.0" xmlns="http://www.metalinker.org/" type="dynamic" pubdate="Thu, 01 Oct 2026 05:54:34 GMT" generator="mirrormanager" xmlns:mm0="http://fedorahosted.org/mirrormanager">
+ <files>
+  <file name="repomd.xml">
+   <mm0:timestamp>1776864872</mm0:timestamp>
+   <size>5966</size>
+   <verification>
+    <hash type="md5">1cf3c2711f1251d931b3c037fdc2e5c3</hash>
+    <hash type="sha1">92c2178028ba239b7d218459e999cac2f557a180</hash>
+    <hash type="sha256">da3845427d188097f6fd71b417a039bdfb8efefc4f38ca44b5cbb94f95a18991</hash>
+    <hash type="sha512">2e488027e401c556477e94ec8c85e23fdaa1028c8dd940dcbd63b740140d59f55d1f1017d195cff4ae4e183df86f761db5cd847188567406b58bc71b82da9361</hash>
+   </verification>
+   <resources maxconnections="1">
+    <url protocol="http" type="http" location="US" preference="100">http://cofractal-sea.mm.fcix.net/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="rsync" type="rsync" location="US" preference="100">rsync://cofractal-sea.mm.fcix.net/fedora-enchilada/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="https" type="https" location="US" preference="100">https://cofractal-sea.mm.fcix.net/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="rsync" type="rsync" location="US" preference="99">rsync://ohioix.mm.fcix.net/fedora-enchilada/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="https" type="https" location="US" preference="99">https://ohioix.mm.fcix.net/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="http" type="http" location="US" preference="99">http://ohioix.mm.fcix.net/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="http" type="http" location="US" preference="98">http://mirror.math.princeton.edu/pub/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="rsync" type="rsync" location="US" preference="98">rsync://mirror.math.princeton.edu/pub/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+    <url protocol="http" type="http" location="US" preference="97">http://paducahix.mm.fcix.net/fedora/linux/releases/44/Everything/x86_64/os/repodata/repomd.xml</url>
+   </resources>
+  </file>
+ </files>
+</metalink>
