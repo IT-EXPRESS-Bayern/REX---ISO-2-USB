@@ -107,6 +107,7 @@
   <data name="Plan.Warning.LegacyNeedsBios" xml:space="preserve"><value>The old-BIOS adjustments only concern BIOS boot and are not applied when booting through UEFI only.</value></data>
   <data name="Plan.Warning.LegacyCapacityLimited" xml:space="preserve"><value>For old BIOS versions the partition is limited to {0}; the rest of the device ({1}) stays unused.</value></data>
   <data name="Plan.Warning.GrubNeedsGap" xml:space="preserve"><value>GRUB needs 1 MiB of free space in front of the first partition; the partition start was moved.</value></data>
+  <data name="Plan.Warning.LegacyMisaligned" xml:space="preserve"><value>The device has larger physical sectors; the classic partition start is not on their boundary, which can slow writing down considerably.</value></data>
   <data name="Plan.Warning.NoEfiBootFiles" xml:space="preserve"><value>The image contains no UEFI boot files; UEFI computers probably cannot boot from it.</value></data>
   <data name="Plan.Warning.NoBiosBootFiles" xml:space="preserve"><value>The image contains no BIOS boot files; BIOS computers probably cannot boot from it.</value></data>
   <data name="Plan.Warning.ArmHasNoBios" xml:space="preserve"><value>ARM64 systems have no BIOS; the medium is prepared for UEFI only.</value></data>

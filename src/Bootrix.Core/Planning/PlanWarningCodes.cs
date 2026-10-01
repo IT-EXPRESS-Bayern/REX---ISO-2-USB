@@ -33,6 +33,8 @@ public static class PlanWarningCodes
 
     public const string GrubNeedsGap = Prefix + "GrubNeedsGap";
 
+    public const string LegacyMisaligned = Prefix + "LegacyMisaligned";
+
     public const string NoEfiBootFiles = Prefix + "NoEfiBootFiles";
 
     public const string NoBiosBootFiles = Prefix + "NoBiosBootFiles";

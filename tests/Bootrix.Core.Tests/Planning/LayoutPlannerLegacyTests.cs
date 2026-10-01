@@ -139,6 +139,20 @@ public class LayoutPlannerLegacyTests
     }
 
     [Fact]
+    public void ClassicOffset_OnA512eDrive_WarnsAboutTheMisalignment()
+    {
+        var advancedFormat = Stick(6 * Gib) with { PhysicalSectorSize = 4096 };
+
+        var classic = Plan(WindowsIso(), Legacy with { LegacyStart = LegacyPartitionStart.Lba63 }, advancedFormat);
+        var sixtyFourKib = Plan(WindowsIso(), Legacy, advancedFormat);
+        var plainDisk = Plan(WindowsIso(), Legacy with { LegacyStart = LegacyPartitionStart.Lba63 }, Stick(6 * Gib));
+
+        Assert.Contains(classic.Warnings, w => w.Code == PlanWarningCodes.LegacyMisaligned);
+        Assert.DoesNotContain(sixtyFourKib.Warnings, w => w.Code == PlanWarningCodes.LegacyMisaligned);
+        Assert.DoesNotContain(plainDisk.Warnings, w => w.Code == PlanWarningCodes.LegacyMisaligned);
+    }
+
+    [Fact]
     public void Geometry_IsTheTranslated255By63()
     {
         var plan = Plan(WindowsIso(), Legacy, Stick(6 * Gib));

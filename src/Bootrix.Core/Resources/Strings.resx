@@ -115,6 +115,7 @@
   <data name="Plan.Warning.LegacyNeedsBios" xml:space="preserve"><value>Die Alt-BIOS-Anpassungen betreffen nur den BIOS-Start und werden bei reinem UEFI-Start nicht angewendet.</value></data>
   <data name="Plan.Warning.LegacyCapacityLimited" xml:space="preserve"><value>Für alte BIOS-Versionen wird die Partition auf {0} begrenzt; vom Datenträger ({1}) bleibt der Rest ungenutzt.</value></data>
   <data name="Plan.Warning.GrubNeedsGap" xml:space="preserve"><value>GRUB braucht 1 MiB freien Platz vor der ersten Partition; der Partitionsbeginn wurde angepasst.</value></data>
+  <data name="Plan.Warning.LegacyMisaligned" xml:space="preserve"><value>Der Datenträger hat physisch größere Sektoren; der klassische Partitionsbeginn liegt nicht auf deren Grenze, was das Schreiben deutlich verlangsamen kann.</value></data>
   <data name="Plan.Warning.NoEfiBootFiles" xml:space="preserve"><value>Das Image enthält keine UEFI-Startdateien; UEFI-Rechner können davon vermutlich nicht starten.</value></data>
   <data name="Plan.Warning.NoBiosBootFiles" xml:space="preserve"><value>Das Image enthält keine BIOS-Startdateien; BIOS-Rechner können davon vermutlich nicht starten.</value></data>
   <data name="Plan.Warning.ArmHasNoBios" xml:space="preserve"><value>ARM64-Systeme haben kein BIOS; das Medium wird nur für UEFI vorbereitet.</value></data>
