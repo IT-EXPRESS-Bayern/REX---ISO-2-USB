@@ -39,6 +39,7 @@ public sealed class CompressedImageStream : Stream
         _compressedLength = compressedLength;
         UncompressedLength = structure.UncompressedSize;
         UncompressedLengthHint = structure.SizeHint;
+        Structure = structure;
     }
 
     private CompressedImageStream(
@@ -71,6 +72,9 @@ public sealed class CompressedImageStream : Stream
 
     /// <summary>gzip only: the ISIZE field, which is the size modulo 2^32 of the last member.</summary>
     public long? UncompressedLengthHint { get; }
+
+    /// <summary>What the header and trailer check found; only populated for seekable sources.</summary>
+    internal StructureReport Structure { get; } = StructureReport.Unverifiable();
 
     /// <summary>Name of the zip entry being read.</summary>
     public string? EntryName { get; }
@@ -166,11 +170,11 @@ public sealed class CompressedImageStream : Stream
         }
 
         var structure = StructureReport.Unverifiable();
-        if (source.CanSeek && options.CheckStructure)
+        if (source.CanSeek)
         {
             structure = CompressedStructure.Examine(source, format);
             source.Position = start + input.Pulled;
-            if (structure.Verdict == StructureVerdict.Broken)
+            if (structure.Verdict == StructureVerdict.Broken && options.CheckStructure)
             {
                 throw ImageErrors.Unreadable($"{format} file is incomplete or damaged: {structure.Problem}");
             }

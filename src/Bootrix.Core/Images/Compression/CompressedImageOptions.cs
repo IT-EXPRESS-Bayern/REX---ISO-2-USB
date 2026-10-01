@@ -10,8 +10,8 @@ public sealed record CompressedImageOptions
     public string? EntryName { get; init; }
 
     /// <summary>
-    /// Examine headers and trailers before decoding and refuse truncated files. Turn off to peek into
-    /// a damaged download.
+    /// Refuse files whose headers and trailers show them to be cut off. Turn off to peek into a damaged
+    /// download; the findings are then available as <c>Structure</c>.
     /// </summary>
     public bool CheckStructure { get; init; } = true;
 }
