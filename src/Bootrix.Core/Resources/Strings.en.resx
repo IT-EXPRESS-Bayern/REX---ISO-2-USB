@@ -331,4 +331,12 @@
   <data name="Boot2023.Reason.NoLoader" xml:space="preserve"><value>The medium has no \EFI\BOOT\{0}.</value></data>
   <data name="Boot2023.Reason.Unreadable" xml:space="preserve"><value>{0} is not a valid EFI file.</value></data>
   <data name="Boot2023.Reason.ExtractFailed" xml:space="preserve"><value>The boot files could not be read from boot.wim: {0}</value></data>
+  <data name="Error.DosMbrNotBootable.Cause" xml:space="preserve"><value>After partitioning, the disk has no single active FAT partition ({0}), so a PC could not start from it.</value></data>
+  <data name="Error.DosMbrNotBootable.Action" xml:space="preserve"><value>Unplug the stick, plug it in again and write it again.</value></data>
+  <data name="Error.MsDosImageInvalid.Cause" xml:space="preserve"><value>The file from Microsoft does not contain the expected MS-DOS boot disk image: {0}</value></data>
+  <data name="Error.MsDosImageInvalid.Action" xml:space="preserve"><value>The file was not used. Try again later or choose FreeDOS.</value></data>
+  <data name="Error.MsDosNotDownloaded.Cause" xml:space="preserve"><value>MS-DOS needs system files from Microsoft. They are not part of Bootrix and have not been downloaded yet.</value></data>
+  <data name="Error.MsDosNotDownloaded.Action" xml:space="preserve"><value>Confirm the download of the files from Microsoft (Microsoft's license terms apply) or choose FreeDOS.</value></data>
+  <data name="Error.MsDosFilesUntrusted.Cause" xml:space="preserve"><value>The file {0} from Microsoft does not have the expected size, checksum or signature and was discarded.</value></data>
+  <data name="Error.MsDosFilesUntrusted.Action" xml:space="preserve"><value>Check the internet connection and try again. If it keeps failing, Microsoft has probably changed the file; choose FreeDOS then.</value></data>
 </root>

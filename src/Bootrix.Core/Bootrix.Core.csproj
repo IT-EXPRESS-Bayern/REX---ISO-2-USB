@@ -32,6 +32,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="..\..\assets\third-party\freedos\*.bin;..\..\assets\third-party\freedos\*.SYS;..\..\assets\third-party\freedos\COMMAND.COM"
+                      LogicalName="Bootrix.Core.Assets.FreeDos.%(Filename)%(Extension)" />
+    <EmbeddedResource Include="..\..\assets\third-party\syslinux-mbr\mbr.bin;..\..\assets\third-party\syslinux-mbr\mbr_f.bin"
+                      LogicalName="Bootrix.Core.Assets.DosMbr.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
     <InternalsVisibleTo Include="Bootrix.Core.Tests" />
   </ItemGroup>
 
