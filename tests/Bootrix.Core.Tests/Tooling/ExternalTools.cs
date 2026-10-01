@@ -41,13 +41,16 @@ public static class ExternalTools
 
     public static bool IsAvailable(string name) => Find(name) is not null;
 
-    public static ToolResult Run(string tool, params string[] arguments)
+    public static ToolResult Run(string tool, params string[] arguments) => RunWithInput(tool, null, arguments);
+
+    public static ToolResult RunWithInput(string tool, string? input, params string[] arguments)
     {
         var path = Find(tool) ?? throw new FileNotFoundException($"Tool '{tool}' is not installed.");
         var info = new ProcessStartInfo(path)
         {
             RedirectStandardOutput = true,
             RedirectStandardError = true,
+            RedirectStandardInput = input is not null,
             UseShellExecute = false,
             StandardOutputEncoding = Encoding.UTF8,
             StandardErrorEncoding = Encoding.UTF8,
@@ -61,6 +64,12 @@ public static class ExternalTools
         info.Environment["MTOOLS_SKIP_CHECK"] = "1";
 
         using var process = Process.Start(info) ?? throw new InvalidOperationException($"Could not start {tool}.");
+        if (input is not null)
+        {
+            process.StandardInput.Write(input);
+            process.StandardInput.Close();
+        }
+
         var error = process.StandardError.ReadToEndAsync();
         var output = process.StandardOutput.ReadToEnd();
         process.WaitForExit();
