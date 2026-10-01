@@ -24,6 +24,7 @@ public sealed class WindowsSetupWriter : IMediaWriter
     private readonly IImageStreamProvider _images;
     private readonly IReadOnlyList<IWindowsMediaCustomizer> _customizers;
     private readonly IVbrCodeSource _bootCode;
+    private readonly ITargetOps _ops;
 
     /// <param name="customizers">Changes after the copy; the default is <see cref="WindowsCustomizers.CreateDefault"/>.</param>
     /// <param name="bootCode">Where the BIOS boot code of a FAT32 medium comes from; the default lets Windows format a small virtual disk once.</param>
@@ -32,6 +33,16 @@ public sealed class WindowsSetupWriter : IMediaWriter
         IImageStreamProvider images,
         IReadOnlyList<IWindowsMediaCustomizer>? customizers = null,
         IVbrCodeSource? bootCode = null)
+        : this(services, images, customizers, bootCode, null)
+    {
+    }
+
+    internal WindowsSetupWriter(
+        WriteServices services,
+        IImageStreamProvider images,
+        IReadOnlyList<IWindowsMediaCustomizer>? customizers,
+        IVbrCodeSource? bootCode,
+        ITargetOps? ops)
     {
         ArgumentNullException.ThrowIfNull(services);
         ArgumentNullException.ThrowIfNull(images);
@@ -39,6 +50,7 @@ public sealed class WindowsSetupWriter : IMediaWriter
         _images = images;
         _customizers = customizers ?? WindowsCustomizers.CreateDefault(services);
         _bootCode = bootCode ?? new CachingVbrCodeSource(new ReferenceVolumeVbrSource(services.LoggerFor<ReferenceVolumeVbrSource>()));
+        _ops = ops ?? new PhysicalTargetOps(services);
     }
 
     public string Id => "windows-setup";
@@ -53,11 +65,14 @@ public sealed class WindowsSetupWriter : IMediaWriter
             && image.Kind is ImageKind.WindowsSetup or ImageKind.WindowsPe;
     }
 
+    /// <summary>The state the steps of one write share; only the customizers that apply to this job take part.</summary>
+    internal WindowsSetupRun CreateRun(MediaWriteContext context) =>
+        new(_services, _images, _bootCode, [.. _customizers.Where(customizer => customizer.Applies(context))], _ops, context);
+
     public IReadOnlyList<IJobStep> CreateSteps(MediaWriteContext context)
     {
         ArgumentNullException.ThrowIfNull(context);
-        var customizers = _customizers.Where(customizer => customizer.Applies(context)).ToList();
-        var run = new WindowsSetupRun(_services, _images, _bootCode, customizers, context);
+        var run = CreateRun(context);
 
         var steps = new List<IJobStep>
         {
@@ -77,7 +92,7 @@ public sealed class WindowsSetupWriter : IMediaWriter
             steps.Add(new DelegateJobStep(VerifyKey, 25, run.VerifyAsync));
         }
 
-        if (customizers.Count > 0)
+        if (run.Customizers.Count > 0)
         {
             steps.Add(new DelegateJobStep(CustomizeKey, 5, run.CustomizeAsync));
         }

@@ -130,6 +130,18 @@ public sealed class WindowsMediaCopierTests : IDisposable
     }
 
     [Fact]
+    public async Task ADateBefore1980_IsLeftAloneBecauseFatCannotStoreIt()
+    {
+        var root = WriteSourceTree(new() { ["old.txt"] = [1, 2, 3] });
+        using var source = DirectoryMediaSource.Scan(root);
+        var plan = WindowsCopyPlan.Create([new MediaSourceFile("old.txt", 3, new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc))], [], new WindowsCopyOptions());
+
+        await new WindowsMediaCopier(source, Scratch).CopyAsync(plan, Target, false);
+
+        Assert.True(File.GetLastWriteTimeUtc(Path.Combine(Target, "old.txt")) > new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc));
+    }
+
+    [Fact]
     public async Task ProgressNeverGoesBackwards_AndEndsAtTheTotal()
     {
         var files = SetupMediaFixture.BootFiles();

@@ -21,6 +21,7 @@ public sealed class WindowsMediaCopier(IWindowsMediaSource source, string scratc
     public const int BufferBytes = 4 * 1024 * 1024;
 
     private static readonly TimeSpan ReportInterval = TimeSpan.FromMilliseconds(100);
+    private static readonly DateTime FatEpoch = new(1980, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
     private readonly ILogger _log = logger ?? NullLogger.Instance;
 
@@ -100,7 +101,8 @@ public sealed class WindowsMediaCopier(IWindowsMediaSource source, string scratc
                 };
             }
 
-            if (item.Source.LastWriteUtc is { } modified)
+            // FAT cannot store a date before 1980; an image with zero dates would make the copy fail on its very first file.
+            if (item.Source.LastWriteUtc is { } modified && modified >= FatEpoch)
             {
                 File.SetLastWriteTimeUtc(output.SafeFileHandle, modified);
             }

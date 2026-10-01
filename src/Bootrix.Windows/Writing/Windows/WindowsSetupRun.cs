@@ -23,6 +23,7 @@ internal sealed class WindowsSetupRun(
     IImageStreamProvider images,
     IVbrCodeSource bootCode,
     IReadOnlyList<IWindowsMediaCustomizer> customizers,
+    ITargetOps ops,
     MediaWriteContext write)
 {
     private readonly Dictionary<MediaWriteTarget, TargetRun> _targets = [];
@@ -32,6 +33,8 @@ internal sealed class WindowsSetupRun(
     private ILogger? _logger;
 
     private ILogger Log => _logger ??= services.LoggerFor<WindowsSetupRun>();
+
+    public IReadOnlyList<IWindowsMediaCustomizer> Customizers => customizers;
 
     private string ScratchDirectory => Path.Combine(write.WorkDirectory, "scratch");
 
@@ -113,7 +116,7 @@ internal sealed class WindowsSetupRun(
                 };
             }
 
-            await Task.Run(() => VolumeFlusher.Flush(root), cancellationToken).ConfigureAwait(false);
+            await Task.Run(() => ops.FlushVolume(root), cancellationToken).ConfigureAwait(false);
         }
     }
 
@@ -121,8 +124,8 @@ internal sealed class WindowsSetupRun(
     {
         foreach (var target in write.Targets.Where(target => WindowsMbr.IsNeeded(target.Plan)))
         {
-            var device = services.Disks.Find(target.Device.DevicePath) ?? target.Device;
-            await Task.Run(() => TargetBootRecords.WriteMbr(device, target.Plan, Log, cancellationToken), cancellationToken).ConfigureAwait(false);
+            var device = ops.Current(target);
+            await Task.Run(() => ops.WriteMbr(device, target.Plan, cancellationToken), cancellationToken).ConfigureAwait(false);
         }
 
         context.ReportStep(1);
@@ -140,12 +143,12 @@ internal sealed class WindowsSetupRun(
         {
             var target = write.Targets[index];
             var run = _targets[target];
-            var device = services.Disks.Find(target.Device.DevicePath) ?? target.Device;
+            var device = ops.Current(target);
             var root = MainVolume(target).VolumeGuidPath;
             var targetIndex = index;
             var bytes = run.Copied.Sum(file => file.Length);
 
-            await Task.Run(() => DropCaches(target, device, cancellationToken), cancellationToken).ConfigureAwait(false);
+            await Task.Run(() => ops.DropCaches(target, device, cancellationToken), cancellationToken).ConfigureAwait(false);
 
             var progress = new InlineProgress<long>(done => context.ReportBytes(share.Overall(targetIndex, done, bytes), share.TotalBytes));
             var result = await MediaVerifier.VerifyAsync(root, run.Copied, progress, cancellationToken).ConfigureAwait(false);
@@ -237,42 +240,22 @@ internal sealed class WindowsSetupRun(
         }
     }
 
-    /// <summary>Everything written through the file system goes to the device, then the volumes are dismounted so that reading them back cannot be answered from the cache.</summary>
-    private void DropCaches(MediaWriteTarget target, StorageDevice device, CancellationToken cancellationToken)
-    {
-        foreach (var partition in target.Prepared?.Partitions ?? [])
-        {
-            if (partition.Volume is { } volume)
-            {
-                VolumeFlusher.Flush(volume.VolumeGuidPath);
-            }
-        }
-
-        using (var disk = DiskAccess.Open(device, write: true, cancellationToken))
-        {
-            disk.Flush();
-        }
-
-        // Locking dismounts the file systems; Windows mounts them again from the device when the next file is opened.
-        using var locks = VolumeLockSet.Acquire(device, Log, cancellationToken);
-    }
-
     private void VerifyRecords(MediaWriteTarget target, StorageDevice device, CancellationToken cancellationToken)
     {
         var plan = target.Plan;
         if (WindowsMbr.IsNeeded(plan))
         {
-            TargetBootRecords.VerifyMbr(device, plan, cancellationToken);
+            ops.VerifyMbr(device, plan, cancellationToken);
         }
 
         if (NeedsFatBootCode(plan) && _fatBootCode is { } code)
         {
-            TargetBootRecords.VerifyBootSectors(device, MainPartition(target), code, cancellationToken);
+            ops.VerifyBootSectors(device, MainPartition(target), code, cancellationToken);
         }
 
         foreach (var partition in plan.Partitions.Where(p => p.Role == PartitionRole.UefiNtfs))
         {
-            TargetBootRecords.VerifyPartition(device, partition, UefiNtfsFor(plan.SectorSize), cancellationToken);
+            ops.VerifyPartition(device, partition, UefiNtfsFor(plan.SectorSize), cancellationToken);
         }
     }
 
