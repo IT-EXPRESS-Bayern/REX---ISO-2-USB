@@ -1,0 +1,639 @@
+{
+  "schemaVersion": 1,
+  "version": 1,
+  "issued": "2026-10-01",
+  "expires": "2027-04-01",
+  "entries": [
+    {
+      "id": "systemrescue",
+      "name": "SystemRescue",
+      "description": {
+        "de": "Linux-Rettungssystem zur Reparatur von Systemen und Daten nach einem Absturz: Partitionierung, Dateisystemprüfung, Datensicherung und Netzwerkwerkzeuge.",
+        "en": "Linux rescue system for repairing systems and data after a crash: partitioning, file system checks, backup and network tools."
+      },
+      "category": "linux-live-rescue",
+      "license": "GPL-3.0-only",
+      "homepage": "https://www.system-rescue.org/",
+      "includedTools": ["GParted", "TestDisk", "PhotoRec", "GNU ddrescue", "fsarchiver", "partclone", "chntpw", "nwipe", "Memtest86+"],
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "variants": [
+        {
+          "id": "13.02-amd64",
+          "version": "13.02",
+          "architecture": "x64",
+          "releaseDate": "2026-08-01",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "fileName": "systemrescue-13.02-amd64.iso",
+          "size": 1381629952,
+          "sha256": "ad4d670b72859d887c7960142a9a9d36a3e50446694a035e254442f65d6e7572",
+          "hashSource": "vendor",
+          "signature": {
+            "kind": "open-pgp-detached",
+            "url": "https://www.system-rescue.org/releases/13.02/systemrescue-13.02-amd64.iso.asc",
+            "fingerprint": "0FF1 1AF0 81E9 8345 5948 1203 7091 115F 8320 B897"
+          },
+          "sources": [
+            { "url": "https://fastly-cdn.system-rescue.org/releases/13.02/systemrescue-13.02-amd64.iso", "priority": 1 },
+            { "url": "https://sourceforge.net/projects/systemrescuecd/files/sysresccd-x86/13.02/systemrescue-13.02-amd64.iso/download", "priority": 2 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "rescuezilla",
+      "name": "Rescuezilla",
+      "description": {
+        "de": "Grafische Oberfläche für Clonezilla zum Sichern und Wiederherstellen ganzer Datenträger als Abbild, ohne Kommandozeile.",
+        "en": "Graphical front end for Clonezilla for backing up and restoring whole disks as images, without a command line."
+      },
+      "category": "data-recovery",
+      "license": "GPL-3.0-only",
+      "homepage": "https://rescuezilla.com/",
+      "variants": [
+        {
+          "id": "2.6.2-resolute",
+          "label": "Ubuntu resolute base",
+          "version": "2.6.2",
+          "architecture": "x64",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "fileName": "rescuezilla-2.6.2-64bit.resolute.iso",
+          "size": 1722134528,
+          "sha256": "20dfdad31d3da56b8dd3978159721f19071916f65e123003a850fdecec85ae3f",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.resolute.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        },
+        {
+          "id": "2.6.2-noble",
+          "label": "Ubuntu noble base",
+          "version": "2.6.2",
+          "architecture": "x64",
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "fileName": "rescuezilla-2.6.2-64bit.noble.iso",
+          "size": 1594339328,
+          "sha256": "285db0af83213e2297490ca1cfd74ecd607c3b0a2f1d14e11a8412c0b71eea50",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://github.com/rescuezilla/rescuezilla/releases/download/2.6.2/rescuezilla-2.6.2-64bit.noble.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "clonezilla",
+      "name": "Clonezilla Live",
+      "description": {
+        "de": "Sichert und klont Datenträger und Partitionen und speichert dabei nur belegte Blöcke; Abbilder lassen sich auf gleiche oder andere Datenträger zurückspielen.",
+        "en": "Backs up and clones disks and partitions, saving used blocks only; images can be restored to the same or another disk."
+      },
+      "category": "data-recovery",
+      "license": "GPL-2.0-only",
+      "homepage": "https://clonezilla.org/",
+      "variants": [
+        {
+          "id": "3.3.3-37-amd64",
+          "version": "3.3.3-37",
+          "architecture": "x64",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "yes",
+          "fileName": "clonezilla-live-3.3.3-37-amd64.iso",
+          "size": 505413632,
+          "sha256": "3079458d926a37d3533e5d5caeb61b6e49c2dc69e2c97e0332ef37986bb3414f",
+          "hashSource": "vendor",
+          "signature": {
+            "kind": "open-pgp-checksums",
+            "url": "https://clonezilla.org/downloads/stable/data/CHECKSUMS.TXT.gpg",
+            "signedUrl": "https://clonezilla.org/downloads/stable/data/CHECKSUMS.TXT",
+            "fingerprint": "54C0 821A 4871 5DAF D61B FCAF 6678 57D0 4559 9AFD"
+          },
+          "sources": [
+            { "url": "https://downloads.sourceforge.net/project/clonezilla/clonezilla_live_stable/3.3.3-37/clonezilla-live-3.3.3-37-amd64.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "gparted-live",
+      "name": "GParted Live",
+      "description": {
+        "de": "Startfähiges Abbild des Partitionseditors GParted zum Verkleinern, Verschieben und Kopieren von Partitionen ohne laufendes Betriebssystem.",
+        "en": "Bootable image of the GParted partition editor for resizing, moving and copying partitions without a running operating system."
+      },
+      "category": "partitioning",
+      "license": "GPL-2.0-or-later",
+      "homepage": "https://gparted.org/",
+      "includedTools": ["GParted", "Clonezilla", "Partclone", "FSArchiver", "TestDisk", "GSmartControl"],
+      "variants": [
+        {
+          "id": "1.8.1-6-amd64",
+          "version": "1.8.1-6",
+          "architecture": "x64",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "yes",
+          "fileName": "gparted-live-1.8.1-6-amd64.iso",
+          "size": 720371712,
+          "sha256": "d789c38779f0d6f7026c12f44c2c52a04f66e28a1aea7d51f3045ad1bbf28411",
+          "hashSource": "vendor",
+          "signature": {
+            "kind": "open-pgp-checksums",
+            "url": "https://gparted.org/gparted-live/stable/CHECKSUMS.TXT.gpg",
+            "signedUrl": "https://gparted.org/gparted-live/stable/CHECKSUMS.TXT",
+            "fingerprint": "EB1D D5BF 6F88 820B BCF5 356C 8E94 C9CD 163E 3FB0"
+          },
+          "sources": [
+            { "url": "https://downloads.sourceforge.net/gparted/gparted-live-1.8.1-6-amd64.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "boot-repair-disk",
+      "name": "Boot-Repair-Disk",
+      "description": {
+        "de": "Rettungsdatenträger, der beim Start das Programm Boot-Repair ausführt; behebt die meisten Probleme mit Bootsektor, GRUB und MBR, auf UEFI-Rechnern wie auf alten PCs.",
+        "en": "Rescue disk that runs the Boot-Repair tool at start-up; fixes most boot sector, GRUB and MBR problems on UEFI computers as well as old PCs."
+      },
+      "category": "linux-live-rescue",
+      "license": "GPL-3.0-only",
+      "homepage": "https://sourceforge.net/p/boot-repair-cd/home/Home/",
+      "includedTools": ["Boot-Repair", "OS-Uninstaller", "Boot-Info"],
+      "variants": [
+        {
+          "id": "64bit",
+          "architecture": "x64",
+          "releaseDate": "2023-12-23",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "fileName": "boot-repair-disk-64bit.iso",
+          "size": 2630877184,
+          "sha256": "a07fb31c76c9a4a3136bf3066a2112ea7d385abc41fd654c99c548b0d28fbd74",
+          "hashSource": "pinned",
+          "sources": [
+            { "url": "https://sourceforge.net/projects/boot-repair-cd/files/boot-repair-disk-64bit.iso/download", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "super-grub2-disk",
+      "name": "Super Grub2 Disk",
+      "description": {
+        "de": "Findet und startet installierte Betriebssysteme über GRUB, auch wenn die Startumgebung beschädigt ist.",
+        "en": "Finds and boots installed operating systems through GRUB, even when the boot setup is damaged."
+      },
+      "category": "linux-live-rescue",
+      "license": "GPL-3.0-only",
+      "homepage": "https://www.supergrubdisk.org/",
+      "variants": [
+        {
+          "id": "2.06s4-usb",
+          "label": "USB image, Secure Boot",
+          "version": "2.06s4",
+          "releaseDate": "2024-07-30",
+          "recommended": true,
+          "writeMode": "raw-dd",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "yes",
+          "packaging": "zip",
+          "fileName": "supergrub2-2.06s4-multiarch-USB.img.zip",
+          "size": 24206301,
+          "sha256": "3f690588c5dbe80a9186818f5aa7b7566d4f2dc079f0fd9d06961f62de0d7a0d",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://sourceforge.net/projects/supergrub2/files/2.06s4/super_grub2_disk_2.06s4/supergrub2-2.06s4-multiarch-USB.img.zip/download", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        },
+        {
+          "id": "2.06s4-classic-cd",
+          "label": "CD image, classic",
+          "version": "2.06s4",
+          "releaseDate": "2024-07-30",
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "no",
+          "fileName": "supergrub2-classic-2.06s4-multiarch-CD.iso",
+          "size": 24905728,
+          "sha256": "d26ee9cda990051fbe4c2b367659df5156a130a7ada29f0b4fb0e65928d8ebab",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://sourceforge.net/projects/supergrub2/files/2.06s4/super_grub2_disk_2.06s4/supergrub2-classic-2.06s4-multiarch-CD.iso/download", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "trinity-rescue-kit",
+      "name": "Trinity Rescue Kit",
+      "description": {
+        "de": "Linux-Rettungssystem mit Textmenü für Windows- und Linux-Rechner: Kennwörter zurücksetzen, Virenscanner, Klonen über das Netzwerk.",
+        "en": "Linux rescue system with a text menu for Windows and Linux machines: password reset, virus scanners, cloning over the network."
+      },
+      "category": "linux-live-rescue",
+      "license": "GPL-2.0-or-later",
+      "homepage": "https://trinityhome.org/",
+      "includedTools": ["winpass", "ntfs-3g"],
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.OldImage"],
+      "variants": [
+        {
+          "id": "3.4-build-372",
+          "version": "3.4",
+          "writeMode": "iso-extract",
+          "bios": "yes",
+          "uefi": "no",
+          "secureBoot": "no",
+          "fileName": "trinity-rescue-kit.3.4-build-372.iso",
+          "size": 158404608,
+          "sha256": "3adcbf47947e503026539e0639831eacfcc5d441e47d9c58b248c6db24754b82",
+          "hashSource": "pinned",
+          "sources": [
+            { "url": "https://trinityhome.org/download/trk-3-4-build-372-iso-from-mirror-at-osu-open/", "priority": 1 },
+            { "url": "https://trinityhome.org/download/trk-3-4-build-372-local-download/", "priority": 2 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "hirens-bootcd-pe",
+      "name": "Hiren's BootCD PE",
+      "description": {
+        "de": "Windows-PE-Zusammenstellung mit Programmen für Datenrettung, Partitionierung, Diagnose und Systemreparatur; enthält auch Werkzeuge zum Zurücksetzen von Windows-Kennwörtern.",
+        "en": "Windows PE compilation with tools for data recovery, partitioning, diagnostics and system repair; it also contains tools for resetting Windows passwords."
+      },
+      "category": "win-pe-repair",
+      "license": "proprietary-freeware",
+      "homepage": "https://www.hirensbootcd.org/",
+      "includedTools": ["NT Password Edit", "Windows Login Unlocker", "Lazesoft Password Recovery", "PhotoRec", "TestDisk", "Recuva", "DiskGenius"],
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.WindowsPeTerms", "Hint.Rescue.SecureBootMayRefuse", "Hint.Rescue.ThirdPartyCompilation"],
+      "variants": [
+        {
+          "id": "1.0.8-x64",
+          "version": "1.0.8",
+          "architecture": "x64",
+          "releaseDate": "2024-03-05",
+          "recommended": true,
+          "writeMode": "windows-pe",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "no",
+          "fileName": "HBCD_PE_x64.iso",
+          "size": 3291686912,
+          "sha256": "8c4c670c9c84d6c4b5a9c32e0aa5a55d8c23de851d259207d54679ea774c2498",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://www.hirensbootcd.org/files/HBCD_PE_x64.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "medicat-usb",
+      "name": "Medicat USB",
+      "description": {
+        "de": "Werkzeugsammlung für Diagnose und Reparatur auf einem USB-Stick mit Mehrfachstart, unter anderem mit Werkzeugen zum Entfernen von Kennwörtern, zur Partitionierung und zur Datenrettung; wird über den Installer der Entwickler bezogen.",
+        "en": "Toolkit for diagnostics and recovery on a multiboot USB drive, including tools for removing passwords, partitioning and data recovery; obtained through the developers' installer."
+      },
+      "category": "win-pe-repair",
+      "license": "proprietary-freeware",
+      "homepage": "https://medicatusb.com/",
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.ThirdPartyCompilation"],
+      "variants": [
+        {
+          "id": "installer",
+          "label": "Installer and download page",
+          "writeMode": "none",
+          "manualUrl": "https://medicatusb.com/",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "windows-recovery-drive",
+      "name": "Windows Recovery Drive",
+      "description": {
+        "de": "Windows-eigene Funktion zum Erstellen eines Wiederherstellungslaufwerks auf einem USB-Stick; Bootrix verweist nur auf die Anleitung von Microsoft und erstellt kein eigenes Medium.",
+        "en": "Built-in Windows feature that creates a recovery drive on a USB stick; Bootrix only points to Microsoft's instructions and creates no medium of its own."
+      },
+      "category": "win-pe-repair",
+      "license": "proprietary",
+      "homepage": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/recovery-drive",
+      "variants": [
+        {
+          "id": "microsoft-guide",
+          "label": "Microsoft instructions",
+          "writeMode": "none",
+          "manualUrl": "https://support.microsoft.com/en-us/windows/experience/backup-recovery/recovery-drive",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "windows-adk-winpe",
+      "name": "Windows ADK and WinPE add-on",
+      "description": {
+        "de": "Microsofts Windows ADK mit dem Windows-PE-Add-on, mit dem sich eigene Windows-PE-Rettungsmedien bauen lassen; wird von Microsoft bezogen.",
+        "en": "Microsoft's Windows ADK with the Windows PE add-on for building custom Windows PE rescue media; obtained from Microsoft."
+      },
+      "category": "win-pe-repair",
+      "license": "proprietary",
+      "homepage": "https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install",
+      "hints": ["Hint.Rescue.WindowsPeTerms"],
+      "variants": [
+        {
+          "id": "microsoft-download",
+          "label": "ADK and WinPE add-on",
+          "writeMode": "none",
+          "manualUrl": "https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "kaspersky-rescue-disk",
+      "name": "Kaspersky Rescue Disk",
+      "description": {
+        "de": "Bootfähiger Virenscanner des Herstellers zum Bereinigen von Rechnern, ohne dass das installierte Windows läuft.",
+        "en": "Vendor's bootable antivirus scanner for cleaning computers without running the installed operating system."
+      },
+      "category": "antivirus-rescue",
+      "license": "proprietary-freeware",
+      "homepage": "https://www.kaspersky.com/downloads/free-rescue-disk",
+      "hints": ["Hint.Rescue.SignaturesOutdated"],
+      "variants": [
+        {
+          "id": "download-page",
+          "label": "Vendor download page",
+          "writeMode": "auto",
+          "manualUrl": "https://www.kaspersky.com/downloads/free-rescue-disk",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "drweb-livedisk",
+      "name": "Dr.Web LiveDisk",
+      "description": {
+        "de": "Bootfähiger Virenscanner des Herstellers (Dr.Web CureIt!) zum Bereinigen infizierter Systeme; kopiert auf Wunsch wichtige Daten auf externe Datenträger.",
+        "en": "Vendor's bootable antivirus scanner (Dr.Web CureIt!) for cleaning infected systems; can copy important data to external media."
+      },
+      "category": "antivirus-rescue",
+      "license": "proprietary-freeware",
+      "homepage": "https://free.drweb.com/aid_admin/",
+      "includedTools": ["Dr.Web CureIt!", "Midnight Commander", "Memtest86+"],
+      "hints": ["Hint.Rescue.UpdatedInPlace", "Hint.Rescue.SignaturesOutdated"],
+      "variants": [
+        {
+          "id": "9.0.0-cd",
+          "label": "ISO image",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "fileName": "drweb-livedisk-900-cd.iso",
+          "sources": [
+            { "url": "https://cdn-download.drweb.com/pub/drweb/livedisk/drweb-livedisk-900-cd.iso", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "chntpw",
+      "name": "Offline NT Password & Registry Editor",
+      "description": {
+        "de": "Setzt Kennwörter lokaler Windows-Konten bei ausgeschaltetem System zurück, schaltet gesperrte Konten frei und bearbeitet die Registrierung. Startet von CD oder USB.",
+        "en": "Resets passwords of local Windows accounts while the system is off, unlocks locked accounts and edits the registry. Boots from CD or USB."
+      },
+      "category": "offline-password-reset",
+      "license": "GPL-2.0-only",
+      "homepage": "https://pogostick.net/~pnh/ntpasswd/",
+      "includedTools": ["chntpw", "reged"],
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.OldImage", "Hint.Rescue.ResetBreaksEfs"],
+      "variants": [
+        {
+          "id": "140201-cd",
+          "label": "CD image",
+          "version": "140201",
+          "releaseDate": "2014-02-01",
+          "recommended": true,
+          "writeMode": "iso-extract",
+          "bios": "yes",
+          "uefi": "no",
+          "secureBoot": "no",
+          "packaging": "zip",
+          "fileName": "cd140201.zip",
+          "size": 17337589,
+          "sha256": "c88d86aee55b31827ab4782d05bd44922276955909c43c69f0fb15377cc64374",
+          "hashSource": "pinned",
+          "sources": [
+            { "url": "https://pogostick.net/~pnh/ntpasswd/cd140201.zip", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "ophcrack",
+      "name": "Ophcrack Live CD",
+      "description": {
+        "de": "Ermittelt Kennwörter lokaler Windows-Konten aus den gespeicherten Hashes mithilfe von Rainbow-Tables; startet als Live-CD.",
+        "en": "Recovers passwords of local Windows accounts from the stored hashes using rainbow tables; boots as a live CD."
+      },
+      "category": "offline-password-reset",
+      "license": "GPL-2.0-only AND Apache-2.0",
+      "homepage": "https://ophcrack.sourceforge.io/",
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.OldImage"],
+      "variants": [
+        {
+          "id": "3.6.0-xp",
+          "label": "XP tables",
+          "version": "3.6.0",
+          "releaseDate": "2013-06-04",
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "no",
+          "secureBoot": "no",
+          "fileName": "ophcrack-xp-livecd-3.6.0.iso",
+          "size": 445644800,
+          "sha256": "8e5201efa59b6d5f5bb9de6f0754febf7fc0f5b0fd0e83eaebede77e9f18c1a1",
+          "hashSource": "pinned",
+          "sources": [
+            { "url": "https://sourceforge.net/projects/ophcrack/files/ophcrack-livecd/3.6.0/ophcrack-xp-livecd-3.6.0.iso/download", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        },
+        {
+          "id": "3.6.0-vista",
+          "label": "Vista tables",
+          "version": "3.6.0",
+          "releaseDate": "2013-12-16",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "no",
+          "secureBoot": "no",
+          "fileName": "ophcrack-vista-livecd-3.6.0.iso",
+          "size": 680525824,
+          "sha256": "4ef1ca03510c7003b564b6550526d5048f6c23153145665156e9561080021516",
+          "hashSource": "pinned",
+          "sources": [
+            { "url": "https://sourceforge.net/projects/ophcrack/files/ophcrack-livecd/3.6.0/ophcrack-vista-livecd-3.6.0.iso/download", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "memtest86plus",
+      "name": "Memtest86+",
+      "description": {
+        "de": "Freier, eigenständiger Speichertest für x86-Rechner; läuft ohne Betriebssystem direkt aus BIOS oder UEFI und prüft gründlicher als die Speichertests der Firmware.",
+        "en": "Free, stand-alone memory tester for x86 computers; runs without an operating system, started directly from BIOS or UEFI, and checks more thoroughly than firmware memory tests."
+      },
+      "category": "memory-test",
+      "license": "GPL-2.0-only",
+      "homepage": "https://www.memtest.org/",
+      "hints": ["Hint.Rescue.SecureBootMayRefuse"],
+      "variants": [
+        {
+          "id": "8.10-x86_64",
+          "label": "64-bit",
+          "version": "8.10",
+          "architecture": "x64",
+          "releaseDate": "2026-05-16",
+          "recommended": true,
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "no",
+          "packaging": "zip",
+          "fileName": "mt86plus_8.10_x86_64.iso.zip",
+          "size": 233712,
+          "sha256": "93530005d6ac6a85aa2a49c68604a43c25794ecccf796c4f8849a73a8001be9a",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://www.memtest.org/download/v8.10/mt86plus_8.10_x86_64.iso.zip", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        },
+        {
+          "id": "8.10-i586",
+          "label": "32-bit",
+          "version": "8.10",
+          "architecture": "x86",
+          "releaseDate": "2026-05-16",
+          "writeMode": "iso-hybrid",
+          "bios": "yes",
+          "uefi": "yes",
+          "secureBoot": "no",
+          "packaging": "zip",
+          "fileName": "mt86plus_8.10_i586.iso.zip",
+          "size": 232182,
+          "sha256": "a55c3a12b6c4d4f444df3e5213aa85045f2629eb0d56e98a06cc31ef1cda51b9",
+          "hashSource": "vendor",
+          "sources": [
+            { "url": "https://www.memtest.org/download/v8.10/mt86plus_8.10_i586.iso.zip", "priority": 1 }
+          ],
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "memtest86",
+      "name": "MemTest86",
+      "description": {
+        "de": "Speichertest von PassMark in der kostenlosen Ausgabe; läuft nur im UEFI-Modus. Die Datei wird über die Downloadseite des Herstellers bezogen.",
+        "en": "PassMark's memory tester in its free edition; runs in UEFI mode only. The file is obtained from the vendor's download page."
+      },
+      "category": "memory-test",
+      "license": "proprietary-freeware",
+      "homepage": "https://www.memtest86.com/",
+      "variants": [
+        {
+          "id": "free-edition",
+          "label": "Free edition, USB package",
+          "writeMode": "auto",
+          "bios": "no",
+          "uefi": "yes",
+          "manualUrl": "https://www.memtest86.com/download.htm",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "seatools",
+      "name": "Seagate SeaTools",
+      "description": {
+        "de": "Diagnoseprogramme von Seagate für Festplatten und SSDs; die startfähige Variante wird mit einem Einrichtungsprogramm des Herstellers erstellt.",
+        "en": "Seagate's diagnostic tools for hard drives and SSDs; the bootable version is created with a setup program from the vendor."
+      },
+      "category": "disk-diagnostics",
+      "license": "proprietary-freeware",
+      "homepage": "https://www.seagate.com/support/downloads/seatools/",
+      "variants": [
+        {
+          "id": "bootable-setup",
+          "label": "SeaTools Bootable setup",
+          "writeMode": "none",
+          "manualUrl": "https://www.seagate.com/support/downloads/seatools/",
+          "verifiedOn": "2026-10-01"
+        }
+      ]
+    },
+    {
+      "id": "ubcd",
+      "name": "Ultimate Boot CD",
+      "description": {
+        "de": "Sammlung von Diagnose- und Reparaturprogrammen in einem startfähigen Abbild; die Dateien stehen auf der Seite des Projekts zum Download bereit.",
+        "en": "Collection of diagnostic and repair programs in a bootable image; the files are available from the project's own page."
+      },
+      "category": "disk-diagnostics",
+      "license": "proprietary-freeware",
+      "homepage": "https://www.ultimatebootcd.com/",
+      "notices": ["Notice.AuthorizedUseOnly"],
+      "hints": ["Hint.Rescue.ThirdPartyCompilation"],
+      "variants": [
+        {
+          "id": "download-page",
+          "label": "Project download page",
+          "version": "5.3.9",
+          "writeMode": "auto",
+          "manualUrl": "https://www.ultimatebootcd.com/download.html"
+        }
+      ]
+    }
+  ]
+}

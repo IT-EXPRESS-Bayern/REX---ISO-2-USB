@@ -59,3 +59,16 @@ tools/manifest-signing/sign-manifest.sh manifest.json manifest-key.pem 2026-a > 
 
 Die `keyId` ist der Name, unter dem der öffentliche Schlüssel in Bootrix eingebettet ist. Das Skript braucht nur `bash` und `openssl`.
 `envelope.json` wird auf dem Katalog-Server veröffentlicht.
+
+## Rettungsmedien-Katalog
+
+Der Katalog der Rettungsmedien ist der Kanal `rescue-catalog`; die Katalogdatei (`src/Bootrix.Core/Catalog/Rescue/rescue-catalog.json`) ist die Nutzlast des Manifests und wird unverändert eingebettet:
+
+```bash
+tools/manifest-signing/make-catalog-manifest.sh rescue-catalog.json 12 2026-11-15T12:00:00Z > manifest.json
+tools/manifest-signing/sign-manifest.sh manifest.json manifest-key.pem 2026-a > envelope.json
+```
+
+Die Manifest-Version (hier 12) ist der Rollback-Zähler des Kanals, die `version` in der Katalogdatei zählt die Fassung des Inhalts. Beide müssen mit jeder Veröffentlichung steigen: Bootrix übernimmt einen Katalog nur, wenn er neuer ist als der eingebaute und der zuletzt gespeicherte.
+
+Änderungen am Katalog zuerst in der eingebetteten Datei machen. Die Tests prüfen Schema, Übersetzungen und Hinweise, und `BOOTRIX_LIVE_TESTS=1 dotnet test --filter RescueCatalogLiveTests` vergleicht Adressen, Größen und Prüfsummen mit den Herstellerseiten. Dieselbe Datei wird dann signiert. Ein signierter, aber fehlerhafter Katalog hebt die Rollback-Schwelle trotzdem an und muss mit höherer Version neu veröffentlicht werden.

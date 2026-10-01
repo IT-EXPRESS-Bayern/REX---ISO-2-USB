@@ -27,10 +27,7 @@
     <EmbeddedResource Include="Tiny\Profiles\*.json" />
     <EmbeddedResource Include="Images\Families\*.json" />
     <EmbeddedResource Include="Images\Policy\*.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <InternalsVisibleTo Include="Bootrix.Core.Tests" />
+    <EmbeddedResource Include="Catalog\Rescue\rescue-catalog.json" LogicalName="Bootrix.Core.Catalog.Rescue.rescue-catalog.json" />
   </ItemGroup>
 
   <ItemGroup>

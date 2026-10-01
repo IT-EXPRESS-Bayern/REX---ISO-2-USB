@@ -78,4 +78,12 @@
   <data name="Step.Tiny.PatchBootImage" xml:space="preserve"><value>Setup-Abbild anpassen</value></data>
   <data name="Step.Tiny.Unattend" xml:space="preserve"><value>Antwortdatei schreiben</value></data>
   <data name="Step.Tiny.CreateIso" xml:space="preserve"><value>ISO erstellen</value></data>
+  <data name="Notice.AuthorizedUseOnly" xml:space="preserve"><value>Nur für eigene Geräte und Konten oder mit ausdrücklicher Erlaubnis des Eigentümers verwenden. Das Umgehen des Anmeldeschutzes fremder Geräte kann strafbar sein.</value></data>
+  <data name="Hint.Rescue.OldImage" xml:space="preserve"><value>Älteres Abbild mit sehr altem Linux-Kernel: Neuere Hardware, etwa NVMe-Laufwerke, wird möglicherweise nicht erkannt, und reine UEFI-Rechner starten es nicht.</value></data>
+  <data name="Hint.Rescue.ResetBreaksEfs" xml:space="preserve"><value>Wird das Kennwort eines Kontos zurückgesetzt, sind dessen EFS-verschlüsselte Dateien nicht mehr lesbar. Funktioniert nur bei lokalen Konten.</value></data>
+  <data name="Hint.Rescue.WindowsPeTerms" xml:space="preserve"><value>Windows PE darf laut Microsoft nur für Bereitstellung und Wiederherstellung genutzt werden und startet nach 72 Stunden Dauerbetrieb neu.</value></data>
+  <data name="Hint.Rescue.SecureBootMayRefuse" xml:space="preserve"><value>Der Bootloader ist nicht für Secure Boot geeignet oder wird von aktuellen Sperrlisten abgelehnt. Secure Boot muss für die Nutzung eventuell vorübergehend ausgeschaltet werden.</value></data>
+  <data name="Hint.Rescue.ThirdPartyCompilation" xml:space="preserve"><value>Zusammenstellung aus Programmen Dritter; für jedes Programm gelten dessen eigene Lizenzbedingungen.</value></data>
+  <data name="Hint.Rescue.SignaturesOutdated" xml:space="preserve"><value>Virensignaturen veralten schnell. Nach dem Start zuerst die Signaturen aktualisieren, sofern eine Internetverbindung besteht.</value></data>
+  <data name="Hint.Rescue.UpdatedInPlace" xml:space="preserve"><value>Der Hersteller ersetzt die Datei laufend unter derselben Adresse. Eine feste Prüfsumme gibt es deshalb nicht; die Integrität wird nur über die verschlüsselte Verbindung (HTTPS) gesichert.</value></data>
 </root>
