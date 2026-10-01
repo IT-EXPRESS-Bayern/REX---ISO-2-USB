@@ -26,6 +26,9 @@ public interface IDialogService
     /// </summary>
     Task<bool> ConfirmEraseAsync(IReadOnlyList<EraseTarget> targets);
 
+    /// <summary>Lets the user choose where a ZIP file is saved; null when dismissed.</summary>
+    string? PickSaveZip(string suggestedName);
+
     /// <summary>Asks for a line of text; null when the dialog is dismissed.</summary>
     Task<string?> PromptAsync(string title, string message, string initialText, string confirmText);
 

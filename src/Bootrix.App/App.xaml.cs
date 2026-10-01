@@ -112,6 +112,7 @@ public partial class App : Application
         services.AddSingleton<IContentDialogService, ContentDialogService>();
         services.AddSingleton<IDialogService, DialogService>();
         services.AddSingleton<ThemeSwitcher>();
+        services.AddSingleton<TaskbarProgress>();
         services.AddSingleton<PageNavigator>();
 
         services.AddSingleton<MainWindow>();

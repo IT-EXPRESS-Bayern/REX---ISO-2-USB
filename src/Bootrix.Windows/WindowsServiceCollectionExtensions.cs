@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using Bootrix.Core.Engine;
+using Bootrix.Core.Hosting;
 using Bootrix.Core.Images;
 using Bootrix.Core.Optical;
 using Bootrix.Core.Optical.Jobs;
@@ -15,6 +16,7 @@ using Bootrix.Windows.Engine;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Optical;
 using Bootrix.Windows.Storage;
+using Bootrix.Windows.Diagnostics;
 using Bootrix.Windows.Tiny;
 using Bootrix.Windows.Tools;
 using Bootrix.Windows.Workshop;
@@ -43,6 +45,7 @@ public static class WindowsServiceCollectionExtensions
         services.AddSingleton<TinyBuilder>();
         services.AddSingleton<TinyBuildRunner>();
         services.AddSingleton<IEngineJobHandler, TinyBuildHandler>();
+        services.AddSingleton<IEngineJobHandler>(sp => new CollectLogsHandler(sp.GetRequiredService<BootrixPaths>(), new DirectUserFiles()));
 
         services.AddSingleton<IOpticalService, ImapiOpticalService>();
         services.AddSingleton<BurnImageJob>();

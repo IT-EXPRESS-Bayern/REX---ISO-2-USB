@@ -441,4 +441,17 @@
   <data name="Settings.TeamProfiles.Hint" xml:space="preserve"><value>Shared folder with the team's profiles, for example a network drive. The profiles appear on the Write page.</value></data>
   <data name="Settings.Browse" xml:space="preserve"><value>Choose folder …</value></data>
   <data name="Settings.Clear" xml:space="preserve"><value>Remove</value></data>
+  <data name="Settings.Diagnostics" xml:space="preserve"><value>Diagnostics</value></data>
+  <data name="Settings.Diagnostics.Hint" xml:space="preserve"><value>Packs the latest logs and a description of the system into a ZIP file for support. No images, passwords or machine names are included.</value></data>
+  <data name="Settings.Diagnostics.OpenLogs" xml:space="preserve"><value>Open the log folder</value></data>
+  <data name="Settings.Diagnostics.Create" xml:space="preserve"><value>Create a diagnostics package …</value></data>
+  <data name="Diagnose.Confirm.Title" xml:space="preserve"><value>Logs of the administrator process</value></data>
+  <data name="Diagnose.Confirm.Text" xml:space="preserve"><value>Should the package also contain the logs of the administrator process? Windows asks for administrator rights for that.</value></data>
+  <data name="Diagnose.Confirm.Button" xml:space="preserve"><value>Include</value></data>
+  <data name="Diagnose.Filter" xml:space="preserve"><value>ZIP archive|*.zip</value></data>
+  <data name="Diagnose.Done" xml:space="preserve"><value>The diagnostics package was saved: {0}</value></data>
+  <data name="Diagnose.DoneWithoutBroker" xml:space="preserve"><value>The diagnostics package was saved without the logs of the administrator process: {0}</value></data>
+  <data name="Settings.About" xml:space="preserve"><value>About Bootrix</value></data>
+  <data name="Settings.About.Text" xml:space="preserve"><value>Bootrix {0}  ·  GPL-3.0-or-later  ·  © IT-EXPRESS Bayern</value></data>
+  <data name="Settings.About.Source" xml:space="preserve"><value>Source code and licenses</value></data>
 </root>

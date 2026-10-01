@@ -31,6 +31,7 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
     private readonly Localizer _localizer;
     private readonly ILogger<WriteViewModel> _logger;
     private readonly MediaPlanService _planner;
+    private readonly TaskbarProgress _taskbar;
     private CancellationTokenSource? _previewCts;
     private ImageInspection? _inspection;
     private string? _inspectedPath;
@@ -47,8 +48,10 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
         MediaPlanService planner,
         WriteOptionsViewModel options,
         ProfilesViewModel profiles,
+        TaskbarProgress taskbar,
         ILogger<WriteViewModel> logger)
     {
+        _taskbar = taskbar;
         _planner = planner;
         Options = options;
         Profiles = profiles;
@@ -311,6 +314,15 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
         {
             _soft = _abort = null;
             IsBusy = false;
+            if (HasResult && ResultSeverity == InfoBarSeverity.Error)
+            {
+                _taskbar.Failed();
+            }
+            else
+            {
+                _taskbar.Clear();
+            }
+
             await RefreshAsync();
         }
     }
@@ -458,6 +470,7 @@ public sealed partial class WriteViewModel : ObservableObject, IDisposable
     {
         var view = ProgressView.From(report, _localizer);
         Percent = view.Percent;
+        _taskbar.Set(view.Percent / 100);
         ProgressTitle = view.Title;
         SpeedText = view.Speed;
         RemainingText = view.Remaining;

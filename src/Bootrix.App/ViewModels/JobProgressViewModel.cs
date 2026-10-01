@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 using System.Media;
+using Bootrix.App.Services;
 using Bootrix.Core.Engine;
 using Bootrix.Core.Errors;
 using Bootrix.Core.Jobs;
@@ -18,7 +19,7 @@ namespace Bootrix.App.ViewModels;
 /// Progress, cancellation and result of one running job, for any page that starts jobs. The first cancel asks
 /// the job to stop at the next safe point, the second ends it immediately.
 /// </summary>
-public sealed partial class JobProgressViewModel(SettingsStore settings, Localizer localizer, ILogger<JobProgressViewModel> logger) : ObservableObject
+public sealed partial class JobProgressViewModel(SettingsStore settings, Localizer localizer, TaskbarProgress taskbar, ILogger<JobProgressViewModel> logger) : ObservableObject
 {
     private CancellationTokenSource? _soft;
     private CancellationTokenSource? _abort;
@@ -146,6 +147,14 @@ public sealed partial class JobProgressViewModel(SettingsStore settings, Localiz
         {
             _soft = _abort = null;
             IsBusy = false;
+            if (ResultSeverity == InfoBarSeverity.Error && HasResult)
+            {
+                taskbar.Failed();
+            }
+            else
+            {
+                taskbar.Clear();
+            }
         }
     }
 
@@ -174,6 +183,7 @@ public sealed partial class JobProgressViewModel(SettingsStore settings, Localiz
     {
         var view = ProgressView.From(report, localizer);
         Percent = view.Percent;
+        taskbar.Set(view.Percent / 100);
         ProgressTitle = view.Title;
         SpeedText = view.Speed;
         RemainingText = view.Remaining;

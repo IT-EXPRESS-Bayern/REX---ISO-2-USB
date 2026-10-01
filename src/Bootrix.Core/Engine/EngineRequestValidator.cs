@@ -21,6 +21,7 @@ public static class EngineRequestValidator
         [typeof(WriteImageJobRequest)] = (request, problems) => ValidateWriteImage((WriteImageJobRequest)request, problems),
         [typeof(RestoreDriveJobRequest)] = (request, problems) => ValidateRestore((RestoreDriveJobRequest)request, problems),
         [typeof(VerifyJobRequest)] = (request, problems) => ValidateVerify((VerifyJobRequest)request, problems),
+        [typeof(CollectLogsJobRequest)] = (request, problems) => CollectLogsRequestValidation.Validate((CollectLogsJobRequest)request, problems),
         [typeof(TinyBuildJobRequest)] = (request, problems) => ValidateTinyBuild((TinyBuildJobRequest)request, problems),
     };
 

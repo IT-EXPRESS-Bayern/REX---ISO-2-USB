@@ -79,6 +79,31 @@
                                Visibility="{Binding HasTeamProfileDirectory, Converter={StaticResource BoolToVisibility}}" />
                 </StackPanel>
             </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock Text="{loc:Loc Settings.Diagnostics}" />
+                        <ui:TextBlock Text="{loc:Loc Settings.Diagnostics.Hint}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                        <ui:TextBlock Text="{Binding DiagnosticsStatus}" FontTypography="Caption" TextWrapping="Wrap" Margin="0,4,0,0"
+                                      Visibility="{Binding HasDiagnosticsStatus, Converter={StaticResource BoolToVisibility}}" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <StackPanel Orientation="Horizontal">
+                    <ui:Button Content="{loc:Loc Settings.Diagnostics.OpenLogs}" Icon="{ui:SymbolIcon FolderOpen24}" Command="{Binding OpenLogFolderCommand}" />
+                    <ui:Button Content="{loc:Loc Settings.Diagnostics.Create}" Icon="{ui:SymbolIcon Save24}" Margin="8,0,0,0" Command="{Binding CreateDiagnosticsCommand}" />
+                </StackPanel>
+            </ui:CardControl>
+
+            <ui:CardControl Margin="0,0,0,8">
+                <ui:CardControl.Header>
+                    <StackPanel>
+                        <ui:TextBlock Text="{loc:Loc Settings.About}" />
+                        <ui:TextBlock Text="{Binding AboutText}" Appearance="Secondary" FontTypography="Caption" TextWrapping="Wrap" />
+                    </StackPanel>
+                </ui:CardControl.Header>
+                <ui:Button Content="{loc:Loc Settings.About.Source}" Icon="{ui:SymbolIcon Open24}" Command="{Binding OpenSourcePageCommand}" />
+            </ui:CardControl>
         </StackPanel>
     </ScrollViewer>
 </Page>

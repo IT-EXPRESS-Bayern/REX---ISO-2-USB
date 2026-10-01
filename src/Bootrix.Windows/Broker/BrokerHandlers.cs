@@ -3,6 +3,7 @@ using Bootrix.Core.Engine;
 using Bootrix.Core.Hosting;
 using Bootrix.Core.Jobs;
 using Bootrix.Core.Wim;
+using Bootrix.Windows.Diagnostics;
 using Bootrix.Windows.Dism;
 using Bootrix.Windows.Jobs;
 using Bootrix.Windows.Storage;
@@ -27,6 +28,7 @@ internal static class BrokerHandlers
     /// <summary>One entry per kind of job. Files of the user are only ever touched through <see cref="BrokerHandlerContext.Client"/> or <see cref="BrokerHandlerContext.Images"/>.</summary>
     public static IReadOnlyList<IEngineJobHandler> Create(BrokerHandlerContext context)
     {
+        var userFiles = new ClientUserFiles(context.Client);
         var installTools = new WimInstallImageTools();
         var tiny = new TinyBuildRunner(
             new Core.Tiny.TinyBuilder(new DismImageServicing(), new ImageFileSystem(), installTools, new OscdimgIsoWriter(new OscdimgLocator())),
@@ -34,10 +36,11 @@ internal static class BrokerHandlers
             context.Jobs,
             context.Paths,
             context.Loggers.CreateLogger<TinyBuildRunner>(),
-            new ClientUserFiles(context.Client));
+            userFiles);
 
         return
         [
+            new CollectLogsHandler(context.Paths, userFiles),
             new TinyBuildHandler(tiny),
         ];
     }

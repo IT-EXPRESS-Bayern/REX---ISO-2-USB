@@ -11,6 +11,7 @@ namespace Bootrix.Core.Engine;
 /// handed over by reference. Every new kind of job adds one derived type here.
 /// </summary>
 [JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(CollectLogsJobRequest), "collect-logs")]
 [JsonDerivedType(typeof(RawWriteJobRequest), "raw-write")]
 [JsonDerivedType(typeof(RestoreDriveJobRequest), "restore-drive")]
 [JsonDerivedType(typeof(TinyBuildJobRequest), "tiny-build")]

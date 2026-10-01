@@ -80,6 +80,21 @@ public sealed class DialogService(IContentDialogService dialogs, Localizer local
         return dialog.ShowDialog() == true ? dialog.FileName : null;
     }
 
+    public string? PickSaveZip(string suggestedName)
+    {
+        var dialog = new SaveFileDialog
+        {
+            Title = localizer.Get("Settings.Diagnostics"),
+            Filter = localizer.Get("Diagnose.Filter"),
+            FileName = suggestedName,
+            DefaultExt = ".zip",
+            AddExtension = true,
+            OverwritePrompt = true,
+        };
+
+        return dialog.ShowDialog() == true ? dialog.FileName : null;
+    }
+
     public async Task<string?> PromptAsync(string title, string message, string initialText, string confirmText)
     {
         var input = new System.Windows.Controls.TextBox { Text = initialText, MaxLength = 64, MinWidth = 320, Margin = new System.Windows.Thickness(0, 8, 0, 0) };

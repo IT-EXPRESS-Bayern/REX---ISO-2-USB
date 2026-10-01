@@ -8,10 +8,11 @@ namespace Bootrix.App;
 
 public partial class MainWindow : FluentWindow
 {
-    public MainWindow(IServiceProvider services, IContentDialogService dialogs, ThemeSwitcher theme, PageNavigator navigator)
+    public MainWindow(IServiceProvider services, IContentDialogService dialogs, ThemeSwitcher theme, PageNavigator navigator, TaskbarProgress taskbar)
     {
         InitializeComponent();
 
+        taskbar.Attach(Taskbar);
         dialogs.SetDialogHost(DialogHost);
         Navigation.SetServiceProvider(services);
         theme.Attach(this);
