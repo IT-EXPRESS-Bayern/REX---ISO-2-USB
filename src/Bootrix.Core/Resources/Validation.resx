@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Validation.Account.Empty" xml:space="preserve"><value>Der Kontoname darf nicht leer sein.</value></data>
+  <data name="Validation.Account.TooLong" xml:space="preserve"><value>Der Kontoname darf höchstens 20 Zeichen lang sein.</value></data>
+  <data name="Validation.Account.InvalidChars" xml:space="preserve"><value>Der Kontoname enthält ungültige Zeichen: {0}</value></data>
+  <data name="Validation.Account.OnlyDotsOrSpaces" xml:space="preserve"><value>Der Kontoname darf nicht nur aus Punkten oder Leerzeichen bestehen.</value></data>
+  <data name="Validation.Account.Reserved" xml:space="preserve"><value>Der Name „{0}“ ist von Windows reserviert.</value></data>
+  <data name="Validation.Account.SameAsComputer" xml:space="preserve"><value>Der Kontoname darf nicht dem Computernamen entsprechen.</value></data>
+  <data name="Validation.Computer.Empty" xml:space="preserve"><value>Der Computername darf nicht leer sein.</value></data>
+  <data name="Validation.Computer.TooLong" xml:space="preserve"><value>Der Computername darf höchstens 15 Zeichen lang sein.</value></data>
+  <data name="Validation.Computer.InvalidChars" xml:space="preserve"><value>Der Computername darf nur Buchstaben, Ziffern und Bindestriche enthalten.</value></data>
+  <data name="Validation.Computer.OnlyDigits" xml:space="preserve"><value>Der Computername darf nicht nur aus Ziffern bestehen.</value></data>
+  <data name="Validation.Computer.HyphenEdge" xml:space="preserve"><value>Der Computername darf nicht mit einem Bindestrich beginnen oder enden.</value></data>
+  <data name="Validation.Password.PlainTextInFile" xml:space="preserve"><value>Das Kennwort steht im Klartext in der Antwortdatei auf dem Stick. Entfernen Sie es nach der Installation.</value></data>
+</root>

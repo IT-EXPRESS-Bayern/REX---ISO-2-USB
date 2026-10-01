@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="Validation.Account.Empty" xml:space="preserve"><value>The account name must not be empty.</value></data>
+  <data name="Validation.Account.TooLong" xml:space="preserve"><value>The account name must not be longer than 20 characters.</value></data>
+  <data name="Validation.Account.InvalidChars" xml:space="preserve"><value>The account name contains invalid characters: {0}</value></data>
+  <data name="Validation.Account.OnlyDotsOrSpaces" xml:space="preserve"><value>The account name must not consist only of dots or spaces.</value></data>
+  <data name="Validation.Account.Reserved" xml:space="preserve"><value>The name "{0}" is reserved by Windows.</value></data>
+  <data name="Validation.Account.SameAsComputer" xml:space="preserve"><value>The account name must not equal the computer name.</value></data>
+  <data name="Validation.Computer.Empty" xml:space="preserve"><value>The computer name must not be empty.</value></data>
+  <data name="Validation.Computer.TooLong" xml:space="preserve"><value>The computer name must not be longer than 15 characters.</value></data>
+  <data name="Validation.Computer.InvalidChars" xml:space="preserve"><value>The computer name may only contain letters, digits and hyphens.</value></data>
+  <data name="Validation.Computer.OnlyDigits" xml:space="preserve"><value>The computer name must not consist only of digits.</value></data>
+  <data name="Validation.Computer.HyphenEdge" xml:space="preserve"><value>The computer name must not start or end with a hyphen.</value></data>
+  <data name="Validation.Password.PlainTextInFile" xml:space="preserve"><value>The password is stored in clear text in the answer file on the stick. Remove it after the installation.</value></data>
+</root>

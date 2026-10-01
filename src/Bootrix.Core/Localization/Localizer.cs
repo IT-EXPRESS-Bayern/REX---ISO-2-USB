@@ -10,8 +10,11 @@ namespace Bootrix.Core.Localization;
 /// </summary>
 public sealed class Localizer
 {
-    private static readonly ResourceManager Resources =
-        new("Bootrix.Core.Resources.Strings", typeof(Localizer).Assembly);
+    private static readonly ResourceManager[] Managers =
+    [
+        new("Bootrix.Core.Resources.Strings", typeof(Localizer).Assembly),
+        new("Bootrix.Core.Resources.Validation", typeof(Localizer).Assembly),
+    ];
 
     public static Localizer Default { get; } = new();
 
@@ -25,10 +28,7 @@ public sealed class Localizer
         CultureChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    public string Get(string key)
-    {
-        return Resources.GetString(key, Culture) ?? key;
-    }
+    public string Get(string key) => Lookup(key) ?? key;
 
     public string Get(string key, params object?[] args)
     {
@@ -36,5 +36,19 @@ public sealed class Localizer
         return args.Length == 0 ? format : string.Format(Culture, format, args);
     }
 
-    public bool Has(string key) => Resources.GetString(key, Culture) is not null;
+    public bool Has(string key) => Lookup(key) is not null;
+
+    private string? Lookup(string key)
+    {
+        foreach (var manager in Managers)
+        {
+            var text = manager.GetString(key, Culture);
+            if (text is not null)
+            {
+                return text;
+            }
+        }
+
+        return null;
+    }
 }
