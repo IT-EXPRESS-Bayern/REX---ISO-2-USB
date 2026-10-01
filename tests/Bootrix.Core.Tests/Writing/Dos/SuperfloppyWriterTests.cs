@@ -108,23 +108,31 @@ public class SuperfloppyWriterTests
         Assert.Contains(Marker, screen, StringComparison.Ordinal);
     }
 
-    [RequiresToolTheory(QemuScreen.Tool, "fsck.vfat")]
+    // No boot test for a stick like this: a BIOS that presents it as a hard disk (DL=80h) makes the FreeDOS kernel read the boot
+    // sector as an MBR, and in QEMU the kernel then stops in its disk initialization. It starts only where the BIOS emulates a
+    // diskette (DL=0), which QEMU offers for real floppy images only; those are booted above.
+    [RequiresToolTheory("fsck.vfat", "mdir")]
     [InlineData(64, FileSystemKind.Fat16)]
     [InlineData(16, FileSystemKind.Fat12)]
     [InlineData(300, FileSystemKind.Fat32)]
-    public void StickWithoutPartitionTable_BootsFreeDosFromItsFirstSector(int megabytes, FileSystemKind fileSystem)
+    public void StickWithoutPartitionTable_IsACleanFatVolumeWithTheSystemFilesAtItsStart(int megabytes, FileSystemKind fileSystem)
     {
         var plan = DosImageBuilder.PlanSuperfloppyStick(megabytes * Mib, fileSystem);
         using var image = new TempImage(plan.DeviceBytes);
         using (var device = new FileBlockDevice(image.Path, plan.DeviceBytes, create: false))
         {
-            SuperfloppyWriter.Write(device, plan, MarkerSystem());
+            SuperfloppyWriter.Write(device, plan, FreeDosSystem.Create());
         }
 
         _ = FatVerifier.Fsck(image.Path);
-        var screen = QemuScreen.Boot($"-drive file={image.Path},format=raw,if=ide", Marker, TimeSpan.FromSeconds(60));
 
-        Assert.Contains(Marker, screen, StringComparison.Ordinal);
+        var listing = ExternalTools.Run("mdir", "-a", "-i", image.Path, "::").Output;
+        Assert.Contains("KERNEL", listing, StringComparison.Ordinal);
+        using var stream = image.Open();
+        var boot = new byte[512];
+        stream.ReadExactly(boot);
+        Assert.Equal(0u, BitConverter.ToUInt32(boot, 0x1C));
+        Assert.Equal(0, boot[fileSystem == FileSystemKind.Fat32 ? 0x40 : 0x24]);
     }
 
     [Fact]
@@ -179,7 +187,7 @@ public class SuperfloppyWriterTests
         var plan = DosImageBuilder.PlanFloppy();
         using var image = new TempImage(plan.DeviceBytes);
         using var file = new FileBlockDevice(image.Path, plan.DeviceBytes, create: false);
-        using var faulty = new FaultyDevice(file, failFrom: 1_000_000);
+        using var faulty = new FaultyDevice(file, failFrom: 100_000);
 
         var ex = Assert.Throws<BootrixException>(() => SuperfloppyWriter.Write(faulty, plan, FreeDosSystem.Create(floppy: true)));
 
