@@ -1,0 +1,155 @@
+Dist: warty
+Name: Warty Warthog
+Version: 04.10
+Date: Wed, 20 Oct 2004 07:28:17 UTC
+Supported: 0
+Description: This is the warty warthog release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/warty-updates/Release
+
+Dist: focal
+Name: Focal Fossa
+Version: 20.04.5 LTS
+Date: Thu, 23 April 2020 20:04:00 UTC
+Supported: 1
+Description: This is the 20.04.5 LTS release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/focal-updates/Release
+ReleaseNotes: http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/dist-upgrader-all/current/ReleaseAnnouncement
+ReleaseNotesHtml: http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/dist-upgrader-all/current/ReleaseAnnouncement.html
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/dist-upgrader-all/current/focal.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/focal-updates/main/dist-upgrader-all/current/focal.tar.gz.gpg
+
+Dist: groovy
+Name: Groovy Gorilla
+Version: 20.10
+Date: Thu, 22 October 2020 20:22:00 UTC
+Supported: 0
+Description: This is the 20.10 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/groovy-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/groovy-updates/main/dist-upgrader-all/current/groovy.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/groovy-updates/main/dist-upgrader-all/current/groovy.tar.gz.gpg
+
+Dist: hirsute
+Name: Hirsute Hippo
+Version: 21.04
+Date: Thu, 22 April 2021 21:04:00 UTC
+Supported: 0
+Description: This is the 21.04 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/hirsute-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/hirsute-updates/main/dist-upgrader-all/current/hirsute.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/hirsute-updates/main/dist-upgrader-all/current/hirsute.tar.gz.gpg
+
+Dist: impish
+Name: Impish Indri
+Version: 21.10
+Date: Thu, 14 October 2021 21:10:00 UTC
+Supported: 0
+Description: This is the 21.10 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/impish-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/impish-updates/main/dist-upgrader-all/current/impish.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/impish-updates/main/dist-upgrader-all/current/impish.tar.gz.gpg
+
+Dist: jammy
+Name: Jammy Jellyfish
+Version: 22.04.5 LTS
+Date: Thu, 21 April 2022 22:04:00 UTC
+Supported: 1
+Description: This is the 22.04.5 LTS release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/jammy-updates/Release
+ReleaseNotes: http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/ReleaseAnnouncement
+ReleaseNotesHtml: http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/ReleaseAnnouncement.html
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/jammy.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/jammy-updates/main/dist-upgrader-all/current/jammy.tar.gz.gpg
+
+Dist: kinetic
+Name: Kinetic Kudu
+Version: 22.10
+Date: Thu, 20 October 2022 22:10:00 UTC
+Supported: 0
+Description: This is the 22.10 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/kinetic-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/kinetic/main/dist-upgrader-all/current/kinetic.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/kinetic/main/dist-upgrader-all/current/kinetic.tar.gz.gpg
+
+Dist: lunar
+Name: Lunar Lobster
+Version: 23.04
+Date: Thu, 20 April 2023 23:04:00 UTC
+Supported: 0
+Description: This is the 23.04 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/lunar-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/lunar-updates/main/dist-upgrader-all/current/lunar.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/lunar-updates/main/dist-upgrader-all/current/lunar.tar.gz.gpg
+
+Dist: mantic
+Name: Mantic Minotaur
+Version: 23.10
+Date: Thu, 12 October 2023 23:10:00 UTC
+Supported: 0
+Description: This is the 23.10 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/mantic-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/mantic-updates/main/dist-upgrader-all/current/mantic.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/mantic-updates/main/dist-upgrader-all/current/mantic.tar.gz.gpg
+
+Dist: noble
+Name: Noble Numbat
+Version: 24.04.5 LTS
+Date: Thu, 25 April 2024 00:24:04 UTC
+Supported: 1
+Description: This is the 24.04.5 LTS release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/noble-updates/Release
+ReleaseNotes: http://archive.ubuntu.com/ubuntu/dists/noble-updates/main/dist-upgrader-all/current/ReleaseAnnouncement
+ReleaseNotesHtml: http://archive.ubuntu.com/ubuntu/dists/noble-updates/main/dist-upgrader-all/current/ReleaseAnnouncement.html
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/noble-updates/main/dist-upgrader-all/current/noble.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/noble-updates/main/dist-upgrader-all/current/noble.tar.gz.gpg
+
+Dist: oracular
+Name: Oracular Oriole
+Version: 24.10
+Date: Thu, 10 October 2024 00:24:10 UTC
+Supported: 0
+Description: This is the 24.10 release
+Release-File: http://old-releases.ubuntu.com/ubuntu/dists/oracular-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://old-releases.ubuntu.com/ubuntu/dists/oracular-updates/main/dist-upgrader-all/current/oracular.tar.gz
+UpgradeToolSignature: http://old-releases.ubuntu.com/ubuntu/dists/oracular-updates/main/dist-upgrader-all/current/oracular.tar.gz.gpg
+
+Dist: plucky
+Name: Plucky Puffin
+Version: 25.04
+Date: Thu, 17 April 2025 00:25:04 UTC
+Supported: 0
+Description: This is the 25.04 release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/plucky-updates/Release
+ReleaseNotes: http://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/plucky-updates/main/dist-upgrader-all/current/plucky.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/plucky-updates/main/dist-upgrader-all/current/plucky.tar.gz.gpg
+
+Dist: questing
+Name: Questing Quokka
+Version: 25.10
+Date: Thu, 09 October 2025 00:25:10 UTC
+Supported: 0
+Description: This is the 25.10 release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/questing-updates/Release
+ReleaseNotes: https://changelogs.ubuntu.com/EOLReleaseAnnouncement
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/questing-updates/main/dist-upgrader-all/current/questing.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/questing-updates/main/dist-upgrader-all/current/questing.tar.gz.gpg
+
+Dist: resolute
+Name: Resolute Raccoon
+Version: 26.04.1 LTS
+Date: Thu, 23 April 2026 00:26:04 UTC
+Supported: 1
+Description: This is the 26.04.1 LTS release
+Release-File: http://archive.ubuntu.com/ubuntu/dists/resolute-updates/Release
+ReleaseNotes: http://archive.ubuntu.com/ubuntu/dists/resolute-updates/main/dist-upgrader-all/current/ReleaseAnnouncement
+ReleaseNotesHtml: http://archive.ubuntu.com/ubuntu/dists/resolute-updates/main/dist-upgrader-all/current/ReleaseAnnouncement.html
+UpgradeTool: http://archive.ubuntu.com/ubuntu/dists/resolute-updates/main/dist-upgrader-all/current/resolute.tar.gz
+UpgradeToolSignature: http://archive.ubuntu.com/ubuntu/dists/resolute-updates/main/dist-upgrader-all/current/resolute.tar.gz.gpg
+
