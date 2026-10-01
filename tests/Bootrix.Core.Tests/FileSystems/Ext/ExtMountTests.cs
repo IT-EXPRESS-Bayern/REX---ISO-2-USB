@@ -50,8 +50,7 @@ public class ExtMountTests(ITestOutputHelper output)
                 return;
             }
 
-            var fsck = ExtTools.Fsck(path);
-            Assert.True(fsck.ExitCode == 0, $"{type} lazy={lazy}: {fsck.All}");
+            ExtAssert.Clean(path, $"{type} lazy={lazy}:");
             Assert.Equal("clean", ExtDump.Read(path).Header["Filesystem state"]);
         }
     }

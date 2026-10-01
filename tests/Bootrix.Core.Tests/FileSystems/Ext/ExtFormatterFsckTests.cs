@@ -9,7 +9,7 @@ public class ExtFormatterFsckTests
 {
     private const long MiB = 1024 * 1024;
 
-    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2026, 3, 14, 9, 26, 53, TimeSpan.Zero));
+    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2024, 3, 14, 9, 26, 53, TimeSpan.Zero));
 
     public static TheoryData<ExtFileSystemType, long, bool> Matrix()
     {
@@ -43,8 +43,7 @@ public class ExtFormatterFsckTests
         ExtFormatter.Format(image.Stream, options);
         var path = image.Close();
 
-        var fsck = ExtTools.Fsck(path);
-        Assert.True(fsck.ExitCode == 0, fsck.All);
+        ExtAssert.Clean(path);
     }
 
     [ExtToolTheory]
@@ -55,19 +54,19 @@ public class ExtFormatterFsckTests
     }
 
     [ExtToolTheory]
-    [InlineData(ExtFileSystemType.Ext3)]
-    [InlineData(ExtFileSystemType.Ext4)]
-    public void Format_OfDirtyTarget_StillPassesFsck(ExtFileSystemType type)
+    [InlineData(ExtFileSystemType.Ext3, true)]
+    [InlineData(ExtFileSystemType.Ext3, false)]
+    [InlineData(ExtFileSystemType.Ext4, true)]
+    [InlineData(ExtFileSystemType.Ext4, false)]
+    public void Format_OfDirtyTarget_StillPassesFsck(ExtFileSystemType type, bool lazy)
     {
         using var image = new TempImage(64 * MiB);
         var junk = new byte[(int)image.Stream.Length];
         new Random(17).NextBytes(junk);
         image.Stream.Write(junk);
 
-        ExtFormatter.Format(image.Stream, Options(type, lazy: true));
-        var fsck = ExtTools.Fsck(image.Close());
-
-        Assert.True(fsck.ExitCode == 0, fsck.All);
+        ExtFormatter.Format(image.Stream, Options(type, lazy));
+        ExtAssert.Clean(image.Close());
     }
 
     [ExtToolTheory]

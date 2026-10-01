@@ -12,7 +12,7 @@ public class ExtReferenceComparisonTests
     private const long MiB = 1024 * 1024;
     private const string UuidText = "11111111-2222-3333-4444-555555555555";
 
-    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2026, 3, 14, 9, 26, 53, TimeSpan.Zero));
+    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2024, 3, 14, 9, 26, 53, TimeSpan.Zero));
 
     private static readonly string[] ComparedHeaderFields =
     [

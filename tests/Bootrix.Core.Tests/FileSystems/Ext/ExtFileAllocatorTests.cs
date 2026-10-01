@@ -8,7 +8,7 @@ public class ExtFileAllocatorTests
 {
     private const long MiB = 1024 * 1024;
 
-    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2026, 3, 14, 9, 26, 53, TimeSpan.Zero));
+    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2024, 3, 14, 9, 26, 53, TimeSpan.Zero));
 
     private static ExtVolume FormatAndOpen(Stream stream, ExtFileSystemType type, long size)
     {
@@ -91,9 +91,8 @@ public class ExtFileAllocatorTests
         volume.Flush();
         var path = image.Close();
 
-        var fsck = ExtTools.Fsck(path);
         var stat = ExtTools.Debugfs(path, "stat /huge");
-        Assert.True(fsck.ExitCode == 0, fsck.All);
+        ExtAssert.Clean(path);
         Assert.Equal(2, System.Text.RegularExpressions.Regex.Count(stat, @"\(ETB0\)"));
     }
 }

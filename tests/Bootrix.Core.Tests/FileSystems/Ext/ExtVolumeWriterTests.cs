@@ -10,19 +10,13 @@ public class ExtVolumeWriterTests
 {
     private const long MiB = 1024 * 1024;
 
-    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2026, 3, 14, 9, 26, 53, TimeSpan.Zero));
+    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2024, 3, 14, 9, 26, 53, TimeSpan.Zero));
 
     private static byte[] RandomBytes(int length, int seed)
     {
         var data = new byte[length];
         new Random(seed).NextBytes(data);
         return data;
-    }
-
-    private static void AssertClean(string path)
-    {
-        var fsck = ExtTools.Fsck(path);
-        Assert.True(fsck.ExitCode == 0, fsck.All);
     }
 
     // Dumps through debugfs into a file so binary content survives; returns its SHA-256.
@@ -65,7 +59,7 @@ public class ExtVolumeWriterTests
         });
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         Assert.Equal("/ union\n", ExtTools.Debugfs(path, "cat /persistence.conf"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(small)), DumpHash(path, "/small.bin"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(multiBlock)), DumpHash(path, "/multi.bin"));
@@ -89,7 +83,7 @@ public class ExtVolumeWriterTests
         writer.AddRootFile("casper-rw", content);
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         Assert.Equal("/ union\n", ExtTools.Debugfs(path, "cat /persistence.conf"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(content)), DumpHash(path, "/casper-rw"));
     }
@@ -104,7 +98,7 @@ public class ExtVolumeWriterTests
         ExtVolumeWriter.Open(image.Stream, Clock).AddRootFile("two-meg", content);
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         Assert.Contains("(DIND):", ExtTools.Debugfs(path, "stat /two-meg"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(content)), DumpHash(path, "/two-meg"));
     }
@@ -119,7 +113,7 @@ public class ExtVolumeWriterTests
         ExtVolumeWriter.Open(image.Stream, Clock).AddRootFile("big", content);
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         Assert.Contains("(TIND):", ExtTools.Debugfs(path, "stat /big"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(content)), DumpHash(path, "/big"));
     }
@@ -134,7 +128,7 @@ public class ExtVolumeWriterTests
         ExtVolumeWriter.Open(image.Stream, Clock).AddRootFile("spread", content);
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         var stat = ExtTools.Debugfs(path, "stat /spread");
         Assert.Contains("EXTENTS:", stat);
         Assert.Matches(@"\(ETB0\)", stat);
@@ -145,19 +139,19 @@ public class ExtVolumeWriterTests
     public void AddRootFile_UpdatesTimestampsAndLinkCounts()
     {
         using var image = new TempImage(32 * MiB);
-        ExtFormatter.Format(image.Stream, new ExtFormatOptions { Type = ExtFileSystemType.Ext4, TimeProvider = new FakeTimeProvider(new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero)) });
-        var later = new FakeTimeProvider(new DateTimeOffset(2026, 6, 15, 12, 30, 0, TimeSpan.Zero));
+        ExtFormatter.Format(image.Stream, new ExtFormatOptions { Type = ExtFileSystemType.Ext4, TimeProvider = new FakeTimeProvider(new DateTimeOffset(2024, 1, 1, 0, 0, 0, TimeSpan.Zero)) });
+        var later = new FakeTimeProvider(new DateTimeOffset(2025, 6, 16, 12, 30, 0, TimeSpan.Zero));
 
         ExtVolumeWriter.Open(image.Stream, later).AddRootFile(new ExtRootFile("run.sh", "#!/bin/sh\n"u8.ToArray()) { Permissions = 0b111_101_101 });
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         var file = ExtTools.Debugfs(path, "stat /run.sh");
         var root = ExtTools.Debugfs(path, "stat <2>");
         Assert.Contains("Mode:  0755", file);
         Assert.Contains("Links: 1", file);
-        Assert.Contains("Mon Jun 15 12:30:00 2026", file);
-        Assert.Contains("Mon Jun 15 12:30:00 2026", root.Split('\n').Single(line => line.StartsWith(" mtime", StringComparison.Ordinal)));
+        Assert.Contains("Mon Jun 16 12:30:00 2025", file);
+        Assert.Contains("Mon Jun 16 12:30:00 2025", root.Split('\n').Single(line => line.StartsWith(" mtime", StringComparison.Ordinal)));
         Assert.Contains("Links: 3", root);
     }
 
@@ -173,7 +167,7 @@ public class ExtVolumeWriterTests
         writer.AddRootFile("b", new byte[5]);
         var path = image.Close();
 
-        AssertClean(path);
+        ExtAssert.Clean(path);
         Assert.Contains("Size: 10", ExtTools.Debugfs(path, "stat /a"));
     }
 
@@ -215,7 +209,7 @@ public class ExtVolumeWriterTests
         var path = image.Close();
 
         Assert.Equal(ErrorCode.InsufficientSpace, ex.Code);
-        AssertClean(path);
+        ExtAssert.Clean(path);
     }
 
     [ExtToolFact]
@@ -236,7 +230,7 @@ public class ExtVolumeWriterTests
         var path = image.Close();
 
         Assert.InRange(added, 30, 60);
-        AssertClean(path);
+        ExtAssert.Clean(path);
     }
 
     [Fact]
@@ -268,7 +262,7 @@ public class ExtVolumeWriterTests
             writer.AddRootFile("payload", content);
         }
 
-        AssertClean(image.Path);
+        ExtAssert.Clean(image.Path);
         Assert.Equal("/ union\n", ExtTools.Debugfs(image.Path, "cat /persistence.conf"));
         Assert.Equal(Convert.ToHexString(SHA256.HashData(content)), DumpHash(image.Path, "/payload"));
     }
@@ -289,7 +283,7 @@ public class ExtVolumeWriterTests
             ExtVolumeWriter.Open(stream, Clock).AddRootFile("payload", content);
         }
 
-        AssertClean(image.Path);
+        ExtAssert.Clean(image.Path);
         Assert.Equal(Convert.ToHexString(SHA256.HashData(content)), DumpHash(image.Path, "/payload"));
     }
 

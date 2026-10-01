@@ -10,7 +10,7 @@ public class ExtFormatterToolTests
     private const long MiB = 1024 * 1024;
     private const string UuidText = "11111111-2222-3333-4444-555555555555";
 
-    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2026, 3, 14, 9, 26, 53, TimeSpan.Zero));
+    private static readonly FakeTimeProvider Clock = new(new DateTimeOffset(2024, 3, 14, 9, 26, 53, TimeSpan.Zero));
 
     private static TempImage Format(long size, ExtFormatOptions options)
     {
@@ -26,6 +26,15 @@ public class ExtFormatterToolTests
             image.Dispose();
             throw;
         }
+    }
+
+    [Fact]
+    public void SkipReason_NamesMissingTools()
+    {
+        var reason = ExtTools.SkipReason("no-such-tool-for-bootrix");
+
+        Assert.NotNull(reason);
+        Assert.Contains("no-such-tool-for-bootrix", reason);
     }
 
     [ExtToolTheory]
@@ -91,7 +100,7 @@ public class ExtFormatterToolTests
         var lostFound = ExtTools.Debugfs(image.Path, "stat <11>");
 
         Assert.Contains("lost+found", listing);
-        Assert.Matches(@"100644 \(1\)\s+0\s+0\s+8\s+14-Mar-2026 09:26 persistence\.conf", listing);
+        Assert.Matches(@"100644 \(1\)\s+0\s+0\s+8\s+14-Mar-2024 09:26 persistence\.conf", listing);
         Assert.Equal("/ union\n", ExtTools.Debugfs(image.Path, "cat /persistence.conf"));
         Assert.Contains("Type: directory    Mode:  0755", root);
         Assert.Contains("Links: 3", root);
@@ -132,6 +141,6 @@ public class ExtFormatterToolTests
         var root = ExtTools.Debugfs(image.Path, "stat <2>");
 
         Assert.Contains("crtime: 0x", root);
-        Assert.Contains("Sat Mar 14 09:26:53 2026", root);
+        Assert.Contains("Thu Mar 14 09:26:53 2024", root);
     }
 }
